@@ -4,17 +4,17 @@ Repositório para armazenar os códigos desenvolvidos durante as disciplinas do 
 
 Forma de armazenamento:
 
-As disciplinas são divididas em pastas (nomeadas pelo código de oferecimento delas).
+As disciplinas são divididas em pastas (nomeadas pelo código de oferecimento delas), com a seguinte organização de diretórios:
 
-					mestrado/IOC****/
-					________|________
-				   | 				 |
-				lista_n/ 		  outros/
-			_______|_______
-		   |	   |	   |
-		 codes	outputs   data
-		 		___|___
-		 	   |       |
-		 	pickles  *.png
+							mestrado/IOC****/
+							________|________
+						       |        	 |
+						    lista_n/ 	      outros/
+						_______|_______
+					       |       |       |
+					     codes  outputs  data
+						    ___|___
+						   |       |
+						pickles  *.png
 
 
