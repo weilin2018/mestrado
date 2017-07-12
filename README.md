@@ -6,15 +6,15 @@ Forma de armazenamento:
 
 As disciplinas são divididas em pastas (nomeadas pelo código de oferecimento delas).
 
-										mestrado/IOC****/
-										________|________
-									   | 				 |
-									lista_n/ 		  outros/
-								_______|_______
-							   |	   |	   |
-							 codes	outputs   data
-							 		___|___
-							 	   |       |
-							 	pickles  *.png
+					mestrado/IOC****/
+					________|________
+				   | 				 |
+				lista_n/ 		  outros/
+			_______|_______
+		   |	   |	   |
+		 codes	outputs   data
+		 		___|___
+		 	   |       |
+		 	pickles  *.png
 
 
