@@ -17,5 +17,5 @@ Programa:
 	11. Modelos de inversão de vorticidade potencial;
 
 Referências
-	. Data Analysis Methods in Physical Oceanography - Emery & Thompson
-	. Introduction to Geophysical Fluid Dynamics - Cushman-Roisin
+	. Data Analysis Methods in Physical Oceanography - Emery & Thompson;
+	. Introduction to Geophysical Fluid Dynamics - Cushman-Roisin;
