@@ -21,7 +21,7 @@ def calcular_dqdy(y, Lo, U, beta):
 	
 	return beta - U * ( (termo1) - (termo2) )
 
-def plotar_ex2a(U, Lo, L, beta):
+def plotar_ex2a(U, Lo, L, beta, figname=''):
 	""" plotar velocidade zonal e gradiente da vorticidade potencial basica """
 
 	print("Calculando o potencial de vorticidade potencial basico ...")
@@ -55,6 +55,9 @@ def plotar_ex2a(U, Lo, L, beta):
 	ax2.set_ylabel(u"Distância meridional [m]")
 	ax2.set_xlabel(u"Gradiente da Vorticidade Potencial Básica [$m s^{-1}$]")
 	ax2.set_xlim([dqdy.min(), dqdy.max()])
+
+	if figname!='': # então rola salvar
+		plt.savefig(figname)
 
 	plt.show()
 
