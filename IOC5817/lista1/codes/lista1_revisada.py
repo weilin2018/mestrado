@@ -11,7 +11,7 @@ import seawater as sw
 import scipy.interpolate as scint
 import matplotlib
 import matplotlib.patches as mpatches
-
+import os
 matplotlib.style.use('ggplot')
 
 from OceanLab import CTD
@@ -19,7 +19,9 @@ from OceanLab import CTD
 
 # importar os dados
 # tratar os dados: loopedit, despike, binning and hanning filter 
-BASE_DIR = '/home/tparente/danilo/mestrado/disciplinas/sinoticos/lista1/'
+BASE_DIR = os.getcwd()
+SAVE_DIR = BASE_DIR + '/outputs/'
+DATA_DIR = BASE_DIR + '/data/'
 
 
 """ funcoes para interpolacao da secao vertical """
@@ -112,7 +114,7 @@ def get_profileID(fname):
 # obter a coordenada da estacao a partir do ID, pesquisando no arquivo posicoes.txt
 def get_latlon(fname):
 
-    posicoesFiles = BASE_DIR + 'Deproas2/posicoes.txt'
+    posicoesFiles = DATA_DIR + 'posicoes.txt'
 
     with open(posicoesFiles) as f:
         lines = f.readlines()
@@ -132,7 +134,7 @@ def coordenadasEstacoes(lista_estacoes):
 
     coords_estacoes = []
 
-    with open(BASE_DIR + 'Deproas2/posicoes.txt') as f:
+    with open(DATA_DIR + 'posicoes.txt') as f:
         lines = f.readlines()
         for line in lines:
             elementos = line.split(' ')
@@ -226,7 +228,7 @@ def parametricIsopicnal(data=None):
 
     try:
         # load pickle file with si, ti and sigma0 already calculated
-        dic = pickle.load(open(BASE_DIR + "pickleData/parametricIsopicnals.pkl", 'r'))
+        dic = pickle.load(open(SAVE_DIR + "pickles/parametricIsopicnals.pkl", 'r'))
         si = dic['si']
         ti = dic['ti']
         sigma0 = dic['sigma0']
@@ -257,7 +259,7 @@ def parametricIsopicnal(data=None):
 
         # save into pickle file
         dic = {"si": si, "ti": ti, "sigma0": sigma0}
-        pickle.dump(dic, open(BASE_DIR + "pickleData/parametricIsopicnals.pkl", "w"))
+        pickle.dump(dic, open(SAVE_DIR + "pickles/parametricIsopicnals.pkl", "w"))
 
     return si, ti, sigma0
 
@@ -271,8 +273,6 @@ def diagramaTS_arcoiris(allFiles):
 
 	# isopicnais que serão utilizadas como linhas paramétricas
 	si, ti, sigma0 = parametricIsopicnal()
-
-
 
 	manual_locations= [(33.9, 26.5), (35.3, 26.5), (36.7, 26.5), 
                         (37.2, 24.4), (37.3, 21.3), (40.0, 20.0),
@@ -335,7 +335,7 @@ def diagramaTS_arcoiris(allFiles):
 	cores_estacoes = [ 'black', 'maroon', 'sienna', 'darkgreen', 'darkblue', 'darkmagenta' ]
 
 	# importar salinidade e temperatura da climatologia WOA
-	woa = pickle.load(open(BASE_DIR + 'pickleData/perfil_woa_prox7048.pkl', 'r'))
+	woa = pickle.load(open(SAVE_DIR + 'pickles/perfil_woa_prox7048.pkl', 'r'))
 
 	sclim, tclim = woa['Salt'], woa['Temp']
 
@@ -351,7 +351,7 @@ def diagramaTS_arcoiris(allFiles):
 
 	plt.gca().add_artist(leg_massas)
 
-	plt.title('Diagrama TS')
+	plt.title('TS Diagram')
 
 	plt.show()
 
@@ -496,7 +496,7 @@ def verticalProfiles(original, filtered, fname,savefig=False):
 
     # savefig
     if savefig:
-        plt.savefig(BASE_DIR + "outputs/perfis/Perfil_" + get_profileID(fname) +'.png')
+        plt.savefig(SAVE_DIR + "Perfil_" + get_profileID(fname) +'.png')
 
     plt.close("ALL")
 
@@ -543,11 +543,12 @@ def realize_process(fname, gerarImagens=False):
     return data
 
 def save2pickle(data, fname):
-	""" store pd.DataFrame into pickles files """
+    """ store pd.DataFrame into pickles files """
 
-	outputFile = fname.split('/')[-1][:-4] + '.pickle'
-
-	pickle.dump(data, open(BASE_DIR + 'pickleData/' + outputFile, 'w'))
+    outputFile = fname.replace('data', 'outputs/pickles')
+    outputFile = outputFile.replace('.txt', '.pickle')
+    
+    pickle.dump(data, open(outputFile, 'w'))
 
 def readFrompickle(fname):
 
@@ -555,12 +556,12 @@ def readFrompickle(fname):
 
 	inputFile = fname.split('/')[-1][:-7] + '.pickle'
 
-	return pickle.load(open(BASE_DIR + 'pickleData/' + inputFile, 'r'))
+	return pickle.load(open(SAVE_DIR + 'pickles/' + inputFile, 'r'))
 
 ###### gerar perfis verticais e salvar os dados tratados em pickles
 
 # list all files you want to plot
-allFiles = glob.glob(BASE_DIR + 'Deproas2/d2_*')
+allFiles = glob.glob(DATA_DIR + 'd2_*')
 allFiles.sort()
 
 lista_estacoes = []
@@ -605,7 +606,7 @@ xm, hm = dist, lastDepth
     ################################################################################################
 
 # listar arquivos pickles com dados ja tratados
-allFiles = glob.glob('/home/tparente/danilo/mestrado/disciplinas/sinoticos/lista1/pickleData/data/*.pickle')
+allFiles = glob.glob(SAVE_DIR + 'pickles/d2_*')
 allFiles.sort()
 
 # gerar diagrama TS rainbow:
@@ -646,33 +647,43 @@ origData = {
 	"densO": dens
 }
 
-save2pickle(origData, "secao_vertical_original.pkl")
+pickle.dump(origData, open(SAVE_DIR+'pickles/secao_vertical_original.pickle', 'w'))
 
-# interpolar a matriz inteira, aumentando a quantidade do espaçamento horizontal (de 6 para 31, por exemplo)
-ndist = np.arange(0, 170, 5) # ndim: 34
-ndept = np.arange(0, 2270, 1) # mdim: 2270
+try:
+    interpData = pickle.load(open(SAVE_DIR+'pickles/secao_vertical_interpolada.pickle', 'r'))
+    new_temp = interpData['tempI']
+    new_salt = interpData['saltI']
+    new_dens = interpData['densI']
+    xplot = interpData['xplot']
+    yplot = interpData['yplot']
+    ndept = interpData['ndept']
+    ndist  = interpData['ndist']
+except:
+    # interpolar a matriz inteira, aumentando a quantidade do espaçamento horizontal (de 6 para 31, por exemplo)
+    ndist = np.arange(0, 170, 5) # ndim: 34
+    ndept = np.arange(0, 2270, 1) # mdim: 2270
 
-# criar nova matriz para armazenar dados
-new_temp = interpolate2newdimension(temp, dist, depth, ndist, ndept)
-new_salt = interpolate2newdimension(salt, dist, depth, ndist, ndept)
-new_dens = interpolate2newdimension(dens, dist, depth, ndist, ndept)
+    # criar nova matriz para armazenar dados
+    new_temp = interpolate2newdimension(temp, dist, depth, ndist, ndept)
+    new_salt = interpolate2newdimension(salt, dist, depth, ndist, ndept)
+    new_dens = interpolate2newdimension(dens, dist, depth, ndist, ndept)
 
-# plotar para conferir
-xplot, yplot = np.meshgrid(ndist, ndept)
-xplot, yplot = xplot.T, yplot.T
+    # plotar para conferir
+    xplot, yplot = np.meshgrid(ndist, ndept)
+    xplot, yplot = xplot.T, yplot.T
 
-# salvar informacoes em um dicionario para plotar os dados interpolados posteriormente
-interpData = {
-	"ndept": ndept,
-	"ndist": ndist,
-	"xplot": xplot,
-	"yplot": yplot,
-	"tempI": new_temp,
-	"saltI": new_salt,
-	"densI": new_dens
-}
+    # salvar informacoes em um dicionario para plotar os dados interpolados posteriormente
+    interpData = {
+    	"ndept": ndept,
+    	"ndist": ndist,
+    	"xplot": xplot,
+    	"yplot": yplot,
+    	"tempI": new_temp,
+    	"saltI": new_salt,
+    	"densI": new_dens
+    }
 
-save2pickle(interpData, "secao_vertical_interpolada.pkl")
+    pickle.dump(interpData, open(SAVE_DIR+'pickles/secao_vertical_interpolada.pickle', 'w'))
 
 fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, ncols=1, figsize=(8,11))
 
@@ -713,7 +724,7 @@ ax3.set_ylabel('Pressure [dbar]')
 
 plt.suptitle("Interpolation from [6, 2270] to [34, 2270]", size=20)
 
-plt.savefig(BASE_DIR + 'outputs/secao_vertical/secao_vertical_interpolacaohorizontal.png', dpi=150)
+# plt.savefig(BASE_DIR + 'outputs/secao_vertical/secao_vertical_interpolacaohorizontal.png', dpi=150)
 plt.show()
 
 
@@ -721,43 +732,56 @@ plt.show()
 #				GRIDDATA 					#
 #############################################
 
-# pontos conhecidos
-x = np.asarray(dist)
-y = np.asarray(depth)
+try:
+    griddataData = pickle.load(open(SAVE_DIR+'pickles/secao_vertical_griddata.pickle', 'r'))
+    TI = griddataData['tempG']
+    SI = griddataData['saltG']
+    DI = griddataData['densG']
+    xx = griddataData['xplot']
+    yy = griddataData['yplot']
+    depth = griddataData['depth']
+    dist  = griddataData['dist']
 
-xx, yy = np.meshgrid(x,y)
-xx, yy = xx.T, yy.T
+except:
+    # pontos conhecidos
+    x = np.asarray(dist)
+    y = np.asarray(depth)
 
-# localizar indices de não nan
-ind = np.where(~np.isnan(temp))
+    xx, yy = np.meshgrid(x,y)
+    xx, yy = xx.T, yy.T
 
-x1 = xx[ind]
-y1 = yy[ind]
+    # localizar indices de não nan
+    ind = np.where(~np.isnan(temp))
 
-T = temp[ind]
-S = salt[ind]
-D = dens[ind]
+    x1 = xx[ind]
+    y1 = yy[ind]
 
-TI = scint.griddata( (x1, y1), T.ravel(), (xx, yy), method='nearest')
-SI = scint.griddata( (x1, y1), S.ravel(), (xx, yy), method='nearest')
-DI = scint.griddata( (x1, y1), D.ravel(), (xx, yy), method='nearest')
+    T = temp[ind]
+    S = salt[ind]
+    D = dens[ind]
 
-# salvar informacoes em um dicionario para plotar os dados interpolados posteriormente
-griddataData = {
-	"depth": depth,
-	"dist": dist,
-	"xplot": xx,
-	"yplot": yy,
-	"tempG": TI,
-	"saltG": SI,
-	"densG": DI
-}
+    TI = scint.griddata( (x1, y1), T.ravel(), (xx, yy), method='nearest')
+    SI = scint.griddata( (x1, y1), S.ravel(), (xx, yy), method='nearest')
+    DI = scint.griddata( (x1, y1), D.ravel(), (xx, yy), method='nearest')
 
-save2pickle(griddataData, "secao_vertical_griddata.pkl")
+    # salvar informacoes em um dicionario para plotar os dados interpolados posteriormente
+    griddataData = {
+    	"depth": depth,
+    	"dist": dist,
+    	"xplot": xx,
+    	"yplot": yy,
+    	"tempG": TI,
+    	"saltG": SI,
+    	"densG": DI
+    }
+
+    pickle.dump(griddataData, open(SAVE_DIR+'pickles/secao_vertical_griddata.pickle', 'w'))
 
 fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, ncols=1, figsize=(8,11))
 
-tempPlot = ax1.contourf(xx, -yy, TI, cmap=cmo.cm.thermal)
+levels = np.arange(np.nanmin(TI), np.nanmax(TI), 0.1)
+
+tempPlot = ax1.contourf(xx, -yy, TI, levels, cmap=cmo.cm.thermal)
 ax1.fill_between(xm, -1000, -hm, color='k')
 ax1.set_title(u'Potential Temperature [$^o$C]')
 ax1.set_ylim([-800, 0])
@@ -767,7 +791,9 @@ ax1.set_ylabel('Pressure [dbar]')
 cbar = plt.colorbar(tempPlot, ax=ax1, ticks=np.arange(0., 28., 3))
 cbar.set_label(u'Temperature [$^o$C]')
 
-saltPlot = ax2.contourf(xx, -yy, SI, cmap=cmo.cm.haline)
+levels = np.arange(np.nanmin(SI), np.nanmax(SI), 0.1)
+
+saltPlot = ax2.contourf(xx, -yy, SI, levels, cmap=cmo.cm.haline)
 ax2.fill_between(xm, -1000, -hm, color='k')
 ax2.set_ylim([-800, 0])
 ax2.set_xlim([0, 165])
@@ -824,170 +850,110 @@ for perfil in range(0,6): # importante destacar que só vamos até penultima est
 	for z in range(0, len(TI[perfil, :])): 
 		if ~np.isnan(TI[perfil, z]): # testa se o valor é nan
 			# calcular geopotential anomaly
-			gaArray[perfil, z] = sw.gpan( SI[perfil, z], TI[perfil, z], pres[perfil, z] )
+			gaArray[perfil, z] = sw.gpan( SI[perfil, z], TI[perfil, z], presArray[perfil, z] )
 
 # calcular velocidade geostrófica usando sw.gvel
 gvelArray = sw.gvel(gaArray.T, lats, lons)
 
 
-fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1)
+fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(10,15))
 
 cs1 = ax1.contourf(xx, -yy, gaArray, cmap=cmo.cm.amp)
 ax1.fill_between(xm, -2270, -hm, color='k', interpolate=True, alpha=1.)
 c = plt.colorbar(cs1, ax=ax1)
-c.set_label('Geopotential anomaly')
+c.set_label(r'Geopotential anomaly [$m^3 kg^{-1}$]')
 # ax1.set_title('Geopotential Anomaly')
 ax1.set_ylim([-560,0])
-ax1.set_xlim([0, 140])
-
+ax1.set_xlim([0, 174])
+ax1.set_ylabel("Pressure [dbar]")
 
 xplot, yplot = np.meshgrid(dist[:5], depth)
 xplot, yplot = xplot.T, yplot.T
-levels = np.arange(np.nanmin(gvelArray), np.nanmax(gvelArray), 0.001)
+levels = np.arange(-0.3, np.nanmax(gvelArray), 0.001)
 
 cs2 = ax2.contourf(xplot[:,:], -yplot[:,:], gvelArray.T[:,:], levels, cmap='coolwarm')
 
 l = np.asarray([0.])
-cs = ax2.contour(xplot, -yplot, gvelArray.T, l, colors='k')
-plt.clabel(cs, fontsize=9, inline=1, fmt='%1.0f')
+#cs = ax2.contour(xplot, -yplot, gvelArray.T, l, colors='k')
+#plt.clabel(cs, fontsize=9, inline=1, fmt='%1.0f')
 
 ax2.fill_between(xm, -560, -hm, color='k', interpolate=True, alpha=1.)
 
 cbar = plt.colorbar(cs2, ax=ax2)
-cbar.set_label(r'Geostrophic Velocity [m s$^(-1)$]')
+cbar.set_label(r'Geostrophic Velocity [m s$^{-1}$]')
 
 ax2.set_ylim([-560,0])
-ax2.set_xlim([0, 140])
+ax2.set_xlim([0, 150])
+ax2.set_ylabel("Pressure [dbar]")
+ax2.set_xlabel("Distance along transect [km]")
 
-plt.suptitle('Geopotential Anomaly and Geostrophic Velocity - without RL')
+station_yplot = np.zeros(len(dist))
+station_xplot = dist
 
+ax1.plot(station_xplot, station_yplot, 'bv',markersize=12)
 
-
-### calcular usando a referencia de 560dbar
-
-### preciso remover o valor da velocidade geostrófica com referencia a 560dbar
-# calcular geopotencial baseado no nível de refência
-ga560, gvel560 = dens*np.nan, dens*np.nan
-for perfil in range(0,6): # importante destacar que só vamos até penultima estação
-	# z variando de 0 ao nível vertical de 560dbar
-	for z in range(0, 560): 
-		if ~np.isnan(TI[perfil, z]): # testa se o valor é nan
-			# calcular geopotential anomaly
-			ga560[perfil, z] = sw.gpan( SI[perfil, z], TI[perfil, z], pres[perfil, z] )
-
-
-
-gvel560 = sw.gvel(ga560.T, lats, lons)
-
-fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1)
-
-cs1 = ax1.contourf(xx, -yy, ga560, cmap=cmo.cm.amp)
-ax1.fill_between(xm, -2270, -hm, color='k', interpolate=True, alpha=1.)
-c = plt.colorbar(cs1, ax=ax1)
-c.set_label('Geopotential anomaly')
-# ax1.set_title('Geopotential Anomaly')
-ax1.set_ylim([-560,0])
-ax1.set_xlim([0, 140])
-
-
-xplot, yplot = np.meshgrid(dist[:5], depth)
-xplot, yplot = xplot.T, yplot.T
-levels = np.arange(np.nanmin(gvel560), np.nanmax(gvel560), 0.001)
-
-cs2 = ax2.contourf(xplot[:,:], -yplot[:,:], gvel560.T[:,:], levels, cmap='coolwarm')
-
-l = np.asarray([0.])
-cs = ax2.contour(xplot, -yplot, gvel560.T, l, colors='k')
-plt.clabel(cs, fontsize=9, inline=1, fmt='%1.0f')
-
-ax2.fill_between(xm, -560, -hm, color='k', interpolate=True, alpha=1.)
-
-cbar = plt.colorbar(cs2, ax=ax2)
-cbar.set_label(r'Geostrophic Velocity [m s$^(-1)$]')
-
-ax2.set_ylim([-560,0])
-ax2.set_xlim([0, 140])
-
-plt.suptitle('Geopotential Anomaly and Geostrophic Velocity - with RL=560dbar')
-
+plt.suptitle('Geopotential Anomaly (superior panel) and \n Geostrophic Velocity (inferior panel)', fontsize=20)
 plt.show()
 
 
+#
+    ################################################################################################
+    #                                                                                              #
+    #                              calculo da velocidade geostrofica                               #
+    #                                       manualmente                                            #
+    #                                                                                              #
+    ################################################################################################
 
-###########3 calcular o geopotencial relativo ao nível de referencia
+ga = 1  / sw.dens(SI, TI, presArray) - 1/sw.dens(35, 0, presArray)
 
-""" 
-em sw.gpan ele calcula relativo a superficie ao fundo (0 a pfundo)
+gp = np.zeros(presArray.shape) * np.nan
 
-preciso calcular relativo ao meu nivel de referencia, então ao inves de 0 será
-560dbar
+for perfil in np.arange(0,len(dist)):
+    for z in np.arange(0,2269):
+        gp[perfil, z] = (ga[perfil, z] + ga[perfil, z+1])/2
 
-"""
-# recortar dados de 0 a 560dbar
-t_cut = TI[:,:559]
-s_cut = SI[:,:559]
-p_cut = pres[:, :559]
+vg = np.zeros([5, 2270]) * np.nan
 
-# inverter para ficar de 560 a 0dbar
-t_inv = np.fliplr(t_cut)
-s_inv = np.fliplr(s_cut)
-p_inv = np.fliplr(p_cut)
+f = sw.f(-23.5) 
 
-# calcular gpan
-gpan = sw.gpan(s_inv, t_inv, p_inv)
+for perfil in np.arange(0, len(dist) -1):
+    for z in np.arange(0, 2270):
+        dx  = dist[perfil+1] - dist[perfil]
+        dgp = gp[perfil+1, z] - gp[perfil,z]
 
-# calcular gvel
-gvel = sw.gvel(gpan.T,  lats, lons)
+        vg[perfil, z] = (1/f) * ( dgp/dx )
 
-def gpan(s, t, p):
-    """
-    Geopotential Anomaly calculated as the integral of svan from the
-    the sea surface to the bottom. THUS RELATIVE TO SEA SURFACE.
-    Adapted method from Pond and Pickard (p76) to calculate gpan relative to
-    sea surface whereas Pond and Pickard calculated relative to the deepest
-    common depth.  Note that older literature may use units of "dynamic
-    decimeter" for above.
-    Parameters
-    ----------
-    s(p) : array_like
-           salinity [psu (PSS-78)]
-    t(p) : array_like
-           temperature [℃ (ITS-90)]
-    p : array_like
-        pressure [db].
-    Returns
-    -------
-    gpan : array_like
-           geopotential anomaly
-           [m :sup:`3` kg :sup:`-1`
-           Pa = m :sup:`2` s :sup:`-2` = J kg :sup:`-1`]
-    Examples
-    --------
-    >>> # Data from Unesco Tech. Paper in Marine Sci. No. 44, p22.
-    >>> import seawater as sw
-    >>> s = [[0, 1, 2], [15, 16, 17], [30, 31, 32], [35,35,35]]
-    >>> t = [[15]*3]*4
-    >>> p = [[0], [250], [500], [1000]]
-    >>> sw.gpan(s, t, p)
-    array([[   0.        ,    0.        ,    0.        ],
-           [  56.35465209,   54.45399428,   52.55961152],
-           [  84.67266947,   80.92724333,   77.19028933],
-           [ 104.95799186,   99.38799979,   93.82834339]])
-    References
-    ----------
-    .. [1] S. Pond & G.Pickard 2nd Edition 1986 Introductory Dynamical
-       Oceanography Pergamon Press Sydney. ISBN 0-08-028728-X
-    """
 
-    s, t, p = list(map(np.asanyarray, (s, t, p)))
-    s, t, p = np.broadcast_arrays(s, t, p)
-    s, t, p = list(map(atleast_2d, (s, t, p)))
+fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(10,15))
 
-    svn = svan(s, t, p)
+ax1.contourf(xx, -yy, gp, cmap=cmo.cm.amp)
+ax1.fill_between(xm, -2270, -hm, color='k', interpolate=True, alpha=1.)
+c = plt.colorbar(cs1, ax=ax1)
+c.set_label(r'Geopotential anomaly [$m^3 kg^{-1}$]')
+# ax1.set_title('Geopotential Anomaly')
+ax1.set_ylim([-560,0])
+ax1.set_xlim([0, 174])
+ax1.set_ylabel("Pressure [dbar]")
 
-    # NOTE: Assumes that pressure is the first dimension!
-    mean_svan = (svn[1:, ...] + svn[0:-1, ...]) / 2.
-    top = svn[0, ...] * p[0, ...] * db2Pascal
-    bottom = (mean_svan * np.diff(p, axis=0)) * db2Pascal
-    ga = np.concatenate((top[None, ...], bottom), axis=0)
-    return np.cumsum(ga, axis=0).squeeze()
+ax2.contourf(xplot, -yplot, vg*(-1), cmap='coolwarm')
+l = np.asarray([0.])
+#cs = ax2.contour(xplot, -yplot, gvelArray.T, l, colors='k')
+#plt.clabel(cs, fontsize=9, inline=1, fmt='%1.0f')
+
+ax2.fill_between(xm, -560, -hm, color='k', interpolate=True, alpha=1.)
+
+cbar = plt.colorbar(cs2, ax=ax2)
+cbar.set_label(r'Geostrophic Velocity [m s$^{-1}$]')
+
+ax2.set_ylim([-560,0])
+ax2.set_xlim([0, 150])
+ax2.set_ylabel("Pressure [dbar]")
+ax2.set_xlabel("Distance along transect [km]")
+
+station_yplot = np.zeros(len(dist))
+station_xplot = dist
+
+ax1.plot(station_xplot, station_yplot, 'bv',markersize=12)
+
+plt.suptitle('Geopotential Anomaly (superior panel) and \n Geostrophic Velocity (inferior panel)', fontsize=20)
+plt.show()
