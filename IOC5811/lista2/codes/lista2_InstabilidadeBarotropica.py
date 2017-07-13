@@ -21,6 +21,51 @@ def calcular_dqdy(y, Lo, U, beta):
 	
 	return beta - U * ( (termo1) - (termo2) )
 
+def plotar_ex2_b(U, Lo, L, beta, u0):
+	""" plotar os critérios de Rayleigh-Kuo e Fjortoft """
+
+	# RAYLEIGH-KUO
+	y 	 = np.arange(-L, L, 100) # escala meridional // eixo y
+	dqdy = [] # eixo x
+	for i in y:
+		dqdy.append(calcular_dqdy(i, Lo, U, beta))
+
+	dqdy = np.asarray(dqdy)
+
+	u = []
+	for i in y:
+		u.append(( U * 1/cosh(i/Lo)**2 ) - u0)
+
+	u = np.asarray(u)
+
+	# FJORTOFT
+	fjor = u * dqdy
+
+	fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(10,14))
+
+	ax1.plot(dqdy,y)
+	#ax1.set_ylim(200000, -200000)
+	ax1.set_title('Ex.2-b) Criterio de Rayleigh-Kuo')
+	#ax1.yaxis.set_major_formatter(FormatStrFormatter)
+	ax1.set_ylabel(u"Distância meridional [m]")
+	ax1.set_xlabel(u"Critério de Rayleigh-Kuo - $\frac{dq}{dy}$ [$m s^{-1}$]")
+	ax1.set_xlim([dqdy.min(), dqdy.max()])
+
+	ax2.plot(u, y)
+	ax2.set_title('Ex.2-b) Criterio de Fjortoft')
+	ax2.set_ylabel(u"Distância meridional [m]")
+	ax2.set_xlabel(u"Critério de Fjortoft - $(\bar{u} - u_o) * \frac{dq}{dy}$ [$m s^{-1}$]")
+	ax2.set_xlim([dqdy.min(), dqdy.max()])
+
+	plt.suptitle(r'Jato de Bickley [$\bar{u}(y) = \hat{U} sech^2(\frac{y}{L_o})$]', fontsize=20)
+
+	if figname!='': # então rola salvar
+		plt.savefig(figname)
+
+	plt.show()
+
+
+
 def plotar_ex2a(U, Lo, L, beta, figname=''):
 	""" plotar velocidade zonal e gradiente da vorticidade potencial basica """
 
@@ -79,3 +124,4 @@ beta   = 2 * (2*np.pi / 86400) * sin(latitude)
 u, dqdy, y = plotar_ex2a(U, Lo, L, beta, figname='../outputs/ex2_a.png')
 
 # calcular e plotar ex 2b
+
