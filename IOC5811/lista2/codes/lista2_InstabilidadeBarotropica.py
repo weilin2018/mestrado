@@ -40,7 +40,7 @@ def plotar_ex2a(U, Lo, L, beta, figname=''):
 	u = np.asarray(u)
 	dqdy = np.asarray(dqdy)
 
-	fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1)
+	fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(10,14))
 
 	ax1.plot(u,y)
 	#ax1.set_ylim(200000, -200000)
@@ -55,6 +55,8 @@ def plotar_ex2a(U, Lo, L, beta, figname=''):
 	ax2.set_ylabel(u"Distância meridional [m]")
 	ax2.set_xlabel(u"Gradiente da Vorticidade Potencial Básica [$m s^{-1}$]")
 	ax2.set_xlim([dqdy.min(), dqdy.max()])
+
+	plt.suptitle(r'Jato de Bickley [$\bar{u}(y) = \hat{U} sech^2(\frac{y}{L_o})$]', fontsize=20)
 
 	if figname!='': # então rola salvar
 		plt.savefig(figname)
@@ -74,6 +76,6 @@ latitude = 30
 beta   = 2 * (2*np.pi / 86400) * sin(latitude)
 
 # calcular e plotar ex 2a
-u, dqdy, y = plotar_ex2a(U, Lo, L, beta)
+u, dqdy, y = plotar_ex2a(U, Lo, L, beta, figname='../outputs/ex2_a.png')
 
 # calcular e plotar ex 2b
