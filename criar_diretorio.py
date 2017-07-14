@@ -1,7 +1,8 @@
 #!/usr/bin/env python2.7
 #-*-coding:utf-8-*-
 
-""" 
+"""
+
 Código para criar um novo esquema de diretórios de uma lista:
 
 					    lista_n/
@@ -39,4 +40,3 @@ os.system('clear')
 for folder in LIST_DIR:
 	print("Diretório %s criado!\n" % (folder))
 	os.mkdir(os.path.join(BASE_DIR, folder))
-
