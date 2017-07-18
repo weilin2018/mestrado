@@ -3,6 +3,18 @@
 Converting RK_soltar_lista2.m from matlab to python.
 
 In the process, answering exercise 2.E from the second homework of DFGII
+
+Some useful sources and links:
+
+. Eigenvalue and eigenvector problem:
+    mathematical theory: 
+        https://www.respondeai.com.br/resumos/33/capitulos/1
+    numerical solution using Jacobi's Method:
+        http://www.southampton.ac.uk/~feeg6002/lecturenotes/feeg6002_numerical_methods08.pdf
+        
+
+. https://docs.scipy.org/doc/numpy-dev/user/numpy-for-matlab-users.html
+
 """
 
 import math
