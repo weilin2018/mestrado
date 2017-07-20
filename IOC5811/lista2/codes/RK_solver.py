@@ -11,7 +11,7 @@ Some useful sources and links:
         https://www.respondeai.com.br/resumos/33/capitulos/1
     numerical solution using Jacobi's Method:
         http://www.southampton.ac.uk/~feeg6002/lecturenotes/feeg6002_numerical_methods08.pdf
-        
+
 
 . https://docs.scipy.org/doc/numpy-dev/user/numpy-for-matlab-users.html
 
@@ -57,6 +57,41 @@ plt.show()
 
 #### THE EIGENVALUE PROBLEM
 
+
+"""
+Entendendo o algoritmo do Prof Ilson
+
+Problema:
+    (A-Bc)P = 0
+        A - matriz de dados
+        B - matriz identidade
+        c - autovalor associado
+        P - autovetor de A
+
+    A e B são matrizes tridiagonais, ou seja, matrizes em que os elementos
+    não nulos são da diagonal principal e 1 diagonal acima e 1 abaixo da diagonal
+    principal:
+
+        | a1 b1           |
+        | c1 a2 b2        |
+    A = |    c2 a3 b3     |
+        |      c3 a4 b4   |
+        |        c4 a5 b5 |
+
+    Definição de algumas variáveis:
+        k   - número de ondas em 1/km
+        nk  - comprimento de k
+
+    criar matrizes que armazenarão os dados de:
+        cr  - velocidade de fase (real)
+        sig - taxa de crescimento, dada por $\sigma = k ci$, sendo ci a parte imaginária de c
+        P   - modos instáveis ou o autovetor da matriz de dados
+
+
+
+
+"""
+
 # wavenumbers in 1/km
 k = np.asarray(np.arange(0.04, 0.002, -0.001)) * 1e-3
 nk = len(k)
@@ -77,22 +112,19 @@ for n in range(0,nk,1): # wavenumber loop
     A = np.diag(Qy - L2 * U) + np.diag( L3 * U[1:ny],1) + np.diag(L1*U[1:ny] ,-1)
     B = np.diag(-L2 * np.squeeze(np.ones([1,ny]))) + np.diag(L3*np.squeeze(np.ones([1,ny-1])), 1) + np.diag(L1*np.squeeze(np.ones([1,ny-1])), -1)
     # obtaining the eigenvalue matrix
-    C = np.linalg.solve(B, A)
+    C = np.linalg.lstsq(B, A)[0]
 
     # calculate eigenvalues and eigenvector for k[n]
-    F,lamb  = np.linalg.eig(C)
+    lamb, F  = np.linalg.eig(C)
     w = np.diag(lamb) # create matrix [ny,ny]
     ci = np.nanmax(np.diag(np.imag(w)))
 
-    if ci != 0:
-        print(ci)
-
-    # if ci == 0:
-    #     sig[n] = 0
-    #     cr[n]  = np.nan
-    #     P[:,n] = np.nan*np.ones([ny])
-    # else:
-    #     sig[n] = k[n]*ci*86400          # growth rate in 1/days
-    #     cr[n]  = np.real(w[jmax,jmax])  # phase speed in m/s
-    #     P[:,n] = F[:, jmax]             # meridional mode structure
+    if ci == 0:
+        sig[n] = 0
+        cr[n]  = np.nan
+        P[:,n] = np.nan*np.ones([ny])
+    else:
+        sig[n] = k[n]*ci*86400          # growth rate in 1/days
+        cr[n]  = np.real(w[jmax,jmax])  # phase speed in m/s
+        P[:,n] = F[:, jmax]             # meridional mode structure
 

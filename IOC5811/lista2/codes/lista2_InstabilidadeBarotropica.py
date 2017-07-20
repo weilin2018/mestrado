@@ -367,7 +367,7 @@ def calcular_u0(dqdy, U, Lo, y):
 
 	"""
 	# localizar o indice dos 4 pontos mais proximos a zero
-	idy = find_nearest(4, s, 0., index=True)
+	idy = find_nearest(4, dqdy, 0., index=True)
 
 	# tratar um pouco os indices pq vem bagunçado e repetido
 	tmp = []
@@ -392,7 +392,7 @@ def calcular_u0(dqdy, U, Lo, y):
 # CONSTANTES FORNECIDAS NO EXERCÍCIO
 U  = 0.05 # m/s # velocidade maxima do jato
 Lo = 5e4 # m # escala de decaimento do jato
-L  = 4e5  # m -> Largura do canal idealizado no exercício
+L  = 2e5  # m -> metade do domínio meridional do canal idealizado no exercício
 
 latitude = 30
 
@@ -465,25 +465,7 @@ else:
 plotar_ex2d_parteIII(fjor_jatoA, fjor_jatoD, y, figname=figname)
 
 
-# calcular o critério de fjortoft para o jato do item AB
-u, dqdy, y = plotar_ex2a(0.05, Lo, L, beta=0., figname="")
-fjor_ex2a = calcular_fjortoft(u, 0.03, dqdy)
-# calcular o critério de fjortoft para o jato do item D
-u, dqdy, y, u0 = plotar_ex2d(0.085, Lo, L, beta=beta, figname="")
-fjor_ex2d = calcular_fjortoft(u, 0.018, dqdy)
 
-# comparar as áreas do gráfico
-fig, ax = plt.subplots(figsize=(12,12))
-
-plt.plot(fjor_ex2a, y, 'k', label='Jato A')
-# plt.fill_between(fjor_ex2a, 100, y)
-
-plt.plot(fjor_ex2d, y, 'g', label='Jato D')
-# plt.fill_between(fjor_ex2d, 100, y)
-
-plt.legend(loc='best')
-
-plt.show()
 
 ###################################################
 #### calcular d²u/dy² numericamente (challenge!) ##
