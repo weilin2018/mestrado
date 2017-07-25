@@ -1,5 +1,5 @@
 #-*-coding:utf-8-*-
-""" 
+"""
 Converting RK_soltar_lista2.m from matlab to python.
 
 In the process, answering exercise 2.E from the second homework of DFGII
@@ -7,7 +7,7 @@ In the process, answering exercise 2.E from the second homework of DFGII
 Some useful sources and links:
 
 . Eigenvalue and eigenvector problem:
-    mathematical theory: 
+    mathematical theory:
         https://www.respondeai.com.br/resumos/33/capitulos/1
     numerical solution using Jacobi's Method:
         http://www.southampton.ac.uk/~feeg6002/lecturenotes/feeg6002_numerical_methods08.pdf
@@ -40,7 +40,7 @@ def importMatfile(fname=''):
     return cr, sig, P
 
 def plotar_tudo(k,y,cr,sig,Pphasemax, Pmax, figname, title):
-    """ 
+    """
         plotar 4 subplots with:
             cr x k*1000
             sig x k*1000
@@ -52,41 +52,47 @@ def plotar_tudo(k,y,cr,sig,Pphasemax, Pmax, figname, title):
     kplot = k*1000
     yplot = y*1e-3
 
-    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(10,10))
+    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(13,12))
 
     # plot cr x k
     axes[0, 0].plot(kplot, cr)
     axes[0, 0].set_title(u'Velocidade de Fase - $c_r$')
-    axes[0, 0].set_xlabel(u'phase speeds [$m s^{-1}$]')
-    axes[0, 0].set_ylabel(u'Número de onda [$km^{-1}$]')
+    axes[0, 0].set_xlabel(u'Número de onda [$km^{-1}$]')
+    axes[0, 0].set_ylabel(u'Velocidade de Fase [$m s^{-1}$]')
     axes[0, 0].set_xlim([0.003, 0.04])
     axes[0, 0].set_ylim([0., 0.05])
-    axes[0, 0].text(0.0360052, 0.00467125, '(A)')
+    axes[0, 0].text(0.0375717, 0.00453675, '(A)', ha='center')
 
     axes[0, 1].plot(kplot, sig)
     axes[0, 1].set_title(u'Taxa de Crescimento - $\sigma = k c_i$')
-    axes[0, 1].set_xlabel(u'growth rates [$days^{-1}$]')
-    axes[0, 1].set_ylabel(u'Número de onda [$km^{-1}$]')
+    axes[0, 1].set_xlabel(u'Número de onda [$km^{-1}$]')
+    axes[0, 1].set_ylabel(u'Taxa de Crescimento [$dias^{-1}$]')
     axes[0, 1].set_ylim([0, 0.02])
     axes[0, 1].set_xlim([0.003, 0.04])
-    axes[0, 1].text(0.0362016, 0.0019526, '(B)')
+    axes[0, 1].text(0.0374733, 0.00266874, '(B)', ha='center')
+
+    # plotar o k onde sigma é maximo:
+    if title[-1] != "G":
+        imax   = np.where(sig == np.nanmax(sig))[0]
+        axes[0, 1].scatter(kplot[imax], sig[imax], c=80, marker='o')
+        axes[0, 1].text(kplot[imax] + 0.000280, sig[imax] + 0.0003, u'$k_{max} = %1.3f km^{-1}$' % (kplot[imax]))
 
     axes[1, 0].plot(Pmax, yplot)
     axes[1, 0].set_title(u'Amplitude do Modo mais Instável')
-    axes[1, 0].set_xlabel(u'Amplitude do Modo P/ $\phi$')
+    axes[1, 0].set_xlabel(u'Amplitude do Modo [$\phi$]')
     axes[1, 0].set_ylabel(u'Distância Meridional [km]')
     axes[1, 0].set_ylim([-L*1e-3, L*1e-3])
     axes[1, 0].set_xlim([0., 0.18])
 
-    axes[1, 0].text(0.165055, -173.761, '(C)')
+    axes[1, 0].text(0.16984, -176.77, '(C)', ha='center')
 
     axes[1, 1].plot(Pphasemax, yplot)
     axes[1, 1].set_title('Fase')
     axes[1, 1].set_xlabel(u'Fase [$^o$]')
-    axes[1, 1].set_ylabel(u'Distância Meridional [km]')    
+    axes[1, 1].set_ylabel(u'Distância Meridional [km]')
     axes[1, 1].set_ylim([-L*1e-3, L*1e-3])
     axes[1, 1].set_xlim([-70, 0])
-    axes[1, 1].text(-6.60426, 180.489, '(D)')
+    axes[1, 1].text(-4.99454, -176.77, '(D)', ha='center')
 
     plt.suptitle(u'Solução da Equação de Rayleigh-Kuo - ' + title, fontsize=20)
 
@@ -219,7 +225,7 @@ for ex in exercs:
     sigmax = sig[imax]
 
     Pmax      = np.squeeze(Pamp[:, imax])
-    
+
     # orthonomalization
     Pmax      = Pmax / (np.linalg.norm(Pmax))
     Pphasemax = Pphase[:, imax]

@@ -14,7 +14,7 @@ matplotlib.style.use('ggplot')
 
 # set to True if you're plotting the final graphs, otherwise keep as False
 # and no image will be save, only showed to you.
-PLOTandSAVE = False
+PLOTandSAVE = True
 
 # exercicio 2.A - jato de bickley dado por u(y) =
 def calcular_dqdy(y, Lo, U, beta):
@@ -69,7 +69,7 @@ def plotar_ex2a(U, Lo, L, beta=0., figname=''):
 
 	fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(10,14))
 
-	ax1.plot(u,y, 'k')
+	ax1.plot(u,y)
 
 	#ax1.set_ylim(200000, -200000)
 	#ax1.set_title('Ex.2-a) Velocidade Zonal (u)')
@@ -78,7 +78,7 @@ def plotar_ex2a(U, Lo, L, beta=0., figname=''):
 	ax1.set_xlabel(u"Velocidade zonal do jato [$m s^{-1}$]")
 	ax1.set_xlim([u.min(), u.max()])
 
-	ax2.plot(dqdy, y, 'k')
+	ax2.plot(dqdy, y)
 
 	p_inflexao = [(0., 0.66*Lo), (0., -0.66*Lo)]
 	for p in p_inflexao:
@@ -120,7 +120,7 @@ def plotar_ex2b(y, dqdy, u_barra, u_0, Lo, figname=""):
 	# plotando o critério de Rayleigh-Kuo
 	p_inflexao = [(0., 0.66*Lo), (0., -0.66*Lo)]
 
-	ax1.plot(dqdy, y, 'k')
+	ax1.plot(dqdy, y)
 	for p in p_inflexao:
 		ax1.scatter(p[0], p[1], color='k', marker='o')
 
@@ -136,7 +136,7 @@ def plotar_ex2b(y, dqdy, u_barra, u_0, Lo, figname=""):
 
 	# plotando o critério de Fjortoft
 	fjor = calcular_fjortoft(u_barra, u_0, dqdy)
-	ax2.plot(fjor, y, 'k')
+	ax2.plot(fjor, y)
 
 	# for p in p_inflexao:
 	# 	ax2.scatter(p[0], p[1], color='k', marker='o')
@@ -174,12 +174,12 @@ def plotar_ex2c(U, Lo, L, beta, dqdy_min, figname=""):
 	fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(10,14))
 
 	# plotando o critério de Rayleigh-Kuo
-	ax1.plot(u, y, 'k')
+	ax1.plot(u, y)
 	ax1.set_ylabel(u"Distância meridional [m]")
 	ax1.set_xlabel(u"Velocidade zonal do jato [$m s^{-1}$]")
 	ax1.set_xlim([u.min(), u.max()])
 
-	ax2.plot(dqdy, y, 'k')
+	ax2.plot(dqdy, y)
 
 	#ax2.set_title('Ex.2-a) Gradiente de Vorticidade Potencial Basica')
 	ax2.set_ylabel(u"Distância meridional [m]")
@@ -216,13 +216,13 @@ def plotar_ex2d(U, Lo, L, beta, figname=''):
 
 	fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(10,14))
 
-	ax1.plot(u,y,'k')
+	ax1.plot(u,y)
 
 	ax1.set_ylabel(u"Distância meridional [m]")
 	ax1.set_xlabel(u"Velocidade zonal do jato [$m s^{-1}$]")
 	ax1.set_xlim([u.min(), u.max()])
 
-	ax2.plot(dqdy, y, 'k')
+	ax2.plot(dqdy, y)
 
 	# calcular os pontos de inflexão e a velocidade nestes pontos
 	u0, ys, idy = calcular_u0(dqdy, U, Lo, y)
@@ -302,7 +302,7 @@ def plotar_ex2d_parteIII(jatoA, jatoD, y, figname=""):
 
 	fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(10,8), sharey=True)
 	# plot jatoA
-	ax1.plot(jatoA, y, 'k')
+	ax1.plot(jatoA, y)
 	ax1.fill_between(jatoA, -100, y, alpha=.5, label=labelA)
 	ax1.set_title(u'Critério de Fjortoft - Jato A')
 	ax1.set_xlabel(u"Critério de Fjortoft - " + r"$(\bar{u} - u_o) \frac{dq}{dy}$ [$m s^{-1}$]")
@@ -310,7 +310,7 @@ def plotar_ex2d_parteIII(jatoA, jatoD, y, figname=""):
 	ax1.axvline(0., color='gray')
 	ax1.legend()
 
-	ax2.plot(jatoD, y, 'k')
+	ax2.plot(jatoD, y)
 	ax2.fill_between(jatoD, -100, y, alpha=.5, label=labelD)
 	ax2.set_title(u'Critério de Fjortoft - Jato D')
 	ax2.set_xlabel(u"Critério de Fjortoft - " + r"$(\bar{u} - u_o) \frac{dq}{dy}$ [$m s^{-1}$]")
@@ -326,7 +326,7 @@ def plotar_ex2d_parteIII(jatoA, jatoD, y, figname=""):
 		plt.show()
 
 def find_nearest(n, s, r, index=False):
-	""" 
+	"""
 		Find 'n' values in 's' with the lowest absolute
 		difference from the number 'r'.
 
@@ -341,14 +341,14 @@ def find_nearest(n, s, r, index=False):
 			index = control if the returned value is the
 			data itself or only the indexes
 
-		output: 
+		output:
 			values of s or indexes, based on index argument
 	"""
 
 	from heapq import nsmallest
 
 	if index:
-		# return the index of data 
+		# return the index of data
 		ids = []
 		# list with all data found
 		val = nsmallest(n,s, key=lambda x: abs(x-r))
@@ -446,7 +446,7 @@ for x in u0:
 	print(x)
 
 #plotar o critério de fjortoft
-# como são 4 raízes, mas somente duas velocidades, então envio somente duas 
+# como são 4 raízes, mas somente duas velocidades, então envio somente duas
 # velocidades para calcular e plotar o critério de Fjortoft
 if PLOTandSAVE:
 	figname = '../outputs/Fig2_4_2.png'
@@ -465,6 +465,14 @@ else:
 plotar_ex2d_parteIII(fjor_jatoA, fjor_jatoD, y, figname=figname)
 
 
+
+import glob
+import os
+
+lstFile = glob.glob('../outputs/Fig*')
+for fname in lstFile:
+	if fname != '../outputs/Fig2_4_2.png':
+		os.system('convert -trim %s %s' % (fname, fname))
 
 
 ###################################################
