@@ -180,6 +180,7 @@ def plotar_ex2c(U, Lo, L, beta, dqdy_min, figname=""):
 	ax1.set_xlim([u.min(), u.max()])
 
 	ax2.plot(dqdy, y)
+	ax2.axvline(0, color='black')
 
 	#ax2.set_title('Ex.2-a) Gradiente de Vorticidade Potencial Basica')
 	ax2.set_ylabel(u"Distância meridional [m]")
@@ -454,7 +455,7 @@ else:
 	figname = ''
 
 # save the fjortoft curve to calculate the area in ex2D.III
-fjor_jatoD = plotar_ex2d_parteII(y, dqdy, u, u0[1:3], Lo, figname=figname)
+fjor_jatoD = plotar_ex2d_parteII(y, dqdy, u, u0[1:3], Lo, figname='../outputs/Fig2_4_2.png')
 
 #### complemento ex 2d
 if PLOTandSAVE:
