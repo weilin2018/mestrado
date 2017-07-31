@@ -231,39 +231,43 @@ def exercicio3():
         # u'Variação de Av baseado em Yu&O\'Brien (JPO, 1991)': 10
     }
 
-    for key in experimentos.keys():
-        Av    = experimentos[key]
-        title = key
+    # for key in experimentos.keys():
+    key = 'Av constante'
+    Av    = experimentos[key]
+    title = key
 
-        # calcular_velocidade(Av, title, JJ, fo, dz)
-        # definição da variação de Av
-        dAv = np.diff(Av)/np.diff(JJ)
+    # calcular_velocidade(Av, title, JJ, fo, dz)
+    # definição da variação de Av
+    dAv = np.diff(Av)/np.diff(JJ)
 
-        # Definição das diagonais principais baseado nas equações (16), (17) e (18)
-        G1 = -1+((dAv/Av[:-1])*(dz/2))
-        G2 = ((np.tile(2,z.shape[0]))+1j*((dz**2)*s*np.abs(fo)))/Av
-        G3 = (-1-((dAv/Av[:-1])*(dz/2)))
+    # Definição das diagonais principais baseado nas equações (16), (17) e (18)
+    G1 = -1+((dAv/Av[:-1])*(dz/2))
+    G2 = ((np.tile(2,z.shape[0]))+1j*((dz**2)*s*np.abs(fo)))/Av
+    G3 = (-1-((dAv/Av[:-1])*(dz/2)))
 
-        # Definição do vetor solução S
-        S = np.append(np.zeros(z.shape[0]-1), (2*Tau*dz)/(rho*(Av[-1]+Av[-2])))
+    # Definição do vetor solução S
+    S = np.append(np.zeros(z.shape[0]-1), (2*Tau*dz)/(rho*(Av[-1]+Av[-2])))
 
-        # Definição da matriz A
-        A = np.diag(G2,0) + np.diag(G1, -1) + np.diag(G3, 1)
-        # Adicionando os contornos nas últimas linhas, conforme (15)
-        A[0,0] = 1
-        A[-1,-1] = 1
-        A[0,1] = 0
-        A[-1,-2] = -1
+    # Definição da matriz A
+    A = np.diag(G2,0) + np.diag(G1, -1) + np.diag(G3, 1)
+    # Adicionando os contornos nas últimas linhas, conforme (15)
+    A[0,0] = 1
+    A[-1,-1] = 1
+    A[0,1] = 0
+    A[-1,-2] = -1
 
-        # Cálculo das velocidades, invertendo a matriz A e multiplicando,
-        # matricialmente, pelo vetor solução S
-        A2 = np.linalg.inv(A)
-        V  = np.dot(A2,S) # resultados da velocidade (complexa)
+    # Cálculo das velocidades, invertendo a matriz A e multiplicando,
+    # matricialmente, pelo vetor solução S
+    A2 = np.linalg.inv(A)
+    Vcomplexo  = np.dot(A2,S) # resultados da velocidade (complexa)
 
-        # extrair componentes da velocidade (u,v) de V (velocidade complexa)
-        u,v = np.real(V)[::-1], np.imag(V)[::-1]
+    # extrair componentes da velocidade (u,v) de V (velocidade complexa)
+    u,v = np.real(Vcomplexo)[::-1], np.imag(Vcomplexo)[::-1]
 
-        plt.plot(u, label='U')
-        plt.plot(v, label='V')
-        plt.legend()
-        plt.show()
+    U,V,Z = u[:332], v[:332], z[:332]
+
+
+    plt.plot(U,Z, label='U')
+    plt.plot(V,Z, label='V')
+    plt.legend()
+    plt.show()
