@@ -60,15 +60,15 @@ def ekman_plot(U,V,z,ue,ve,ze,Av,He,item='xx',Avt='xxxx',stp1=20,stp2=5):
         ax3.plot3D([0,x3],[0,y3],[z3,z3],'b')
     ax3.plot(ue,ve,ze,'b')
     ax3.view_init(elev=23., azim=85)
-    plt.savefig('/Users/fernanda/Desktop/graficos_julio/vels_%s.png'%(item),dpi=250)
+    # plt.savefig('/Users/fernanda/Desktop/graficos_julio/vels_%s.png'%(item),dpi=250)
 
-    # plot perfil Av
-    fig2 = plt.figure(figsize=(12,8))
-    fig2.suptitle('2-%s: Av(z) %s'%(item,Avt),fontsize=16)
-    plt.plot(Av,z,'r')
-    plt.xlabel(r'Coeficiente de Atrito Vertical (m$^{2}/$s$.10^{-4}$)')
-    plt.ylabel('Profundidade (m)')
-    plt.savefig('/Users/fernanda/Desktop/graficos_julio/perfil_%s.png'%(item),dpi=250)
+    # # plot perfil Av
+    # fig2 = plt.figure(figsize=(12,8))
+    # fig2.suptitle('2-%s: Av(z) %s'%(item,Avt),fontsize=16)
+    # plt.plot(Av,z,'r')
+    # plt.xlabel(r'Coeficiente de Atrito Vertical (m$^{2}/$s$.10^{-4}$)')
+    # plt.ylabel('Profundidade (m)')
+    # plt.savefig('/Users/fernanda/Desktop/graficos_julio/perfil_%s.png'%(item),dpi=250)
 
 
 
@@ -85,7 +85,7 @@ def near(dat,val,how_many=1):
 zl=0
 l=2
 delz = 0.2
-ang=-23
+ang=-25
 f0 = sw.f(ang)
 s = f0/np.abs(f0)
 uar=10
@@ -95,7 +95,7 @@ hE = np.sqrt((2*0.5e-2)/np.abs(f0))
 pE= np.pi*hE
 
 #Definindo os vetores verticais, z e JJ
-z = np.arange(0,-5*hE,-delz)
+z = np.arange(0,-2*np.pi*hE,-delz)
 JJ = np.arange(z.shape[0])+1
 
 #Definindo os vários Av(z)
@@ -103,6 +103,7 @@ JJ = np.arange(z.shape[0])+1
 #Av Constante
 prop = ['c)','Constante em z']
 Av = np.zeros(z.shape[0])+0.5e-2
+
 
 #Av Linear
 #prop = ['d)','varia linearmente']

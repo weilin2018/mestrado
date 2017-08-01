@@ -50,7 +50,7 @@ def calcular_UeV(Av=1e-2, ug=0.1, fo=-1e-4):
 	v=s*ug*np.exp(-z/he)*np.sin(z/he)
 	return u,v,z
 
-def compass(ax, u, v, arrowprops=None):
+def compass(ax, u, v, color='k', arrowprops=None):
     """
     Compass draws a graph that displays the vectors with
     components `u` and `v` as arrows from the origin.
@@ -65,7 +65,7 @@ def compass(ax, u, v, arrowprops=None):
 
     angles, radii = cart2pol(u, v)
 
-    kw = dict(arrowstyle="->", color='k')
+    kw = dict(arrowstyle="->", color=color)
     if arrowprops:
         kw.update(arrowprops)
     [ax.annotate("", xy=(angle, radius), xytext=(0, 0),
@@ -157,48 +157,14 @@ def exercicio2(Av=4*1e-2, theta=-np.pi/6, l=int(5e4), y=0):
     #plt.savefig('../outputs/exercicio2.png', dpi=250)
     plt.show()
 
-exercicio2()
+# exercicio2()
 
-def calcular_velocidade(Av, title, JJ, fo, dz=0.2, rho=1027, savegif=""):
-    """ """
-
-    # definição da variação de Av
-    dAv = np.diff(Av)/np.diff(JJ)
-
-    # Definição das diagonais principais baseado nas equações (16), (17) e (18)
-    G1 = -1+((dAv/Av[:-1])*(dz/2))
-    G2 = (np.tile(2,z.shape[0]))+1j*((dz**2)*s*np.abs(fo))/Av
-    G3 = (-1-((dAv/Av[:-1])*(dz/2)))
-
-    # Definição do vetor solução S
-    S = np.append(np.zeros(z.shape[0]-1), (2*Tau*dz)/(rho*(Av[-1]+Av[-2])))
-
-    # Definição da matriz A
-    A = np.diag(G2,0) + np.diag(G1, -1) + np.diag(G2, 1)
-    # Adicionando os contornos nas últimas linhas, conforme (15)
-    A[0,0] = 1
-    A[-1,-1] = 1
-    A[0,1] = 0
-    A[-1,-2] = -1
-
-    # Cálculo das velocidades, invertendo a matriz A e multiplicando,
-    # matricialmente, pelo vetor solução S
-    A2 = np.linalg.inv(A)
-    V  = np.dot(A2,S) # resultados da velocidade (complexa)
-
-    # extrair componentes da velocidade (u,v) de V (velocidade complexa)
-    u,v = np.real(V)[::-1], np.imag(V)[::-1]
-
-    plt.plot(u, label='U')
-    plt.plot(v, label='V')
-    plt.legend()
-
-    if savefig == "":
-        plt.show()
-    else:
-        plt.savefig("../outputs/"+savefig, dpi=250)
-
-    # return
+def calcular_ekman(rho,fo,he,z,taux,tauy):
+    tau_u = (taux*np.cos((z/he)-np.pi/4) - tauy*np.sin((z/he)-np.pi/4))
+    tau_v = (taux*np.sin((z/he)-np.pi/4) + tauy*np.cos((z/he)-np.pi/4))
+    ue=(fo/np.abs(fo))*(np.sqrt(2)/(rho*fo*he))*(np.exp(z/he))*tau_u
+    ve=(np.sqrt(2)/(rho*fo*he))*(np.exp(z/he))*tau_v
+    return ue,ve
 
 def exercicio3():
 
@@ -214,60 +180,150 @@ def exercicio3():
     uar=10
     Tau=1.225*0.0015*uar**2
     rho=1027
-    hE = np.sqrt((2*5e-2)/np.abs(fo))
+    hE = np.sqrt((2*0.5e-2)/np.abs(fo))
     pE= np.pi*hE
 
     # domínio vertical: -2piHe < z < 0
-    z = np.arange(0,2*np.pi*hE,dz)
-    z = -1 * z
+    z = np.arange(0,-2*np.pi*hE,-dz)
     JJ = np.arange(z.shape[0])+1
 
     # definição dos títulos dos experimentos e variações de Av
     experimentos = {
-        'Av constante': np.zeros(z.shape[0])+0.5e-2,
-        # u'Variação Linear de Av': 5.+0.0625*z,
-        # u'Variação Linear de Av - Madsen(JPO, 1970)': -0.0625*z,
-        # u'Escala de Decaimento de Av': 5*np.exp(z/30),
+        u'Ex 3.C - Av(z) constante ($5x10^{-2} m^2 s^{-1}$)': np.repeat(0.5e-2, z.shape[0]),
+        # u'Ex 3.D - Av variando linearmente ($5.0 + 0.00625z$)': 5.+0.0625*z,
+        # u'Ex 3.E - Variação Linear de Av - Madsen(JPO, 1970)': -0.0625*z,
+        # u'Ex 3.F - Escala de Decaimento de Av': 5*np.exp(z/30),
         # u'Variação de Av baseado em Yu&O\'Brien (JPO, 1991)': 10
     }
 
-    # for key in experimentos.keys():
-    key = 'Av constante'
-    Av    = experimentos[key]
-    title = key
+    for key in experimentos.keys():
+        Av    = experimentos[key]
+        title = key
 
-    # calcular_velocidade(Av, title, JJ, fo, dz)
-    # definição da variação de Av
-    dAv = np.diff(Av)/np.diff(JJ)
+        # definição da variação de Av
+        dAv = np.diff(Av)/np.diff(JJ)
 
-    # Definição das diagonais principais baseado nas equações (16), (17) e (18)
-    G1 = -1+((dAv/Av[:-1])*(dz/2))
-    G2 = ((np.tile(2,z.shape[0]))+1j*((dz**2)*s*np.abs(fo)))/Av
-    G3 = (-1-((dAv/Av[:-1])*(dz/2)))
+        # Definição das diagonais principais baseado nas equações (16), (17) e (18)
+        G1 = -1+((dAv/Av[:-1])*(dz/2))
+        G2 = (np.tile(2,z.shape[0]))+1j*((dz**2)*s*np.abs(fo))/Av
+        G3 = (-1-((dAv/Av[:-1])*(dz/2)))
 
-    # Definição do vetor solução S
-    S = np.append(np.zeros(z.shape[0]-1), (2*Tau*dz)/(rho*(Av[-1]+Av[-2])))
+        # POG pra dar certo
+        if np.isinf(G1[0]) and G1[0] > 0:
+            G1[0]=100000000
+        elif np.isinf(G1[0]) and G1[0] < 0:
+            G1[0]=-100000000
 
-    # Definição da matriz A
-    A = np.diag(G2,0) + np.diag(G1, -1) + np.diag(G3, 1)
-    # Adicionando os contornos nas últimas linhas, conforme (15)
-    A[0,0] = 1
-    A[-1,-1] = 1
-    A[0,1] = 0
-    A[-1,-2] = -1
+        G3[0]=0
+        G2[0]=1
 
-    # Cálculo das velocidades, invertendo a matriz A e multiplicando,
-    # matricialmente, pelo vetor solução S
-    A2 = np.linalg.inv(A)
-    Vcomplexo  = np.dot(A2,S) # resultados da velocidade (complexa)
+        # Definição do vetor solução S
+        S = np.append(np.zeros(z.shape[0]-1), (2*Tau*dz)/(rho*(Av[-1]+Av[-2])))
 
-    # extrair componentes da velocidade (u,v) de V (velocidade complexa)
-    u,v = np.real(Vcomplexo)[::-1], np.imag(Vcomplexo)[::-1]
+        # Definição da matriz A
+        A = np.diag(G2,0) + np.diag(G1, -1) + np.diag(G3, 1)
+        # Adicionando os contornos nas últimas linhas, conforme (15)
+        A[0,0],A[-1,-1],A[0,1],A[-1,-2] = 1,1,0,-1
 
-    U,V,Z = u[:332], v[:332], z[:332]
+        # Cálculo das velocidades, invertendo a matriz A e multiplicando,
+        # matricialmente, pelo vetor solução S
+        A2 = np.linalg.inv(A)
+        Vcomplexo  = np.dot(A2,S) # resultados da velocidade (complexa)
+
+        # extrair componentes da velocidade (u,v) de V (velocidade complexa)
+        # velocidade complexa: V = u + iv
+        u,v = np.real(Vcomplexo)[::-1], np.imag(Vcomplexo)[::-1]
+
+        # calcular velocidade no modelo clássico de Ekman
+        ue,ve = calcular_ekman(rho,fo,hE,z,Tau,0)
+
+        splt = 0 # se quiser recortar o perfil em algum ponto
+
+        if splt != 0:
+            U,V,Z,ue,ve,Av = u[:splt], v[:splt], z[:splt], ue[:splt], ve[:splt], Av[:splt]
+        else:
+            U,V,Z,ue,ve,Av = u[:], v[:], z[:], ue[:], ve[:], Av[:]
 
 
-    plt.plot(U,Z, label='U')
-    plt.plot(V,Z, label='V')
-    plt.legend()
-    plt.show()
+        # calculo da velocidade na solução numérica (spd) e analitica (spde)
+        spd, spde = np.sqrt(U**2 + V**2), np.sqrt(ue**2 + ve**2)
+
+        # calcular a profundidade efetiva
+        # He = calcular_profundidadeEfetiva(spde, spd, z, pE)
+        
+        plotar_exec3(U,V,Z,ue,ve,title,savefig='')
+
+def plotar_exec3(U,V,Z,ue,ve,title,savefig=''):
+
+    fig = plt.figure(figsize=(10,10))
+    gs = gridspec.GridSpec(1,3)
+
+    ### plotar hodógrafo confrontando solução analítica e numérica
+    
+    ax1 = fig.add_subplot(gs[0,0], projection='polar') # cobrir toda primeira linha
+    ax1 = compass(ax1, ue[::20], ve[::20], color='r')
+    ax1 = compass(ax1, U[::20], V[::20], color='k')
+    
+    # ax1.set_title(u"Hodógrafo", fontsize=15)    
+
+    ### plotar perfil vertical
+    ax2 = fig.add_subplot(gs[0,1])
+    ax2.plot(ue,Z,'r-.',label=u'U analítico')
+    ax2.plot(U,Z,'k--',label=u'U numérico')
+    ax2.set_title(u'Perfil Vertical da Componente U', fontsize=13)
+
+    ax2.set_ylabel(u'Profundidade [m]', fontsize=13)
+    ax2.set_xlabel(u'Velocidade Zonal [$m s^{-1}$]', fontsize=13)
+
+    plt.legend(loc='best')
+
+    ax3 = fig.add_subplot(gs[0,2])
+    ax3.plot(ve,Z,'r-.', label=u'V analítico')
+    ax3.plot(V,Z,'k--', label=u'V numérico')    
+    ax3.set_title(u'Perfil Vertical da Componente V', fontsize=13)
+
+    ax3.tick_params(axis='y', labelleft='off', )
+    ax3.set_xlabel(u'Velocidade Meridional [$m s^{-1}$]', fontsize=13)
+
+    plt.legend(loc='best')
+
+    plt.suptitle(title, fontsize=18)
+
+    # tight layout using GridSpec and inserting suptitle in the box
+    gs.tight_layout(fig, rect=[0, 0.03, 1, 0.95]) 
+
+    if savefig == '':
+        plt.show()
+    else:
+        plt.savefig('../outputs/'+savefig, dpi=250)
+
+def near(dat,val,how_many=1):
+    """ to find the closest value to datas 
+
+    return index """
+    dif = np.abs(dat-val) # calcula a diferença entre os pontos
+    idx = np.argsort(dif) # organiza as diferenças da menor a maior
+    return idx # retorna as how_many menores diferenças
+
+# def calcular_profundidadeEfetiva(spde,spd,z,hE):
+
+#     """ 
+#         Algoritmo:
+
+#         1) calcular profundidade efetiva na camada de Ekman na solução clássica
+#         2) estimar uma razão entre a velocidade na superfície e na profundidade
+#             efetiva
+#         3) encontrar uma profundidade na velocidade numérica que tenha a mesma razão
+
+#     """
+#     # calcular profundidade efetiva da solução clássica
+#     pE = np.pi * hE
+
+#     # calcular a razão entre a velocidade na solução clássica na superfície e em pE
+#     ind = near(spde,-pE,1)[:1] 
+#     razao = spde[0] / spde[ind]
+
+#     # encontrar a profundidade em que a razao é respeitada
+
+#     # 
+#         plt.show()
