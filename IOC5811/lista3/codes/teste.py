@@ -101,17 +101,19 @@ JJ = np.arange(z.shape[0])+1
 #Definindo os vários Av(z)
 
 #Av Constante
-prop = ['c)','Constante em z']
-Av = np.zeros(z.shape[0])+0.5e-2
+# prop = ['c)','Constante em z']
+# Av = np.zeros(z.shape[0])+5e-2
 
 
 #Av Linear
-#prop = ['d)','varia linearmente']
-#Av = (40+0.39*z)*10e-4
+# prop = ['d)','varia linearmente']
+# Av = (40+0.39*z)*10e-4 # lista original
+# Av = (-0.0625*z)*10e-4
 
 # Av Exponencial
-#prop = ['e)','varia exponencialmente']
-#Av = (2.5+40*np.exp(z/10.5))*10e-4
+# prop = ['e)','varia exponencialmente']
+# Av = (2.5+40*np.exp(z/10.5))*10e-4 # lista original
+# Av = (5*np.exp(z/30))*10e-4 # lista danilo
 
 # Av Gaussiano
 #prop = ['f)','modulado por envelope gaussiano de largura l']
@@ -121,8 +123,8 @@ Av = np.zeros(z.shape[0])+0.5e-2
 
 # Av Real
 #prop = ['g)','real [valores segundo Chao et al. (2001)]']
-#z1 = np.array([0,10,15,27,35,50,58,65,78,85,100,150,200])
-#Av1 = np.array([40,25,21,27,40,41,45,32,13,5,2.5,1.8,1])
+#z1 = np.array([10,20,40,50,80])
+#Av1 = np.array([0.05, 0.04, 0.03, 0.02, 0.01])
 #z=np.arange(0,200.2,0.2)
 #Av=np.interp(z,z1,Av1)
 #Av*=10e-4
@@ -180,4 +182,4 @@ print 'Profundidade efetiva --> %f m'%(He)
 
 # Plotando a porra toda!!
 ekman_plot(U,V,z,ue,ve,z,Av,He,item=prop[0],Avt=prop[1],stp1=5,stp2=5)
-plt.close('all')
+# plt.close('all')
