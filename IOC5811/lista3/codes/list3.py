@@ -1,12 +1,48 @@
 """
     Lista 3 de DFGII
         Exercício 2 - solução analítica para a camada de Ekman bêntica
-        Exercício 3 - solução analítica e numérica, considerando Av(z), para a camada de 
+        Exercício 3 - solução analítica e numérica, considerando Av(z), para a camada de
                         Ekman de superfície
 
     Elaborado por Danilo A. Silva <nilodna@gmail.com>, com algumas funções
     obtidas em:
         Filipe Fernandes: https://ocefpaf.github.io/python4oceanographers/blog/2015/02/09/compass/
+
+
+
+step = 5
+
+angles, radii = cart2pol(U*10e-1,V*10e-1)
+
+
+fig, ax = plt.subplots(subplot_kw=dict(polar=True))
+
+kw = dict(arrowstyle="->", color='k')
+if arrowprops:
+  kw.update(arrowprops)
+[ax.annotate("", xy=(angle, radius), xytext=(0, 0),
+           arrowprops=kw) for
+angle, radius in zip(angles, radii)]
+
+#ax.set_ylim(0, np.max(radii))
+
+print(np.max(radii))
+
+# angles, radii = cart2pol(ue[::step],ve[::step])
+#
+# kw = dict(arrowstyle="->", color='r')
+# if arrowprops:
+#    kw.update(arrowprops)
+# [ax.annotate("", xy=(angle, radius), xytext=(0, 0),
+#             arrowprops=kw) for
+# angle, radius in zip(angles, radii)]
+#
+# print(np.max(radii))
+
+plt.show()
+
+
+
 """
 
 import numpy as np
@@ -202,8 +238,8 @@ def create_Amatrix(Av, JJ, dz, z, fo, Tau, rho):
 
 """ calcular a velocidade complexa na camada de Ekman de superfície """
 def calcular_Vcomplexa(A,S):
-    """ 
-    Calculo do vetor das incógnitas \nu (velocidade complexa), usando o 
+    """
+    Calculo do vetor das incógnitas \nu (velocidade complexa), usando o
     problema linear dado por (14)
 
     calcula-se a matriz inversa de A para que possamos realizar o produto
@@ -245,7 +281,7 @@ def multiple_compass(ax, us, vs, colors, arrowprops=None):
     kw = dict(arrowstyle="->", color=ce)                # keyword com informações das setas
     if arrowprops:
         kw.update(arrowprops)
-    
+
     [ax.annotate("", xy=(angle, radius), xytext=(0, 0), # plotar as setas
                  arrowprops=kw) for
      angle, radius in zip(angles, radii)]
@@ -268,16 +304,16 @@ def multiple_compass(ax, us, vs, colors, arrowprops=None):
     kw = dict(arrowstyle="->", edgecolor='black',               # propriedades do vetor
                 facecolor='darkgreen', lw=2, alpha=0.6)
     ax.annotate("", xy=(0., 0.2), xytext=(0,0), arrowprops=kw)  # plotando vetor
-    
+
     ax.text(1.917*np.pi, 0.105, r'$\tau_0 = 0.2Pa$',            # texto com expressão do vento
                 ha='center', fontsize=13)
 
     ang = np.rad2deg(angles[0])                                 # convertendo de radiano para graus
-    angle = r'Ângulo: $\nu$ e $\tau_0$: %2.2f$^o$'%(ang)        # calculo do angulo entre solução 
+    angle = r'Ângulo: $\nu$ e $\tau_0$: %2.2f$^o$'%(ang)        # calculo do angulo entre solução
                                                                 # numérica e vetor vento
 
     props = dict(boxstyle='round', facecolor='white', alpha=0.5)                # propriedade do quadrado
-    ax.text((270*np.pi)/180, 0.19, angle,fontsize=10, ha='center',bbox=props)   # inserindo texto
+    ax.text((270*np.pi)/180, 0.19, angle,fontsize=12, ha='center',bbox=props)   # inserindo texto
 
     return ax
 
@@ -293,13 +329,13 @@ def near(dat,val,how_many=1):
 """ calcular a prof efetiva na solução numérica da camada de ekman de superfície """
 def calcular_profundidadeEfetiva(SPDe,SPD,z,hE):
 
-    """ 
-        Calcula a profundidade efetiva de uma solução numérica da camada de Ekman, 
+    """
+        Calcula a profundidade efetiva de uma solução numérica da camada de Ekman,
         utilizando como referência a solução clássica.
 
         Parameters
         ----------
-            SPDe    - velocidade na solução analítica clássica 
+            SPDe    - velocidade na solução analítica clássica
             SPD     - velocidade na solução numérica
             z       - domínio vertical
             hE      - espessura característica, dada por $hE = \sqrt{\frac{2A_v}{|f_o|}}$
@@ -319,16 +355,16 @@ def calcular_profundidadeEfetiva(SPDe,SPD,z,hE):
     """
     pE = np.pi * hE                                             # profundidade efetiva da solução clássica
 
-    rat=SPDe[0]/SPDe[np.argwhere(z==near(z,-pE,1))][0]          # razão entre velocidade na superfície e 
+    rat=SPDe[0]/SPDe[np.argwhere(z==near(z,-pE,1))][0]          # razão entre velocidade na superfície e
                                                                 # na profundidade efetiva clássica
     vel_teoric=SPD[0]/rat                                       # velocidade teorica encontrada com relação a velocidade
                                                                 # de Ekman para cada um dos Av(z)
-    
+
     prof_camada = np.argwhere(SPD==near(SPD,vel_teoric[0],1))   # indice da profundidade da camada efetiva para cada
                                                                 # experimento
 
     He = z[prof_camada][0][0]                                   # Profundidade efetiva calculada com razao entre velocidades
-    
+
     return He                                                   # retornar somente o índice
 
 """ rodar exercício 3 """
@@ -362,14 +398,14 @@ def exercicio3():
         "zr": np.array([10,20,40,50,80]),
     }
     experimentos = {
-        u'Ex 2.C - Av(z) constante ($5x10^{-2} m^2 s^{-1}$)': np.repeat(0.5e-2, z.shape[0]),
-        u'Ex 2.D - Variação Linear de Av(z) = $5.0 + 0.02z$': (5.+0.02*z)*fator,
-        u'Ex 2.E - Variação Linear de Av(z) = $-0.0625z$ - Madsen(JPO, 1970)': (-0.0625*z)*fator,
+        # u'Ex 2.C - Av(z) constante ($5x10^{-2} m^2 s^{-1}$)': np.repeat(0.5e-2, z.shape[0]),
+        # u'Ex 2.D - Variação Linear de Av(z) = $5.0 + 0.02z$': (5.+0.02*z)*fator,
+        # u'Ex 2.E - Variação Linear de Av(z) = $-0.0625z$ - Madsen(JPO, 1970)': (-0.0625*z)*fator,
         r'Ex 2.F - Variação Exponencial de Av(z) = $5e^{\frac{z}{d}}$, para d=30m': (5*np.exp(z/30))*fator,
-        # u'Variação de Av(z) baseado em Yu and O\'Brien (JPO, 1991)': True 
+        # u'Variação de Av(z) baseado em Yu and O\'Brien (JPO, 1991)': True
     }
 
-    for key in experimentos.keys():                                 # loop para trabalhar com cada tipo de Av(z)
+    for key in experimentos.keys():                                   # loop para trabalhar com cada tipo de Av(z)
         print("Working with: %s"%key)
         # checar se é hora de utilizar valores reais de Av
         # if experimentos[key] == True:                               # usar o segundo dicionário
@@ -378,7 +414,7 @@ def exercicio3():
 
         #     z = np.arange(0,-80,-0.2)                               # calcular novo domínio vertical
         #     Av = np.interp(z,zr,Av)                                 # interpolar os valores de Av obtidos
-        #     Av *= 10e-4                                             # fator 
+        #     Av *= 10e-4                                             # fator
         #     z *= -1                                                 # domínio vertical negativo
         #     JJ = np.arange(z.shape[0]) +1                           # novo vetor com indices
         #     title = key                                             # título do plot
@@ -387,7 +423,7 @@ def exercicio3():
         Av    = experimentos[key]                               # definindo Av(z) baseado no experimento
         title = key                                             # definindo o título para o plot
 
-        A, S = create_Amatrix(Av, JJ, dz, z, fo, Tau, rho)          # criação da matriz tridiagonal A e vetor solução S 
+        A, S = create_Amatrix(Av, JJ, dz, z, fo, Tau, rho)          # criação da matriz tridiagonal A e vetor solução S
                                                                     # para resolver sistema linear
 
         u,v = calcular_Vcomplexa(A,S)                               # calculo da velocidade complexa utilizando A e S no sistema linear
@@ -403,13 +439,13 @@ def exercicio3():
         spd, spde = np.sqrt(U**2 + V**2), np.sqrt(ue**2 + ve**2)    # cálculo da velocidade na solução numérica (spd) e analítica (spde)
 
         prof_camada = calcular_profundidadeEfetiva(spde, spd, Z, hE)# calculo da profundidade efetiva com o perfil de Av do experimento
-        
-        plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva=prof_camada,savefig=key[:6].replace(' ', '').replace('.', '') + '.png') #
+
+        plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva=prof_camada, savefig='') #key[:6].replace(' ', '').replace('.', '') + '.png'
 
 """ plotar exercicio 3"""
 def plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     """
-        Plotar hodógrafo e perfil vertical das componentes de velocidade, tanto da 
+        Plotar hodógrafo e perfil vertical das componentes de velocidade, tanto da
         solução analítica clássica, como da solução numérica para Av(z).
 
         Parameters
@@ -435,12 +471,20 @@ def plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     he_plot      = profEfetiva                      # linha horizontal para profundidade efetiva, em metros e negativo
 
     xy_a         = [(270*np.pi)/180, 0.25]          # posição do '(A)'
-    xy_b         = [0.2725, -75.0]                  # posição do '(B)'
-    xy_c         = [0.2725, -75.0]                  # posição do '(C)'
+    xy_c         = [0.2725, -75.0]                  # posição do '(B)'
+    xy_d         = [0.2725, -75.0]                  # posição do '(C)'
 
     qualid_output= 180                              # qualidade da imagem de saída, em dpi
     save_dir     = '../outputs/'                    # diretório para salvar imagens
-    
+
+    title_size   = 14                               # set subplot's title size
+    label_size   = 14                               # set label size
+    ticks_size   = 10                               # set ticks size
+
+    import matplotlib as mpl
+    mpl.rcParams['xtick.labelsize'] = ticks_size    # set x tick size
+    mpl.rcParams['ytick.labelsize'] = ticks_size    # set y tick size
+
     # início da plotagem
     fig = plt.figure(figsize=figsize)
     gs = gridspec.GridSpec(nrows=gradeamento[0], ncols=gradeamento[1])
@@ -451,11 +495,25 @@ def plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     us = (U[::spaceStep],ue[::spaceStep])                           # juntando o U e ue com um step
     vs = (V[::spaceStep],ve[::spaceStep])                           # juntando o V e ve com um step
 
-    ax1 = fig.add_subplot(gs[0,0], projection='polar')              
-    ax1 = multiple_compass(ax1, us, vs, colors=['k', 'r'])          # plotar os vetores de velocidade   
+    ax1 = fig.add_subplot(gs[0,0], projection='polar')
+    ax1 = multiple_compass(ax1, us, vs, colors=['k', 'r'])          # plotar os vetores de velocidade
+    # ax1 = compass(ax1, U, V)
 
     ax1.text(xy_a[0], xy_a[1], '(A)', ha='center')                  # identificação do subplot
 
+    ##################################################################
+    ###                plotar perfil vertical de Av                ###
+    ##################################################################
+    ax4 = fig.add_subplot(gs[1,0])                                          # eixo para plotar perfil de Av
+    ax4.plot(Av,Z, 'k')                                                     # plotar AvxZ
+    ax4.set_ylabel('Profundidade [m]', fontsize=label_size)                 # set ylabel
+    ax4.set_xlabel(u'$A_v [m^{2} s^{-1}]$', fontsize=label_size)            # set xlabel
+    ax4.set_title('Perfil do Coeficiente Cinemático de \n Viscosidade'
+        + 'Turbulenta Vertical ($A_v$)', fontsize=title_size)               # set title
+
+    ax4.set_xlim(0, 0.0053, auto=True)                                      # limite horizontal de Av
+
+    ax4.text(0.0045, -75, '(B)', ha='center')
     ##################################################################
     ###                   plotar perfil vertical                   ###
     ##################################################################
@@ -465,17 +523,17 @@ def plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     ax2.plot(U,Z,'k--',label=u'U numérico')                         # plotar U numérico
     ax2.axhline(y=he_plot, color='black', alpha=.5)                 # He numérico - linha
     ax2.text(0.15, he_plot-3.,                                      # He numérico - valor
-        r'$H_e = %2.2f$m'%(he_plot*(-1)), ha='center')            
+        r'$H_e = %2.2f$m'%(he_plot*(-1)), ha='center')
 
-    ax2.set_title(u'Perfil Vertical da Componente U', fontsize=13)  # titutlo subplot
+    ax2.set_title(u'Perfil Vertical da Componente U', fontsize=title_size)  # titutlo subplot
 
-    ax2.set_ylabel(u'Profundidade [m]', fontsize=13)                # label eixo Y
-    ax2.set_xlabel(u'Velocidade Zonal [$m s^{-1}$]', fontsize=13)   # label eixo X
+    ax2.set_ylabel(u'Profundidade [m]', fontsize=label_size)                # label eixo Y
+    ax2.set_xlabel(u'Velocidade Zonal [$m s^{-1}$]', fontsize=label_size)   # label eixo X
 
     ax2.set_xlim(limite_eixoX)                                      # limite do eixo X
     ax2.set_ylim(limite_eixoY)                                      # limite do eixo Y
 
-    ax2.text(xy_b[0], xy_b[1], '(B)', ha='center')                  # identificação do plot
+    ax2.text(xy_c[0], xy_c[1], '(C)', ha='center')                  # identificação do plot
 
     plt.legend(loc='best', fancybox=True)                           # geração da legenda
 
@@ -483,28 +541,19 @@ def plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     ax3.plot(ve,Z,'r-.', label=u'V analítico')                      # plotar V analítico
     ax3.plot(V,Z,'k--', label=u'V numérico')                        # plotar V numérico
     ax3.axhline(y=he_plot, color='black', alpha=.5)                 # He numérico - linha
-    ax3.text(0.15, he_plot-3., 
+    ax3.text(0.15, he_plot-3.,
         r'$H_e = %2.2f$m'%(he_plot*(-1)), ha='center')              # He numérico - valor
 
-    ax3.set_title(u'Perfil Vertical da Componente V', fontsize=13)  # titulo do subplot
+    ax3.set_title(u'Perfil Vertical da Componente V', fontsize=title_size)  # titulo do subplot
 
     ax3.tick_params(axis='y', labelleft='off', )                    # esconder ticks do eixo Y
-    ax3.set_xlabel(u'Velocidade Meridional [$m s^{-1}$]', fontsize=13) # label eixo x
+    ax3.set_xlabel(u'Velocidade Meridional [$m s^{-1}$]', fontsize=label_size) # label eixo x
 
     ax3.set_xlim(limite_eixoX)                                      # limite do eixo X
     ax3.set_ylim(limite_eixoY)                                      # limite do eixo Y
-    ax3.text(xy_c[0], xy_c[1], '(C)', ha='center')                  # identificação do subplot
+    ax3.text(xy_d[0], xy_d[1], '(D)', ha='center')                  # identificação do subplot
 
     plt.legend(loc='best', fancybox=True)                           # geração da legenda
-
-    ax4 = fig.add_subplot(gs[1,0])                                  # eixo para plotar perfil de Av
-    ax4.plot(Av,Z)                                                  # plotar AvxZ
-    ax4.set_ylabel('Profundidade [m]', fontsize=13)                 # set ylabel
-    ax4.set_xlabel(u'$A_v [m^{2} s^{-1}]$', fontsize=13)            # set xlabel
-    ax4.set_title('Perfil do Coeficiente Cinemático de \n Viscosidade' 
-        + 'Turbulenta Vertical ($A_v$)', fontsize=13)               # set title
-
-    # ax4.set_xlim(limite_Av)                                         # limite horizontal de Av
 
     plt.suptitle(title, fontsize=18)                                # super título
 
