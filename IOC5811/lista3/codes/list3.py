@@ -237,20 +237,20 @@ def multiple_compass(ax, us, vs, colors, arrowprops=None):
 
     """
 
-    U,V,C    = us[0], vs[0], colors[0]                          # extrair solução numérica
-    ue,ve,ce = us[1], vs[1], colors[1]                          # extrair solução analítica
+    U,V,C    = us[0], vs[0], colors[0]                  # extrair solução numérica
+    ue,ve,ce = us[1], vs[1], colors[1]                  # extrair solução analítica
 
     # plotar primeiro analítico
-    angles, radii = cart2pol(ue,ve)                             # converter u,v para polar
-    kw = dict(arrowstyle="->", color=ce)                        # keyword com informações das setas
+    angles, radii = cart2pol(ue,ve)                     # converter u,v para polar
+    kw = dict(arrowstyle="->", color=ce)                # keyword com informações das setas
     if arrowprops:
         kw.update(arrowprops)
     
-    [ax.annotate("", xy=(angle, radius), xytext=(0, 0),         # plotar as setas
+    [ax.annotate("", xy=(angle, radius), xytext=(0, 0), # plotar as setas
                  arrowprops=kw) for
      angle, radius in zip(angles, radii)]
 
-    ax.set_ylim(0, np.max(radii))                               # setar limite do raio do plot
+    ax.set_ylim(0, np.max(radii))                       # setar limite do raio do plot
 
     # plotar numérico
     angles, radii = cart2pol(U,V)
@@ -261,11 +261,23 @@ def multiple_compass(ax, us, vs, colors, arrowprops=None):
                  arrowprops=kw) for
      angle, radius in zip(angles, radii)]
 
-                                                                # plotar vetor do vento
-    kw = dict(arrowstyle="->", edgecolor='black', facecolor='darkgreen', lw=2, alpha=0.6)
-    ax.annotate("", xy=(0., 0.2), xytext=(0,0), arrowprops=kw)  # características do vetor
+    ################################################
+    ### plotar vetor do vento e angulo calculado ###
+    ################################################
+
+    kw = dict(arrowstyle="->", edgecolor='black',               # propriedades do vetor
+                facecolor='darkgreen', lw=2, alpha=0.6)
+    ax.annotate("", xy=(0., 0.2), xytext=(0,0), arrowprops=kw)  # plotando vetor
     
-    ax.text(1.917*np.pi, 0.105, r'$\tau_0 = 0.2Pa$', ha='center', fontsize=13)# expressão do vento
+    ax.text(1.917*np.pi, 0.105, r'$\tau_0 = 0.2Pa$',            # texto com expressão do vento
+                ha='center', fontsize=13)
+
+    ang = np.rad2deg(angles[0])                                 # convertendo de radiano para graus
+    angle = r'Ângulo: $\nu$ e $\tau_0$: %2.2f$^o$'%(ang)        # calculo do angulo entre solução 
+                                                                # numérica e vetor vento
+
+    props = dict(boxstyle='round', facecolor='white', alpha=0.5)                # propriedade do quadrado
+    ax.text((270*np.pi)/180, 0.19, angle,fontsize=10, ha='center',bbox=props)   # inserindo texto
 
     return ax
 
@@ -392,10 +404,10 @@ def exercicio3():
 
         prof_camada = calcular_profundidadeEfetiva(spde, spd, Z, hE)# calculo da profundidade efetiva com o perfil de Av do experimento
         
-        plotar_exec3(U,V,Z,ue,ve,title,profEfetiva=prof_camada,savefig=key[:6].replace(' ', '').replace('.', '') + '.png')
+        plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva=prof_camada,savefig=key[:6].replace(' ', '').replace('.', '') + '.png') #
 
 """ plotar exercicio 3"""
-def plotar_exec3(U,V,Z,ue,ve,title,profEfetiva,savefig=''):
+def plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     """
         Plotar hodógrafo e perfil vertical das componentes de velocidade, tanto da 
         solução analítica clássica, como da solução numérica para Av(z).
@@ -414,11 +426,12 @@ def plotar_exec3(U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     ##################################################################
 
     figsize      = (15,10)                          # tamanho da figura
-    gradeamento  = [1,3]                            # gradeamento dos subplots
-    spaceStep    = 20                               # step para plotar os vetores (evitar imagem densa)
+    gradeamento  = [2,3]                            # gradeamento dos subplots
+    spaceStep    = 4                                # step para plotar os vetores (evitar imagem densa)
 
     limite_eixoX = [-0.15, 0.3]                     # xlim para os perfis verticais
     limite_eixoY = [-80.0, 0.0]                     # xlim para os perfis verticais
+    limite_Av    = [0.0, 0.005]                     # limite horizontal para perfil de Av
     he_plot      = profEfetiva                      # linha horizontal para profundidade efetiva, em metros e negativo
 
     xy_a         = [(270*np.pi)/180, 0.25]          # posição do '(A)'
@@ -435,20 +448,19 @@ def plotar_exec3(U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     ##################################################################
     ### plotar hodógrafo confrontando solução analítica e numérica ###
     ##################################################################
-    
     us = (U[::spaceStep],ue[::spaceStep])                           # juntando o U e ue com um step
     vs = (V[::spaceStep],ve[::spaceStep])                           # juntando o V e ve com um step
 
     ax1 = fig.add_subplot(gs[0,0], projection='polar')              
-    ax1 = multiple_compass(ax1, us, vs, colors=['k', 'r'])          # plotar os vetores de velocidade
-    
+    ax1 = multiple_compass(ax1, us, vs, colors=['k', 'r'])          # plotar os vetores de velocidade   
+
     ax1.text(xy_a[0], xy_a[1], '(A)', ha='center')                  # identificação do subplot
 
     ##################################################################
     ###                   plotar perfil vertical                   ###
     ##################################################################
 
-    ax2 = fig.add_subplot(gs[0,1])
+    ax2 = fig.add_subplot(gs[:,1])
     ax2.plot(ue,Z,'r-.',label=u'U analítico')                       # plotar U analítico
     ax2.plot(U,Z,'k--',label=u'U numérico')                         # plotar U numérico
     ax2.axhline(y=he_plot, color='black', alpha=.5)                 # He numérico - linha
@@ -465,9 +477,9 @@ def plotar_exec3(U,V,Z,ue,ve,title,profEfetiva,savefig=''):
 
     ax2.text(xy_b[0], xy_b[1], '(B)', ha='center')                  # identificação do plot
 
-    plt.legend(loc='best')                                          # geração da legenda
+    plt.legend(loc='best', fancybox=True)                           # geração da legenda
 
-    ax3 = fig.add_subplot(gs[0,2])
+    ax3 = fig.add_subplot(gs[:,2])
     ax3.plot(ve,Z,'r-.', label=u'V analítico')                      # plotar V analítico
     ax3.plot(V,Z,'k--', label=u'V numérico')                        # plotar V numérico
     ax3.axhline(y=he_plot, color='black', alpha=.5)                 # He numérico - linha
@@ -483,7 +495,16 @@ def plotar_exec3(U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     ax3.set_ylim(limite_eixoY)                                      # limite do eixo Y
     ax3.text(xy_c[0], xy_c[1], '(C)', ha='center')                  # identificação do subplot
 
-    plt.legend(loc='best')                                          # geração da legenda
+    plt.legend(loc='best', fancybox=True)                           # geração da legenda
+
+    ax4 = fig.add_subplot(gs[1,0])                                  # eixo para plotar perfil de Av
+    ax4.plot(Av,Z)                                                  # plotar AvxZ
+    ax4.set_ylabel('Profundidade [m]', fontsize=13)                 # set ylabel
+    ax4.set_xlabel(u'$A_v [m^{2} s^{-1}]$', fontsize=13)            # set xlabel
+    ax4.set_title('Perfil do Coeficiente Cinemático de \n Viscosidade' 
+        + 'Turbulenta Vertical ($A_v$)', fontsize=13)               # set title
+
+    # ax4.set_xlim(limite_Av)                                         # limite horizontal de Av
 
     plt.suptitle(title, fontsize=18)                                # super título
 
@@ -501,7 +522,7 @@ def plotar_exec3(U,V,Z,ue,ve,title,profEfetiva,savefig=''):
 
 exercicio3()
 
-
+# remover os excessos de imagem branca ao redor do quadro importante
 import glob
 import os
 
