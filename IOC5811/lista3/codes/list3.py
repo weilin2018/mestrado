@@ -407,7 +407,7 @@ def exercicio3():
         u'Ex 2.D - Variação Linear de Av(z) = $5.0 + 0.02z$': (5.+0.02*z)*fator,
         u'Ex 2.E - Variação Linear de Av(z) = $-0.0625z$ - Madsen(JPO, 1970)': (-0.0625*z)*fator,
         r'Ex 2.F - Variação Exponencial de Av(z) = $5e^{\frac{z}{d}}$, para d=30m': (5*np.exp(z/30))*10e-3,
-        u'Ex 2.G - Variação de Av(z) baseado em Yu and O\'Brien (JPO, 1991)': True
+        u'Ex 2.G - Variação de Av(z) baseado em Yu & O\'Brien (JPO, 1991)': True
     }
 
     for key in experimentos.keys():                                   # loop para trabalhar com cada tipo de Av(z)
@@ -449,7 +449,7 @@ def exercicio3():
 
         prof_camada = calcular_profundidadeEfetiva(spde, spd, Z, hE)# calculo da profundidade efetiva com o perfil de Av do experimento
 
-        plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva=prof_camada, savefig=key[:6].replace(' ', '').replace('.', '') + '.png') #
+        plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva=prof_camada, savefig='') #key[:6].replace(' ', '').replace('.', '') + '.png'
 
 """ plotar exercicio 3"""
 def plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva,savefig=''):
@@ -463,7 +463,7 @@ def plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva,savefig=''):
             ue,ve       - analytial solution from velocity
             Z           - vertical domain or ... depth
             title       - plot title
-            profEfetiva - index of effective depth from influence of the wind stress
+            profEfetiva - effective depth index of influence of the wind stress
 
     """
     ##################################################################
@@ -589,12 +589,12 @@ def plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva,savefig=''):
 
 # exercicio2()
 
-exercicio3()
+# exercicio3()
 
-# remover os excessos de imagem branca ao redor do quadro importante
-import glob
-import os
+# # remover os excessos de imagem branca ao redor do quadro importante
+# import glob
+# import os
 
-lstFile = glob.glob('../outputs/Ex**')
-for fname in lstFile:
-    os.system('convert -trim %s %s' % (fname, fname))
+# lstFile = glob.glob('../outputs/Ex**')
+# for fname in lstFile:
+#     os.system('convert -trim %s %s' % (fname, fname))
