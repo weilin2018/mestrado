@@ -256,7 +256,7 @@ def calcular_Vcomplexa(A,S):
     return np.real(Vcomplexo)[::-1], np.imag(Vcomplexo)[::-1]
 
 """ plotar diversos tipos de vetores no mesmo hodógrafo """
-def multiple_compass(ax, us, vs, colors, arrowprops=None):
+def multiple_compass(ax, us, vs, compassLim, colors, arrowprops=None):
     """
         Criar hodógrafo utilizando compass() extraído de Filipe Fernandes.
 
@@ -286,8 +286,6 @@ def multiple_compass(ax, us, vs, colors, arrowprops=None):
                  arrowprops=kw) for
      angle, radius in zip(angles, radii)]
 
-    ax.set_ylim(0, np.max(radii))                       # setar limite do raio do plot
-
     # plotar numérico
     angles, radii = cart2pol(U,V)
     kw = dict(arrowstyle="->", color=C)
@@ -296,6 +294,13 @@ def multiple_compass(ax, us, vs, colors, arrowprops=None):
     [ax.annotate("", xy=(angle, radius), xytext=(0, 0),
                  arrowprops=kw) for
      angle, radius in zip(angles, radii)]
+
+    ax.set_ylim(0, compassLim)                                # setar limite do raio do plot
+
+    if compassLim == 0.9:
+        posR2 = 0.59
+    else:
+        posR2 = 0.19
 
     ################################################
     ### plotar vetor do vento e angulo calculado ###
@@ -313,7 +318,7 @@ def multiple_compass(ax, us, vs, colors, arrowprops=None):
                                                                 # numérica e vetor vento
 
     props = dict(boxstyle='round', facecolor='white', alpha=0.5)                # propriedade do quadrado
-    ax.text((270*np.pi)/180, 0.19, angle,fontsize=12, ha='center',bbox=props)   # inserindo texto
+    ax.text((270*np.pi)/180, posR2, angle,fontsize=12, ha='center',bbox=props)   # inserindo texto
 
     return ax
 
@@ -398,30 +403,34 @@ def exercicio3():
         "zr": np.array([10,20,40,50,80]),
     }
     experimentos = {
-        # u'Ex 2.C - Av(z) constante ($5x10^{-2} m^2 s^{-1}$)': np.repeat(0.5e-2, z.shape[0]),
-        # u'Ex 2.D - Variação Linear de Av(z) = $5.0 + 0.02z$': (5.+0.02*z)*fator,
-        # u'Ex 2.E - Variação Linear de Av(z) = $-0.0625z$ - Madsen(JPO, 1970)': (-0.0625*z)*fator,
-        r'Ex 2.F - Variação Exponencial de Av(z) = $5e^{\frac{z}{d}}$, para d=30m': (5*np.exp(z/30))*fator,
-        # u'Variação de Av(z) baseado em Yu and O\'Brien (JPO, 1991)': True
+        u'Ex 2.C - Av(z) constante ($5x10^{-2} m^2 s^{-1}$)': np.repeat(0.5e-2, z.shape[0]),
+        u'Ex 2.D - Variação Linear de Av(z) = $5.0 + 0.02z$': (5.+0.02*z)*fator,
+        u'Ex 2.E - Variação Linear de Av(z) = $-0.0625z$ - Madsen(JPO, 1970)': (-0.0625*z)*fator,
+        r'Ex 2.F - Variação Exponencial de Av(z) = $5e^{\frac{z}{d}}$, para d=30m': (5*np.exp(z/30))*10e-3,
+        u'Ex 2.G - Variação de Av(z) baseado em Yu and O\'Brien (JPO, 1991)': True
     }
 
     for key in experimentos.keys():                                   # loop para trabalhar com cada tipo de Av(z)
         print("Working with: %s"%key)
         # checar se é hora de utilizar valores reais de Av
-        # if experimentos[key] == True:                               # usar o segundo dicionário
-        #     Av = experimento_real['Av']                             # extrair valores reais de Av
-        #     zr = experimento_real['zr']                             # extrair as profundidades associadas
+        if key[:6].replace(' ', '').replace('.', '') == 'Ex2G':                               # usar o segundo dicionário
+            Av2 = np.array([0.05, 0.04, 0.03, 0.02, 0.01])
+            zr  = np.array([10,20,40,50,80])
+            z = np.arange(0,80.2,0.2)                               # calcular novo domínio vertical
+            Av = np.interp(z,zr,Av2)                                 # interpolar os valores de Av obtidos
+            Av *= 10e-2                                             # fator
+            z *= -1                                                 # domínio vertical negativo
+            JJ = np.arange(z.shape[0]) +1                           # novo vetor com indices
 
-        #     z = np.arange(0,-80,-0.2)                               # calcular novo domínio vertical
-        #     Av = np.interp(z,zr,Av)                                 # interpolar os valores de Av obtidos
-        #     Av *= 10e-4                                             # fator
-        #     z *= -1                                                 # domínio vertical negativo
-        #     JJ = np.arange(z.shape[0]) +1                           # novo vetor com indices
-        #     title = key                                             # título do plot
+            compassLim = 0.9
 
-        # else:
-        Av    = experimentos[key]                               # definindo Av(z) baseado no experimento
-        title = key                                             # definindo o título para o plot
+            title = key
+
+        else:
+            Av    = experimentos[key]                               # definindo Av(z) baseado no experimento
+            title = key                                             # definindo o título para o plot
+
+            compassLim = 0.4
 
         A, S = create_Amatrix(Av, JJ, dz, z, fo, Tau, rho)          # criação da matriz tridiagonal A e vetor solução S
                                                                     # para resolver sistema linear
@@ -440,10 +449,10 @@ def exercicio3():
 
         prof_camada = calcular_profundidadeEfetiva(spde, spd, Z, hE)# calculo da profundidade efetiva com o perfil de Av do experimento
 
-        plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva=prof_camada, savefig='') #key[:6].replace(' ', '').replace('.', '') + '.png'
+        plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva=prof_camada, savefig=key[:6].replace(' ', '').replace('.', '') + '.png') #
 
 """ plotar exercicio 3"""
-def plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva,savefig=''):
+def plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva,savefig=''):
     """
         Plotar hodógrafo e perfil vertical das componentes de velocidade, tanto da
         solução analítica clássica, como da solução numérica para Av(z).
@@ -461,25 +470,31 @@ def plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     ###                   configurações do gráfico                 ###
     ##################################################################
 
+    # general configuration
     figsize      = (15,10)                          # tamanho da figura
     gradeamento  = [2,3]                            # gradeamento dos subplots
-    spaceStep    = 4                                # step para plotar os vetores (evitar imagem densa)
 
+    qualid_output= 180                              # qualidade da imagem de saída, em dpi
+    save_dir     = '../outputs/'                    # diretório para salvar imagens
+    # vertical profile plot configuration
+    title_size   = 14                               # set subplot's title size
+    label_size   = 14                               # set label size
+    ticks_size   = 10                               # set ticks size
     limite_eixoX = [-0.15, 0.3]                     # xlim para os perfis verticais
     limite_eixoY = [-80.0, 0.0]                     # xlim para os perfis verticais
     limite_Av    = [0.0, 0.005]                     # limite horizontal para perfil de Av
     he_plot      = profEfetiva                      # linha horizontal para profundidade efetiva, em metros e negativo
 
-    xy_a         = [(270*np.pi)/180, 0.25]          # posição do '(A)'
+    if compassLim == 0.9:
+        xy_a         = [(270*np.pi)/180, 0.8]          # posição do '(A)'
+    else:
+        xy_a         = [(270*np.pi)/180, 0.25]          # posição do '(A)'
     xy_c         = [0.2725, -75.0]                  # posição do '(B)'
     xy_d         = [0.2725, -75.0]                  # posição do '(C)'
-
-    qualid_output= 180                              # qualidade da imagem de saída, em dpi
-    save_dir     = '../outputs/'                    # diretório para salvar imagens
-
-    title_size   = 14                               # set subplot's title size
-    label_size   = 14                               # set label size
-    ticks_size   = 10                               # set ticks size
+    # compass plot configuration
+    zSplit       = 40                               # depth to cut numerical velocity
+    spaceStep_Ana= 5                                # step para plotar os vetores da solução analítica (evitar imagem densa)
+    spaceStep_Num= 5                                # step para plotar os vetores da solução analítica (evitar imagem densa)
 
     import matplotlib as mpl
     mpl.rcParams['xtick.labelsize'] = ticks_size    # set x tick size
@@ -492,11 +507,16 @@ def plotar_exec3(Av,U,V,Z,ue,ve,title,profEfetiva,savefig=''):
     ##################################################################
     ### plotar hodógrafo confrontando solução analítica e numérica ###
     ##################################################################
-    us = (U[::spaceStep],ue[::spaceStep])                           # juntando o U e ue com um step
-    vs = (V[::spaceStep],ve[::spaceStep])                           # juntando o V e ve com um step
+    indsplit = np.where(Z == (-1)*zSplit)[0][0]
+
+    Usplit,Vsplit = U[:indsplit], V[:indsplit]                          # cut numerical velocity in indsplit to 
+                                                                    # avoid a dense polar plot around (0,0)
+
+    us = (Usplit[::spaceStep_Num],ue[::spaceStep_Ana])              # juntando o U e ue com um step
+    vs = (Vsplit[::spaceStep_Num],ve[::spaceStep_Ana])              # juntando o V e ve com um step
 
     ax1 = fig.add_subplot(gs[0,0], projection='polar')
-    ax1 = multiple_compass(ax1, us, vs, colors=['k', 'r'])          # plotar os vetores de velocidade
+    ax1 = multiple_compass(ax1, us, vs, compassLim, colors=['k', 'r'])          # plotar os vetores de velocidade
     # ax1 = compass(ax1, U, V)
 
     ax1.text(xy_a[0], xy_a[1], '(A)', ha='center')                  # identificação do subplot
