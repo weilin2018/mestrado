@@ -373,7 +373,7 @@ def calcular_profundidadeEfetiva(SPDe,SPD,z,hE):
     return He                                                   # retornar somente o índice
 
 """ rodar exercício 3 """
-def exercicio3():
+def exercicio3(DEPLOY):
 
     """ """
     ###############################################
@@ -404,10 +404,10 @@ def exercicio3():
     }
     experimentos = {
         u'Ex 2.C - Av(z) constante ($5x10^{-2} m^2 s^{-1}$)': np.repeat(0.5e-2, z.shape[0]),
-        u'Ex 2.D - Variação Linear de Av(z) = $5.0 + 0.02z$': (5.+0.02*z)*fator,
-        u'Ex 2.E - Variação Linear de Av(z) = $-0.0625z$ - Madsen(JPO, 1970)': (-0.0625*z)*fator,
-        r'Ex 2.F - Variação Exponencial de Av(z) = $5e^{\frac{z}{d}}$, para d=30m': (5*np.exp(z/30))*10e-3,
-        u'Ex 2.G - Variação de Av(z) baseado em Yu & O\'Brien (JPO, 1991)': True
+        # u'Ex 2.D - Variação Linear de Av(z) = $5.0 + 0.02z$': (5.+0.02*z)*fator,
+        # u'Ex 2.E - Variação Linear de Av(z) = $-0.0625z$ - Madsen(JPO, 1970)': (-0.0625*z)*fator,
+        # r'Ex 2.F - Variação Exponencial de Av(z) = $5e^{\frac{z}{d}}$, para d=30m': (5*np.exp(z/30))*10e-3,
+        # u'Ex 2.G - Variação de Av(z) baseado em Yu & O\'Brien (JPO, 1991)': True
     }
 
     for key in experimentos.keys():                                   # loop para trabalhar com cada tipo de Av(z)
@@ -449,7 +449,12 @@ def exercicio3():
 
         prof_camada = calcular_profundidadeEfetiva(spde, spd, Z, hE)# calculo da profundidade efetiva com o perfil de Av do experimento
 
-        plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva=prof_camada, savefig='') #key[:6].replace(' ', '').replace('.', '') + '.png'
+        if DEPLOY:
+            savefig = ''
+        else:
+            savefig = key[:6].replace(' ', '').replace('.', '') + '.png'
+
+        plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva=prof_camada, savefig=savefig) #key[:6].replace(' ', '').replace('.', '') + '.png'
 
 """ plotar exercicio 3"""
 def plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva,savefig=''):
@@ -509,7 +514,7 @@ def plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva,savefig=''):
     ##################################################################
     indsplit = np.where(Z == (-1)*zSplit)[0][0]
 
-    Usplit,Vsplit = U[:indsplit], V[:indsplit]                          # cut numerical velocity in indsplit to 
+    Usplit,Vsplit = U[:indsplit], V[:indsplit]                          # cut numerical velocity in indsplit to
                                                                     # avoid a dense polar plot around (0,0)
 
     us = (Usplit[::spaceStep_Num],ue[::spaceStep_Ana])              # juntando o U e ue com um step
@@ -589,7 +594,8 @@ def plotar_exec3(Av,U,V,Z,ue,ve,title,compassLim,profEfetiva,savefig=''):
 
 # exercicio2()
 
-# exercicio3()
+DEPLOY = True
+exercicio3(DEPLOY)
 
 # # remover os excessos de imagem branca ao redor do quadro importante
 # import glob
