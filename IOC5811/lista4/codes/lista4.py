@@ -24,6 +24,7 @@ import mpl_toolkits.axisartist as AA
 import matplotlib.gridspec as gridspec
 import seawater as sw
 import cmocean as cmo
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 # import matplotlib
 # matplotlib.style.use('ggplot')
 
@@ -188,15 +189,6 @@ def plotar_topografia2D(ax,hb):
     ax.set(adjustable='box-forced', aspect='equal')
 
     return ax
-#
-# def plotar_topografia3D(ax,hb):
-#     """
-#     plotar topografia 3D
-#     """
-#
-#     xx,yy = np.meshgrid(x,y)
-#
-#
 
 def plotar_solucaoStommel(ax, psi):
     """ """
@@ -247,7 +239,7 @@ def fundoPlano_planoBeta():
     axes[0],fig = plotar_campoVPAmb(axes[0],fig, B)
 
     axes[1] = plotar_solucaoStommel(axes[1], psi)
-    axes[1].set_title(u'Solução de Stommel')
+    axes[1].set_title(u'Função de Corrente Geostrófica')
 
     plt.suptitle(r'Ex2-C: Solução de Stommel para fundo plano e plano $\beta$', fontsize=20)
 
@@ -276,14 +268,14 @@ def fundoPlano_planoF():
     axes[0].set_title(u'VP Ambiente')
     axes[0],fig = plotar_campoVPAmb(axes[0],fig, B)
 
-    axes[1].set_title(u'Solução de Stommel')
+    axes[1].set_title(u'Função de Corrente Geostrófica')
     axes[1] = plotar_solucaoStommel(axes[1], psi)
 
     plt.suptitle(r'Ex2-D: Solução de Stommel para fundo plano e plano $f$', fontsize=20)
 
     plt.show()
 
-def fundoLinearMeridional_planoF():
+def fundoLinearMeridional():
     """
     topografia linear na direção y: b = b(y)
     beta_topografico = beta
@@ -292,8 +284,8 @@ def fundoLinearMeridional_planoF():
     # campo de topografia de fundo não-dimensional para H = 5e3m
     hb = -0.275 * yg
     # campo de gradiente de vorticidade ambiente
-    fac = .0
-    B=fac*(yg-y0)+ff*hb                     #função VP ambiente
+    fac = 1.0
+    B=(fac*(yg-y0)+ff*hb)*0.                #função VP ambiente
     [By,Bx]=np.gradient(B,dx,dx)            # calcular dB/dx,dB/dy
     Bx = (-1) * Bx                          # adequar a equação discretizada
 
@@ -310,7 +302,7 @@ def fundoLinearMeridional_planoF():
     axes[1].set_title(u'VP Ambiente')
     axes[1],fig = plotar_campoVPAmb(axes[1],fig, B)
 
-    axes[2].set_title(u'Solução de Stommel')
+    axes[2].set_title(u'Função de Corrente Geostrófica')
     axes[2] = plotar_solucaoStommel(axes[2], psi)
 
     plt.suptitle(r'Ex2-E: Solução de Stommel para fundo com variação linear meridional e $\beta_T$ = $\beta$', fontsize=20)
@@ -344,7 +336,7 @@ def fundoLinearZonal_planoBeta():
     axes[1].set_title(u'VP Ambiente')
     axes[1],fig = plotar_campoVPAmb(axes[1],fig, B)
 
-    axes[2].set_title(u'Solução de Stommel')
+    axes[2].set_title(u'Função de Corrente Geostrófica')
     axes[2] = plotar_solucaoStommel(axes[2], psi)
 
     plt.suptitle(r'Ex2-F: Solução de Stommel para fundo com variação linear zonal e $\beta$ = $\alpha x$ = $\frac{\beta}{4}x$', fontsize=20)
