@@ -1,73 +1,73 @@
 """
-Lista 4 - mapeamento de funções de corrente a partir de dados sinóticos e a partir de dados observados
+    Lista 4 - mapeamento de funções de corrente a partir de dados sinóticos e a partir de dados observados
 
-Cruzeiro: WESTRAX 2
+    Cruzeiro: WESTRAX 2
 
-1.A: anomalia do geopotencial
-    . calcular anomalia do geopotencial dos pontos observados para 10dbar relativamente a 1200dbar
-    . dividir por f0 calculado para latitude central de 5N
-    . remover a média
+    1.A: anomalia do geopotencial
+        . calcular anomalia do geopotencial dos pontos observados para 10dbar relativamente a 1200dbar
+        . dividir por f0 calculado para latitude central de 5N
+        . remover a média
 
-1.B: condições de contorno
-    Condição de contorno no-slip
-        . tomar lat/lon para isóbata de 200m (GEBCO ou ETOPO)
-        . suavizar usando média móvel, janela móvel ou interpolação cúbica
-1.C:
-    . selecionar latlon das isóbatas e atribuir valor ZERO na borda
+    1.B: condições de contorno
+        Condição de contorno no-slip
+            . tomar lat/lon para isóbata de 200m (GEBCO ou ETOPO)
+            . suavizar usando média móvel, janela móvel ou interpolação cúbica
+    1.C:
+        . selecionar latlon das isóbatas e atribuir valor ZERO na borda
 
-1.D:
-    . combinar os vetores de velocidade com o vetor gerado pela isóbata
+    1.D:
+        . combinar os vetores de velocidade com o vetor gerado pela isóbata
 
-1.E:
-    . scaloa
+    1.E:
+        . scaloa
 
-1.F:
-    . plotar
-
-
-A tarefa referente ao mapeamento de função de corrente a partir dos dados sinóticos é a seguinte.
-O cruzeiro a ser utilizado é o WESTRAX 2 e tenham em mãos o meu velho artigo de 2000. Adotem para
-a AOE e AOV os parâmetros que forneço. Cuidado com as unidades das saídas! Sugiro a conversão da
-velocidade do perfilador Pegasus para graus/s quando entrarem na AOV. Depois da interpolação,
-reconvertam para m/s.
-
-1)  Mapeamento de Função de Corrente Geostrófica​
-
-​a) ​ Calculem a função de corrente geostrófica nos pontos dos dados, ou seja, peguem os pontos de
-obs. e calculem a anomalia do geopotencial para 10 dbar relativamente a 1200 dbar. A posteriori,
-dividam por f0 com f avaliado a 5N (tal qual no artigo da minha tese). Removam a média do vetor
-formado pelos valores de psi_g.
-
-b) Precisamos satisfazer as condições de contorno. Comecemos com a mais fácil de implementar: no
-slip. Obtenham de arquivo a isóbata de 200 m, seja pelo ETOPO ou GEBCO. Suavizem-na com uma média
-corrida, janela móvel ou reinterpolem usando um esquema cúbico. Vcs escolhem.
-
-c) Selecionem lats e lons dessa isóbata e atribuam o valor de zero na borda.
-
-d) Componha o vetor juntando os dados de verdade com os dados falsos da c.c.
-
-e) Rode a rotina scaloa.m ou a versão python que o Iurizinho.
-
-​f) Plote e verifique se o padrão é semelhante ao do artigo.
-
-g) Agora repita o mesmo caso, mas use imagens. Faça a aproximação linear da isóbata de 200 m e a
-use como eixo de simetria.​
+    1.F:
+        . plotar
 
 
-​2) Mapeamento de Função de Corrente Observada
+    A tarefa referente ao mapeamento de função de corrente a partir dos dados sinóticos é a seguinte.
+    O cruzeiro a ser utilizado é o WESTRAX 2 e tenham em mãos o meu velho artigo de 2000. Adotem para
+    a AOE e AOV os parâmetros que forneço. Cuidado com as unidades das saídas! Sugiro a conversão da
+    velocidade do perfilador Pegasus para graus/s quando entrarem na AOV. Depois da interpolação,
+    reconvertam para m/s.
 
-a) o procedimento é semelhante ao da AOE, mas não removam a média dos vetores. Mapeiem a psi_obs
-em 10 dbar. A rotina tem um parâmetro especial que estabelece o nível médio de psi_obs=0.
+    1)  Mapeamento de Função de Corrente Geostrófica​
 
-b) Usem tanto a no-slip como as imagens (free slip)​ como cc.
+    ​a) ​ Calculem a função de corrente geostrófica nos pontos dos dados, ou seja, peguem os pontos de
+    obs. e calculem a anomalia do geopotencial para 10 dbar relativamente a 1200 dbar. A posteriori,
+    dividam por f0 com f avaliado a 5N (tal qual no artigo da minha tese). Removam a média do vetor
+    formado pelos valores de psi_g.
 
-c) Comparemos os padrões.
+    b) Precisamos satisfazer as condições de contorno. Comecemos com a mais fácil de implementar: no
+    slip. Obtenham de arquivo a isóbata de 200 m, seja pelo ETOPO ou GEBCO. Suavizem-na com uma média
+    corrida, janela móvel ou reinterpolem usando um esquema cúbico. Vcs escolhem.
 
-d) se quiserem, podem fazer também a velocidade relativa a 1200 dbar para direta comparação entre
-psi_g e psi_obs. Para tanto, basta subtrairem o vetor de 1200 dbar do vetor de 10 m.
+    c) Selecionem lats e lons dessa isóbata e atribuam o valor de zero na borda.
 
-​NÃO EMPAQUEM. EM CASO DE DÚVIDA, PROCUREM-ME. ESTOU SEM AULAS PELA TARDE, A MENOS DAS 2 QUARTAS
-DE REPOSIÇÃO DE DFG2.​
+    d) Componha o vetor juntando os dados de verdade com os dados falsos da c.c.
+
+    e) Rode a rotina scaloa.m ou a versão python que o Iurizinho.
+
+    ​f) Plote e verifique se o padrão é semelhante ao do artigo.
+
+    g) Agora repita o mesmo caso, mas use imagens. Faça a aproximação linear da isóbata de 200 m e a
+    use como eixo de simetria.​
+
+
+    ​2) Mapeamento de Função de Corrente Observada
+
+    a) o procedimento é semelhante ao da AOE, mas não removam a média dos vetores. Mapeiem a psi_obs
+    em 10 dbar. A rotina tem um parâmetro especial que estabelece o nível médio de psi_obs=0.
+
+    b) Usem tanto a no-slip como as imagens (free slip)​ como cc.
+
+    c) Comparemos os padrões.
+
+    d) se quiserem, podem fazer também a velocidade relativa a 1200 dbar para direta comparação entre
+    psi_g e psi_obs. Para tanto, basta subtrairem o vetor de 1200 dbar do vetor de 10 m.
+
+    ​NÃO EMPAQUEM. EM CASO DE DÚVIDA, PROCUREM-ME. ESTOU SEM AULAS PELA TARDE, A MENOS DAS 2 QUARTAS
+    DE REPOSIÇÃO DE DFG2.​
 
 """
 
@@ -78,6 +78,7 @@ import glob
 import seawater as sw
 import gsw
 import pandas as pd
+import xarray as xr
 from mpl_toolkits.basemap import Basemap # módulo de mapas
 from math import factorial
 
@@ -320,8 +321,8 @@ def expansaoSerieTaylor(S,T,dZ,window=2):
     # compute the normalized root mean square error (NRMS)
     alphaT = np.sqrt( (np.nanmean(newTemp - Tsmoothed))**2 )/ np.nanmean(newTemp)
     alphaS = np.sqrt( (np.nanmean(newSalt - Ssmoothed))**2 )/ np.nanmean(newSalt)
-    # manter a variância no perfil suavizado
 
+    # manter a variância no perfil suavizado
     Ts = (1-alphaT)*Tsmoothed
     Ss = (1-alphaS)*Ssmoothed
 
@@ -340,11 +341,11 @@ def expansaoSerieTaylor(S,T,dZ,window=2):
 
     # calcular as derivadas parciais
     # dP/dz
-    dsdz = np.diff(Ss)
-    dTdz = np.diff(Ts)
+    dsdz = np.diff(Ss)/10
+    dTdz = np.diff(Ts)/10
     # d²P/dz²
-    d2sdz = np.diff(dsdz)
-    d2Tdz = np.diff(dTdz)
+    d2sdz = np.diff(dsdz)/10
+    d2Tdz = np.diff(dTdz)/10
 
     # verificar o comportamento das derivadas
     print("Plotando as derivadas do perfil médio")
@@ -380,26 +381,26 @@ def media(P):
         nP.append(np.nanmean(P[bloco-10:bloco]))
 
     return np.asarray(nP)
-
-def extrap_prop(P,dPdz,ddPdzz):
-    """
-    complementar uma série de dados usando a expansão de série de Taylor,
-    seguindo a seguinte fórmula:
-
-    P*[n+1:m] = P*[n] + dPdz[n]*dZ + ddPdzz[n]*(dZ/2!)
-    """
-
-    #algoritmo
-
-    # checar os indices dos pontos nan
-    # pegar o ultimo dado
-    # iterar a partir do ultimo ponto +1 até o final do vetor
-    indP = np.where(np.isnan(P))    # checar indices com nan
-    Pn = P[indP[0]-1]                  # ultimo valor registrado
-    for n in indP:
-        P[n] = Pn + dPdz[n]*dZ + ddPdzz[n] * (dZ/factorial(2))
-
-    return P
+#
+# def extrap_prop(P,dPdz,ddPdzz):
+#     """
+#     complementar uma série de dados usando a expansão de série de Taylor,
+#     seguindo a seguinte fórmula:
+#
+#     P*[n+1:m] = P*[n] + dPdz[n]*dZ + ddPdzz[n]*(dZ/2!)
+#     """
+#
+#     #algoritmo
+#
+#     # checar os indices dos pontos nan
+#     # pegar o ultimo dado
+#     # iterar a partir do ultimo ponto +1 até o final do vetor
+#     indP = np.where(np.isnan(P))    # checar indices com nan
+#     Pn = P[indP[0]-1]                  # ultimo valor registrado
+#     for n in indP:
+#         P[n] = Pn + dPdz[n]*dZ + ddPdzz[n] * (dZ/factorial(2))
+#
+#     return P
 
 # regridar os dados para um valor a cada 10m - media em bloco de 10m
 temp2 = createArrays(ndim=1200, mdim=stations, dz=10)
@@ -407,8 +408,8 @@ salt2 = createArrays(ndim=1200, mdim=stations, dz=10)
 pres2 = np.arange(0,1200,10)
 
 os.system('clear')
-for station in range(0,36):
-    # calcular a media em bloco
+for station in range(0,5):
+    # calcular a media em bloco de 10metros de profundidade
     temp2[station,:] = media(temp[station,:])
     salt2[station,:] = media(salt[station,:])
 
@@ -425,7 +426,7 @@ for station in range(0,36):
         # pegar o valor do ultimo dado registrado
         Tn = temp2[station, indT[0]-1]
         Sn = salt2[station, indS[0]-1]
-        for n in indT[:-2]:
+        for n in indT[:-2]: # aqui vamos até o penultimo item, pois ao derivar a expansão, perde-se dados
             # completar os dados por expansão da série de Taylor pra ordem 2
             temp2[station,n] = Tn + dTdz[n]*10 + d2Tdz[n]*5
             salt2[station,n] = Sn + dsdz[n]*10 + d2sdz[n]*5
@@ -442,6 +443,10 @@ DANILO DE SEGUNDA:
 SÓ CONTINUAR A CALCULAR GPAN E AS OUTRAS PARAFERNALHAS. A PARTE DE
 EXTRAPOLAÇÃO IS DONE!
 """
+
+# obter dados da profundidade de 200m para implementação da condição de contorno
+# dados obtidos em: https://maps.ngdc.noaa.gov/viewers/wcs-client/
+etopo = xr.open_dataset('/home/tparente/danilo/mestrado/disciplinas/mestrado/IOC5817/lista3/data/etopo1.nc')
 
 # calculate geopotential anomaly with respect to 1200dbar as reference level
 gpanRef = gpanArray[7, 1200]            # reference level of 1200dbar
