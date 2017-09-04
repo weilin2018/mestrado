@@ -209,10 +209,11 @@ f0 = sw.f(latitude)                    # calculate coriolis parameter
 lons, lats = plotar_mapa(files, savefig='mapaColeta.png')
 
 # create matrixes
+Prof_deCorte = 1220
 tempArray = createArrays(ndim=maxDepth, mdim=stations)
 saltArray = createArrays(ndim=maxDepth, mdim=stations)
 presArray = createArrays(ndim=maxDepth, mdim=stations)
-gpanArray = createArrays(ndim=1200, mdim=stations)
+gpanArray = createArrays(ndim=Prof_deCorte, mdim=stations)
 nameArray = list_StationsName(files)        # extract name of each station
 
 # extract and populate each array with real data instead of a lot of nans
@@ -226,9 +227,9 @@ for station in range(0,36):
         presArray[station,z] = f['pres'][z]
 
 # cortar as profundidades no nível de referencia
-temp = tempArray[:,:1200]
-salt = saltArray[:,:1200]
-pres = presArray[:,:1200]
+temp = tempArray[:,:Prof_deCorte]
+salt = saltArray[:,:Prof_deCorte]
+pres = presArray[:,:Prof_deCorte]
 
 
 for station in range(0,36):
@@ -241,7 +242,6 @@ for station in range(0,36):
     gpanArray[station,:] = sw.gpan(s,t,p)
 
 # extrapolar as estações menores que 1200dbar usando expansão da série de fourier
-
 def meanBlock(P,bloco,dZ):
     """
     calcular a média dentro de um bloco para uma propriedade P
@@ -277,9 +277,9 @@ def expansaoSerieTaylor(S,T,dZ,window=2):
     # (i) obtendo o perfil médio da área de estudo para cada propriedade
     newSalt = []
     newTemp = []
-    newPres = np.arange(0,1200,10)
+    newPres = np.arange(0,Prof_deCorte,10)
 
-    for bloco in range(10,1210,10): #deltaZ = 10m
+    for bloco in range(10,Prof_deCorte+10,10): #deltaZ = 10m
         # somar todos os valores dentro do limite do bloco (somatória de Pn)
         newSalt.append(meanBlock(S,bloco,dZ))
         newTemp.append(meanBlock(T,bloco,dZ))
@@ -341,11 +341,11 @@ def expansaoSerieTaylor(S,T,dZ,window=2):
 
     # calcular as derivadas parciais
     # dP/dz
-    dsdz = np.diff(Ss)/10
-    dTdz = np.diff(Ts)/10
+    dsdz = np.diff(Ss)/dZ
+    dTdz = np.diff(Ts)/dZ
     # d²P/dz²
-    d2sdz = np.diff(dsdz)/10
-    d2Tdz = np.diff(dTdz)/10
+    d2sdz = np.diff(dsdz)/dZ
+    d2Tdz = np.diff(dTdz)/dZ
 
     # verificar o comportamento das derivadas
     print("Plotando as derivadas do perfil médio")
@@ -377,7 +377,7 @@ dsdz, d2sdz, dTdz, d2Tdz = expansaoSerieTaylor(salt, temp, 10, window=2)
 def media(P):
 
     nP = []
-    for bloco in range(10,1210,10):
+    for bloco in range(10,Prof_deCorte+10,10):
         nP.append(np.nanmean(P[bloco-10:bloco]))
 
     return np.asarray(nP)
@@ -403,12 +403,12 @@ def media(P):
 #     return P
 
 # regridar os dados para um valor a cada 10m - media em bloco de 10m
-temp2 = createArrays(ndim=1200, mdim=stations, dz=10)
-salt2 = createArrays(ndim=1200, mdim=stations, dz=10)
-pres2 = np.arange(0,1200,10)
+temp2 = createArrays(ndim=Prof_deCorte, mdim=stations, dz=10)
+salt2 = createArrays(ndim=Prof_deCorte, mdim=stations, dz=10)
+pres2 = np.arange(0,Prof_deCorte,10)
 
 os.system('clear')
-for station in range(0,5):
+for station in range(0,36):
     # calcular a media em bloco de 10metros de profundidade
     temp2[station,:] = media(temp[station,:])
     salt2[station,:] = media(salt[station,:])
