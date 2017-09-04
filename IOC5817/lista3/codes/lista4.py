@@ -381,7 +381,6 @@ def media(P):
 
     return np.asarray(nP)
 
-
 def extrap_prop(P,dPdz,ddPdzz):
     """
     complementar uma série de dados usando a expansão de série de Taylor,
@@ -417,7 +416,7 @@ for station in range(0,36):
     fig, ax = plt.subplots(ncols=2, nrows=1, sharey=True)
     ax[0].plot(temp2[station,:], -pres2, 'k')
     ax[1].plot(salt2[station,:], -pres2, 'k')
-    
+
     # extrapolar as estações incompletas
     # pegar os indices de nan
     indT = np.where(np.isnan(temp2[station,:]))[0]
@@ -427,15 +426,22 @@ for station in range(0,36):
         Tn = temp2[station, indT[0]-1]
         Sn = salt2[station, indS[0]-1]
         for n in indT[:-2]:
+            # completar os dados por expansão da série de Taylor pra ordem 2
             temp2[station,n] = Tn + dTdz[n]*10 + d2Tdz[n]*5
             salt2[station,n] = Sn + dsdz[n]*10 + d2sdz[n]*5
 
     # plotar a estação extrapolada em cima da incompleta
-    ax[0].plot(temp2[station,:], -pres2, 'r')
-    ax[1].plot(salt2[station,:], -pres2, 'r')
+    ax[0].plot(temp2[station,:], -pres2, 'r--')
+    ax[1].plot(salt2[station,:], -pres2, 'r--')
 
     plt.show()
 
+"""
+DANILO DE SEGUNDA:
+
+SÓ CONTINUAR A CALCULAR GPAN E AS OUTRAS PARAFERNALHAS. A PARTE DE
+EXTRAPOLAÇÃO IS DONE!
+"""
 
 # calculate geopotential anomaly with respect to 1200dbar as reference level
 gpanRef = gpanArray[7, 1200]            # reference level of 1200dbar
