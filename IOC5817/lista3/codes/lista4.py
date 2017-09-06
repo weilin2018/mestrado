@@ -632,18 +632,3 @@ points = points.T
 data = scint.griddata(points, t, (grid[0], grid[1]), method='linear')
 
 tp, ep = scaloa(xi,yi, x, y, data, corrlenx=2, corrleny=2, err=0.1)
-
-
-u,v = psi2uv(lon,lat,psi10dbar)
-
-
-#### griddata
-x = np.asarray(lons)
-y = np.asarray(lats)
-
-xx, yy = np.meshgrid(x,y)
-xx, yy = xx.T, yy.T
-
-D = psi10dbar
-
-DI = scint.griddata( (xx,yy), D.ravel(), (xx,yy), method='cubic')
