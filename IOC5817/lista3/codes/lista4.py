@@ -79,6 +79,7 @@ import seawater as sw
 import gsw
 import pandas as pd
 import xarray as xr
+import cmocean as cmo
 from mpl_toolkits.basemap import Basemap # módulo de mapas
 from math import factorial
 
@@ -105,11 +106,18 @@ def create_VerticalStation(Z=4861):
 
     return vector1D
 
-def plotar_mapa(files,savefig=""):
+def plotar_mapa(files,fEtopo='',savefig=""):
     """
     plotar mapa com a localização das estações de coleta do cruzeiro
     WESTRAX2
     """
+    # extract data from etopo1
+
+    etopo = xr.open_dataset(fEtopo)
+    etopo_lat = etopo['lat']
+    etopo_lon = etopo['lon']
+    etopo_bat = etopo['Band1']
+
     # start by extract the position of each station from files list
     lons,lats = [],[]
     for fname in files:
@@ -120,8 +128,8 @@ def plotar_mapa(files,savefig=""):
     lons = np.asarray(lons)
     lats = np.asarray(lats)
 
-    longitude_min,longitude_max = -64.0,-40.0
-    latitude_min,latitude_max   = -04.0, 20.0
+    longitude_min,longitude_max = -60.0,-40.0
+    latitude_min,latitude_max   = -04.0, 16.0
 
     fig, ax = plt.subplots()
 
@@ -133,6 +141,11 @@ def plotar_mapa(files,savefig=""):
     m.drawcoastlines(linewidth=.5)
     m.fillcontinents(color='white')
 
+    # plotar batimetria
+    x,y = np.meshgrid(etopo_lon, etopo_lat)
+    b_x, b_y = m(x,y)
+    m.contourf(b_x, b_y, etopo_bat, cmap=cmo.cm.deep)
+    m.contour(b_x, b_y, etopo_bat, [-200])
     lbs=[True, False, False, True]
     m.drawmeridians(range(-180,180,4),labels=lbs,linewidth=.3);
     m.drawparallels(range(-90,90,4),labels=lbs,linewidth=.3);
@@ -155,9 +168,8 @@ def plotar_mapa(files,savefig=""):
         os.system('clear')
         print('saving fig in: %s' % SAVE_DIR)
         plt.savefig(SAVE_DIR+savefig, dpi=150)
-        plt.show()
 
-    return lons, lats
+    return lons, lats, etopo_lon, etopo_lat, etopo_bat, m
 
 # criar matrizes para armazenar os dados
 def createArrays(ndim=4861, mdim=37, dz=1):
@@ -195,29 +207,41 @@ SAVE_DIR = BASE_DIR + 'outputs/'
 # read files
 files = glob.glob(DATA_DIR+'/*.pro')
 files.sort()
+files = np.asarray(files)              # convert list in np.ndarray
 
 # extract and store temp, salt and pres data into a dataframe for each
 # parameter
-stations = len(files)                  # how many stations
+stations = files.shape[0]              # how many stations
 maxDepth = 5006                        # maximum depth registrated
 
 # problem configuration
 latitude = 5.                          # positive because is North Hemisphere
 f0 = sw.f(latitude)                    # calculate coriolis parameter
 
-# plotar mapa com a localização das estações do cruzeiro
-lons, lats = plotar_mapa(files, savefig='mapaColeta.png')
-
 # create matrixes
-Prof_deCorte = 1220
+Prof_deCorte = 1200
+
+indexes = []
+# check the maximum depth of each station, only stations higher than 600m will keep
+for station in range(0,stations-1):
+    f = pd.read_csv(files[station], delim_whitespace=True, skiprows=1, names=['pres', 'temp', 'theta', 'salt', 'dens', 'long', 'lat'], usecols=[1,2,3,4,5,8,9])
+
+    # check len() >= 600m
+    if len(f['pres']) < 600:
+        # files = np.delete(files, station)
+        indexes.append(station)        # save index's station to remove later
+
+# remover as estações muito rasas
+files = np.delete(files, indexes)
+stations = files.shape[0]                   # update stations variable
+
 tempArray = createArrays(ndim=maxDepth, mdim=stations)
 saltArray = createArrays(ndim=maxDepth, mdim=stations)
 presArray = createArrays(ndim=maxDepth, mdim=stations)
-gpanArray = createArrays(ndim=Prof_deCorte, mdim=stations)
 nameArray = list_StationsName(files)        # extract name of each station
 
 # extract and populate each array with real data instead of a lot of nans
-for station in range(0,36):
+for station in range(0,stations):
     # open file
     f = pd.read_csv(files[station], delim_whitespace=True, skiprows=1, names=['pres', 'temp', 'theta', 'salt', 'dens', 'long', 'lat'], usecols=[1,2,3,4,5,8,9])
 
@@ -231,15 +255,6 @@ temp = tempArray[:,:Prof_deCorte]
 salt = saltArray[:,:Prof_deCorte]
 pres = presArray[:,:Prof_deCorte]
 
-
-for station in range(0,36):
-    # calc geopotential anomaly
-    s = salt[station,:]
-    t = temp[station,:]
-    p = pres[station,:]
-
-    # calculate geopotential anomaly for each station
-    gpanArray[station,:] = sw.gpan(s,t,p)
 
 # extrapolar as estações menores que 1200dbar usando expansão da série de fourier
 def meanBlock(P,bloco,dZ):
@@ -381,26 +396,6 @@ def media(P):
         nP.append(np.nanmean(P[bloco-10:bloco]))
 
     return np.asarray(nP)
-#
-# def extrap_prop(P,dPdz,ddPdzz):
-#     """
-#     complementar uma série de dados usando a expansão de série de Taylor,
-#     seguindo a seguinte fórmula:
-#
-#     P*[n+1:m] = P*[n] + dPdz[n]*dZ + ddPdzz[n]*(dZ/2!)
-#     """
-#
-#     #algoritmo
-#
-#     # checar os indices dos pontos nan
-#     # pegar o ultimo dado
-#     # iterar a partir do ultimo ponto +1 até o final do vetor
-#     indP = np.where(np.isnan(P))    # checar indices com nan
-#     Pn = P[indP[0]-1]                  # ultimo valor registrado
-#     for n in indP:
-#         P[n] = Pn + dPdz[n]*dZ + ddPdzz[n] * (dZ/factorial(2))
-#
-#     return P
 
 # regridar os dados para um valor a cada 10m - media em bloco de 10m
 temp2 = createArrays(ndim=Prof_deCorte, mdim=stations, dz=10)
@@ -408,7 +403,7 @@ salt2 = createArrays(ndim=Prof_deCorte, mdim=stations, dz=10)
 pres2 = np.arange(0,Prof_deCorte,10)
 
 os.system('clear')
-for station in range(0,36):
+for station in range(0,stations):
     # calcular a media em bloco de 10metros de profundidade
     temp2[station,:] = media(temp[station,:])
     salt2[station,:] = media(salt[station,:])
@@ -437,6 +432,33 @@ for station in range(0,36):
 
     plt.show()
 
+# calcular o gpan
+gpanArray = createArrays(ndim=Prof_deCorte/10, mdim=stations)
+
+for station in range(0,stations):
+    # calc geopotential anomaly
+    s = salt2[station,:]
+    t = temp2[station,:]
+    p = pres2[:]
+
+    # calculate geopotential anomaly for each station
+    gpanArray[station,:] = sw.gpan(s,t,p)
+
+
+# calculate geopotential anomaly with respect to 1200dbar as reference level
+gpanRef = gpanArray[7, -1]              # reference level of 1200dbar
+
+gpan = gpanArray[:, :] - gpanRef        # gpan with reference level
+gpan = -gpan                            # corrigir sentido da integral
+
+psi_g = gpan/f0                         # psi: geostrophic streamfunction
+
+psi10dbar = psi_g[:, 1]                 # selecting 10dbar as level
+
+psi = psi10dbar - np.nanmean(psi_g) # remove mean from vector
+
+
+
 """
 DANILO DE SEGUNDA:
 
@@ -446,7 +468,42 @@ EXTRAPOLAÇÃO IS DONE!
 
 # obter dados da profundidade de 200m para implementação da condição de contorno
 # dados obtidos em: https://maps.ngdc.noaa.gov/viewers/wcs-client/
-etopo = xr.open_dataset('/home/tparente/danilo/mestrado/disciplinas/mestrado/IOC5817/lista3/data/etopo1.nc')
+
+# plotar mapa com a localização das estações do cruzeiro
+fEtopo = BASE_DIR+'data/etopo1.nc'
+lons, lats, blon,blat,bathy, m =  plotar_mapa(files,fEtopo=fEtopo,savefig='batimetria.png')
+
+# extrair coordenadas dos pontos de 200m
+ind = np.where(bathy == -200)[0]
+lonBoundary = blon.data[ind]
+latBoundary = blat.data[ind]
+
+"""
+Comentário importante:
+
+    lonBoundary, latBoundary dizem respeito as coordenadas da isolinha de
+    200m de profundidade, que serão utilizadas como condição de contorno
+    na resolução do problema.
+
+    lons,lats são as coordenadas das estações realizadas
+
+
+    Elaborar uma grade regular para inserir os dados, sabendo que:
+        lonBoundary,latBoundary forma um vetor de dados zero [condição de contorno]
+        lons,lats form outro vetor com dados de gpan/f0
+
+        interpolar os dados dentro dessa grade para calcular a
+        velocidade geostrófica
+"""
+
+# import Iury's grid
+grid = np.load(BASE_DIR+'data/westrax_grd_IT.npy')
+
+gLon,gLat = m(grid[0], grid[1])
+m.plot(gLon,gLat,'k')
+m.plot(gLon.T, gLat.T,'k')
+
+# plotar a grade na imagem de coleta
 
 # calculate geopotential anomaly with respect to 1200dbar as reference level
 gpanRef = gpanArray[7, 1200]            # reference level of 1200dbar
@@ -456,7 +513,7 @@ gpan = -gpan                            # corrigir sentido da integral
 
 psi_g = gpan/f0                         # psi: geostrophic streamfunction
 
-psi10dbar = psi_g[:, 10]                # selecting 10dbar as level
+psi10dbar = psi_g[:, 1]                # selecting 10dbar as level
 
 psi10dbar = psi10dbar - np.nanmin(psi10dbar)   #
 
