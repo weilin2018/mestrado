@@ -220,7 +220,7 @@ latitude = 5.                          # positive because is North Hemisphere
 f0 = sw.f(latitude)                    # calculate coriolis parameter
 
 # create matrixes
-Prof_deCorte = 1200
+Prof_deCorte = 1400
 
 indexes = []
 # check the maximum depth of each station, only stations higher than 600m will keep
@@ -251,11 +251,16 @@ for station in range(0,stations):
         saltArray[station,z] = f['salt'][z]
         presArray[station,z] = f['pres'][z]
 
-# cortar as profundidades no nível de referencia
+# cortar as profundidades em um nível determinado: 1400m
+"""
+    o calculo do perfil médio e, consequentemente, calculo das derivadas parciais e
+    a extrapolação por série de Taylor serão neste nível de referencia, que é
+    maior do que o nível de referencia que usaremos para calcular a função de
+    corrente geostrófica.
+"""
 temp = tempArray[:,:Prof_deCorte]
 salt = saltArray[:,:Prof_deCorte]
 pres = presArray[:,:Prof_deCorte]
-
 
 # extrapolar as estações menores que 1200dbar usando expansão da série de fourier
 def meanBlock(P,bloco,dZ):
@@ -270,6 +275,23 @@ def meanBlock(P,bloco,dZ):
 
 def expansaoSerieTaylor(S,T,dZ,window=2):
     """
+        As propriedades enviadas (Salinidade e Temperatura) possuem dados
+        até um nível maior do que o precisamos para calcular a função de corrente
+        geostrófica, para que tenhamos um perfil médio e suas derivadas com
+        uma profundidade máxima maior, assim garantimos que iremos extrapolar
+        nossos dados até a profundidade do nível de referência geostrófico.
+
+        Argumentos da função:
+            S: matriz de salinidade(estações, profundidade)
+            T: matriz de temperatura(estações, profundidade)
+            dZ: tamanho dos blocos de profundidade que usaremos (10m)
+            window: janela móvel
+
+        Output da função:
+            derivadas (primeira e segunda) de salinidade e temperatura
+
+        Passos realizados nesta função:
+
         (i) calculando o perfil médio da área de estudo, com um deltaZ de 10m.
         Importante lembrar que deve-se tratar das propriedades de forma escalar,
         ou seja, T, S e p independentemente.
@@ -404,13 +426,13 @@ salt2 = createArrays(ndim=Prof_deCorte, mdim=stations, dz=10)
 pres2 = np.arange(0,Prof_deCorte,10)
 
 os.system('clear')
-for station in range(0,stations):
+for station in range(0,2):
     # calcular a media em bloco de 10metros de profundidade
     temp2[station,:] = media(temp[station,:])
     salt2[station,:] = media(salt[station,:])
 
     print('Plotting station #%i' %(station))
-    fig, ax = plt.subplots(ncols=2, nrows=1, sharey=True)
+    fig, ax = plt.subplots(ncols=2, nrows=1, sharey=True, figsize=(10,8))
     ax[0].plot(temp2[station,:], -pres2, 'k')
     ax[1].plot(salt2[station,:], -pres2, 'k')
 
@@ -430,7 +452,11 @@ for station in range(0,stations):
     # plotar a estação extrapolada em cima da incompleta
     ax[0].plot(temp2[station,:], -pres2, 'r--')
     ax[1].plot(salt2[station,:], -pres2, 'r--')
-
+    #
+    plt.suptitle(files[station].split('/')[-1][:-4], fontsize=20)
+    ax[0].set_title(u'Temperatura [$^oC$]')
+    ax[1].set_title(u'Salinidade [psu]')
+    plt.savefig(SAVE_DIR+files[station].split('/')[-1][:-4]+'_extrapolated.png', dpi=150)
     plt.show()
 
 # calcular o gpan
@@ -505,7 +531,7 @@ gLon,gLat = m(grid[0], grid[1])
 m.plot(gLon,gLat,'k', alpha=.4)
 m.plot(gLon.T, gLat.T,'k', alpha=.4)
 
-plt.savefig(SAVE_DIR+'grade_iury.png')
+# plt.savefig(SAVE_DIR+'grade_iury.png')
 
 # plotar a grade na imagem de coleta
 
