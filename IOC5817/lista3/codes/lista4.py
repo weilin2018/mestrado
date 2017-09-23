@@ -83,6 +83,7 @@ import cmocean as cmo
 import scipy.interpolate as scint
 from mpl_toolkits.basemap import Basemap # módulo de mapas
 from math import factorial
+import os
 
 import matplotlib
 matplotlib.style.use('ggplot')
@@ -201,7 +202,8 @@ def list_StationsName(files):
 
     return names
 
-BASE_DIR = "/home/tparente/danilo/mestrado/disciplinas/mestrado/IOC5817/lista3/"
+# BASE_DIR = "/home/tparente/danilo/mestrado/disciplinas/mestrado/IOC5817/lista3/"
+BASE_DIR = os.getcwd() + '/'
 DATA_DIR = BASE_DIR + "data/wx2"
 SAVE_DIR = BASE_DIR + 'outputs/'
 
@@ -431,10 +433,17 @@ for station in range(0,2):
     temp2[station,:] = media(temp[station,:])
     salt2[station,:] = media(salt[station,:])
 
+<<<<<<< HEAD
     print('Plotting station #%i' %(station))
     fig, ax = plt.subplots(ncols=2, nrows=1, sharey=True, figsize=(10,8))
     ax[0].plot(temp2[station,:], -pres2, 'k')
     ax[1].plot(salt2[station,:], -pres2, 'k')
+=======
+    print('Extrapolating station #%i' %(station))
+    # fig, ax = plt.subplots(ncols=2, nrows=1, sharey=True)
+    # ax[0].plot(temp2[station,:], -pres2, 'k')
+    # ax[1].plot(salt2[station,:], -pres2, 'k')
+>>>>>>> 490a97119469c8598232983a95b63751d6994b8e
 
     # extrapolar as estações incompletas
     # pegar os indices de nan
@@ -450,6 +459,7 @@ for station in range(0,2):
             salt2[station,n] = Sn + dsdz[n]*10 + d2sdz[n]*5
 
     # plotar a estação extrapolada em cima da incompleta
+<<<<<<< HEAD
     ax[0].plot(temp2[station,:], -pres2, 'r--')
     ax[1].plot(salt2[station,:], -pres2, 'r--')
     #
@@ -458,6 +468,12 @@ for station in range(0,2):
     ax[1].set_title(u'Salinidade [psu]')
     plt.savefig(SAVE_DIR+files[station].split('/')[-1][:-4]+'_extrapolated.png', dpi=150)
     plt.show()
+=======
+    # ax[0].plot(temp2[station,:], -pres2, 'r--')
+    # ax[1].plot(salt2[station,:], -pres2, 'r--')
+
+    # plt.show()
+>>>>>>> 490a97119469c8598232983a95b63751d6994b8e
 
 # calcular o gpan
 gpanArray = createArrays(ndim=Prof_deCorte/10, mdim=stations)
@@ -496,7 +512,7 @@ EXTRAPOLAÇÃO IS DONE!
 
 # plotar mapa com a localização das estações do cruzeiro
 fEtopo = BASE_DIR+'data/etopo1.nc'
-lons, lats, blon,blat,bathy, m =  plotar_mapa(files,fEtopo=fEtopo,savefig='batimetria.png')
+lons, lats, blon,blat,bathy, m =  plotar_mapa(files,fEtopo=fEtopo,savefig='')
 
 # extrair coordenadas dos pontos de 200m
 ind = np.where(bathy == -200)[0]
@@ -624,7 +640,7 @@ def scaloa(xc, yc, x, y, t=None, corrlenx=None,corrleny=None, err=None, zc=None)
   # Gauss-Markov to get the weights that minimize the variance (OI).
   tp = None
   ep = 1 - np.sum(C.T * np.linalg.solve(A, C.T), axis=0) / (1 - err)
-  if t!=None:
+  if t.any():
     t = np.reshape(t, (n, 1))
     tp = np.dot(C, np.linalg.solve(A, t))
     #if 0: # NOTE: `scaloa2.m`
@@ -635,26 +651,38 @@ def scaloa(xc, yc, x, y, t=None, corrlenx=None,corrleny=None, err=None, zc=None)
     #  tp = tp + mD * np.ones(tp.shape)
     return tp, ep
 
-  if t==None:
+  if ~t.any():
     print("Computing just the interpolation errors.")
     #Normalized mean error. Taking the squared root you can get the
     #interpolation error in percentage.
     return ep
 
-# para facilitar a compreensão do código, vamos renomear as variáveis:
-data = t
-xi = grid[0]
-yi = grid[1]
-
 # usar um griddata estranho
 data2 = usar_griddata(x,y,t,grid[0],grid[1])
 
-# gridar x,y dos dados que temos (estações e contorno)
-x,y = np.meshgrid(x,y)
-# gridar os dados para o shape novo (80,80)
-points = np.array([x,y])
-points = points.T
+# para facilitar a compreensão do código, vamos renomear as variáveis:
+data = t
+xi = grid[0][:,0] # 1D vector
+yi = grid[1][:,1] # 1D vector para usar scaloa()
 
-data = scint.griddata(points, t, (grid[0], grid[1]), method='linear')
 
+# usando scaloa
 tp, ep = scaloa(xi,yi, x, y, data, corrlenx=2, corrleny=2, err=0.1)
+
+""" 
+como tp possui dimensão (50,1), precisamos gridar esta variável
+para podermos plotar. Desta forma, fazemos:
+
+xplot,yplot = np.meshgrid(xi,yi) # regridar as coordenadas
+
+data = usar_griddata(xi,yi,tp[:,0],xplot,yplot) # gridar tp
+
+"""
+
+xplot,yplot = np.meshgrid(xi,yi) # regridar as coordenadas
+
+data = usar_griddata(xi,yi,tp[:,0],xplot,yplot) # gridar tp
+
+plt.contourf(xplot,yplot,data)
+plt.show()
+
