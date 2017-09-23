@@ -338,6 +338,6 @@ xlabel('Phase in degrees')
 ylabel('depth in meters')
 
 % added by Danilo to import in python (to plot beatiful graphs hehe)
-filename = strcat('../outputs/caso', num2str(kase), '.mat');
+filename = strcat('caso', num2str(kase), '.mat');
 %save t N z Nz U Uz Qy k cr sig Pmax Pphmax H
 save(filename, 'N', 'z', 'Nz', 'U', 'Uz', 'Qy', 'k', 'cr', 'sig', 'Pmax', 'Pphmax', 'H')
