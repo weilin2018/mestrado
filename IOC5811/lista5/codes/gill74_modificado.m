@@ -8,13 +8,18 @@
 %                             by I.C.A.S.
 
 %***************************************************************************
+scrsz = get(0,'ScreenSize');
+xdim   = 1;
+ydim   = scrsz(4)/2;
+width  = 0.65*(scrsz(3)/1);
+height = 1.1*(scrsz(4)/1.5);
 
 close all
 format short
 
 % The Gill et al. [1974] parameters
 
-lat=30; %input('Enter Latitude of 20 or 30 N: ');
+lat=25;%input('Enter Latitude of 20 or 30 N: ');
 
 f0=2*7.29e-5*sin(lat*pi/180);               % Coriolis parameter
 beta=2*7.29e-5*cos(lat*pi/180)/6371e3;      % Rossby parameter
@@ -90,6 +95,100 @@ Uz=Uz(3:nz-2);
 
 % plotting N and Nz
 
+hFig = figure(1);
+set(hFig, 'Position', [xdim ydim width height])
+subplot(231)
+plot(N,z,'r','linewidth',2)
+title('Buoyancy frequency')
+xlabel('N in rad s^{-1}')
+ylabel('depth (m)')
+set(gca,'fontsize',14)
+
+subplot(232)
+plot(Nz,z,'b','linewidth',2)
+title('Buoyancy frequency vertical gradient')
+xlabel('dN/dz in rad (ms)^{-1}')
+% ylabel('depth in meters')
+set(gca,'fontsize',14)
+
+% plotting U and Uz
+
+% figure(2)
+subplot(234)
+plot(U,z,'r','linewidth',2)
+hold on
+plot([0 0],[0 -H],'k')
+hold off
+title('Background Velocity')
+xlabel('U in m s^{-1}')
+ylabel('depth (m)')
+set(gca,'fontsize',14)
+
+subplot(235)
+plot(Uz,z,'b','linewidth',2)
+hold on
+plot([0 0],[0 -H],'k')
+hold off
+title('Background Velocity Gradient')
+xlabel('dU/dz in s^{-1}')
+% ylabel('depth in meters')
+set(gca,'fontsize',14)
+
+% plotting Qy
+
+% figure(3)
+subplot(236)
+plot(Qy,z,'g','linewidth',2)
+hold on
+plot([0 0],[0 -H],'k')
+axis([1e-11*floor(1e11*min(Qy)) 3e-11 -H 0])
+title('PV  Meridional Gradient')
+xlabel('Qy in (m s)^{-1}')
+% ylabel('depth in meters')
+hold off
+set(gca,'fontsize',14)
+
+
+% plotting for presentation
+
+% figure(10)
+% subplot(121)
+% plot(N,z,'r','linewidth',2)
+% title('Buoyancy frequency profile')
+% xlabel('N in rad s^{-1}')
+% ylabel('depth in meters')
+%
+% subplot(122)
+% plot(U,z,'b','linewidth',2)
+% hold on
+% plot([0 0],[0 -H],'k')
+% hold off
+% title('Background Velocity Vertical profile')
+% xlabel('U in m s^{-1}')
+% ylabel('depth in meters')
+%
+% figure(11)
+%
+% subplot(121)
+% plot(Uz,z,'c','linewidth',2)
+% hold on
+% plot([0 0],[0 -H],'k')
+% hold off
+% title('Background Velocity Vertical Gradient profile')
+% xlabel('dU/dz in s^{-1}')
+% ylabel('depth in meters')
+%
+% subplot(122)
+% plot(Qy,z,'g','linewidth',2)
+% hold on
+% plot([0 0],[0 -H],'k')
+% axis([1e-11*floor(1e11*min(Qy)) 3e-11 -H 0])
+% title('Potential Vorticity Meridional Gradient')
+% xlabel('dQ/dy in (m s)^{-1}')
+% ylabel('depth in meters')
+% hold off
+
+% pause
 
 %----------------------------------------------------------------------
 
@@ -115,7 +214,7 @@ nz=length(z);   % number of equations/levels
 % not Gill et al.'s. Simply use L=Inf to zero the channel part out of
 % the problem
 
-L=30 %input('Enter the Disturbance Amplitude Channel in km: ');
+L=Inf;%input('Enter the Disturbance Amplitude Channel in km: ');
 
 L=1e3*L;
 
@@ -140,7 +239,7 @@ P=zeros(nz,nk);
 
 for n=1:nk,                 % begin wavenumber loop
 
-    n
+%     n
 
 % set up matrix coefficients
 
@@ -210,51 +309,62 @@ Pphmax=Pphase(:,imax);
 
 % plot phase speeds and growth rates
 
-figure(4)
-
-subplot(211)
+hFig = figure(4);
+set(hFig, 'Position', [xdim ydim width height])
+subplot(2,4,[1,2])
 
 plot(k*1000,-cr,'b','linewidth',2)
 axis([0 0.05 0 6])
 title('Phase Speeds')
 ylabel('phase speeds in cm^{-1}')
 xlabel('wavenumber in km^{-1}')
+set(gca,'fontsize',14)
 
-subplot(212)
-
+subplot(2,4,[5,6])
 plot(k*1000,sig,'r','linewidth',2)
 axis([0 0.05 0 0.016])
 title('Phase Speeds')
 ylabel('growth rates in days^{-1}')
 xlabel('wavenumber in km^{-1}')
+set(gca,'fontsize',14)
 
 % plot amplitude and phase of the most unstable modes
 
-figure(5)
-subplot(121)
+% figure(5)
+subplot(2,4,[3,7])
 plot(Pmax,z,'g','linewidth',2)
 hold on
 plot([0 0],[0 -H],'k')
 hold off
 title('Most Unstable Mode Amplitude')
 xlabel('P mode amplitude')
-ylabel('depth in meters')
+ylabel('depth (m)')
+set(gca,'fontsize',14)
 
-subplot(122)
+subplot(2,4,[4,8])
 plot(Pphmax-Pphmax(nz),z,'m','linewidth',2)  %
 %axis([-90 30 -H 0])
 hold on
 plot([0 0],[0 -H],'k')
 hold off
-title('Phase relative to the bottom value')
+title('Phase relative to bottom')
 xlabel('Phase in degrees')
-ylabel('depth in meters')
+% ylabel('depth in meters')
+set(gca,'fontsize',14)
 
-% added by Danilo to import in python (to plot beatiful graphs hehe)
+basename = strcat('/home/tparente/danilo/mestrado/github/IOC5811/lista5/data/plotado/caso',num2str(kase),'_');
 if s == 0
-  filename = strcat('/home/tparente/danilo/mestrado/github/IOC5811/lista5/data/caso_s0_', num2str(kase), '.mat');
-else
-  filename = strcat('/home/tparente/danilo/mestrado/github/IOC5811/lista5/data/caso_sDif_', num2str(kase), '.mat');
+  fname = strcat(basename,'s0.mat');
+  save(fname)
 end
 
-save(filename)
+if s < 0
+  fname = strcat(basename,'sPos.mat');
+  save(fname)
+end
+
+if s > 0
+  fname = strcat(basename,'sNeg.mat');
+  save(fname)
+end
+gil
