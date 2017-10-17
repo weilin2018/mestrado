@@ -3,8 +3,8 @@ clear all; close all;
 jmax=200;
 kmax=200;
 nmax=90;
-u=0.;           % componente u da velocidade
-v=0.;           % componente v da velocidade
+u=0.1;           % componente u da velocidade
+v=0.1;           % componente v da velocidade
 
 dx=10;
 dy=10;
@@ -28,8 +28,8 @@ fatu(posini:posfim)=pol;
 fcin=fatu;
 
 contplo=2;
-pol020=0.2*pol;
-pol120=1.2*pol;
+pol050=0.2*pol;
+pol150=1.2*pol;
 
 % criando os indices
 sj=zeros(kmax,jmax);
@@ -57,9 +57,9 @@ ck=(2*v)/(2*dy);
 for n=3:nmax
    tempo=n*dt;
    % calcular dj e dk
-   dj(2:jmax-1)=fant(2:jmax-1,2:kmax-1) - qu*(fatu(3:jmax,2:kmax-1) - fatu(1:jmax-2,2:kmax-1));
-   dk(2:jmax-1)=-qv*(fatu(2:jmax-1,3:jmax) - fatu(2:jmax-1, 1:kmax-2));
-
+   % dj(2:jmax-1)=fant(2:jmax-1,2:kmax-1) - qu*(fatu(3:jmax,2:kmax-1) - fatu(1:jmax-2,2:kmax-1));
+   % dk(2:jmax-1)=-qv*(fatu(2:jmax-1,3:jmax) - fatu(2:jmax-1, 1:kmax-2));
+	
    %varredura ascendente
    for j=2:jmax-1
      sj(j)=-cj/(bj+aj*sj(j-1));
@@ -72,8 +72,11 @@ for n=3:nmax
 
   % varredura descendente
   for j=jmax-1:-1:2
-    fren(j,j)=sj(j)*fren(j+1,k) + sk(j)*fren(j,k+1)-pj(j) - pk(j);
+    for k=kmax-1:-1:2
+      fren(j,k) = sj(j)*fren(j+1,k) + sk(k)*fren(j,k+1) + pj(j) + pk(k);
+    end
   end
+
   contplo=contplo+1;
   if(contplo==freqplo)
   contplo=0;
