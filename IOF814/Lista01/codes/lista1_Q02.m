@@ -57,9 +57,9 @@ ck=(2*v)/(2*dy);
 for n=3:nmax
    tempo=n*dt;
    % calcular dj e dk
-   % dj(2:jmax-1)=fant(2:jmax-1,2:kmax-1) - qu*(fatu(3:jmax,2:kmax-1) - fatu(1:jmax-2,2:kmax-1));
-   % dk(2:jmax-1)=-qv*(fatu(2:jmax-1,3:jmax) - fatu(2:jmax-1, 1:kmax-2));
-	
+   dj(2:jmax-1,2:kmax-1)=fant(2:jmax-1,2:kmax-1) - qu*(fatu(3:jmax,2:kmax-1) - fatu(1:jmax-2,2:kmax-1));
+   dk(2:jmax-1,2:kmax-1)=-qv*(fatu(2:jmax-1,3:jmax) - fatu(2:jmax-1, 1:kmax-2));
+
    %varredura ascendente
    for j=2:jmax-1
      sj(j)=-cj/(bj+aj*sj(j-1));
@@ -71,32 +71,30 @@ for n=3:nmax
    end
 
   % varredura descendente
+  % considerando que jmax=kmax, entao fazemos somente um loop para calcular fren
   for j=jmax-1:-1:2
-    for k=kmax-1:-1:2
-      fren(j,k) = sj(j)*fren(j+1,k) + sk(k)*fren(j,k+1) + pj(j) + pk(k);
-    end
+    k=j; % facilitar a leitura da formula seguinte:
+    fren(j,k) = sj(j)*fren(j+1,k) + pj(j) + sk(k)*fren(j,k+1) + pk(k);
   end
 
   contplo=contplo+1;
   if(contplo==freqplo)
-  contplo=0;
-  figure (1)
-  plot(xgrid,fcin,'r','LineWidth',2)
-  hold
-  plot(xgrid,fren,'LineWidth',2)
-  axis([xgrid(1) xgrid(jmax) -pol050 pol150]);
-  title(['Adveccao de sinal retangular (semi implic, 2a ordem) - tempo ',...
-      num2str(tempo),' segundos'],'fontsize',12)
-  xlabel('DISTANCIA NA GRADE(m)','fontsize',12)
-  ylabel('conc','fontsize',12)
-  grid on
-  pause
-  hold off
+    contplo=0;
+    figure (1)
+    plot(xgrid,fcin,'r','LineWidth',2)
+    hold
+    plot(xgrid,fren,'LineWidth',2)
+    axis([xgrid(1) xgrid(jmax) -pol050 pol150]);
+    title(['Adveccao de sinal retangular (semi implic, 2a ordem) - tempo ',...
+        num2str(tempo),' segundos'],'fontsize',12)
+    xlabel('DISTANCIA NA GRADE(m)','fontsize',12)
+    ylabel('conc','fontsize',12)
+    grid on
+    pause
+    hold off
   end
 
   fant=fatu;
   fatu=fren;
-
-
 
 end
