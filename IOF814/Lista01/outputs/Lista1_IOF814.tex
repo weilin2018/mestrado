@@ -364,7 +364,7 @@ Manipulando (9), chegamos em uma equação de 2º, da seguinte forma:
 A soluçao de (10) é dada por:
 
 \begin{equation}
-    \lambda = \frac{q[cos(K\Delta{x} -1)]^2 \pm \sqrt{q^2[cos(K\Delta{x})-1]^2 + 5} }{2}
+    \lambda = \frac{q[cos(K\Delta{x} -1)]^2 \pm \sqrt{q^2[cos(K\Delta{x})-1]^2 + 4} }{2}
 \end{equation}
 
 Analisando (11), nota-se que, para qualquer \(\Delta{x}\) e
@@ -619,20 +619,6 @@ Que, isolando \(f^{n+1}_{j}\) obtemos a função de renovação:
     f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg)    
 \end{equation}
 
-Se: \textbf{fant} representar o f anterior (n-1), \textbf{fatu} o f
-atual (n) e \textbf{fren} o f renovado (n+1) e definindo:
-
-\begin{equation}
-    q = c\frac{\Delta{t}}{12\Delta{x}}
-\end{equation}
-
-então reescrevemos (9) em sua forma matricial, pronta para ser inserida
-no modelo:
-
-\begin{equation}
-    fren(3:jmax-2) = fatu(3:jmax-2)- \\ q[fatu(1:jmax-4)-8fatu(2:jmax-3)+8fatu(4:jmax-1)-fatu(5:jmax)]
-\end{equation}
-
 De forma análoga, podemos reescrever o conjunto de equações (7),
 isolando o nível renovado de tempo:
 
@@ -643,20 +629,6 @@ isolando o nível renovado de tempo:
             f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( - f^{n}_{j-3} + 6f^{n}_{j-2} - 18f^{n}_{j-1} + 10f^{n}_{j} + 3f^{n}_{j+1} \bigg) & (C) \\
             f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( 3f^{n}_{j-4} - 16f^{n}_{j-3} + 36f^{n}_{j-2} - 48f^{n}_{j-1} + 25f^{n}_{j} \bigg) & (D)
     \end{cases}
-\end{equation}
-
-E, na forma matricial, finalmente obtemos:
-
-\begin{equation}
-\begin{cases}
-    fren(1) = fatu(1) - q(-25 fatu(1) + 48fatu(2) - 36fatu(3) + 16fatu(4) - 3fatu(5)) & (A) \\
-    \\
-    fren(2) = fatu(2) - q(-3fatu(1) - 10fatu(2) + 18fatu(3) - 6fatu(4) + fatu(5))& (B) \\
-    \\
-    fren(jmax-2) = fatu(jmax-2) - q(-fatu(jmax-6) - 16fatu(jmax-5) + \\ 36fatu(jmax-4) - 48fatu(jmax-3) + 25fatu(jmax-2))& (C) \\
-    \\
-    fren(jamx-1) = fatu(jmax-1) - q(3fatu(fatu-5) - 16fatu(fatu-4) + \\ 36fatu(fatu-3) - 48fatu(fatu-2) + 25fatu(fatu-1))& (D)
-\end{cases}
 \end{equation}
 
 A solução numérica de ambos os esquemas de discretização é realizada no
