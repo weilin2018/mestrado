@@ -1,3 +1,12 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Programa desenvolvivo para a Questão 2 da Lista 1 de exercícios da disciplina
+% IOF814 - Modelos Numéricos Aplicados a Processos Costeiros e Estuarinos
+% ministrada pelo Prof Joseph Harari, do Instituto Oceanográfico da USP.
+%
+% Para mais detalhes do desenvolvimento da discretização, pode ser conferido
+% na solução da Lista, em IOF814/Lista1/outputs/Lista1_IOF814.pdf
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear all; close all;
 
 jmax=200;
@@ -25,6 +34,7 @@ fren=zeros(jmax,kmax);
 fant=zeros(jmax,kmax);
 
 fatu(posini:posfim)=pol;
+fant=fatu;
 fcin=fatu;
 
 contplo=2;
@@ -57,6 +67,8 @@ ck=(2*v)/(2*dy);
 for n=3:nmax
    tempo=n*dt;
    % calcular dj e dk
+   % lembrando que: dj usa 2 niveis de tempo (fant e fatu) e dk usa somente 1 (fatu)
+
    dj(2:jmax-1,2:kmax-1)=fant(2:jmax-1,2:kmax-1) - qu*(fatu(3:jmax,2:kmax-1) - fatu(1:jmax-2,2:kmax-1));
    dk(2:jmax-1,2:kmax-1)=-qv*(fatu(2:jmax-1,3:jmax) - fatu(2:jmax-1, 1:kmax-2));
 

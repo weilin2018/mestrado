@@ -523,7 +523,7 @@ todo o desenvolvimento numérico pode ser conferido no arquivo
 modelo elaborado.
 
 \begin{verbatim}
-<h1><font color='red'>falta finalizar o código para colocar as imagens aqui e discuti-las<\font><\h1>
+<h1><font color='red'>falta finalizar o código para colocar as imagens aqui e discuti-las</font></h1>
 \end{verbatim}
 
     \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
@@ -549,7 +549,9 @@ A equação da advecção é dada por:
 \end{equation}
 
 Discretizando (1) para o esquema avançado no tempo e espaço de
-\textbf{1ª ordem}, teremos: \_\_\_\_\_\_\_\_\_\_
+\textbf{1ª ordem}, teremos:
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
 \begin{equation}
     \frac{f^{n+1}_{j} - f^{n-1}_{j}}{\Delta{t}} + c\Biggl( \frac{f^{n}_{j+1} - f^{n}_{j}}{\Delta{x}} \Biggl) = 0
@@ -570,7 +572,98 @@ fren(2:jmax-1) = fatu(2:jmax-1) - c\frac{dt}{dx}\biggr[ fatu(3:jmax) - fatu(2:jm
 \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
 Discretizando (1), para o mesmo esquema, mas desta vez de \textbf{4ª
-ordem}, teremos:
+ordem}, é necessário trabalhar de forma diferente. Sendo assim,
+desenvolvemos inicialmente a discretização no esquema avançado no tempo:
+
+\begin{equation}
+    \frac{\partial{f}}{\partial{t}} = \frac{f^{n+1}_{j} - f^{n}_{j}}{\Delta{t}}
+\end{equation}
+
+Já para o esquema de 4ª ordem no espaço, teremos um conjunto de 5
+equações:
+
+Uma geral, em que os pontos de grade calculados são de 3:jmax-2,
+pensando em um aplicação no matlab, onde jmax é o a quantidade máxima de
+pontos em j:
+
+\begin{equation}
+    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg)}{12\Delta{x}}
+\end{equation}
+
+Para, respectivamente, o 1º, 2º, penúltimo e último ponto de grade,
+teremos as seguintes equações:
+
+\begin{equation}
+\begin{cases}
+    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( - 25f^{n}_{j} + 48f^{n}_{j+1} - 36f^{n}_{j+2} + 16f^{n}_{j+3} - 3f^{n}_{j+4} \bigg)}{12\Delta{x}} & \text{(A)}\\
+    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( - 3f^{n}_{j-1} - 10f^{n}_{j} + 18f^{n}_{j+1} - 6f^{n}_{j+2} + f^{n}_{j+3} \bigg)}{12\Delta{x}} & \text{(B)}\\
+    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( - f^{n}_{j-3} + 6f^{n}_{j-2} - 18f^{n}_{j-1} + 10f^{n}_{j} + 3f^{n}_{j+1} \bigg)}{12\Delta{x}} & \text{(C)}\\
+    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( 3f^{n}_{j-4} - 16f^{n}_{j-3} + 36f^{n}_{j-2} - 48f^{n}_{j-1} + 25f^{n}_{j} \bigg)}{12\Delta{x}} & \text{(D)}
+\end{cases}
+\end{equation}
+
+Sendo assim, ao programarmos um modelo com a equação de advecção
+discretiza avançada no tempo e de 4ª ordem no espaço, teremos o seguinte
+conjunto de equações a ser implementado.
+
+Iniciamos o desenvolvimento da discretização de (1) pelo caso mais
+geral, equações (5) e (6):
+
+\begin{equation}
+    \frac{f^{n+1}_{j} - f^{n}_{j}}{\Delta{t}} + \frac{c}{12\Delta{x}}\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg) = 0
+\end{equation}
+
+Que, isolando \(f^{n+1}_{j}\) obtemos a função de renovação:
+
+\begin{equation}
+    f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg)    
+\end{equation}
+
+Se: \textbf{fant} representar o f anterior (n-1), \textbf{fatu} o f
+atual (n) e \textbf{fren} o f renovado (n+1) e definindo:
+
+\begin{equation}
+    q = c\frac{\Delta{t}}{12\Delta{x}}
+\end{equation}
+
+então reescrevemos (9) em sua forma matricial, pronta para ser inserida
+no modelo:
+
+\begin{equation}
+    fren(3:jmax-2) = fatu(3:jmax-2)- \\ q[fatu(1:jmax-4)-8fatu(2:jmax-3)+8fatu(4:jmax-1)-fatu(5:jmax)]
+\end{equation}
+
+De forma análoga, podemos reescrever o conjunto de equações (7),
+isolando o nível renovado de tempo:
+
+\begin{equation}
+    \begin{cases}
+            f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( - 25f^{n}_{j} + 48f^{n}_{j+1} - 36f^{n}_{j+2} + 16f^{n}_{j+3} - 3f^{n}_{j+4} \bigg) & (A) \\
+            f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( - 3f^{n}_{j-1} - 10f^{n}_{j} + 18f^{n}_{j+1} - 6f^{n}_{j+2} + f^{n}_{j+3}  \bigg) & (B) \\
+            f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( - f^{n}_{j-3} + 6f^{n}_{j-2} - 18f^{n}_{j-1} + 10f^{n}_{j} + 3f^{n}_{j+1} \bigg) & (C) \\
+            f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( 3f^{n}_{j-4} - 16f^{n}_{j-3} + 36f^{n}_{j-2} - 48f^{n}_{j-1} + 25f^{n}_{j} \bigg) & (D)
+    \end{cases}
+\end{equation}
+
+E, na forma matricial, finalmente obtemos:
+
+\begin{equation}
+\begin{cases}
+    fren(1) = fatu(1) - q(-25 fatu(1) + 48fatu(2) - 36fatu(3) + 16fatu(4) - 3fatu(5)) & (A) \\
+    \\
+    fren(2) = fatu(2) - q(-3fatu(1) - 10fatu(2) + 18fatu(3) - 6fatu(4) + fatu(5))& (B) \\
+    \\
+    fren(jmax-2) = fatu(jmax-2) - q(-fatu(jmax-6) - 16fatu(jmax-5) + \\ 36fatu(jmax-4) - 48fatu(jmax-3) + 25fatu(jmax-2))& (C) \\
+    \\
+    fren(jamx-1) = fatu(jmax-1) - q(3fatu(fatu-5) - 16fatu(fatu-4) + \\ 36fatu(fatu-3) - 48fatu(fatu-2) + 25fatu(fatu-1))& (D)
+\end{cases}
+\end{equation}
+
+A solução numérica de ambos os esquemas de discretização é realizada no
+arquivo lista1\_Q04.m e, a seguir, seguem os resultados obtidos nos
+modelos elaborados.
+
+PROGRAMAR
 
     \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
