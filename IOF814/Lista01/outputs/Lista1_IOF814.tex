@@ -1,7 +1,7 @@
 
 % Default to the notebook output style
 
-    
+
 
 
 % Inherit from the specified cell style.
@@ -9,10 +9,11 @@
 
 
 
-    
-\documentclass[12pt,times,portuguese,a4paper,pdftex]{article}
-  
-    
+
+\documentclass[11pt]{article}
+
+
+
     \usepackage[T1]{fontenc}
     % Nicer default font (+ math font) than Computer Modern for most use cases
     \usepackage{mathpazo}
@@ -37,7 +38,7 @@
     \DeclareCaptionLabelFormat{nolabel}{}
     \captionsetup{labelformat=nolabel}
 
-    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{adjustbox} % Used to constrain images to a maximum size
     \usepackage{xcolor} % Allow colors to be defined
     \usepackage{enumerate} % Needed for markdown enumerations to work
     \usepackage{geometry} % Used to adjust the document margins
@@ -51,10 +52,10 @@
     \usepackage{upquote} % Upright quotes for verbatim code
     \usepackage{eurosym} % defines \euro
     \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
-    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage[utf8]{inputenc} % Allow utf-8 characters in the tex document
     \usepackage{fancyvrb} % verbatim replacement that allows latex
-    \usepackage{grffile} % extends the file name processing of package graphics 
-                         % to support a larger range 
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
     % The hyperref package gives us a pdf with properly built
     % internal navigation ('pdf bookmarks' for the table of contents,
     % internal cross-reference links, web links for URLs, etc.)
@@ -64,10 +65,10 @@
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
-    
 
-    
-    
+
+
+
     % Colors for the hyperref package
     \definecolor{urlcolor}{rgb}{0,.145,.698}
     \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
@@ -112,7 +113,7 @@
     \newcommand{\RegionMarkerTok}[1]{{#1}}
     \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
     \newcommand{\NormalTok}[1]{{#1}}
-    
+
     % Additional commands for more recent versions of Pandoc
     \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
     \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
@@ -131,8 +132,9 @@
     \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
     \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
     \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
-    
-    
+
+
+
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
     \def\br{\hspace*{\fill} \\* }
@@ -141,12 +143,12 @@
     \def\lt{<}
     % Document parameters
     \title{Lista1\_IOF814}
-    
-    
-    
+
+
+
 
     % Pygments definitions
-    
+
 \makeatletter
 \def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
     \let\PY@ul=\relax \let\PY@tc=\relax%
@@ -250,9 +252,9 @@
 
 
 
-    
+
     % Prevent overflowing lines due to hard-to-break entities
-    \sloppy 
+    \sloppy
     % Setup hyperref package
     \hypersetup{
       breaklinks=true,  % so long urls are correctly broken across lines
@@ -262,19 +264,19 @@
       citecolor=citecolor,
       }
     % Slightly bigger margins than the latex defaults
-    
+
     \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
-    
-    
+
+
 
     \begin{document}
-    
-    
-    \maketitle
-    
-    
 
-    
+
+    \maketitle
+
+
+
+
     \section{Lista 1 - IOF814: Modelos Numéricos Aplicados a Processos
 Costeiros e
 Estuarinos}\label{lista-1---iof814-modelos-numuxe9ricos-aplicados-a-processos-costeiros-e-estuarinos}
@@ -375,7 +377,7 @@ forma:
 A soluçao de (\ref{ex1:10}) é dada por:
 
 \begin{equation}
-    \lambda = \frac{q[cos(K\Delta{x} -1)]^2 \pm \sqrt{q^2[cos(K\Delta{x})-1]^2 + 4} }{2}
+    \lambda = \frac{qcos(K\Delta{x} -1) \pm \sqrt{q^2[cos(K\Delta{x})-1]^2 + 4} }{2}
     \label{ex1:11}
 \end{equation}
 
@@ -529,8 +531,8 @@ De modo análogo, podemos reescrever (\ref{ex2:5}) para as
 \textbf{variações em \(y\)}, obtendo \(s_k\) e \(p_k\):
 
 \begin{equation}
-    \underbrace{-\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v}_{a_k}f^{n+1}_{k-1} + 
-    \underbrace{\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v}_{c_k}f^{n+1}_{k+1}  = 
+    \underbrace{-\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v}_{a_k}f^{n+1}_{k-1} +
+    \underbrace{\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v}_{c_k}f^{n+1}_{k+1}  =
     \underbrace{-\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v(f^{n}_{k+1} - f^{n}_{k-1})}_{d_k}
     \label{ex2:13}
 \end{equation}
@@ -586,8 +588,6 @@ A equação da advecção é dada por:
 Discretizando (\ref{ex4:1}) para o esquema avançado no tempo e retardado
 no espaço de \textbf{1ª ordem}, teremos:
 
-\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
-
 \begin{equation}
     \frac{f^{n+1}_{j} - f^{n-1}_{j}}{\Delta{t}} + c\Biggl( \frac{f^{n}_{j} - f^{n}_{j-1}}{\Delta{x}} \Biggl) = 0
     \label{ex4:2}
@@ -610,8 +610,6 @@ fren(2:jmax-1) = fatu(2:jmax-1) - c\frac{dt}{dx}\biggr[ fatu(2:jmax-1) - fatu(1:
 onde fren representa o nível de tempo renovado (n+1) e fatu o nível de
 tempo atual (n).
 
-\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
-
 Discretizando (\ref{ex4:1}), para o mesmo esquema, mas desta vez de
 \textbf{4ª ordem}, é necessário trabalhar de forma diferente. Sendo
 assim, desenvolvemos inicialmente a discretização no esquema avançado no
@@ -630,7 +628,7 @@ pensando em um aplicação no matlab, onde jmax é o a quantidade máxima de
 pontos em j:
 
 \begin{equation}
-    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} 
+    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2}
     \bigg)}{12\Delta{x}}
     \label{ex4:6}
 \end{equation}
@@ -663,7 +661,7 @@ mais geral, equações (\ref{ex4:5}) e (\ref{ex4:6}):
 Que, isolando \(f^{n+1}_{j}\) obtemos a função de renovação:
 
 \begin{equation}
-    f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg)    
+    f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg)
     \label{ex4:9}
 \end{equation}
 
@@ -681,10 +679,26 @@ De forma análoga, podemos reescrever o conjunto de equações
 \end{equation}
 
 A solução numérica de ambos os esquemas de discretização é realizada no
-arquivo lista1\_Q04.m e, a seguir, seguem os resultados obtidos nos
-modelos elaborados.
+arquivo lista1\_Q04\_ord01.m e lista1\_Q04\_ord04.m, a seguir, seguem os
+resultados obtidos nos modelos elaborados.
 
-PROGRAMAR
+Comparativamente, nota-se que o esquema de ordem 4
+(Fig\textasciitilde{}\ref{fig:4.2}) possui uma instabilidade maior que o
+esquema de ordem 1 (Fig\textasciitilde{}\ref{fig:4.1}), com ruídos que
+interferem no sinal e, com o tempo, amplificam-se. Desta forma, o
+esquema de baixa ordem foi considerado o mais adequado para modelar a
+advecção do sinal retangular do exercício.
+
+Adicionalmente, foram estimados, utilizando-se as próprias rotinas do
+Matlab, o tempo de processamento de cada modelo, onde o modelo de ordem
+1 rodou em, aproximadamente, 6 segundos o dobro de domínio temporal que
+o esquema de ordem 4 rodou em 4 segundos. Apesar o tempo menor do
+segundo esquema, conclui-se que, em questão de custo computacional e
+eficiência de processamento, o esquema de ordem 1 (baixa ordem) é o
+melhor para a questão. Ainda, comparando os passos de tempo de cada
+modelo, o esquema de baixa ordem rodou, de forma estável, com um
+\(\Delta{t}\) 10 vezes maior que o utilizado no esquema de alta ordem
+que, com \(\Delta{t} > 1\) instabilizou rapidamente.
 
     \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
@@ -694,14 +708,15 @@ difusão}\label{q.05---determine-os-coeficientes-da-forma-discretiza-da-equauxe7
 
 \begin{equation}
     \frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} = \alpha f^{n+1}_{j} + \beta f^{n}_{j+1} + \gamma f^{n}_{j-1} + \delta f^{n-1}_{j}
+    \label{ex5:1}
 \end{equation}
 
 \subparagraph{a partir de expressões da Série de Taylor. Qual é a
 principal utilidade do "Método dos coeficientes
 indefinidos"?}\label{a-partir-de-expressuxf5es-da-suxe9rie-de-taylor.-qual-uxe9-a-principal-utilidade-do-muxe9todo-dos-coeficientes-indefinidos}
 
-Inicialmente expandimos os termos do lado direito da equação (1),
-truncando a expansão no terceiro termo:
+Inicialmente expandimos os termos do lado direito da equação
+(\ref{ex5:1}), truncando a expansão no terceiro termo:
 
 \begin{equation}
 \begin{aligned}
@@ -713,22 +728,25 @@ truncando a expansão no terceiro termo:
     \\
     f_{j-1} = f_{j} - \Delta{x}\frac{\partial{f}}{\partial{x}} + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{x^2}} - ...
 \end{aligned}
+    \label{ex5:2}
 \end{equation}
 
-Aplicando o conjunto de equações (2) em (1), obteremos:
+Aplicando o conjunto de equações (\ref{ex5:2}) em (\ref{ex5:1}),
+obteremos:
 
 \begin{equation}
 \begin{aligned}
-    \frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} = 
-    \alpha (f^{n} + \Delta{t}\frac{\partial{f}}{\partial{t}} + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{t^2}}) + 
-    \beta (f_{j} + \Delta{x}\frac{\partial{f}}{\partial{x}} + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{x^2}}) + 
-    \gamma (f^{n} - \Delta{t}\frac{\partial{f}}{\partial{t}} + \\ + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{t^2}}) + 
+    \frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} =
+    \alpha (f^{n} + \Delta{t}\frac{\partial{f}}{\partial{t}} + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{t^2}}) +
+    \beta (f_{j} + \Delta{x}\frac{\partial{f}}{\partial{x}} + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{x^2}}) +
+    \gamma (f^{n} - \Delta{t}\frac{\partial{f}}{\partial{t}} + \\ + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{t^2}}) +
     \delta (f_{j} - \Delta{x}\frac{\partial{f}}{\partial{x}} + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{x^2}})
 \end{aligned}
+    \label{ex5:3}
 \end{equation}
 
-Associando os termos do lado direito aos termos do lado esquerdo de (3),
-obteremos o seguinte sistema de equações:
+Associando os termos do lado direito aos termos do lado esquerdo de
+(\ref{ex5:3}), obteremos o seguinte sistema de equações:
 
 \begin{equation}
   \begin{cases}
@@ -737,80 +755,91 @@ obteremos o seguinte sistema de equações:
     \beta \Delta{x} - \gamma \Delta{x} = 0 \to \beta = \gamma & \text{(c)}\\
     \beta \frac{\partial{\Delta{x^2}}}{2} + \gamma \frac{\partial{\Delta{x^2}}}{2} = -D \to \beta + \gamma = \frac{-2D}{\Delta{x^2}} & \text{(d)}
   \end{cases}
+  \label{ex5:4}
 \end{equation}
 
 Para determinar os coeficientes \(\alpha\), \(\beta\), \(\gamma\) e
-\(\delta\), precisamos resolver o sistema de equações (4).
+\(\delta\), precisamos resolver o sistema de equações (\ref{ex5:4}).
 
 \textbf{Determinando \(\alpha\)}
 
 Multiplica-se (4.a) por \(\Delta{t}\) e soma-se (4.b):
 
 \begin{equation}
-    (\alpha + \beta + \gamma + \delta)\Delta{t} + \alpha \Delta{t} - \gamma \Delta{t} = 0 \to 2\alpha{\Delta{t}} + \beta{\Delta{t}} + \gamma{\Delta{t}} = 0 \\ 
+    (\alpha + \beta + \gamma + \delta)\Delta{t} + \alpha \Delta{t} - \gamma \Delta{t} = 0 \to 2\alpha{\Delta{t}} + \beta{\Delta{t}} + \gamma{\Delta{t}} = 0 \\
     \therefore 2\alpha + \beta + \gamma = \frac{1}{\Delta{t}}
+    \label{ex5:5}
 \end{equation}
 
-Multiplicando (4.d) por (-1) e somando (5), obtemos:
+Multiplicando (\ref{ex5:4}.d) por (-1) e somando (\ref{ex5:4}), obtemos:
 
 \begin{equation}
     \alpha = \frac{1}{2\Delta{t}} + \frac{D}{\Delta{x^2}}
+    \label{ex5:6}
 \end{equation}
 
 \textbf{Determinando \(\delta\)}
 
-Aplica-se (6) em (4.b):
+Aplica-se (\ref{ex5:6}) em (\ref{ex5:4}.b):
 
 \begin{equation}
     \begin{aligned}
         (\frac{1}{2\Delta{t}} + \frac{D}{\Delta{x^2}})\Delta{t} - \delta \Delta{t} = 0 \to  \frac{1}{2} + \frac{\Delta{t}D}{\Delta{x^2}} - \delta{\Delta{t}} = 1 \to \delta = -\frac{1}{\Delta{t}} + \frac{D}{\Delta{x^2}}
     \end{aligned}
+    \label{ex5:7}
 \end{equation}
 
 \textbf{Determinando \(\beta\)}
 
-Aplicando (4.c) em (4.d):
+Aplicando (\ref{ex5:4}.c) em (\ref{ex5:4}.d):
 
 \begin{equation}
     \begin{aligned}
-        \beta{\frac{\Delta{x^2}}{2}} + \beta{\frac{\Delta{x^2}}{2}} = -D \to \beta{\Delta{x^2}} = -D \\ 
+        \beta{\frac{\Delta{x^2}}{2}} + \beta{\frac{\Delta{x^2}}{2}} = -D \to \beta{\Delta{x^2}} = -D \\
         \therefore \beta = -\frac{D}{\Delta{x^2}}
     \end{aligned}
+    \label{ex5:8}
 \end{equation}
 
 \textbf{Determinando \(\gamma\)}
 
-Como de (4.c) \(\beta = \gamma\), então:
+Como de (\ref{ex5:4}.c) \(\beta = \gamma\), então:
 
 \begin{equation}
     \gamma = -\frac{D}{\Delta{x^2}}
+    \label{ex5:9}
 \end{equation}
 
-Finalmente, aplicamos as equações (6) a (9) em (1) e obteremos:
+Finalmente, aplicamos as equações (\ref{ex5:6}) a (\ref{ex5:9}) em
+(\ref{ex5:1}) e obteremos:
 
 \begin{equation}
-\frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} = 
-    (\frac{1}{2\Delta{t}} + \frac{D}{\Delta{x^2}})f^{n+1}_{j} + 
-    (-\frac{D}{\Delta{x^2}})f^{n}_{j+1} + 
-    (-\frac{D}{\Delta{x^2}})f^{n}_{j-1} + 
+\frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} =
+    (\frac{1}{2\Delta{t}} + \frac{D}{\Delta{x^2}})f^{n+1}_{j} +
+    (-\frac{D}{\Delta{x^2}})f^{n}_{j+1} +
+    (-\frac{D}{\Delta{x^2}})f^{n}_{j-1} +
     (-\frac{1}{2\Delta{t}} + \frac{D}{\Delta{x^2}})f^{n-1}_{j}
+    \label{ex5:10}
 \end{equation}
 
-Desenvolvendo a equação (10), obteremos:
+Desenvolvendo a equação (\re{ex5:10}), obteremos:
 
 \begin{equation}
-    \frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} = 
+    \frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} =
     \frac{f^{n+1}_{j}}{2\Delta{t}} + \frac{Df^{n+1}_{j}}{\Delta{x^2}} -
     \frac{Df^{n}_{j+1}}{\Delta{x^2}} - \frac{Df^{n}_{j-1}}{\Delta{x^2}} -
-    \frac{f^{n-1}_{j}}{2\Delta{t}} + \frac{Df^{n-1}_{j}}{\Delta{x^2}} 
+    \frac{f^{n-1}_{j}}{2\Delta{t}} + \frac{Df^{n-1}_{j}}{\Delta{x^2}}
+    \label{ex5:11}
 \end{equation}
 
-Reorganizando a equação (11), finalmente obtemos a equação da difusão
-discretizada com esquema centrado no tempo e no espaço pseudo-implícito:
+Reorganizando a equação (\ref{ex5:11}), finalmente obtemos a equação da
+difusão discretizada com esquema centrado no tempo e no espaço
+pseudo-implícito:
 
 \begin{equation}
-    \frac{f^{n+1}_{j} - f^{n-1}_{j}}{2\Delta{t}} = 
+    \frac{f^{n+1}_{j} - f^{n-1}_{j}}{2\Delta{t}} =
     \frac{D}{\Delta{x^2}}(f^{n}_{j+1} + f^{n}_{j-1} - f^{n+1}_{j} - f^{n-1}_{j})
+    \label{ex5:12}
 \end{equation}
 
 A principal utilidade de se utilizar o \textbf{"Método dos coeficientes
@@ -819,8 +848,6 @@ discretização. Neste caso, foram utilizados 4 pontos e, portanto, 4
 coeficientes foram definidos. Em caso de de usar 6, 8, 10 pontos,
 poderíamos ter, respectivamente, 6, 8 ou 10 coeficientes a serem
 determinados.
-
-    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
     \subparagraph{Q.06 - Implemente um modelo numérico de
 advecção-difusão-decaimento 2D para a área costeira ao largo de Santos
@@ -836,7 +863,7 @@ caso.}\label{q.06---implemente-um-modelo-numuxe9rico-de-advecuxe7uxe3o-difusuxe3
 
 
     % Add a bibliography block to the postdoc
-    
-    
-    
+
+
+
     \end{document}

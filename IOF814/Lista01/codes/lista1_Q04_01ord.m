@@ -7,16 +7,19 @@
 % na solução da Lista, em IOF814/Lista1/outputs/Lista1_IOF814.pdf
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% measure the running time of this routine
+tic;
+
 clear all; close all;
 
 % definicao dos parametros do modelo, como tamanho da grade, passo de tempo e espaco
 % e outras informacoes
 %ler parametros do modelo
 jmax=250;      %numero de pontos da grade em x
-nmax=720;      %numero de passos de tempo
+nmax=7200/2;      %numero de passos de tempo
 dt=10;         %passo de tempo, em segundos
 dx=100;        %espacamento da grade, em m
-c=2;           %velocidade da corrente em x, em m/s
+c=0.2;           %velocidade da corrente em x, em m/s
 ci=1;          %valor da concentracao inicial
 jin=25;        %indice do ponto inicial da grade com ci
 jfi=50;        %indice do ponto final da grade com ci
@@ -58,12 +61,14 @@ for n=2:nmax
     XX=num2str(tempo);
     % saving graph: please change the directory for some like result/.
     % this structure Im using is for my github acc
-    grafico=['print -djpeg ../outputs/Q04_ord01/q04_ord01_',XX];
-    eval(grafico);
-    pause(1)
+    % grafico=['print -djpeg ../outputs/Q04_ord01/q04_ord01_',XX];
+    %eval(grafico);
+    pause(0.1)
     hold
 end
 fatu=fren;
 
 
 end
+
+toc % print the time used to run all this algorithm
