@@ -25,40 +25,27 @@ conc=2;        %limite maximo do eixo da concentracao no grafico
 freqfilt=30;   %frequencia de filtragem
 
 %calculo das constantes do modelo
-dx12=12*dx;
 q=c*dt/dx;
 fatu=zeros(jmax,1);
 fren=zeros(jmax,1);
-ffilt=zeros(jmax,1);
 xgrid=((1:jmax)-1)*dx;
 
 %condicao inicial
 fatu(jin:jfi)=ci;
 fcin=fatu;
-kplot=0;
-contfilt=2;
+kplot=1;
 
 for n=2:nmax
   tempo=n*dt;
   kplot=kplot+1;
 
-  % funcoes de renovacao (11) e (13)
-  fren(2:jmax-1)=fatu(2:jmax-1)- q*(fatu(3:jmax)-fatu(2:jmax-1));
-  %fren(6:jmax-5)=fatu(6:jmax-5) - q*(fatu(4:jmax-7) - 8*fatu(5:jmax-6) + 8*fatu(7:jmax-4) - fatu(8:jmax-3));
-  %fren(4:jmax-3)=fatu(4:jmax-3) - q*(fatu(2:jmax-5) - 8*fatu(3:jmax-4) + 8*fatu(5:jmax-2) - fatu(6:jmax-1));
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  %fren(3:jmax-2)=fatu(3:jmax-2) - q*(fatu(1:jmax-4) - 8*fatu(2:jmax-3) + 8*fatu(4:jmax-1) - fatu(5:jmax));
-  % formula para 1o e 2o ponto de grade
-  %fren(1)=fatu(1)-q*(-25*fatu(1)+48*fatu(2)-36*fatu(3)+16*fatu(4)-3*fatu(5));
-  %fren(2)=fatu(2)-q*(-3*fatu(1)-10*fatu(2)+18*fatu(3)-6*fatu(4)+fatu(5));
-  % formula para penultimo e ultimo pontos de grade
-  %fren(jmax-1)=fatu(jmax-1)-q*(-fatu(jmax-5)-16*fatu(jmax-4)+36*fatu(jmax-3)-48*fatu(jmax-2)+25*fatu(jmax-1));
-  %fren(jmax)=fatu(jmax)-q*(3*fatu(jmax-4)-16*fatu(jmax-3)+36*fatu(jmax-2)-48*fatu(jmax-1)+25*fatu(jmax));
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % funcoes de recorrencia
+  fren(2:jmax-1)=fatu(2:jmax-1)- q*(fatu(2:jmax-1)-fatu(1:jmax-2));
+
   if(kplot==freqplot)
     kplot=0;
     %kfig=kfig+1;
-    %figure(kfig)
+    figure(1)
     plot(xgrid,fcin,'r','LineWidth',2)
     hold
     plot(xgrid,fren,'LineWidth',2)
@@ -68,7 +55,12 @@ for n=2:nmax
     xlabel('DISTANCIA NA GRADE (m)','fontsize',12)
     ylabel('CONCENTRACAO','fontsize',12)
     grid on
-    pause
+    XX=num2str(tempo);
+    % saving graph: please change the directory for some like result/.
+    % this structure Im using is for my github acc
+    grafico=['print -djpeg ../outputs/Q04_ord01/q04_ord01_',XX];
+    eval(grafico);
+    pause(1)
     hold
 end
 fatu=fren;

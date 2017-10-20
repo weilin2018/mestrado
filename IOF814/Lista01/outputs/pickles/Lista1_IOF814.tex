@@ -10,8 +10,9 @@
 
 
     
-\documentclass[12pt,times,portuguese,a4paper,pdftex]{article}
-  
+\documentclass[11pt]{article}
+
+    
     
     \usepackage[T1]{fontenc}
     % Nicer default font (+ math font) than Computer Modern for most use cases
@@ -289,29 +290,26 @@ A equação da difusão unidimensional linear é dada por:
 
 \begin{equation}
 \frac{\partial{f}}{\partial{x}} = D\frac{\partial^2{f}}{\partial{x^2}}
-\label{ex1:1}
 \end{equation}
 
 onde \(D\) (\(D > 0\)) é o coeficiente de difusão.
 
-Tomando a solução de (\ref{ex1:1}) de forma explícita, com esquema
-centrado no espaço e no tempo, obtemos:
+Tomando a solução de (1) de forma explícita, com esquema centrado no
+espaço e no tempo, obtemos:
 
 \begin{equation}
 \frac{f^{n+1}_{j} - f^{n-1}_{j}}{2\Delta{t}} = \frac{D}{\Delta{x^2}}(f^{n}_{j+1} - 2f^{n}_{j} + f^{n}_{j-1})
-\label{ex1:2}
 \end{equation}
 
-Ainda com (\ref{ex1:1}), podemos tomar a solução implícita com equema
-centrado no espaço e no tempo, obtendo:
+Ainda com (1), podemos tomar a solução implícita com equema centrado no
+espaço e no tempo, obtendo:
 
 \begin{equation}
 \frac{f^{n+1}_{j} - f^{n-1}_{j}}{2\Delta{t}} = \frac{D}{\Delta{x^2}}(f^{n+1}_{j+1} - 2f^{n+1}_{j} + f^{n+1}_{j-1})
-\label{ex1:3}
 \end{equation}
 
-Para analisar a estabilidade das equações (\ref{ex1:2}) e (\ref{ex1:3}),
-precisamos aplicar o Método de Von Neumann para estabilidade.
+Para analisar a estabilidade das equações (2) e (3), precisamos aplicar
+o Método de Von Neumann para estabilidade.
 
 \textbf{Para a Eq. (2)}
 
@@ -320,16 +318,14 @@ forma:
 
 \begin{equation}
     f^{n}_{j} = B^{n}_{j}e^{iKj\Delta{x}}
-    \label{ex1:4}
 \end{equation}
 
 onde \(K\) é o número de onda.
 
-Aplicamos (\ref{ex1:4}) em (\ref{ex1:2}), obtendo:
+Aplicamos (4) em (2), obtendo:
 
 \begin{equation}
     \frac{B^{n+1}e^{iKj\Delta{x}} - B^{n-1}e^{iKj\Delta{x}} }{2\Delta{x}} = \frac{D}{\Delta{x^2}}(B^{n}e^{iK(j+1)\Delta{x}} - 2B^{n}e^{iKj\Delta{x}} + B^{n}e^{iK(j-1)\Delta{x}})
-    \label{ex1:5}
 \end{equation}
 
 A seguir, assumimos uma relação entre as amplitudes em instantes de
@@ -337,49 +333,41 @@ tempo sucessivos, onde:
 
 \begin{equation}
     B^{n+1} = \lambda B^{n} e B^{n} = \lambda B^{n-1} \Rightarrow B^{n-1} = \lambda^{-1}B^n
-    \label{ex1:6}
 \end{equation}
 
-Aplicando (\ref{ex1:6}) em (\ref{ex1:5}) e dividindo o resultado por
-(\ref{ex1:4}), teremos:
+Aplicando (6) em (5) e dividindo o resultado por (4), teremos:
 
 \begin{equation}
     \frac{\lambda - \lambda^{-1}}{2\Delta{x}} = \frac{D}{\Delta{x^2}}(e^{iK\Delta{x}} - 2 + e^{-iK\Delta{x}})
-    \label{ex1:7}
 \end{equation}
 
-Lembrando que \(e^{i\theta} = cos(\theta) - isin(\theta)\), então
-(\ref{ex1:7}) é reescrita da seguinte forma:
+Lembrando que \(e^{i\theta} = cos(\theta) - isin(\theta)\), então (7) é
+reescrita da seguinte forma:
 
 \begin{equation}
     \frac{\lambda - \lambda^{-1}}{2\Delta{x}} = \frac{D}{\Delta{x^2}}(2cos(K\Delta{x}) - 2)
-    \label{ex1:8}
 \end{equation}
 
-Desenvolvendo (\ref{ex1:8}) e considerando
+Desenvolvendo (8) e considerando
 \(q = 4\frac{\Delta{t}D}{\Delta{x^2}}\), temos:
 
 \begin{equation}
     \lambda - \lambda^{-1} - q(cos(K\Delta{x} -1)) = 0
-    \label{ex1:9}
 \end{equation}
 
-Manipulando (\ref{ex1:9}), chegamos em uma equação de 2º, da seguinte
-forma:
+Manipulando (9), chegamos em uma equação de 2º, da seguinte forma:
 
 \begin{equation}
     \lambda^{2} - \lambda q(cos(K\Delta{x} -1)) -1 = 0
-    \label{ex1:10}
 \end{equation}
 
-A soluçao de (\ref{ex1:10}) é dada por:
+A soluçao de (10) é dada por:
 
 \begin{equation}
     \lambda = \frac{q[cos(K\Delta{x} -1)]^2 \pm \sqrt{q^2[cos(K\Delta{x})-1]^2 + 4} }{2}
-    \label{ex1:11}
 \end{equation}
 
-Analisando (\ref{ex1:11}), nota-se que, para qualquer \(\Delta{x}\) e
+Analisando (11), nota-se que, para qualquer \(\Delta{x}\) e
 \(\Delta{t}\), a solução de \(|\lambda| > 1\), ou seja, para qualquer
 passo de tempo e de espaço a solução implícita com esquema centrado no
 espaço e tempo será incondicionalmente instável.
@@ -388,38 +376,34 @@ espaço e tempo será incondicionalmente instável.
 
 De forma análoga ao realizado para (2), fazemos para (3).
 
-Aplicando (\ref{ex1:4}) em (\ref{ex1:3}):
+Aplicando (4) em (3):
 
 \begin{equation}
         \frac{B^{n+1}e^{iKj\Delta{x}} - B^{n-1}e^{iKj\Delta{x}} }{2\Delta{x}} = \frac{D}{\Delta{x^2}}(B^{n+1}e^{iK(j+1)\Delta{x}} - 2B^{n+1}e^{iKj\Delta{x}} + B^{n+1}e^{iK(j-1)\Delta{x}})
-        \label{ex1:12}
 \end{equation}
 
-Assumindo a relação (\ref{ex1:6}) e dividindo o resultado por
-(\ref{ex1:4}), finalmente obtemos:
+Assumindo a relação (6) e dividindo o resultado por (4), finalmente
+obtemos:
 
 \begin{equation}
     \frac{\lambda - \lambda^{-1}}{2\Delta{x}} = \frac{D}{\Delta{x^2}}(\lambda e^{iK\Delta{x}} - 2\lambda + \lambda e^{-iK\Delta{x}})
-    \label{ex1:13}
 \end{equation}
 
-Manipulando (\ref{ex1:13}), também chegamos em uma equação 2º:
+Manipulando (13), também chegamos em uma equação 2º:
 
 \begin{equation}
     \lambda^{2}[1 - q(cos(K\Delta{x}) - 1)] = 1
-    \label{ex1:14}
 \end{equation}
 
 Portando, a solução de (14) será:
 
 \begin{equation}
     \lambda = \frac{1}{\sqrt{1 - q(cos(K\Delta{x}) - 1)}}
-    \label{ex1:15}
 \end{equation}
 
-Analisando a equação (\ref{ex1:15}), nota-se que, para qualquer passo de
-tempo e espaço, \(|\lambda| \le 1\) e, portanto, a solução implícita com
-esquema centrado no tempo e espaço será incondionalmente estável.
+Analisando a equação (15), nota-se que, para qualquer passo de tempo e
+espaço, \(|\lambda| \le 1\) e, portanto, a solução implícita com esquema
+centrado no tempo e espaço será incondionalmente estável.
 
     \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
@@ -430,7 +414,6 @@ espaço.}\label{q.02---implemente-um-modelo-para-a-soluuxe7uxe3o-da-equauxe7uxe3
 
 \begin{equation}
     \frac{\partial{f}}{\partial{t}} + u\frac{\partial{f}}{\partial{x}} + v\frac{\partial{f}}{\partial{y}} = 0
-    \label{ex2:1}
 \end{equation}
 
 O esquema semi-implícito centrado no tempo e espaço é dado através da
@@ -442,119 +425,102 @@ para termos o requisitado no exercício.
 
 \begin{equation}
     \frac{ f^{n+1}_{j,k} - f^{n-1}_{j,k} }{2\Delta{x}} + u\frac{ f^{n}_{j+1,k} - f^{n}_{j-1,k} }{2\Delta{x}} + v\frac{f^{n}_{j,k+1} - f^{n}_{j,k-1}}{2\Delta{y}} = 0
-    \label{ex2:2}
 \end{equation}
 
 \textbf{Esquema Implícito}
 
 \begin{equation}
-    \frac{ f^{16-15n+1}_{j,k} - f^{n-1}_{j,k} }{2\Delta{x}} + u\frac{ f^{n+1}_{j+1,k} - f^{n+1}_{j-1,k} }{2\Delta{x}} + v\frac{f^{n+1}_{j,k+1} - f^{n+1}_{j,k-1}}{2\Delta{y}} = 0
-    \label{ex2:3}
+    \frac{ f^{n+1}_{j,k} - f^{n-1}_{j,k} }{2\Delta{x}} + u\frac{ f^{n+1}_{j+1,k} - f^{n+1}_{j-1,k} }{2\Delta{x}} + v\frac{f^{n+1}_{j,k+1} - f^{n+1}_{j,k-1}}{2\Delta{y}} = 0
 \end{equation}
 
-A diferença entre (\ref{ex2:2}) e (\ref{ex2:3}) está no nível de tempo
-utilizado para calcular as derivadas espaciais, respectivamente, n
-(atual) e n+1 (renovado).
+A diferença entre (2) e (3) está no nível de tempo utilizado para
+calcular as derivadas espaciais, respectivamente, n (atual) e n+1
+(renovado).
 
 \textbf{Esquema Semi-Implícito}
 
 \begin{equation}
     \frac{f^{n+1}_{j,k} - f^{n-1}_{j,k}}{2\Delta{t}} + \frac{u}{4\Delta{x}}(f^{n+1}_{j+1,k} - f^{n-1}_{j+1,k} + f^{n}_{j+1,k} - f^{n}_{j-1,k}) + \frac{v}{4\Delta{y}}( f^{n}_{j,k+1} - f^{n}_{j,k-1} + f^{n+1}_{j,k+1} -f^{n+1}_{j,k-1} ) = 0
-    \label{ex2:4}
 \end{equation}
 
 Isolando o termo \(f^{n+1}_{j,k}\), obteremos:
 
 \begin{equation}
     f^{n+1}_{j,k} = f^{n-1}_{,k} - \frac{\Delta{t}}{2\Delta{x}}(f^{n+1}_{j+1,k} - f^{n+1}_{j-1,k} + f^{n}_{j+1,k} - f^{n}_{j-1,k}) - \frac{\Delta{t}}{2\Delta{y}}( f^{n}_{j,k+1} - f^{n}_{j,k-1} + f^{n+1}_{j,k+1} - f^{n+1}_{j,k-1})
-    \label{ex2:5}
 \end{equation}
 
-Para resolver a equação (\ref{ex2:5}), devemos reescrevê-la da seguinte
-forma:
+Para resolver a equação (5), devemos reescrevê-la da seguinte forma:
 
 \begin{equation}
    a_jf^{n+1}_{j-1} + b_jf^{n+1}_{j} + c_jf^{n+1}_{j+1} = d_j
-   \label{ex2:6}
 \end{equation}
 
 \begin{equation}
     a_kf^{n+1}_{k-1} + b_kf^{n+1}_{k} + c_kf^{n+1}_{k+1} = d_k
-    \label{ex2:7}
 \end{equation}
 
 Nesta etapa do desenvolvimento, convém trabalharmos com cada equação de
-forma independente. Sendo assim, reescrevemos (\ref{ex2:5}) somente para
+forma independente. Sendo assim, reescrevemos (5) somente para
 \textbf{as variações em \(x\)}, de forma que obteremos:
 
 \begin{equation}
     \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}uf^{n+1}_{j-1} + f^{n+1}_{j} + \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}uf^{n+1}_{j+1}  = f^{n-1}_{j} - \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}u(f^{n}_{j+1} - f^{n}_{j-1})
-    \label{ex2:8}
 \end{equation}
 
-Onde, comparando (\ref{ex2:8}) e (\ref{ex2:6}), temos os seguintes
-coeficientes:
+Onde, comparando (8) e (6), temos os seguintes coeficientes:
 
 \begin{equation}
 a_j = \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}u; b_j = 1; c_j = \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}u; d_j = f^{n-1}_{j} - \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}u(f^{n}_{j+1} - f^{n}_{j-1})
-\label{ex2:9}
 \end{equation}
 
-Como (\ref{ex2:8}) é uma equação de três pontos, utilizamos o
-\textbf{método de inversão de linha} (Lindzen \& Kuo, 1969) para
-transformá-la em uma equação de dois pontos.
+Como (8) é uma equação de três pontos, utilizamos o \textbf{método de
+inversão de linha} (Lindzen \& Kuo, 1969) para transformá-la em uma
+equação de dois pontos.
 
 Inicialmente, definimos:
 
 \begin{equation}
     f^{n+1}_{j} = s_{j}f^{n+1}_{j+1} + p_j \Rightarrow f^{n+1}_{j-1} = s_{j-1}f^{n+1}_{j} + p_{j-1}
-    \label{ex2:10}
 \end{equation}
 
-Aplicando (\ref{ex2:9}) e (\ref{ex2:10}) em (\ref{ex2:8}), teremos:
+Aplicando (9) e (10) em (8), teremos:
 
 \begin{equation}
     a_j(s_{j-1}f^{n+1}_{j} + p_{j-1}) + b_jf^{n+1}_{j} + c_jf^{n+1}_{j+1} = d_j
-    \label{ex2:11}
 \end{equation}
 
 E, por fim, obtemos:
 
 \begin{equation}
     s_j = \frac{-c_j}{b_j + a_js_{j-1}}; p_j = \frac{d_j - a_jp_{j-1}}{b_j + a_js_{j-1}}
-    \label{ex2:12}
 \end{equation}
 
-De modo análogo, podemos reescrever (\ref{ex2:5}) para as
-\textbf{variações em \(y\)}, obtendo \(s_k\) e \(p_k\):
+De modo análogo, podemos reescrever (5) para as \textbf{variações em
+\(y\)}, obtendo \(s_k\) e \(p_k\):
 
 \begin{equation}
     \underbrace{-\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v}_{a_k}f^{n+1}_{k-1} + 
     \underbrace{\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v}_{c_k}f^{n+1}_{k+1}  = 
     \underbrace{-\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v(f^{n}_{k+1} - f^{n}_{k-1})}_{d_k}
-    \label{ex2:13}
 \end{equation}
 
 Sendo assim, obtemos:
 
 \begin{equation}
     s_k = \frac{-c_k}{b_k + a_ks_{k-1}}; p_k = \frac{d_k - a_jp_{k-1}}{b_k + a_ks_{k-1}}
-    \label{ex2:14}
 \end{equation}
 
-Por fim, com as equações (\ref{ex2:11}), (\ref{ex2:12}), (\ref{ex2:13})
-e (\ref{ex2:14}) podemos obter a solução geral do problema ao reescrever
-(10) na forma:
+Por fim, com as equações (11)-(14) podemos obter a solução geral do
+problema ao reescrever (10) na forma:
 
 \begin{equation}
     f^{n+1}_{j,k} = s_{j}f^{n+1}_{j+1,k} + s_{k}f^{n+1}_{j,k+1}- p_{j} - p_{k}
-    \label{ex2:15}
 \end{equation}
 
-A solução numérica do exercício será realizada para a equação
-(\ref{ex2:15}) e, todo o desenvolvimento numérico pode ser conferido no
-arquivo \textbf{lista1\_Q02.m}. A seguir, analisamos os resultados
-obtidos no modelo elaborado.
+A solução numérica do exercício será realizada para a equação (16) e,
+todo o desenvolvimento numérico pode ser conferido no arquivo
+\textbf{lista1\_Q02.m}. A seguir, analisamos os resultados obtidos no
+modelo elaborado.
 
 \begin{verbatim}
 <h1><font color='red'>falta finalizar o código para colocar as imagens aqui e discuti-las</font></h1>
@@ -580,46 +546,37 @@ A equação da advecção é dada por:
 
 \begin{equation}
     \frac{\partial{f}}{\partial{t}} + c\frac{\partial{f}}{\partial{x}} = 0
-    \label{ex4:1}
 \end{equation}
 
-Discretizando (\ref{ex4:1}) para o esquema avançado no tempo e retardado
-no espaço de \textbf{1ª ordem}, teremos:
+Discretizando (1) para o esquema avançado no tempo e espaço de
+\textbf{1ª ordem}, teremos:
 
 \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
 \begin{equation}
-    \frac{f^{n+1}_{j} - f^{n-1}_{j}}{\Delta{t}} + c\Biggl( \frac{f^{n}_{j} - f^{n}_{j-1}}{\Delta{x}} \Biggl) = 0
-    \label{ex4:2}
+    \frac{f^{n+1}_{j} - f^{n-1}_{j}}{\Delta{t}} + c\Biggl( \frac{f^{n}_{j+1} - f^{n}_{j}}{\Delta{x}} \Biggl) = 0
 \end{equation}
 
 A fórmula de recorrência será então:
 
 \begin{equation}
-    f^{n+1}_{j} = f^{n}_{j} - c\frac{\Delta{t}}{\Delta{t}}(f^{n}_{j} - f^{n}_{j-1})
-    \label{ex4:3}
+    f^{n+1}_{j} = f^{n}_{j} - c\frac{\Delta{t}}{\Delta{t}}(f^{n}_{j+1} - f^{n}_{j})
 \end{equation}
 
-E, na forma matricial, (\ref{ex4:3}) ficará:
+E, na forma matricial, (3) ficará:
 
 \begin{equation}
-fren(2:jmax-1) = fatu(2:jmax-1) - c\frac{dt}{dx}\biggr[ fatu(2:jmax-1) - fatu(1:jmax-2) \biggr]
-\label{ex4:4}
+fren(2:jmax-1) = fatu(2:jmax-1) - c\frac{dt}{dx}\biggr[ fatu(3:jmax) - fatu(2:jmax-1) \biggr]
 \end{equation}
-
-onde fren representa o nível de tempo renovado (n+1) e fatu o nível de
-tempo atual (n).
 
 \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
-Discretizando (\ref{ex4:1}), para o mesmo esquema, mas desta vez de
-\textbf{4ª ordem}, é necessário trabalhar de forma diferente. Sendo
-assim, desenvolvemos inicialmente a discretização no esquema avançado no
-tempo:
+Discretizando (1), para o mesmo esquema, mas desta vez de \textbf{4ª
+ordem}, é necessário trabalhar de forma diferente. Sendo assim,
+desenvolvemos inicialmente a discretização no esquema avançado no tempo:
 
 \begin{equation}
     \frac{\partial{f}}{\partial{t}} = \frac{f^{n+1}_{j} - f^{n}_{j}}{\Delta{t}}
-    \label{ex4:5}
 \end{equation}
 
 Já para o esquema de 4ª ordem no espaço, teremos um conjunto de 5
@@ -630,9 +587,7 @@ pensando em um aplicação no matlab, onde jmax é o a quantidade máxima de
 pontos em j:
 
 \begin{equation}
-    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} 
-    \bigg)}{12\Delta{x}}
-    \label{ex4:6}
+    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg)}{12\Delta{x}}
 \end{equation}
 
 Para, respectivamente, o 1º, 2º, penúltimo e último ponto de grade,
@@ -644,7 +599,6 @@ teremos as seguintes equações:
     \frac{\partial{f}}{\partial{x}} = \frac{\biggl( - 3f^{n}_{j-1} - 10f^{n}_{j} + 18f^{n}_{j+1} - 6f^{n}_{j+2} + f^{n}_{j+3} \bigg)}{12\Delta{x}} & \text{(B)}\\
     \frac{\partial{f}}{\partial{x}} = \frac{\biggl( - f^{n}_{j-3} + 6f^{n}_{j-2} - 18f^{n}_{j-1} + 10f^{n}_{j} + 3f^{n}_{j+1} \bigg)}{12\Delta{x}} & \text{(C)}\\
     \frac{\partial{f}}{\partial{x}} = \frac{\biggl( 3f^{n}_{j-4} - 16f^{n}_{j-3} + 36f^{n}_{j-2} - 48f^{n}_{j-1} + 25f^{n}_{j} \bigg)}{12\Delta{x}} & \text{(D)}
-    \label{ex4:7}
 \end{cases}
 \end{equation}
 
@@ -652,23 +606,21 @@ Sendo assim, ao programarmos um modelo com a equação de advecção
 discretiza avançada no tempo e de 4ª ordem no espaço, teremos o seguinte
 conjunto de equações a ser implementado.
 
-Iniciamos o desenvolvimento da discretização de (\ref{ex4:1}) pelo caso
-mais geral, equações (\ref{ex4:5}) e (\ref{ex4:6}):
+Iniciamos o desenvolvimento da discretização de (1) pelo caso mais
+geral, equações (5) e (6):
 
 \begin{equation}
     \frac{f^{n+1}_{j} - f^{n}_{j}}{\Delta{t}} + \frac{c}{12\Delta{x}}\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg) = 0
-    \label{ex4:8}
 \end{equation}
 
 Que, isolando \(f^{n+1}_{j}\) obtemos a função de renovação:
 
 \begin{equation}
     f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg)    
-    \label{ex4:9}
 \end{equation}
 
-De forma análoga, podemos reescrever o conjunto de equações
-(\ref{ex4:7}), isolando o nível renovado de tempo:
+De forma análoga, podemos reescrever o conjunto de equações (7),
+isolando o nível renovado de tempo:
 
 \begin{equation}
     \begin{cases}
@@ -676,7 +628,6 @@ De forma análoga, podemos reescrever o conjunto de equações
             f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( - 3f^{n}_{j-1} - 10f^{n}_{j} + 18f^{n}_{j+1} - 6f^{n}_{j+2} + f^{n}_{j+3}  \bigg) & (B) \\
             f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( - f^{n}_{j-3} + 6f^{n}_{j-2} - 18f^{n}_{j-1} + 10f^{n}_{j} + 3f^{n}_{j+1} \bigg) & (C) \\
             f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( 3f^{n}_{j-4} - 16f^{n}_{j-3} + 36f^{n}_{j-2} - 48f^{n}_{j-1} + 25f^{n}_{j} \bigg) & (D)
-            \label{ex4:10}
     \end{cases}
 \end{equation}
 
