@@ -50,9 +50,9 @@ aj=(dt*u)/(2*dx);
 bj=1;
 cj=(-dt*u)/(2*dx);
 
-sk=zeros(kmax,kmax);
-pk=zeros(kmax,kmax);
-dk=zeros(kmax,kmax);
+sk=zeros(kmax,jmax);
+pk=zeros(kmax,jmax);
+dk=zeros(kmax,jmax);
 
 ak=-(2*v)/(2*dy);
 bk=0;
@@ -69,8 +69,12 @@ for n=3:nmax
    % calcular dj e dk
    % lembrando que: dj usa 2 niveis de tempo (fant e fatu) e dk usa somente 1 (fatu)
 
-   dj(2:jmax-1,2:kmax-1)=fant(2:jmax-1,2:kmax-1) - qu*(fatu(3:jmax,2:kmax-1) - fatu(1:jmax-2,2:kmax-1));
-   dk(2:jmax-1,2:kmax-1)=-qv*(fatu(2:jmax-1,3:jmax) - fatu(2:jmax-1, 1:kmax-2));
+   for j=2:1:jmax-1
+        for k=2:1:jmax-1
+            dj(k,j)=fant(k,j) - qu*(fatu(k,j+1)-fatu(k,j-1));
+            dk(k,j)=-qv*(fatu(k+1,j)-fatu(k-1,j));
+        end
+   end
 
    %varredura ascendente
    for j=2:jmax-1
@@ -78,14 +82,14 @@ for n=3:nmax
      pj(j)=(dj(j)-aj*pj(j-1))/(bj+aj*sj(j-1));
    end
    for k=2:kmax-1
-     sj(k)=-ck/(bk+ak*sk(k-1));
-     pj(k)=(dk(k)-ak*pk(k-1))/(bk+ak*sk(k-1));
+     sk(k)=-ck/(bk+ak*sk(k-1));
+     pk(k)=(dk(k)-ak*pk(k-1))/(bk+ak*sk(k-1));
    end
 
   % varredura descendente
   % considerando que jmax=kmax, entao fazemos somente um loop para calcular fren
   for j=jmax-1:-1:2
-    k=j; % facilitar a leitura da formula seguinte:
+    k=j; % facilitar a  leitura da formula seguinte:
     fren(j,k) = sj(j)*fren(j+1,k) + pj(j) + sk(k)*fren(j,k+1) + pk(k);
   end
 
@@ -102,7 +106,7 @@ for n=3:nmax
     xlabel('DISTANCIA NA GRADE(m)','fontsize',12)
     ylabel('conc','fontsize',12)
     grid on
-    pause
+    pause(0.01)
     hold off
   end
 

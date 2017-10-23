@@ -1,4 +1,4 @@
-k%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MODELO NUMERICO DE ADVECCAO E DIFUSAO 2D PARA A REGIÃO COSTEIRA DE      %
 % VITÓRIA - ES(40.5W-40W; 20S-20.5S), COM DISPERSAO DE CONTAMINANTES NA   %
 % SUPERFICIE DESPEJADOS EM UM PONTO SUJEITO A CORRENTE DE 0.5M/S.         %
