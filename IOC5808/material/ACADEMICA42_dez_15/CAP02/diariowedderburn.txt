@@ -1,0 +1,94 @@
+
+deltaro =
+
+    30
+
+
+we =
+
+    4.0833
+
+dir
+
+.                      Rie.asv                diariowedderburn.txt   uC_siz.dat             ufC_siz.dat            
+..                     Rie.m                  roC_quad.dat           uaC_quad.dat           wedderburn.m           
+Figura Wedderburn.bmp  Rie_quad.dat           roC_siz.dat            uaC_siz.dat            
+Richcamada             Rie_siz.dat            uC_quad.dat            ufC_quad.dat           
+
+Rie
+
+deltaro =
+
+    30
+
+
+we =
+
+    4.0833
+
+??? Error using ==> print
+Error using ==> graphics\private\name
+Cannot create output file 'e:\ACADEMICA42\CAP02\wedderburn.bmp'
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP02\wedderburn.m,115,1">wedderburn at 115</a>
+print -dbitmap e:\ACADEMICA42\CAP02\wedderburn.bmp
+
+wedderburn
+
+deltaro =
+
+    30
+
+
+we =
+
+    4.0833
+
+??? Error using ==> print
+Error using ==> graphics\private\name
+Cannot create output file 'e:\ACADEMICA42\CAP02\wedderburn.bmp'
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP02\wedderburn.m,115,1">wedderburn at 115</a>
+print -dbitmap e:\ACADEMICA42\CAP02\wedderburn.bmp
+
+cd('E:\ACADEMICA42_maio_14\CAP03');
+dir
+
+.                   Diagr_4pto.bmp      Diagr_H_R_4pto.m    diagr_PRANDLE.m     
+..                  Diagr_H_R_3pto.asv  Fig_H_R_1pto.bmp    diagrama_H_R.m      
+Diagr_3pto.bmp      Diagr_H_R_3pto.m    Figura-Prandle.bmp  
+
+uiopen('E:\ACADEMICA42_maio_14\CAP03\diagrama_H_R.m', true);
+diagrama_H_R
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,38,1">ylabel at 38</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP03\diagrama_H_R.m,99,1">diagrama_H_R at 99</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,42,1">ylabel at 42</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP03\diagrama_H_R.m,99,1">diagrama_H_R at 99</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,39,1">xlabel at 39</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP03\diagrama_H_R.m,100,1">diagrama_H_R at 100</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,43,1">xlabel at 43</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP03\diagrama_H_R.m,100,1">diagrama_H_R at 100</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\title.m,41,1">title at 41</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\title.m,23,1">title at 23</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP03\diagrama_H_R.m,101,1">diagrama_H_R at 101</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,210,1">axis>LocSetLimits at 210</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,96,1">axis at 96</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP03\diagrama_H_R.m,103,1">diagrama_H_R at 103</a>
+??? Error using ==> print
+Error using ==> graphics\private\name
+Cannot create output file 'e:\Academica42\cap03\diagrama.bmp'
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP03\diagrama_H_R.m,130,1">diagrama_H_R at 130</a>
+   print -dbitmap e:\Academica42\cap03\diagrama
+
+builtin('exit')

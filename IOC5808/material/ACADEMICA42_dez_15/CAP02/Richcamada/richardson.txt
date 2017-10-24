@@ -1,0 +1,605 @@
+??? Input argument "ts" is undefined.
+
+Error in ==> <a href="error:E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m,46,1">Richcamada at 46</a>
+	prof=-ts(:,2); % Profundidade adimensional sinal (-) devido a orientação de OZ
+
+load ts.dat
+load vl.dat
+load zl.dat
+richcamada
+??? Input argument "ts" is undefined.
+
+Error in ==> <a href="error:E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m,46,1">Richcamada at 46</a>
+	prof=-ts(:,2); % Profundidade adimensional sinal (-) devido a orientação de OZ
+
+dir
+
+.               ..              Figura RiL.bmp  Richcamada.m    richardson.txt  ts.dat          vl.dat          zl.dat          
+
+uiopen('E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m', true);
+fschange('E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m');
+clear richcamada
+fschange('E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m');
+clear richcamada
+fschange('E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m');
+clear richcamada
+fschange('E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m');
+clear richcamada
+load zl.dat
+load vl.dat
+load ts.dat
+richcamada(vl,ts,zl,26,11)
+Warning: Function call sw_dens invokes inexact match C:\MATLAB7\toolbox\seawater\SW_DENS.M.
+
+> In <a href="error:E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m,60,1">Richcamada at 60</a>
+Warning: Function call sw_dens0 invokes inexact match C:\MATLAB7\toolbox\seawater\SW_DENS0.M.
+
+> In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS.M,92,1">SW_DENS at 92</a>
+  In <a href="error:E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m,60,1">Richcamada at 60</a>
+Warning: Function call sw_smow invokes inexact match C:\MATLAB7\toolbox\seawater\SW_SMOW.M.
+
+> In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS0.M,82,1">SW_DENS0 at 82</a>
+  In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS.M,92,1">SW_DENS at 92</a>
+  In <a href="error:E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m,60,1">Richcamada at 60</a>
+Warning: Function call sw_seck invokes inexact match C:\MATLAB7\toolbox\seawater\SW_SECK.M.
+
+> In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS.M,93,1">SW_DENS at 93</a>
+  In <a href="error:E:\ACADEMICA42\CAP02\Richcamada\Richcamada.m,60,1">Richcamada at 60</a>
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 15 
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434   35.6458   35.6166   35.5101   35.4144   35.2932   35.1322
+
+  Columns 16 through 26 
+
+   34.7416   34.4239   34.2798   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 15 
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425   -0.1467   -0.0803    0.0289    0.1001    0.1116    0.1734
+
+  Columns 16 through 26 
+
+    0.2570    0.3657    0.4606    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 15 
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437   -5.2328   -2.8633    1.0229    3.5467    3.9370    6.0688
+
+  Columns 16 through 26 
+
+    8.8890   12.5146   15.7148   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 15 
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915  122.8813  122.8074  122.7230  122.6213  122.5188  122.3642
+
+  Columns 16 through 26 
+
+  122.0152  121.7570  121.6422  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342  121.6820  121.6443
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 15 
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007    0.0019    0.0079    0.0746    0.0084    0.0074    0.0046
+
+  Columns 16 through 26 
+
+    0.0021    0.0020    0.0008    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154    0.0066    0.0095
+
+??? Input argument "ts" is undefined.
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m,49,1">Richcamada at 49</a>
+	prof=-ts(:,2); % Profundidade adimensional sinal (-) devido a orientação de OZ
+
+load ts.dat
+load vl.dat
+load zl.dat
+richcamada
+Warning: Function call richcamada invokes inexact match E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m.
+
+??? Input argument "ts" is undefined.
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m,49,1">Richcamada at 49</a>
+	prof=-ts(:,2); % Profundidade adimensional sinal (-) devido a orientação de OZ
+
+richcamada(vl,ts,h,26,11)
+??? Undefined function or variable 'h'.
+
+load vel.dat
+??? Error using ==> load
+Unable to read file vel.dat: No such file or directory.
+
+load vl.dat
+load zl.dat
+load ts.dat
+richcamada(vl,zl,ts,26,11)
+??? Undefined function or variable "estac".
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m,139,1">Richcamada at 139</a>
+  		psva(k,1)=estac(j,i);
+
+fschange('E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m');
+clear richcamada
+richcamada(vl,zl,ts,26,11)
+??? Undefined function or variable "estac".
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m,139,1">Richcamada at 139</a>
+  		psva(k,1)=estac(j,k);
+
+fschange('E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m');
+clear richcamada
+richcamada(vl,zl,ts,26,11)
+??? Undefined function or variable "estac".
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m,139,1">Richcamada at 139</a>
+  		psva(k,1)=estac(j,i);
+
+builtin('exit')
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 9 
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434
+
+  Columns 10 through 18 
+
+   35.6458   35.6166   35.5101   35.4144   35.2932   35.1322   34.7416   34.4239   34.2798
+
+  Columns 19 through 26 
+
+   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 9 
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425
+
+  Columns 10 through 18 
+
+   -0.1467   -0.0803    0.0289    0.1001    0.1116    0.1734    0.2570    0.3657    0.4606
+
+  Columns 19 through 26 
+
+    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 9 
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437
+
+  Columns 10 through 18 
+
+   -5.2328   -2.8633    1.0229    3.5467    3.9370    6.0688    8.8890   12.5146   15.7148
+
+  Columns 19 through 26 
+
+   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 9 
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915
+
+  Columns 10 through 18 
+
+  122.8813  122.8074  122.7230  122.6213  122.5188  122.3642  122.0152  121.7570  121.6422
+
+  Columns 19 through 26 
+
+  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342  121.6820  121.6443
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 9 
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007
+
+  Columns 10 through 18 
+
+    0.0019    0.0079    0.0746    0.0084    0.0074    0.0046    0.0021    0.0020    0.0008
+
+  Columns 19 through 26 
+
+    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154    0.0066    0.0095
+
+??? Error using ==> print
+Error using ==> graphics\private\name
+Cannot create output file 'e:\ACADEMICA42\CAP02\richcamada\riL.bmp'
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m,270,1">Richcamada at 270</a>
+   print -dbitmap e:\ACADEMICA42\CAP02\richcamada\riL.bmp
+
+uiopen('E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m', true);
+builtin('exit')
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 9 
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434
+
+  Columns 10 through 18 
+
+   35.6458   35.6166   35.5101   35.4144   35.2932   35.1322   34.7416   34.4239   34.2798
+
+  Columns 19 through 26 
+
+   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 9 
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425
+
+  Columns 10 through 18 
+
+   -0.1467   -0.0803    0.0289    0.1001    0.1116    0.1734    0.2570    0.3657    0.4606
+
+  Columns 19 through 26 
+
+    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 9 
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437
+
+  Columns 10 through 18 
+
+   -5.2328   -2.8633    1.0229    3.5467    3.9370    6.0688    8.8890   12.5146   15.7148
+
+  Columns 19 through 26 
+
+   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 9 
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915
+
+  Columns 10 through 18 
+
+  122.8813  122.8074  122.7230  122.6213  122.5188  122.3642  122.0152  121.7570  121.6422
+
+  Columns 19 through 26 
+
+  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342  121.6820  121.6443
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 9 
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007
+
+  Columns 10 through 18 
+
+    0.0019    0.0079    0.0746    0.0084    0.0074    0.0046    0.0021    0.0020    0.0008
+
+  Columns 19 through 26 
+
+    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154    0.0066    0.0095
+
+??? Error using ==> print
+Error using ==> graphics\private\name
+Cannot create output file 'e:\ACADEMICA42\CAP02\richcamada\riL.bmp'
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m,270,1">Richcamada at 270</a>
+   print -dbitmap e:\ACADEMICA42\CAP02\richcamada\riL.bmp
+
+uiopen('E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m', true);
+fschange('E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m');
+clear richcamada
+fschange('E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m');
+clear richcamada
+load vl.dat
+load ts.dat
+load zl.dat
+richcamada(vl,ts,zl,26,11)
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 9 
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434
+
+  Columns 10 through 18 
+
+   35.6458   35.6166   35.5101   35.4144   35.2932   35.1322   34.7416   34.4239   34.2798
+
+  Columns 19 through 26 
+
+   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 9 
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425
+
+  Columns 10 through 18 
+
+   -0.1467   -0.0803    0.0289    0.1001    0.1116    0.1734    0.2570    0.3657    0.4606
+
+  Columns 19 through 26 
+
+    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 9 
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437
+
+  Columns 10 through 18 
+
+   -5.2328   -2.8633    1.0229    3.5467    3.9370    6.0688    8.8890   12.5146   15.7148
+
+  Columns 19 through 26 
+
+   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 9 
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915
+
+  Columns 10 through 18 
+
+  122.8813  122.8074  122.7230  122.6213  122.5188  122.3642  122.0152  121.7570  121.6422
+
+  Columns 19 through 26 
+
+  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342  121.6820  121.6443
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 9 
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007
+
+  Columns 10 through 18 
+
+    0.0019    0.0079    0.0746    0.0084    0.0074    0.0046    0.0021    0.0020    0.0008
+
+  Columns 19 through 26 
+
+    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154    0.0066    0.0095
+
+??? Error using ==> print
+Error using ==> graphics\private\name
+Cannot create output file 'e:\ACADEMICA42\CAP02\richcamada\riL.bmp'
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m,271,1">Richcamada at 271</a>
+   print -dbitmap e:\ACADEMICA42\CAP02\richcamada\riL.bmp
+
+dir
+
+.               Figura RiL.bmp  Richcamada.m    ts.dat          zl.dat          
+..              Richcamada.asv  richardson.txt  vl.dat          
+
+dir
+
+.               Figura RiL.bmp  Richcamada.m    ts.dat          zl.dat          
+..              Richcamada.asv  richardson.txt  vl.dat          
+
+cd('E:\ACADEMICA42_maio_14\CAP02');
+dir
+
+.                      Rie.asv                roC_quad.dat           uaC_siz.dat            
+..                     Rie.m                  roC_siz.dat            ufC_quad.dat           
+DiarioRichardson.txt   Rie_quad.dat           uC_quad.dat            ufC_siz.dat            
+Figura Wedderburn.bmp  Rie_siz.dat            uC_siz.dat             wedderburn.m           
+Richcamada             diariowedderburn.txt   uaC_quad.dat           
+
+wedderburn
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 12
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434   35.6458   35.6166   35.5101
+
+  Columns 13 through 24
+
+   35.4144   35.2932   35.1322   34.7416   34.4239   34.2798   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725
+
+  Columns 25 through 26
+
+   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 12
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425   -0.1467   -0.0803    0.0289
+
+  Columns 13 through 24
+
+    0.1001    0.1116    0.1734    0.2570    0.3657    0.4606    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019
+
+  Columns 25 through 26
+
+   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 12
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437   -5.2328   -2.8633    1.0229
+
+  Columns 13 through 24
+
+    3.5467    3.9370    6.0688    8.8890   12.5146   15.7148   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352
+
+  Columns 25 through 26
+
+   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 12
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915  122.8813  122.8074  122.7230
+
+  Columns 13 through 24
+
+  122.6213  122.5188  122.3642  122.0152  121.7570  121.6422  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342
+
+  Columns 25 through 26
+
+  121.6820  121.6443
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 12
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007    0.0019    0.0079    0.0746
+
+  Columns 13 through 24
+
+    0.0084    0.0074    0.0046    0.0021    0.0020    0.0008    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154
+
+  Columns 25 through 26
+
+    0.0066    0.0095
+
+{??? Error using ==> <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graphics\print.m',325,0)">print at 325</a>
+Cannot create output file 'e:\ACADEMICA42\CAP02\richcamada\riL.bmp'
+
+Error in ==> <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP02\Richcamada\Richcamada.m',271,0)">Richcamada at 271</a>
+   print -dbitmap e:\ACADEMICA42\CAP02\richcamada\riL.bmp
+} 
+uiopen('E:\ACADEMICA42_maio_14\CAP02\wedderburn.m', true);
+wedderburn
+{??? Undefined function or variable 'wedderburn'.
+} 
+Wedderburn
+{??? Undefined function or variable 'Wedderburn'.
+} 
+load deltaro
+{??? Error using ==> load
+Unable to read file deltaro: No such file or directory.
+} 
+load deltro
+{??? Error using ==> load
+Unable to read file deltro: No such file or directory.
+} 
+load delro
+{??? Error using ==> load
+Unable to read file delro: No such file or directory.
+} 
+load deltaro
+{??? Error using ==> load
+Unable to read file deltaro: No such file or directory.
+} 
+deltaro=.02
+
+deltaro =
+
+    0.0200
+
+V=2.0
+
+V =
+
+     2
+
+wedderbur(deltaro,V)
+{??? Undefined function or method 'wedderbur' for input arguments of type 'double'.
+} 
+wedderburn(deltaro,V)
+{??? Undefined function or method 'wedderburn' for input arguments of type 'double'.
+} 
+load deltro
+{??? Error using ==> load
+Unable to read file deltro: No such file or directory.
+} 
+deltro=.02
+
+deltro =
+
+    0.0200
+
+V=10
+
+V =
+
+    10
+
+load deltro
+{??? Error using ==> load
+Unable to read file deltro: No such file or directory.
+} 
