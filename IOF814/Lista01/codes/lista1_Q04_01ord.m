@@ -53,7 +53,7 @@ for n=2:nmax
     hold
     plot(xgrid,fren,'LineWidth',2)
     axis([xgrid(1) xgrid(jmax) -conc conc]);
-    title(['Advec sinal retangular (esq. 4a. ordem) - tempo ',...
+    title(['Advec sinal retangular (esq. 1a. ordem) - tempo ',...
         num2str(tempo/3600),'h'],'fontsize',12)
     xlabel('DISTANCIA NA GRADE (m)','fontsize',12)
     ylabel('CONCENTRACAO','fontsize',12)

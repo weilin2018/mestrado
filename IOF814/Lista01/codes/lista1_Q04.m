@@ -68,9 +68,9 @@ for n=2:nmax
     xlabel('DISTANCIA NA GRADE (m)','fontsize',12)
     ylabel('CONCENTRACAO','fontsize',12)
     grid on
-  %  XX=num2str(tempo);
-    %grafico=['print -djpeg ../outputs/Q04_ord04/q04_ord04_',XX];
-    %eval(grafico);
+    XX=num2str(tempo);
+    grafico=['print -djpeg ../outputs/Q04_ord04/q04_ord04_',XX];
+    eval(grafico);
     pause(0.1)
     hold
 end

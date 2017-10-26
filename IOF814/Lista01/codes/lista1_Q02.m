@@ -82,11 +82,7 @@ end
 
 contplo=0;                  % contador de plotagem
 contFig=0;                  % contador de figuras para salvar o nome
-% LOOP NO TEMPO
-% CONDICOES DE CONTORNO
-% FORMULA DE RECORRENCIA
-% PLOTAGEM (PRESSIONE ENTER PARA EVOLUIR NO TEMPO)
-% EVOLUCAO NO TEMPO DAS VARIAVEIS
+
 for n=2:nmax
   tempo=n*dt;
   contplo=contplo+1;        % iteracao no contador
