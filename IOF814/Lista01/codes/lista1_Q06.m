@@ -70,8 +70,6 @@ ydesp=118;
 xderr=75;
 yderr=38;
 
-clear d, tmp;   % clear auxiliar variables
-
 % interpolar os dados de batimetria para a grade gerada acima
 nbat=griddata(lon,lat,bat,llon,llat);
 
@@ -133,6 +131,10 @@ eval(grafico);
 %close(2)
 
 %% Loop no tempo para verificar a evolucao das plumas
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                          CENARIO 1 - VENTO DE SUL                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clc
 
@@ -203,7 +205,7 @@ for n=3:nmax
       %plot(nlon(xderr),nlat(yderr),'xm','LineWidth',2)
       contourf(llon,llat,fren,[concorte:maximo])
       colorbar
-      title(['Adv,dif e dec, conc em t=',num2str(n*dt),'seg'],'fontsize',12)
+      title(['Vento para Norte: Adv,dif e dec, conc em t=',num2str(n*dt),'seg'],'fontsize',12)
       xlabel('Longitude')
       ylabel('Latitude')
       grid on
@@ -222,6 +224,7 @@ for n=3:nmax
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     CENARIO 2 - VENTO DE SUDOESTE                           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clc
@@ -287,13 +290,13 @@ for n=3:nmax
       contFig=contFig+1;
       kplot=0;
       maximo=max(max(fren));
-      figure(5)
+      figure(6)
       contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2);
       hold;
       %plot(nlon(xderr),nlat(yderr),'xm','LineWidth',2)
       contourf(llon,llat,fren,[concorte:maximo])
       colorbar
-      title(['Adv,dif e dec, conc em t=',num2str(n*dt),'seg'],'fontsize',12)
+      title(['Vento para Nordeste: Adv,dif e dec, conc em t=',num2str(n*dt),'seg'],'fontsize',12)
       xlabel('Longitude')
       ylabel('Latitude')
       grid on
@@ -313,8 +316,8 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     CENARIO 3 - VENTO DE SUDESTE                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 clc
 
@@ -379,13 +382,13 @@ for n=3:nmax
       contFig=contFig+1;
       kplot=0;
       maximo=max(max(fren));
-      figure(5)
+      figure(7)
       contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2);
       hold;
       %plot(nlon(xderr),nlat(yderr),'xm','LineWidth',2)
       contourf(llon,llat,fren,[concorte:maximo])
       colorbar
-      title(['Adv,dif e dec, conc em t=',num2str(n*dt),'seg'],'fontsize',12)
+      title(['Vento para Noroeste: Adv,dif e dec, conc em t=',num2str(n*dt),'seg'],'fontsize',12)
       xlabel('Longitude')
       ylabel('Latitude')
       grid on
