@@ -9,105 +9,121 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear all; close all;
 
-jmax=200;
-kmax=200;
-nmax=90;
-u=0.1;           % componente u da velocidade
-v=0.1;           % componente v da velocidade
+% definindo os parametros iniciais do modelo
+jmax=20;         % numero de celulas em x
+kmax=20;         % numero de celulas em y
+nmax=100;         % periodo de simulacao em segundos
+pmax=kmax*jmax;  % quantidade de pontos total
+u=0.3;           % componente u da velocidade
+v=0.8;           % componente v da velocidade
 
-dx=10;
-dy=10;
-dt=4;
-pol=100;
-posini=95;
-posfim=105;
-freqplo=5;
+dx=5;            % passo de espaco em x
+dy=5;            % passo de espaco em y
+dt=1;            % passo de tempo em s
+
+freqplo=5;       % frequencia de plot
+
 xgrid=((1:jmax)-1)/dx;
+ygrid=((1:kmax)-1)/dy;
 
-% CALCULOS INICIAIS: calcular q!!!
-qu = (dt*u)/(2*dx);
-qv = (dt*v)/(2*dy);
+kdesp=2:2;
+jdesp=2:2;      % posicao de despejo
+conc=1;         % concentracao de despejo total
 
-% CONDICOES INICIAIS
-fatu=zeros(jmax,kmax);
-fren=zeros(jmax,kmax);
-fant=zeros(jmax,kmax);
+concorte=0.1;  % concentracao limite de corte
 
-fatu(posini:posfim)=pol;
+% CALCULOS INICIAIS
+qu = u/(4*dx);
+qv = v/(4*dy);
+
+% Definicao das condicoes iniciais e inicializacao das matrizes de dado
+fren=zeros(pmax,1);         % funcao de nivel n+1 (renovado)
+fatu=zeros(pmax,1);         % funcao de nível n (atual)
+fdes=zeros(kmax,jmax);      % funcao de despejo
+faux=zeros(pmax,1);         % funcao auxiliar
+grid=zeros(kmax,jmax);      % grade
+d=zeros(pmax,1);            % definicao do vetor d para os termos f(n+1)
+A=zeros(pmax);              % definicao da matriz A para os coeficientes
+fdes(kdesp,jdesp)=conc;     % condicao inicial de despejo
+
+% como fdesp e 2D, precisamos passar para 1D
+for ii = 1:kmax
+   faux(jmax*(ii-1)+1:jmax*ii) = fdes(ii,:);
+end
+fatu=fatu+faux;
 fant=fatu;
-fcin=fatu;
 
-contplo=2;
-pol050=0.2*pol;
-pol150=1.2*pol;
+% para popular a matriz A com as diagonais principais preenchidas pelos
+% coeficientes determinados durante a discretizacao, fazemos:
 
-% criando os indices
-sj=zeros(kmax,jmax);
-pj=zeros(kmax,jmax);
-dj=zeros(kmax,jmax);
+% determinando os indices do contorno
+inferiorBoundary=2:jmax-1;
+superiorBoundary=pmax-jmax+2:pmax-1;
+leftBoundary=find(rem(1:pmax,jmax)==0);
+rightBoundary=find(rem(0:pmax-1,jmax)==0);
 
-aj=(dt*u)/(2*dx);
-bj=1;
-cj=(-dt*u)/(2*dx);
+% concatenando todos os indices referentes ao contorno
+contorno=cat(2,inferiorBoundary,superiorBoundary,leftBoundary,rightBoundary);
 
-sk=zeros(kmax,jmax);
-pk=zeros(kmax,jmax);
-dk=zeros(kmax,jmax);
+% pegando todos os indices que nao sao referentes aos contornos
+interior=setdiff(1:pmax,contorno);
 
-ak=-(2*v)/(2*dy);
-bk=0;
-ck=(2*v)/(2*dy);
+for ii=1:pmax
+  if ii~=contorno
+      A(ii,ii)=1/2*dt;      % coef de f^{n+1}_{j,k}
+      A(ii,ii+1)=qu;        % coef de f^{n+1}_{j+1,k}
+      A(ii,ii-1)=-qu;       % coef de f^{n+1}_{j-1,k}
+      A(ii,ii+jmax)=qv;     % coef de f^{n+1}_{j,k+1}
+      A(ii,ii-jmax)=-qv;    % coef de f^{n+1}_{j,k-1}
+  else
+      A(ii,ii)=1;           % condicao de contorno rigida
+  end
+end
 
-
+contplo=0;                  % contador de plotagem
+contFig=0;                  % contador de figuras para salvar o nome
 % LOOP NO TEMPO
 % CONDICOES DE CONTORNO
 % FORMULA DE RECORRENCIA
 % PLOTAGEM (PRESSIONE ENTER PARA EVOLUIR NO TEMPO)
 % EVOLUCAO NO TEMPO DAS VARIAVEIS
-for n=3:nmax
-   tempo=n*dt;
-   % calcular dj e dk
-   % lembrando que: dj usa 2 niveis de tempo (fant e fatu) e dk usa somente 1 (fatu)
+for n=2:nmax
+  tempo=n*dt;
+  contplo=contplo+1;        % iteracao no contador
 
-   for j=2:1:jmax-1
-        for k=2:1:jmax-1
-            dj(k,j)=fant(k,j) - qu*(fatu(k,j+1)-fatu(k,j-1));
-            dk(k,j)=-qv*(fatu(k+1,j)-fatu(k-1,j));
-        end
-   end
+  % formula de recorrencia
+  d(interior) = 0.5*fant(interior)/dt - qu*fatu(interior+1) + ...
+                qu*fatu(interior-1) - qv*fatu(interior+jmax) + ...
+                qv*fatu(interior-jmax);
 
-   %varredura ascendente
-   for j=2:jmax-1
-     sj(j)=-cj/(bj+aj*sj(j-1));
-     pj(j)=(dj(j)-aj*pj(j-1))/(bj+aj*sj(j-1));
-   end
-   for k=2:kmax-1
-     sk(k)=-ck/(bk+ak*sk(k-1));
-     pk(k)=(dk(k)-ak*pk(k-1))/(bk+ak*sk(k-1));
-   end
+  % resolver o sistema linear
+  fren=linsolve(A,d);
 
-  % varredura descendente
-  % considerando que jmax=kmax, entao fazemos somente um loop para calcular fren
-  for j=jmax-1:-1:2
-    k=j; % facilitar a  leitura da formula seguinte:
-    fren(j,k) = sj(j)*fren(j+1,k) + pj(j) + sk(k)*fren(j,k+1) + pk(k);
-  end
-
-  contplo=contplo+1;
   if(contplo==freqplo)
     contplo=0;
-    figure (1)
-    plot(xgrid,fcin,'r','LineWidth',2)
-    hold
-    plot(xgrid,fren,'LineWidth',2)
-    axis([xgrid(1) xgrid(jmax) -pol050 pol150]);
-    title(['Adveccao de sinal retangular (semi implic, 2a ordem) - tempo ',...
-        num2str(tempo),' segundos'],'fontsize',12)
-    xlabel('DISTANCIA NA GRADE(m)','fontsize',12)
-    ylabel('conc','fontsize',12)
-    grid on
-    pause(0.01)
-    hold off
+    contFig=contFig+1;
+
+    maxconc=max(fren);
+
+    % convertendo o vetor para matriz
+    plt=zeros(kmax,jmax);
+    for ii=1:kmax
+        plt(ii,:)=fren(jmax*(ii-1)+1:jmax*ii);
+    end
+    contourf(xgrid,ygrid,plt,[concorte:0.01:maxconc]);
+    grid;
+    axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)]);
+    colorbar
+    title(['Adveccao Bidimensional (semi implic, 2a ordem) - tempo ',...
+        num2str(tempo),' segundos'],'fontsize',12);
+    xlabel('DISTANCIA NA GRADE(m)','fontsize',12);
+    ylabel('DISTANCIA NA GRADE(m)','fontsize',12);
+    numberFig=sprintf('%03d',contFig);
+    grafico=['print -djpeg ../outputs/Q02/q02_', numberFig];
+    eval(grafico);
+
+    hold off;
+    pause(0.01);
   end
 
   fant=fatu;
