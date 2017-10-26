@@ -97,7 +97,7 @@ for n=2:nmax
                 qv*fatu(interior-jmax);
 
   % resolver o sistema linear
-  fren=linsolve(A,d);
+  fren=A\d; % note que a barra invertida serve para resolver um sistema linear. Mais em https://www.mathworks.com/help/matlab/ref/mldivide.html
 
   if(contplo==freqplo)
     contplo=0;
