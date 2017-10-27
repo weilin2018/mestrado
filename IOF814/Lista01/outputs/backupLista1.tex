@@ -134,11 +134,6 @@
     \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
     
     
-\newenvironment{figurehere}
-  {\def\@captype{figure}}
-  {}
-\makeatother 
-
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
     \def\br{\hspace*{\fill} \\* }
@@ -498,32 +493,10 @@ seguir:
 \end{equation}
 
 A solução numérica de (\ref{ex2:5}) é apresentada no código
-\textbf{lista1\_Q02} e algumas imagens podem ser observadas nas Fig~\ref{fig2:1}, Fig~\ref{fig2:2} e Fig~\ref{fig2:3}.
+\textbf{lista1\_Q02} e algumas imagens podem ser observadas nas Figuras
+2.1, 2.2 e 2.3, em anexo.
 
-
-\begin{figure}
-\centering
-\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista01/outputs/Q02/q02_001.png}
-\caption{Fig 1 - Advecção bidimensional de um contaminante teórico, através de discretização com esquema
-semi implícito de 2ª ordem. Instante referente ao início da simulação (6 segundos).}
-\label{fig2:1}
-\end{figure}
-
-
-\begin{figure}
-\centering
-\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista01/outputs/Q02/q02_011.png}
-\caption{Fig 2 - Idem a \protect Fig~\ref{fig2:1}, mas para o instante de 56 segundos simulados.}
-\label{fig2:2}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista01/outputs/Q02/q02_019.png}
-\caption{Fig 3 - Idem a \protect Fig~\ref{fig2:1}, mas para o instante de 96 segundos simulados, referente ao final da
-simulação.}
-\label{fig2:3}
-\end{figure}
+    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
     \subparagraph{Q.03 - O que são condições de contorno nas formas não
 gradiente, extrapolação linear e radiacional ? Dê exemplos para a
@@ -536,8 +509,6 @@ grade, é necessário impor uma condição de contorno adicional, chamada de
 \emph{"Condição de Contorno Computacional"}. Essa condição adicional é
 necessária junto a condição inicial e a condição de contorno no primeiro
 ponto da grade e é dada em \(f^{n+1}_{j=jmax}\).
-
-
 
 \textbf{Condição não Gradiente}
 
@@ -653,6 +624,8 @@ Por fim, as melhores condições de contorno são as que provocam mínima
 reflexão do sinal nas bordas e mantém a continuidade dos resultados
 próximo aos limites da grade.
 
+    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
     \subparagraph{Q.04 - Implemente dois modelos de advecção de um sinal
 retangular numa grande uni-dimensional, através de esquemas avançados no
 tempo, que utilizam diferenças finitas no espaço de 1ª ordem e de 4ª
@@ -763,8 +736,8 @@ A solução numérica de ambos os esquemas de discretização é realizada no
 arquivo lista1\_Q04\_ord01.m e lista1\_Q04\_ord04.m, a seguir, seguem os
 resultados obtidos nos modelos elaborados.
 
-Comparativamente, nota-se que o esquema de ordem 4 (Fig~\ref{fig4:2}) possui uma
-instabilidade maior que o esquema de ordem 1 (Fig~\ref{fig4:1}), com ruídos que
+Comparativamente, nota-se que o esquema de ordem 4 (Fig 4.2) possui uma
+instabilidade maior que o esquema de ordem 1 (Fig 4.1), com ruídos que
 interferem no sinal e, com o tempo, amplificam-se. Desta forma, o
 esquema de baixa ordem foi considerado o mais adequado para modelar a
 advecção do sinal retangular do exercício.
@@ -780,19 +753,7 @@ modelo, o esquema de baixa ordem rodou, de forma estável, com um
 \(\Delta{t}\) 10 vezes maior que o utilizado no esquema de alta ordem
 que, com \(\Delta{t} > 1\) instabilizou rapidamente.
 
-\begin{figure}
-\centering
-\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista01/outputs/Q04_ord01/q04_ord01_7200.png}
-\caption{Fig 4 - Advecção de um sinal retangular em esquema avançado no tempo e retardado no espaço de 1ª ordem.}
-\label{fig4:1}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista01/outputs/Q04_ord04/q04_ord04_3501.png}
-  \caption{Fig 5 - Advecção de um sinal retangular em esquema avançado no tempo e retardado no espaço de 4ª ordem.}
-\label{fig4:2}
-\end{figure}
+Importante: as Figuras citadas estão no final do arquivo, em anexo.
 
     \subparagraph{Q.05 - Determine os coeficientes da forma discretiza da
 equação da
@@ -987,5 +948,8 @@ emissário a boca do estuário de São Vicente, enquanto que a pluma do
 acidente, por sua vez, atinge a região a Leste da grade, alcançando
 principalmente a região da Praia Grande e demais regiões. Da mesma forma
 que no segundo cenário.
+
+
+    % Add a bibliography block to the postdoc
 
 \end{document}
