@@ -7,6 +7,13 @@
 %                                                                     %
 %                                                                     %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       Problema: elevacao dada no exercicio muito maior que a         %
+%     elevacao gerada pelo vento de SW com 10m/s. Com isso o sinal     %
+%   tanto da corrente quanto de eta causado pelo vento e imperceptivel %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 clear all; close all;clc
 
 % author note:
@@ -15,15 +22,16 @@ clear all; close all;clc
 %genpath('/home/tparente/Dropbox/TOOLBOX_MATLAB/new_codes/m_map/');
 
 %% Parte I - definicao dos parametros do modelo
-nmax=1800;           % tempo de simulacao
-jmax=150;            % tamanho da grade em x
-kmax=150;            % tamanho da grade em y
-jmax2=jmax/2;        % reduzindo a grade pela metade
-kmax2=kmax/2;        % reduzindo a grade pela metade
-dt=10;               % passo de tempo
-kx=10;               % coeficiente de difusao
-ky=10;               % coeficiente de difusao
-freqplot=10;         % frequencia de plotagem
+nmax=90;                % tempo de simulacao
+jmax=150;               % tamanho da grade em x
+kmax=150;               % tamanho da grade em y
+jmax2=jmax/2;           % reduzindo a grade pela metade
+kmax2=kmax/2;           % reduzindo a grade pela metade
+dt=10;                  % passo de tempo
+kx=10;                  % coeficiente de difusao
+ky=10;                  % coeficiente de difusao
+freqplot=10;            % frequencia de plotagem
+boundaryElevation=0.002;  % open boundary condition of elevation
 
 % parametros especificos para modelagem hidrodinamica
 dens=1024;                  % densidade media da agua do mar
@@ -52,6 +60,12 @@ batmax=max(bat);
 nlat = linspace(latmin, latmax, kmax);
 nlon = linspace(lonmin, lonmax, jmax);
 [llat, llon] = meshgrid(nlat, nlon); % gridar os pontos de grade
+
+% defining a location to control free surface elevation
+indLon = 38;
+indLat = 55;
+control = []; % matrix with nmax dimension to store all data
+
 
 % interpolar os dados de batimetria para a grade gerada acima
 nbat=griddata(lon,lat,bat,llon,llat);
@@ -149,7 +163,7 @@ ventomax=max(max(wwind));
 
 fprintf('Generating figure 2: wind field\n');
 figure(2)
-contour(llon,llat,batPlot,[0.5],'LineWidth',2,'color','k')
+contour(llon,llat,batPlot);%,[0.5],'LineWidth',2,'color','k')
 title('Bathymetry (m)')
 xlabel('DISTANCE (m) EW', 'fontsize', 12)
 ylabel('DISTANCE (m) NS', 'fontsize', 12)
@@ -176,18 +190,22 @@ for n=2:nmax
    fprintf('Calculating timestep %i - umean=%2.5f, vmean=%2.5f, elevmean=%2.5f\n',...
                               n,mean(mean(U2)),mean(mean(V2)),mean(mean(eta2)));
 
-   % open boundary condition: elevation of 0.25m
-    etamet=ones(kmax,jmax)*0.25;
+   % open boundary condition: elevation given by user
+    etamet=ones(kmax,jmax)*boundaryElevation;
 
     for j=1:jmax
-        eta2(1,j)=etamet(1,j);
-        eta2(kmax,j)=etamet(kmax,j);
+        eta2(1,j)=eta1(1,j) + etamet(1,j)*kmare(1,j);
+        eta2(2,j)=eta1(2,j) + etamet(2,j)*kmare(2,j);
+        eta2(kmax-1,j)=eta1(kmax-1,j) + etamet(kmax-1,j)*kmare(kmax-1,j);
+        eta2(kmax,j)=eta1(kmax,j) + etamet(kmax,j)*kmare(kmax,j);
     end
     for k=1:kmax
-        eta2(k,1)=etamet(k,1);
-        eta2(k,jmax)=etamet(k,jmax);
+        eta2(k,1)=eta1(k,1) + etamet(k,1)*kmare(k,1);
+        eta2(k,2)=eta1(k,2) + etamet(k,2)*kmare(k,2);
+        eta2(k,jmax-1)=eta1(k,jmax-1) + etamet(k,jmax-1)*kmare(k,jmax-1);
+        eta2(k,jmax)=eta1(k,jmax) + etamet(k,jmax)*kmare(k,jmax);
     end
-    
+
     %continuity eq
     for j=2:jmax-1
         for k=2:kmax-1
@@ -246,6 +264,9 @@ for n=2:nmax
     U1=U2;
     V1=V2;
 
+    % save eta to control
+    control = [control, eta2(indLon,indLat)];
+
     % plotting results
      if(kplot==freqplot)
         kplot=0;
@@ -289,7 +310,7 @@ for n=2:nmax
         % print -djpeg fig_elev
 
         figure(6)
-        quiver(X(1:5:end,1:5:end)',Y(1:5:end,1:5:end)',uplot(1:5:end,1:5:end)*10,vplot(1:5:end,1:5:end)*10,'LineWidth',2);
+        quiver(X(1:5:end,1:5:end)',Y(1:5:end,1:5:end)',uplot(1:5:end,1:5:end),vplot(1:5:end,1:5:end),'LineWidth',2);
         title(['Currents (m/s) - time ',num2str(tempo/60),...
             ' min - intens max ',num2str(velomax),' m/s'],'fontsize',12)
         axis equal
@@ -302,3 +323,12 @@ for n=2:nmax
 pause(1)
 
 end
+
+% plot eta control in all simulation
+figure(7)
+plot(control,'LineWidth',2);
+xlabel('Timestep (dt) in seconds');
+ylabel('Sea Surface Elevation in meters ');
+title(['Time Series of Sea Surface Elevation at ', num2str(llon2(indLon,indLat)), ', ', num2str(llat2(indLon,indLat))]);
+%title('Time Series of Sea Surface Elevation');
+grid
