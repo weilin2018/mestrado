@@ -2,7 +2,7 @@
 %  IOF814 - Prof Joseph Harari                                        %
 %  Aluno: Danilo Augusto Silva         nusp: 7279456                  %
 %                                                                     %
-%                         QUESTÃO 05 - LISTA 02                       %                                                                  %
+%                         QUESTÃO 05 - LISTA 02                       %
 %   Os dados de saidas sao salvos no diretorio ../outputs/Q06         %
 %                                                                     %
 %                                                                     %
@@ -31,7 +31,7 @@ dt=10;                  % passo de tempo
 kx=10;                  % coeficiente de difusao
 ky=10;                  % coeficiente de difusao
 freqplot=10;            % frequencia de plotagem
-boundaryElevation=0.002;  % open boundary condition of elevation
+boundaryElevation=0.00025;  % open boundary condition of elevation
 
 % parametros especificos para modelagem hidrodinamica
 dens=1024;                  % densidade media da agua do mar
@@ -243,16 +243,16 @@ for n=2:nmax
 
     % boundary condition - linear extrapolation
     for j=1:jmax
-        eta2(1,j)=(2*eta2(2,j)-eta2(3,j))*kmare(1,j);
-        eta2(kmax,j)=(2*eta2(kmax-1,j)-eta2(kmax-2,j))*kmare(kmax,j);
+        %eta2(1,j)=(2*eta2(2,j)-eta2(3,j))*kmare(1,j);
+        %eta2(kmax,j)=(2*eta2(kmax-1,j)-eta2(kmax-2,j))*kmare(kmax,j);
         U2(1,j)=(2*U2(2,j)-U2(3,j))*kmaru(1,j);
         V2(1,j)=(2*V2(2,j)-V2(3,j))*kmarv(1,j);
         U2(kmax,j)=(2*U2(kmax-1,j)-U2(kmax-2,j))*kmaru(kmax,j);
         V2(kmax,j)=(2*V2(kmax-1,j)-V2(kmax-2,j))*kmarv(kmax,j);
     end
     for k=1:kmax
-        eta2(k,1)=(2*eta2(k,2)-eta2(k,3))*kmare(k,1);
-        eta2(k,jmax)=(2*eta2(k,jmax-1)-eta2(k,jmax-2))*kmare(k,jmax);
+        %eta2(k,1)=(2*eta2(k,2)-eta2(k,3))*kmare(k,1);
+        %eta2(k,jmax)=(2*eta2(k,jmax-1)-eta2(k,jmax-2))*kmare(k,jmax);
         U2(k,1)=(2*U2(k,2)-U2(k,3))*kmaru(k,1);
         V2(k,1)=(2*V2(k,2)-V2(k,3))*kmarv(k,1);
         U2(k,jmax)=(2*U2(k,jmax-1)-U2(k,jmax-2))*kmaru(k,jmax);

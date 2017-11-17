@@ -383,7 +383,6 @@ for n=3:nmax
       kplot=0;
       maximo=max(max(fren));
       figure(7)
-      contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2);
       hold;
       %plot(nlon(xderr),nlat(yderr),'xm','LineWidth',2)
       contourf(llon,llat,fren,[concorte:maximo])
