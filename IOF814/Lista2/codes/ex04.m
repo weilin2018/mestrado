@@ -34,3 +34,13 @@ T = inpaint_nans(temp,1);
 
 figure(1)
 contourf(T);
+colorbar;
+title('Condicao Inicial: Grade com Temperatura Superficial Interpolada','fontsize',15);
+xlabel('Distancia (EW)','fontsize',12);
+ylabel('Distancia (NS)','fontsize',12);
+
+figure(3)
+pcolor(temp);
+title('Grade com Temperatura Superficial - Dados Originais','fontsize',15);
+xlabel('Distancia (EW)','fontsize',12);
+ylabel('Distancia (NS)','fontsize',12);
