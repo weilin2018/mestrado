@@ -8,12 +8,6 @@
 %                                                                     %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%       Problema: elevacao dada no exercicio muito maior que a         %
-%     elevacao gerada pelo vento de SW com 10m/s. Com isso o sinal     %
-%   tanto da corrente quanto de eta causado pelo vento e imperceptivel %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 clear all; close all;clc
 
 % author note:
@@ -27,7 +21,7 @@ jmax=150;               % tamanho da grade em x
 kmax=150;               % tamanho da grade em y
 jmax2=jmax/2;           % reduzindo a grade pela metade
 kmax2=kmax/2;           % reduzindo a grade pela metade
-dt=10;                  % passo de tempo
+dt=30;                  % passo de tempo
 kx=10;                  % coeficiente de difusao
 ky=10;                  % coeficiente de difusao
 freqplot=10;            % frequencia de plotagem
@@ -107,8 +101,9 @@ ylabel('DISTANCE (m) NS', 'fontsize', 12)
 colormap('winter')
 colorbar
 % saving figure
-%grafico=['print -djpeg ../outputs/Q05/batimetria'];
-%eval(grafico);
+out = ['../outputs/ex05/bathymetry'];
+grafico=['print -djpeg ', out];
+eval(grafico);
 
 
 %% Define keys for land (0) and sea (1)
@@ -174,7 +169,10 @@ title(['Wind - Maximum Intensity ',...
 %axis equal
 xlabel('DISTANCE (m) EW','fontsize',12)
 ylabel('DISTANCE (m) NS','fontsize',12)
-%print -djpeg fig_vento
+% saving figure
+out = ['../outputs/ex05/windField'];
+grafico=['print -djpeg ', out];
+eval(grafico);
 
 %kmax=kmax/2;
 %jmax=jmax/2;
@@ -187,8 +185,8 @@ for n=2:nmax
    tempo=n*dt;
    kplot=kplot+1;
    % print to control all process of the program, printing mean u,v and eta
-   fprintf('Calculating timestep %i - umean=%2.5f, vmean=%2.5f, elevmean=%2.5f\n',...
-                              n,mean(mean(U2)),mean(mean(V2)),mean(mean(eta2)));
+   fprintf('Calculating timestep %i/%i - umean=%2.5f, vmean=%2.5f, elevmean=%2.5f\n',...
+                              n,nmax,mean(mean(U2)),mean(mean(V2)),mean(mean(eta2)));
 
    % open boundary condition: elevation given by user
     etamet=ones(kmax,jmax)*boundaryElevation;
@@ -307,7 +305,10 @@ for n=2:nmax
         %axis([llon(1) llon(jmax) llat(1) llat(kmax)])
         xlabel('DISTANCE (m) EW','fontsize',12)
         ylabel('DISTANCE (m) NS','fontsize',12)
-        % print -djpeg fig_elev
+        % saving figure
+        out = ['../outputs/ex05/elev_',num2str(tempo)];
+        grafico=['print -djpeg ', out];
+        eval(grafico);
 
         figure(6)
         quiver(X(1:5:end,1:5:end)',Y(1:5:end,1:5:end)',uplot(1:5:end,1:5:end),vplot(1:5:end,1:5:end),'LineWidth',2);
@@ -317,10 +318,13 @@ for n=2:nmax
         axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
         xlabel('DISTANCE (m) EW','fontsize',12)
         ylabel('DISTANCE (m) NS','fontsize',12)
-        % print -djpeg fig_corr
+        % saving figure
+        out = ['../outputs/ex05/curr_',num2str(tempo)];
+        grafico=['print -djpeg ', out];
+        eval(grafico);
      end
 
-pause(1)
+     pause(1)
 
 end
 
@@ -332,3 +336,7 @@ ylabel('Sea Surface Elevation in meters ');
 title(['Time Series of Sea Surface Elevation at ', num2str(llon2(indLon,indLat)), ', ', num2str(llat2(indLon,indLat))]);
 %title('Time Series of Sea Surface Elevation');
 grid
+% saving figure
+out = ['../outputs/ex05/elevationTimeseries'];
+grafico=['print -djpeg ', out];
+eval(grafico);
