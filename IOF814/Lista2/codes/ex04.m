@@ -38,7 +38,7 @@ nm    = n*m;              % total de valores que serao necessarios
 k     = isnan(T(:));      % indices de elementos NaN
 
 nan_list  = find(k);      % lista com indices dos pontos NaN
-know_list = find(~k);     % listsa de valores conhecidos
+know_list = find(~k);     % lista de valores conhecidos
 
 % converter os indices (linear) de valores NaN para o formato [linha,coluna]
 [nr,nc]   = ind2sub([n,m],nan_list);
