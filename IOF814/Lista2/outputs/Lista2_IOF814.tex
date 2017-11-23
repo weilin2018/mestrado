@@ -1,7 +1,7 @@
 
 % Default to the notebook output style
 
-    
+
 
 
 % Inherit from the specified cell style.
@@ -9,11 +9,11 @@
 
 
 
-    
+
 \documentclass[11pt]{article}
 
-    
-    
+
+
     \usepackage[T1]{fontenc}
     % Nicer default font (+ math font) than Computer Modern for most use cases
     \usepackage{mathpazo}
@@ -38,7 +38,7 @@
     \DeclareCaptionLabelFormat{nolabel}{}
     \captionsetup{labelformat=nolabel}
 
-    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{adjustbox} % Used to constrain images to a maximum size
     \usepackage{xcolor} % Allow colors to be defined
     \usepackage{enumerate} % Needed for markdown enumerations to work
     \usepackage{geometry} % Used to adjust the document margins
@@ -54,8 +54,8 @@
     \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
     \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
     \usepackage{fancyvrb} % verbatim replacement that allows latex
-    \usepackage{grffile} % extends the file name processing of package graphics 
-                         % to support a larger range 
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
     % The hyperref package gives us a pdf with properly built
     % internal navigation ('pdf bookmarks' for the table of contents,
     % internal cross-reference links, web links for URLs, etc.)
@@ -65,10 +65,11 @@
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
-    
 
-    
-    
+    % novos pacotes
+    \usepackage[font=scriptsize]{caption}
+
+
     % Colors for the hyperref package
     \definecolor{urlcolor}{rgb}{0,.145,.698}
     \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
@@ -113,7 +114,7 @@
     \newcommand{\RegionMarkerTok}[1]{{#1}}
     \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
     \newcommand{\NormalTok}[1]{{#1}}
-    
+
     % Additional commands for more recent versions of Pandoc
     \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
     \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
@@ -132,8 +133,8 @@
     \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
     \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
     \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
-    
-    
+
+
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
     \def\br{\hspace*{\fill} \\* }
@@ -142,12 +143,12 @@
     \def\lt{<}
     % Document parameters
     \title{Lista2\_IOF814}
-    
-    
-    
+
+
+
 
     % Pygments definitions
-    
+
 \makeatletter
 \def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
     \let\PY@ul=\relax \let\PY@tc=\relax%
@@ -251,9 +252,9 @@
 
 
 
-    
+
     % Prevent overflowing lines due to hard-to-break entities
-    \sloppy 
+    \sloppy
     % Setup hyperref package
     \hypersetup{
       breaklinks=true,  % so long urls are correctly broken across lines
@@ -263,55 +264,42 @@
       citecolor=citecolor,
       }
     % Slightly bigger margins than the latex defaults
-    
+
     \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
-    
-    
+
+
+    \newenvironment{figurehere}
+      {\def\@captype{figure}}
+      {}
+    \makeatother
 
     \begin{document}
-    
-    
+
+    \title{Lista 2 - IOF814: Modelos Numéricos Aplicados a Processos Costeiros e Estuarinos}
     \maketitle
-    
-    
 
-    
-    \subsubsection{Lista 2}\label{lista-2}
+    \begin{center}
+    \textbf{Aluno:} Danilo Augusto Silva
 
-\textbf{Aluno:} Danilo Augusto Silva
+    \textbf{Nº USP:} 7279456
 
-\textbf{NUSP:} 7279456
+    \textbf{Data de Entrega:} 24 de Novembro/2017
+    \end{center}
+    \vspace{0.5in}
+    Informações gerais quanto a estrutura da lista:
 
-    \subsubsection{Ex1 - Implemente um modelo numérico 2D da equação da
-vorticidade simplificada abaixo fornecida, de modo a reproduzir os
-resultados de corrente do modelo de Stommel para o hemisfério
-Norte:}\label{ex1---implemente-um-modelo-numuxe9rico-2d-da-equauxe7uxe3o-da-vorticidade-simplificada-abaixo-fornecida-de-modo-a-reproduzir-os-resultados-de-corrente-do-modelo-de-stommel-para-o-hemisfuxe9rio-norte}
+    codes/: contem os códigos elaborados para os exercícios;
 
-\begin{equation}
-    \frac{\partial{\psi}}{\partial{x}}\beta = \frac{\partial}{\partial{x}}\bigg( \frac{\tau_{oy}}{\rho_oH} \bigg)- \frac{\partial}{\partial{y}}\bigg(\frac{\tau_{ox}}{\rho_oH} \bigg) - \frac{r}{\rho_oH}\bigg( \frac{\partial^2{\psi}}{\partial{x^2}} + \frac{\partial^2{\psi}}{\partial{y^2}} \bigg)
-    \label{ex1:1}
-\end{equation}
+    data/: contem os arquivos de input para alguns códigos e
 
-\begin{equation}
-    \xi = \bigg( \frac{\partial^2{\psi}}{\partial{x^2}} + \frac{\partial^2{\psi}}{\partial{y^2}} \bigg), u = - \frac{\partial{\psi}}{\partial{y}}, v = \frac{\partial{\psi}}{\partial{x}}
-    \label{ex1:2}
-\end{equation}
+    outputs/: contem os arquivos de saída dos códigos, armazenados em
+    subpastas designada para cada questão, bem como o arquivo original \textbf{.tex}
+    e \textbf{.pdf} desta lista, com os desenvolvimentos das discretizações e
+    respostas dissertativas.
 
-\subsubsection{Por simplicidade, considere um vento zonal com
-dependência meridional da
-forma:}\label{por-simplicidade-considere-um-vento-zonal-com-dependuxeancia-meridional-da-forma}
+    \subparagraph{Ex1}
 
-\begin{equation}
-    \tau_{ox} = \tau_o cos\bigg( \frac{\pi y}{L_y} \bigg)
-    \label{ex1:3}
-\end{equation}
-
-\subsubsection{\texorpdfstring{Como no modelo de Stommel, utilize
-\(\tau_o = 0.1 N/m^2\), \(L_y = 4x10^6 m\), \(H = 200m\),
-\(r = 0.2kg/m^2/s\) e
-\(\beta = 10^{-11} m^{-1}s\)}{Como no modelo de Stommel, utilize \textbackslash{}tau\_o = 0.1 N/m\^{}2, L\_y = 4x10\^{}6 m, H = 200m, r = 0.2kg/m\^{}2/s e \textbackslash{}beta = 10\^{}\{-11\} m\^{}\{-1\}s}}\label{como-no-modelo-de-stommel-utilize-tau_o-0.1-nm2-l_y-4x106-m-h-200m-r-0.2kgm2s-e-beta-10-11-m-1s}
-
-    Considerando (\ref{ex1:3}) em (\ref{ex1:1}), podemos eliminar a variação
+    Considerando as equações dadas no enunciado, podemos eliminar a variação
 da tensão de cisalhamento do vento na direção meridional, e, desta
 forma, reduzimos a equação da vorticidade para:
 
@@ -320,23 +308,29 @@ forma, reduzimos a equação da vorticidade para:
     \label{ex1:4}
 \end{equation}
 
-Discretizando (4) utilizando uma grade alternada do tipo B de Arakawa,
+\bigskip
+Discretizando (\ref{ex1:4}) utilizando uma grade alternada do tipo B de Arakawa,
 obtemos o seguinte:
 
 \begin{equation}
-    \bigg( \frac{\psi^{n}_{j+1,k+1} + \psi^{n}_{j+1,k} - \psi^{n}_{j-1,k-1} - \psi^{n}_{j-1,k}}{4\Delta{x}} \bigg)\beta = -\frac{1}{2\rho_oH\Delta{y}}\bigg( \tau^{n}_{ox j+1,k+1} + \tau^{n}_{ox j-1,k+1} + \tau^{n}_{ox j+1,k-1} + \tau^{n}_{ox j-1,k-1}\bigg) + \\
-    - \frac{r}{\rho_oH}\bigg( 
-      \frac{\psi^{n}_{j+1,k} - 2\psi^{n}_{j,k} + \psi^{n}_{j-1,k}}{\Delta{x^2}} 
-    + \frac{\psi^{n}_{j,k+1} - 2\psi^{n}_{j,k} + \psi^{n}_{j,k-1}}{\Delta{y^2}} \bigg)
-    \label{ex1:5}
+\begin{aligned}
+\bigg( \frac{\psi^{n}_{j+1,k+1} + \psi^{n}_{j+1,k} - \psi^{n}_{j-1,k-1} - \psi^{n}_{j-1,k}}{4\Delta{x}} \bigg)\beta = -\frac{1}{2\rho_oH\Delta{y}}\bigg( \tau^{n}_{ox j+1,k+1} + \tau^{n}_{ox j-1,k+1} + \tau^{n}_{ox j+1,k-1} + \tau^{n}_{ox j-1,k-1}\bigg) + \\
+- \frac{r}{\rho_oH}\bigg(
+  \frac{\psi^{n}_{j+1,k} - 2\psi^{n}_{j,k} + \psi^{n}_{j-1,k}}{\Delta{x^2}}
++ \frac{\psi^{n}_{j,k+1} - 2\psi^{n}_{j,k} + \psi^{n}_{j,k-1}}{\Delta{y^2}} \bigg)
+\label{ex1:5}
+\end{aligned}
 \end{equation}
 
 Isolando o termo \(\psi^{n}_{j,k}\) de (\ref{ex1:5}), obteremos:
 
 \begin{equation}
-    \psi^{n}_{j,k} = \bigg[ \frac{1}{2\rho_oH\Delta{y}}\bigg( \tau^{n}_{ox j+1,k+1} + \tau^{n}_{ox j-1,k+1} + \tau^{n}_{ox j+1,k-1} + \tau^{n}_{ox j-1,k-1} \bigg)  + \frac{\beta}{4\Delta{x}}\bigg( \psi^{n}_{j+1,k+1} + \psi^{n}_{j+1,k} - \psi^{n}_{j-1,k-1} - \psi^{n}_{j-1,k} \bigg) + \\
-    + \frac{r}{\rho_oH}\bigg( \frac{\psi^{n}_{j+1,k} + \psi^{n}_{j-1,k}}{\Delta{x^2}} + \frac{\psi^{n}_{j,k+1} + \psi^{n}_{j,k-1}}{\Delta{y^2}}\bigg)\bigg] \Biggm/ \frac{2r}{\rho_oH}\bigg( \frac{1}{\Delta{x^2}} + \frac{1}{\Delta{y^2}} \bigg)
-    \label{ex1:6}
+\begin{aligned}
+\psi^{n}_{j,k} = \bigg[ \frac{1}{2\rho_oH\Delta{y}}\bigg( \tau^{n}_{ox j+1,k+1} + \tau^{n}_{ox j-1,k+1} + \tau^{n}_{ox j+1,k-1} + \tau^{n}_{ox j-1,k-1} \bigg)  + \\
+\frac{\beta}{4\Delta{x}}\bigg( \psi^{n}_{j+1,k+1} + \psi^{n}_{j+1,k} - \psi^{n}_{j-1,k-1} - \psi^{n}_{j-1,k} \bigg) + \\
++ \frac{r}{\rho_oH}\bigg( \frac{\psi^{n}_{j+1,k} + \psi^{n}_{j-1,k}}{\Delta{x^2}} + \frac{\psi^{n}_{j,k+1} + \psi^{n}_{j,k-1}}{\Delta{y^2}}\bigg)\bigg] \Biggm/ \frac{2r}{\rho_oH}\bigg( \frac{1}{\Delta{x^2}} + \frac{1}{\Delta{y^2}} \bigg)
+\label{ex1:6}
+\end{aligned}
 \end{equation}
 
 Calculou-se a função de corrente, baseado na Eq(\ref{ex1:6}) e, a partir
@@ -344,15 +338,21 @@ das relações entre u e v com as derivadas espaciais de \(\psi\),
 obteve-se resultados para a elevação da superfície livre e corrente no
 Hemisfério Norte.
 
-Nota-se (Fig1.1) uma elevação positiva no canto superior direito da
+Nota-se (Fig 1.1) uma elevação positiva no canto superior direito da
 grade teórica elaborada com um desnível na região oposta. Quanto a
 circulação gerada pelo vento considerado (Fig1.2), nota-se uma
 circulação horária, que corresponde com o padrão do grande giro
 subtropical do Atlântico Norte.
 
-\textbf{elevacao\_3000.jpg e circulacao\_3000.jpg}
+\begin{figure}
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig1_1.png}}}
+\caption{Fig 1.1 - Campo de correntes (esquerda) e elevação da superfície livre do mar (direita) para o último
+ instante de tempo modelado pela função de corrente.}
+\label{fig1:1}
+\end{figure}
 
-    \subsubsection{Ex2}\label{ex2}
+    \subparagraph{Ex2}\label{ex2}
 
 A simulação de um sistema hidrodinâmico 1D foi realizado, utilizando-se
 o seguindo conjunto de equações pra águas rasas:
@@ -375,14 +375,16 @@ os efeitos difusivos e decaimento:
     \frac{v^{n+1}_{j} - v^{n-1}_{j}}{2\Delta{t}} = -g\bigg[ \frac{\eta^{n}_{j+1}  - \eta^{n}_{j-1}}{2\Delta{y}} \bigg] + D\bigg[ \frac{v^{n}_{j+1} - 2v^{n}_{j} + v^{n}_{j-1}}{\Delta{y^2}} \bigg] - rv^{n}_{j}
     \label{ex2:3}
 \end{equation}
+\bigskip
 
 Isolando o termo renovado \(v^{n+1}_{j}\), obtemos:
 
 \begin{equation}
-    v^{n+1}_{j} = v^{n}_{j} - g\frac{\Delta{t}}{\Delta{y}}(\eta^{n}_{j+1} - \eta^{n}_{j-1}) + 2D\frac{\Delta{t}}{\Delta{y^2}}(v^{n}_{j+1} - 2v^{n}_{j} + v^{n}_{j-1}) - 2rv^{n}_{j}\Delta{t} 
+    v^{n+1}_{j} = v^{n}_{j} - g\frac{\Delta{t}}{\Delta{y}}(\eta^{n}_{j+1} - \eta^{n}_{j-1}) + 2D\frac{\Delta{t}}{\Delta{y^2}}(v^{n}_{j+1} - 2v^{n}_{j} + v^{n}_{j-1}) - 2rv^{n}_{j}\Delta{t}
     \label{ex2:4}
 \end{equation}
 
+\bigskip
 Para a equação (\ref{ex2:2}), discretizamos e isolando o termo
 \(\eta^{n+1}_{j}\):
 
@@ -393,13 +395,21 @@ Para a equação (\ref{ex2:2}), discretizamos e isolando o termo
 
 O código \href{../codes/ex02.m}{ex02.m} modela as equações (\ref{ex2:4})
 e (\ref{ex2:5}), obtendo os resultados apresentados abaixo.
+\bigskip
 
-No início da simulação (Figura 2.1, esquerda), observamos as condições
+No início da simulação (Fig 2.1, esquerda), observamos as condições
 de contorno a sul e norte da grade, e o sinal propagando-se para o
 interior do canal. Como consequência dessa propagação de sinal de
 \(\eta\), há geração de uma corrente negativa nos contornos sul e norte.
 
-\textbf{Figura 2.1}
+
+\begin{figure}
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig2_1.png}}}
+\caption{Fig 2.1 - Elevação da superfície livre do mar (esquerda, superior) e corrente (esquerda, inferior) para o instante
+de tempo de 3.4min e para o instante de 10min a direita.}
+\label{fig2:1}
+\end{figure}
 
 Ambos os sinais convergem para o interior do canal (Figura 2.1, direita)
 e, ao se encontrarem, há uma soma destrutiva dos sinais que tende a
@@ -408,11 +418,14 @@ refletida de volta aos contornos (Figura 2.2, esquerda). Desta forma,
 com as integrações no tempo, o observado é que a superfície livre entra
 em equilíbrio (Figura 2.2, direita).
 
-\textbf{Figura 2.2}
+\begin{figure}
+\centering
+\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig2_2.png}
+\caption{Fig 2.2 - Vide Fig2.1, mas para os instantes de tempo de 20min (esquerda) e 32.4min (direita).}
+\label{fig2:2}
+\end{figure}
 
-    \subsubsection{Ex3}\label{ex3}
-
-\subsubsection{Parte A}\label{parte-a}
+    \subparagraph{Ex3 - Parte A}\label{ex3---parte-a}
 
 Considerando as equações:
 
@@ -431,11 +444,12 @@ Considerando as equações:
     \label{ex3A:eq3}
 \end{equation}
 
-Uma grade B de Arakawa (Fig.\textasciitilde{}\ref{ex3A:fig1}), é uma
+Uma grade B de Arakawa (Fig.~\ref{ex3A:fig1}), é uma
 grade alternada utilizada para modelar as equações hidrodinâmicas 2D,
 onde os pontos das componentes de velocidade (u,v) são dados no centro
-das células e os pontos de elevação (\(\eta\)) são definidos nos cantos
-das células.
+das células e os pontos de elevação \(\eta\) são definidos nos cantos
+das células. Para fins acadêmicos, considera-se, nesta discretização,
+um índice para os três pontos (u, v e \(\eta\)).
 
 A discretização das equações \ref{ex3A:eq1}, \ref{ex3A:eq2} e
 \ref{ex3A:eq3} segue os seguintes esquemas:
@@ -452,6 +466,14 @@ A discretização das equações \ref{ex3A:eq1}, \ref{ex3A:eq2} e
   Esquema semi implícito para o \textbf{decaimento}.
 \end{itemize}
 
+\begin{figure}
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/b-grid.png}}}
+\caption{Fig 3.1 - Grade B de Arakawa, com pontos do tipo \(\eta\) localizados nos cantos das células
+e pontos do tipo u,v localizados no centro das células. }
+\label{ex3A:fig1}
+\end{figure}
+
 Ao programar as equações discretizadas, devemos inicialmente calcular as
 componentes de velocidade e, então, a aplicar a equação da continuidade.
 Desta forma, a discretização será apresentada desta forma, inicialmente
@@ -466,38 +488,45 @@ determina o esquema da grade B de Arakawa utilizada.
 \textbf{Componente u ou Eq \ref{ex3A:eq2}}
 
 \begin{equation}
-    \frac{U^{n+1}_{j+1,k+1} - U^{n-1}_{j+1,k+1}}{2\Delta{t}} + umed\bigg( \frac{U^{n}_{j+3,k+1} - U^{n}_{j-1,k+1}}{2\Delta{x}} \bigg) + vmed\bigg( \frac{U^{n}_{j+1,k+3} - U^{n}_{j+1,k-1}}{2\Delta{y}} \bigg) - fV^{n}_{j+1,k+1} = \\
-    -g\bigg[  \frac{(\eta^{n}_{j+2,k} + \eta^{n}_{j+2,k+2}) -(\eta^{n}_{j,k} + \eta^{n}_{j,k+2} ) }{2\Delta{x}}  \bigg] + \\
-    + D_h\bigg[ \bigg( \frac{U^{n-1}_{j+3,k+1} - 2U^{n-1}_{j+1,k+1} + U^{n-1}_{j-1,k+1}}{\Delta{x^2}} \bigg) + \bigg( \frac{U^{n-1}_{j+1,k+3} -2U^{n-1}_{j+1,k+1} + U^{n-1}_{j+1,k-1}}{\Delta{y^2}} \bigg) \bigg] + \\
-    - R\bigg( \frac{U^{n}_{j+1,k+1} + U^{n+1}_{j+1,k+1}}{2} \bigg)
-    \label{ex3A:eq4}
+\begin{aligned}
+\frac{U^{n+1}_{j+1,k+1} - U^{n-1}_{j+1,k+1}}{2\Delta{t}} + umed\bigg( \frac{U^{n}_{j+3,k+1} - U^{n}_{j-1,k+1}}{2\Delta{x}} \bigg) + vmed\bigg( \frac{U^{n}_{j+1,k+3} - U^{n}_{j+1,k-1}}{2\Delta{y}} \bigg) - fV^{n}_{j+1,k+1} = \\
+-g\bigg[  \frac{(\eta^{n}_{j+2,k} + \eta^{n}_{j+2,k+2}) -(\eta^{n}_{j,k} + \eta^{n}_{j,k+2} ) }{2\Delta{x}}  \bigg] + \\
++ D_h\bigg[ \bigg( \frac{U^{n-1}_{j+3,k+1} - 2U^{n-1}_{j+1,k+1} + U^{n-1}_{j-1,k+1}}{\Delta{x^2}} \bigg) + \bigg( \frac{U^{n-1}_{j+1,k+3} -2U^{n-1}_{j+1,k+1} + U^{n-1}_{j+1,k-1}}{\Delta{y^2}} \bigg) \bigg] + \\
+- R\bigg( \frac{U^{n}_{j+1,k+1} + U^{n+1}_{j+1,k+1}}{2} \bigg)
+\label{ex3A:eq4}
+\end{aligned}
 \end{equation}
 
 \textbf{Componente v ou Eq \ref{ex3A:eq3}}
 
 \begin{equation}
-    \frac{V^{n+1}_{j+1,k+1} - V^{n-1}_{j+1,k+1}}{2\Delta{t}} + umed\bigg( \frac{V^{n}_{j+3,k+1} - V^{n}_{j-1,k+1}}{2\Delta{x}} \bigg) + vmed\bigg( \frac{V^{n}_{j+1,k+3} - V^{n}_{j+1,k-1}}{2\Delta{y}} \bigg) + fU^{n}_{j+1,k+1} = \\
-    -g\bigg[ \frac{(\eta^{n}_{j+2,k+2} + \eta^{n}_{j,k+2}) - (\eta^{n}_{j+2,k} + \eta^{n}_{j,k} ) }{2\Delta{y}}  \bigg] + \\
-    + D_h\bigg[ \bigg( \frac{V^{n-1}_{j+3,k+1} - 2V^{n-1}_{j+1,k+1} + V^{n-1}_{j-1,k+1}}{\Delta{x^2}} \bigg) + \bigg( \frac{V^{n-1}_{j+1,k+3} -2V^{n-1}_{j+1,k+1} + V^{n-1}_{j+1,k-1}}{\Delta{y^2}} \bigg) \bigg] + \\
-    - R\bigg( \frac{V^{n}_{j+1,k+1} + V^{n+1}_{j+1,k+1}}{2} \bigg)
-    \label{ex3A:eq5}
+\begin{aligned}
+\frac{V^{n+1}_{j+1,k+1} - V^{n-1}_{j+1,k+1}}{2\Delta{t}} + umed\bigg( \frac{V^{n}_{j+3,k+1} - V^{n}_{j-1,k+1}}{2\Delta{x}} \bigg) + vmed\bigg( \frac{V^{n}_{j+1,k+3} - V^{n}_{j+1,k-1}}{2\Delta{y}} \bigg) + fU^{n}_{j+1,k+1} = \\
+-g\bigg[ \frac{(\eta^{n}_{j+2,k+2} + \eta^{n}_{j,k+2}) - (\eta^{n}_{j+2,k} + \eta^{n}_{j,k} ) }{2\Delta{y}}  \bigg] + \\
++ D_h\bigg[ \bigg( \frac{V^{n-1}_{j+3,k+1} - 2V^{n-1}_{j+1,k+1} + V^{n-1}_{j-1,k+1}}{\Delta{x^2}} \bigg) + \bigg( \frac{V^{n-1}_{j+1,k+3} -2V^{n-1}_{j+1,k+1} + V^{n-1}_{j+1,k-1}}{\Delta{y^2}} \bigg) \bigg] + \\
+- R\bigg( \frac{V^{n}_{j+1,k+1} + V^{n+1}_{j+1,k+1}}{2} \bigg)
+\label{ex3A:eq5}
+\end{aligned}
 \end{equation}
 
-\textbf{Elevação do nível do mar (\(\eta\)) ou Eq \ref{ex3A:eq1}}
+\textbf{Elevação do nível do mar \(\eta\) ou Eq \ref{ex3A:eq1}}
 
 \begin{equation}
-    \bigg( \frac{\eta^{n+1}_{j,k} - \eta^{n}_{j,k}}{2\Delta{t}} \bigg) + 
-    H\bigg( \frac{U^{n+1}_{j+1,k+1} + U^{n+1}_{j+1,k-1} - U^{n+1}_{j-1,k+1} - U^{n+1}_{j-1,k-1}}{2\Delta{x}} \bigg) + \\
-    H\bigg( \frac{V^{n+1}_{j+1,k+1} + V^{n+1}_{j-1,k+1} - V^{n+1}_{j+1,k-1} + V^{n+1}_{j-1,k-1}}{2\Delta{y}} \bigg) = 0
-    \label{ex3A:eq6}
+\begin{aligned}
+\bigg( \frac{\eta^{n+1}_{j,k} - \eta^{n}_{j,k}}{2\Delta{t}} \bigg) +
+H\bigg( \frac{U^{n+1}_{j+1,k+1} + U^{n+1}_{j+1,k-1} - U^{n+1}_{j-1,k+1} - U^{n+1}_{j-1,k-1}}{2\Delta{x}} \bigg) + \\
+H\bigg( \frac{V^{n+1}_{j+1,k+1} + V^{n+1}_{j-1,k+1} - V^{n+1}_{j+1,k-1} + V^{n+1}_{j-1,k-1}}{2\Delta{y}} \bigg) = 0
+\label{ex3A:eq6}
+\end{aligned}
 \end{equation}
+\bigskip
 
 A vantagem, especificamente, da grade B de Arakawa é a facilidade em
 representar os termos de Coriolios, embora dificulte, como já
 demonstrado, a representação dos termos de gradiente de elevação e
 divergente de velocidade.
 
-\subsubsection{Parte B}\label{parte-b}
+\subparagraph{Ex3 - Parte B}\label{ex3---parte-b}
 
 Consiste em um modelo de grade variável no tempo, onde a possibilidade
 de inundação ou ressecamento dos elementos de grade é uma importante
@@ -531,11 +560,14 @@ Este procedimento é realizado através de uma média ponderada entre os
 termos de D, onde, para um \textbf{contorno terrestre a oeste da região
 modelada}:
 
-\begin{cases} 
+\begin{equation}
+\begin{cases}
         (j-1) &\mbox{será ponto úmido},  \mbox{se } 0.5(D_{j-1} + D_j) \ge 0
-        \\ 
+        \\
         (j-1) & \mbox{será ponto seco}, \mbox{se } 0.5(D_{j-1} + D_j) < 0
 \end{cases}
+\end{equation}
+\bigskip
 
 Em caso do ponto (j-1) se tornar um ponto úmido, o valor de elevação e
 corrente são extrapolados da região de oceano para as proximidades do
@@ -551,6 +583,7 @@ extrapolação para elevação \(\eta\) e corrente:
     \bigg[ \bigg( UD \bigg)^{n}_{j,k} \bigg]_{\text{extrapolado}} = 2(UD)^{n}_{j+1,k} - (UD)^{n}_{j+2,k}
     \label{ex3B:eq5}
 \end{equation}
+\bigskip
 
 Por fim, aplica-se (\ref{ex3B:eq4}) e (\ref{ex3B:eq5}) para renovar no
 tempo as variáveis no ponto (j-1). Um exemplo de aplicação, seria
@@ -560,15 +593,18 @@ utilizar as variáveis extrapoladas da seguinte forma:
     \eta^{n+1}_{j-1} = \bigg( \eta^{n}_{j-1} \bigg)_{\text{extrapolado}} - \frac{\Delta{t}}{\Delta{x}}\bigg\{ \bigg[ (UD)^{n}_{j} \bigg]_{\text{extrapolado}} -(UD)^{n}_{j-1} \bigg\}
     \label{ex3B:eq6}
 \end{equation}
+\bigskip
 
 Para um \textbf{contorno terrestre a norte da área modelada}, aplicamos
 o mesmo procedimento, onde:
 
-\begin{cases} 
+\begin{equation}
+\begin{cases}
         (k+1) &\mbox{será ponto úmido},  \mbox{se } 0.5(D_k + D_{k+1}) \ge 0
-        \\ 
+        \\
         (k+1) & \mbox{será ponto seco}, \mbox{se } 0.5(D_k + D_{k+1}) < 0
 \end{cases}
+\end{equation}
 
 Obteremos, então, o seguindo par de equações para elevação e corrente:
 
@@ -581,6 +617,7 @@ Obteremos, então, o seguindo par de equações para elevação e corrente:
     \bigg[ \bigg( VD \bigg)^{n}_{j,k} \bigg]_{\text{extrapolado}} = 2(VD)^{n}_{j,k-1} - (VD)^{n}_{j,k-2}
     \label{ex3B:eq8}
 \end{equation}
+\bigskip
 
 Renovando, enfim, a elevação para o contorno terrestre a norte com:
 
@@ -589,7 +626,7 @@ Renovando, enfim, a elevação para o contorno terrestre a norte com:
     \label{ex3B:eq9}
 \end{equation}
 
-    \subsubsection{Ex4}\label{ex4}
+    \subparagraph{Ex4}\label{ex4}
 
 O método dos mínimos quadrados (Least Square) trata-se um técnica de
 interpolação de dados em uma grade a partir de dados conhecidos (in situ
@@ -620,9 +657,15 @@ Desta forma, ao utilizarmos um modelo devidamente calibrado e validado,
 com condições iniciais que representam o estado inicial do sistema,
 obteremos produtos cada vez mais representativos ao real.
 
-\textbf{Figura 4.1}
+\begin{figure}
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig4_1.png}}}
+\caption{Fig 4.1 - Grade com dados conhecidos de temperatura (esquerda) e mesma grade com os
+dados interpolados pelo Método dos Mínimos Quadrados (direita).}
+\label{fig4:1}
+\end{figure}
 
-    \subsubsection{Ex5}\label{ex5}
+    \subparagraph{Ex5}\label{ex5}
 
 Código do exercício localizado em \href{../codes/ex05.m}{ex05.m} e as
 imagens a seguir são um resumo da simulação realizada.
@@ -630,8 +673,6 @@ imagens a seguir são um resumo da simulação realizada.
 O modelo numérico para a região de Santos foi realizado, utilizando-se
 dados batimétricos extraídos do etopo1 (Figura 5.1) e um campo de vento
 teórico e homogêneo no espaço e tempo (Figura 5.2) de sudoeste.
-
-\textbf{batimetria e campo de ventos}
 
 Como resultado da simulação, observamos o campo de corrente gerado pelas
 forçantes (vento e elevação nos contornos) na primeira hora modelada
@@ -641,8 +682,6 @@ sobre elevação da superfície livre associado ao vento de sudoeste e,
 para regiões com linha de costa a oeste/sudoeste, observamos um desnível
 da superfície livre.
 
-\textbf{elev e curr 3600}
-
 Para o instante referente a metade do tempo simulado (Figura 5.4),
 observamos a propagação do sinal da elevação nos contornos para o
 interior da região modelada, onde a única subregião associada a um
@@ -650,8 +689,6 @@ desnível da superfície livre situa-se mais leste do domínio,
 possivelmente associada, ainda, ao vento homogêneo de sudoeste. Quanto a
 circulação, observa-se uma intensificação da corrente a oeste do domínio
 com correntes mais fracas próximos aos contorno fechados.
-
-\textbf{elev e curr 72000}
 
 Decorridos toda a simulação, o campo de elevação da superfície livre do
 mar (Figura 5.5, esquerda) mostra uma intensificação do cenário já
@@ -662,17 +699,39 @@ de contorno estabelecida no modelo, de 0.25m em todos os contornos
 abertos. Para o campo de correntes (Figura 5.5, direita), encontramos
 máximos valores de \(0.37 m.s^{-1}\), seguindo o mesmo padrão observado
 ao longo de toda a simulação, com correntes intensificadas nas regiões
-de maior gradiente de elevação do nível do mar
+de maior gradiente de elevação do nível do mar.
 
-\textbf{elev e curr 1440000}*
+\begin{figure}
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5_1.png}}}
+\caption{Fig 5.1 - Batimetria (esquerda) e campo de ventos (direita) utilizados na
+simulação deste exercício, compreendo a região de Santos e parte da Plataforma
+continental adjacente.}
+\label{fig5:1}
+\end{figure}
 
-***** tentar refazer as imagens de elevacao plotando somente os pontos
-de terra por cima, pra visualizar mais facilmente a linha de costa
-******
+\begin{figure}
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5_2.png}}}
+\caption{Fig 5.2 - Campo de elevação da superfície livre do mar (esquerda) e campo de correntes
+geradas (direita), para o instante de 60min de simulação.}
+\label{fig5:2}
+\end{figure}
+
+\begin{figure}
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5_3.png}}}
+\caption{Fig 5.3 - Vide Fig 5.2, mas para o instante de 1200min.}
+\label{fig5:3}
+\end{figure}
+
+\bigskip
+\begin{figure}
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5_4.png}}}
+\caption{Fig 5.4 -  Vide Fig 5.2, mas para o instante de 2400 min.}
+\label{fig5:4}
+\end{figure}
+\bigskip
 
 
-    % Add a bibliography block to the postdoc
-    
-    
-    
     \end{document}
