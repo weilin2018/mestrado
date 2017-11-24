@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.9.13)  23 NOV 2017 14:10
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.9.13)  24 NOV 2017 10:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -555,50 +555,58 @@ Package: enumitem 2011/09/28 v3.5.2 Customized lists
 Package: ulem 2012/05/18
 \ULdepth=\dimen160
 )
-Package hyperref Info: Option `breaklinks' set `true' on input line 265.
-Package hyperref Info: Option `colorlinks' set `true' on input line 265.
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count132
+\float@exts=\toks32
+\float@box=\box40
+\@float@everytoks=\toks33
+\@floatcapt=\box41
+)
+Package hyperref Info: Option `breaklinks' set `true' on input line 266.
+Package hyperref Info: Option `colorlinks' set `true' on input line 266.
  (./Lista2_IOF814.aux)
 \openout1 = `Lista2_IOF814.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 276.
-LaTeX Font Info:    ... okay on input line 276.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 276.
-LaTeX Font Info:    ... okay on input line 276.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 276.
-LaTeX Font Info:    ... okay on input line 276.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 276.
-LaTeX Font Info:    ... okay on input line 276.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 276.
-LaTeX Font Info:    ... okay on input line 276.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 276.
-LaTeX Font Info:    ... okay on input line 276.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 276.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 276.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 277.
+LaTeX Font Info:    ... okay on input line 277.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 277.
+LaTeX Font Info:    ... okay on input line 277.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 277.
+LaTeX Font Info:    ... okay on input line 277.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 277.
+LaTeX Font Info:    ... okay on input line 277.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 277.
+LaTeX Font Info:    ... okay on input line 277.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 277.
+LaTeX Font Info:    ... okay on input line 277.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 277.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 277.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 276.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 276.
-LaTeX Font Info:    ... okay on input line 276.
-LaTeX Font Info:    Try loading font information for T1+ppl on input line 276.
+LaTeX Font Info:    ... okay on input line 277.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 277.
+LaTeX Font Info:    ... okay on input line 277.
+LaTeX Font Info:    Try loading font information for T1+ppl on input line 277.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ppl.fd
 File: t1ppl.fd 2001/06/04 font definitions for T1/ppl.
 )
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count132
+\scratchcounter=\count133
 \scratchdimen=\dimen161
-\scratchbox=\box40
-\nofMPsegments=\count133
-\nofMParguments=\count134
-\everyMPshowfont=\toks32
-\MPscratchCnt=\count135
+\scratchbox=\box42
+\nofMPsegments=\count134
+\nofMParguments=\count135
+\everyMPshowfont=\toks34
+\MPscratchCnt=\count136
 \MPscratchDim=\dimen162
-\MPnumerator=\count136
-\makeMPintoPDFobject=\count137
-\everyMPtoPDFconversion=\toks33
+\MPnumerator=\count137
+\makeMPintoPDFobject=\count138
+\everyMPtoPDFconversion=\toks35
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
@@ -615,6 +623,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: longtable package is loaded.
 
@@ -660,8 +669,8 @@ Package caption Info: End \AtBeginDocument code.
 (/usr/share/texlive/texmf-dist/tex/latex/ucs/ucsencs.def
 File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
 )
-\AtBeginShipoutBox=\box41
-Package hyperref Info: Link coloring ON on input line 276.
+\AtBeginShipoutBox=\box43
+Package hyperref Info: Link coloring ON on input line 277.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -669,11 +678,11 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count138
+\c@section@level=\count139
 )
-LaTeX Info: Redefining \ref on input line 276.
-LaTeX Info: Redefining \pageref on input line 276.
-LaTeX Info: Redefining \nameref on input line 276.
+LaTeX Info: Redefining \ref on input line 277.
+LaTeX Info: Redefining \pageref on input line 277.
+LaTeX Info: Redefining \nameref on input line 277.
 
 (./Lista2_IOF814.out) (./Lista2_IOF814.out)
 \@outlinefile=\write4
@@ -683,75 +692,75 @@ LaTeX Info: Redefining \nameref on input line 276.
 (/usr/share/texlive/texmf-dist/tex/latex/ucs/data/uni-0.def
 File: uni-0.def 2013/05/13 UCS: Unicode data U+0000..U+00FF
 )
-LaTeX Font Info:    Try loading font information for OT1+ppl on input line 280.
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 281.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
-LaTeX Font Info:    Try loading font information for OML+zplm on input line 280
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 281
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMS+zplm on input line 280
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 281
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMX+zplm on input line 280
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 281
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 280
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 281
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 12.50409pt on input line 280.
+(Font)              scaled to size 12.50409pt on input line 281.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 280.
+(Font)              scaled to size 9.37807pt on input line 281.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 280.
+(Font)              scaled to size 7.29405pt on input line 281.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 12.50409pt on input line 280.
+(Font)              scaled to size 12.50409pt on input line 281.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 280.
+(Font)              scaled to size 9.37807pt on input line 281.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 280.
+(Font)              scaled to size 7.29405pt on input line 281.
 
 
 LaTeX Warning: No \author given.
 
 LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/ppl/b/n' tried instead on input line 282.
-LaTeX Font Info:    Try loading font information for TS1+ppl on input line 284.
+(Font)              Font shape `T1/ppl/b/n' tried instead on input line 283.
+LaTeX Font Info:    Try loading font information for TS1+ppl on input line 285.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
 )
 LaTeX Font Info:    Font shape `TS1/ppl/bx/n' in size <10.95> not available
-(Font)              Font shape `TS1/ppl/b/n' tried instead on input line 284.
+(Font)              Font shape `TS1/ppl/b/n' tried instead on input line 285.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 11.40997pt on input line 306.
+(Font)              scaled to size 11.40997pt on input line 309.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 8.33606pt on input line 306.
+(Font)              scaled to size 8.33606pt on input line 309.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 6.25204pt on input line 306.
+(Font)              scaled to size 6.25204pt on input line 309.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 11.40997pt on input line 306.
+(Font)              scaled to size 11.40997pt on input line 309.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 8.33606pt on input line 306.
+(Font)              scaled to size 8.33606pt on input line 309.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 6.25204pt on input line 306.
+(Font)              scaled to size 6.25204pt on input line 309.
 
-Overfull \hbox (32.35985pt too wide) detected at line 323
+Overfull \hbox (32.35985pt too wide) detected at line 326
 [][] []
  []
 
@@ -759,135 +768,131 @@ Overfull \hbox (32.35985pt too wide) detected at line 323
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig1
-_1.png, id=24, 568.62036pt x 208.71576pt>
+_1.png, id=23, 568.62036pt x 208.71576pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report
 /fig1_1.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig1_1.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista2/ou
-tputs/output_report/fig1_1.png used on input line 349.
+tputs/output_report/fig1_1.png used on input line 353.
 (pdftex.def)             Requested size: 375.80544pt x 137.94708pt.
  [2 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig1_1.png>]
 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig2
-_1.png, id=44, 568.62036pt x 208.71576pt>
+_1.png, id=42, 568.62036pt x 208.71576pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report
 /fig2_1.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig2_1.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista2/ou
-tputs/output_report/fig2_1.png used on input line 408.
+tputs/output_report/fig2_1.png used on input line 414.
 (pdftex.def)             Requested size: 375.80544pt x 137.94708pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig2
-_2.png, id=45, 568.62036pt x 208.71576pt>
+_2.png, id=43, 568.62036pt x 208.71576pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report
 /fig2_2.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig2_2.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista2/ou
-tputs/output_report/fig2_2.png used on input line 423.
+tputs/output_report/fig2_2.png used on input line 430.
 (pdftex.def)             Requested size: 375.80544pt x 137.94708pt.
  [3 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig2_1.png> </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output
 _report/fig2_2.png>]
 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/b-gr
-id.png, id=63, 326.21875pt x 372.39125pt>
+id.png, id=58, 326.21875pt x 372.39125pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report
 /b-grid.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 b-grid.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista2/ou
-tputs/output_report/b-grid.png used on input line 471.
+tputs/output_report/b-grid.png used on input line 481.
 (pdftex.def)             Requested size: 260.97534pt x 297.93613pt.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 473.
+(Font)              scaled to size 5.21004pt on input line 483.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 473.
+(Font)              scaled to size 5.21004pt on input line 483.
  [4 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 b-grid.png>] [5] [6]
 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig4
-_1.png, id=98, 589.14503pt x 208.71576pt>
+_1.png, id=97, 589.14503pt x 208.71576pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report
 /fig4_1.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig4_1.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista2/ou
-tputs/output_report/fig4_1.png used on input line 662.
+tputs/output_report/fig4_1.png used on input line 674.
 (pdftex.def)             Requested size: 375.80544pt x 133.13812pt.
  [7 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig4_1.png>]
 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5
-_1.png, id=110, 572.66748pt x 208.71576pt>
+_1.png, id=109, 572.66748pt x 208.71576pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report
 /fig5_1.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig5_1.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista2/ou
-tputs/output_report/fig5_1.png used on input line 706.
+tputs/output_report/fig5_1.png used on input line 693.
 (pdftex.def)             Requested size: 375.80544pt x 136.96619pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5
-_2.png, id=111, 575.2692pt x 208.71576pt>
+_2.png, id=110, 575.2692pt x 208.71576pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report
 /fig5_2.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig5_2.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista2/ou
-tputs/output_report/fig5_2.png used on input line 715.
+tputs/output_report/fig5_2.png used on input line 710.
 (pdftex.def)             Requested size: 375.80544pt x 136.35153pt.
-
+ [8 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
+fig5_1.png> </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output
+_report/fig5_2.png>]
 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5
-_3.png, id=112, 572.66748pt x 208.71576pt>
+_3.png, id=120, 572.66748pt x 208.71576pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report
 /fig5_3.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig5_3.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista2/ou
-tputs/output_report/fig5_3.png used on input line 723.
+tputs/output_report/fig5_3.png used on input line 737.
 (pdftex.def)             Requested size: 375.80544pt x 136.96619pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5
-_4.png, id=113, 564.6696pt x 208.8603pt>
+_4.png, id=121, 564.6696pt x 208.8603pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report
 /fig5_4.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
 fig5_4.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista2/ou
-tputs/output_report/fig5_4.png used on input line 730.
+tputs/output_report/fig5_4.png used on input line 744.
 (pdftex.def)             Requested size: 375.80544pt x 139.00508pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 737.
- [8 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
-fig5_1.png> </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output
-_report/fig5_2.png>] [9 </home/tparente/danilo/mestrado/github/IOF814/Lista2/ou
-tputs/output_report/fig5_3.png> </home/tparente/danilo/mestrado/github/IOF814/L
-ista2/outputs/output_report/fig5_4.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 737.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 751.
+ [9 </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/
+fig5_3.png> </home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output
+_report/fig5_4.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 751.
  (./Lista2_IOF814.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 737.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 737.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 751.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 751.
 Package rerunfilecheck Info: File `Lista2_IOF814.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 737.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 751.
  ) 
 Here is how much of TeX's memory you used:
- 11460 strings out of 494963
- 170596 string characters out of 6179647
- 270519 words of memory out of 5000000
- 14417 multiletter control sequences out of 15000+600000
+ 11510 strings out of 494963
+ 171264 string characters out of 6179647
+ 270869 words of memory out of 5000000
+ 14463 multiletter control sequences out of 15000+600000
  35638 words of font info for 96 fonts, out of 8000000 for 9000
  38 hyphenation exceptions out of 8191
  36i,11n,75p,616b,594s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -900,7 +905,7 @@ public/mathpazo/fplmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/mat
 hpazo/fplmri.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a
 .pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Lista2_IOF814.pdf (9 pages, 5317224 bytes).
+Output written on Lista2_IOF814.pdf (9 pages, 5318069 bytes).
 PDF statistics:
  175 PDF objects out of 1000 (max. 8388607)
  135 compressed objects within 2 object streams

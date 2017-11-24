@@ -68,6 +68,7 @@
 
     % novos pacotes
     \usepackage[font=scriptsize]{caption}
+    \usepackage{float}
 
 
     % Colors for the hyperref package
@@ -297,6 +298,8 @@
     e \textbf{.pdf} desta lista, com os desenvolvimentos das discretizações e
     respostas dissertativas.
 
+\dotfill
+
     \subparagraph{Ex1}
 
     Considerando as equações dadas no enunciado, podemos eliminar a variação
@@ -344,13 +347,16 @@ circulação gerada pelo vento considerado (Fig1.2), nota-se uma
 circulação horária, que corresponde com o padrão do grande giro
 subtropical do Atlântico Norte.
 
-\begin{figure}
+
+\begin{figure}[!ht]
 \centering
 \centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig1_1.png}}}
 \caption{Fig 1.1 - Campo de correntes (esquerda) e elevação da superfície livre do mar (direita) para o último
  instante de tempo modelado pela função de corrente.}
 \label{fig1:1}
 \end{figure}
+
+\dotfill
 
     \subparagraph{Ex2}\label{ex2}
 
@@ -403,7 +409,7 @@ interior do canal. Como consequência dessa propagação de sinal de
 \(\eta\), há geração de uma corrente negativa nos contornos sul e norte.
 
 
-\begin{figure}
+\begin{figure}[!ht]
 \centering
 \centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig2_1.png}}}
 \caption{Fig 2.1 - Elevação da superfície livre do mar (esquerda, superior) e corrente (esquerda, inferior) para o instante
@@ -418,12 +424,16 @@ refletida de volta aos contornos (Figura 2.2, esquerda). Desta forma,
 com as integrações no tempo, o observado é que a superfície livre entra
 em equilíbrio (Figura 2.2, direita).
 
-\begin{figure}
+
+\begin{figure}[!ht]
 \centering
 \includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig2_2.png}
 \caption{Fig 2.2 - Vide Fig2.1, mas para os instantes de tempo de 20min (esquerda) e 32.4min (direita).}
 \label{fig2:2}
 \end{figure}
+
+
+\dotfill
 
     \subparagraph{Ex3 - Parte A}\label{ex3---parte-a}
 
@@ -466,7 +476,7 @@ A discretização das equações \ref{ex3A:eq1}, \ref{ex3A:eq2} e
   Esquema semi implícito para o \textbf{decaimento}.
 \end{itemize}
 
-\begin{figure}
+\begin{figure}[!ht]
 \centering
 \centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/b-grid.png}}}
 \caption{Fig 3.1 - Grade B de Arakawa, com pontos do tipo \(\eta\) localizados nos cantos das células
@@ -626,6 +636,8 @@ Renovando, enfim, a elevação para o contorno terrestre a norte com:
     \label{ex3B:eq9}
 \end{equation}
 
+\dotfill
+
     \subparagraph{Ex4}\label{ex4}
 
 O método dos mínimos quadrados (Least Square) trata-se um técnica de
@@ -657,7 +669,7 @@ Desta forma, ao utilizarmos um modelo devidamente calibrado e validado,
 com condições iniciais que representam o estado inicial do sistema,
 obteremos produtos cada vez mais representativos ao real.
 
-\begin{figure}
+\begin{figure}[!ht]
 \centering
 \centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig4_1.png}}}
 \caption{Fig 4.1 - Grade com dados conhecidos de temperatura (esquerda) e mesma grade com os
@@ -665,43 +677,18 @@ dados interpolados pelo Método dos Mínimos Quadrados (direita).}
 \label{fig4:1}
 \end{figure}
 
+\dotfill
+
     \subparagraph{Ex5}\label{ex5}
 
 Código do exercício localizado em \href{../codes/ex05.m}{ex05.m} e as
 imagens a seguir são um resumo da simulação realizada.
 
 O modelo numérico para a região de Santos foi realizado, utilizando-se
-dados batimétricos extraídos do etopo1 (Figura 5.1) e um campo de vento
-teórico e homogêneo no espaço e tempo (Figura 5.2) de sudoeste.
+dados batimétricos extraídos do etopo1 (Figura 5.1, esquerda) e um campo de vento
+teórico e homogêneo no espaço e tempo (Figura 5.1, direita) de sudoeste.
 
-Como resultado da simulação, observamos o campo de corrente gerado pelas
-forçantes (vento e elevação nos contornos) na primeira hora modelada
-(Figura 5.3) e as oscilações causadas. Nota-se que, as regiões com linha
-de costa situada a leste/nordeste há um acúmulo de água, causando uma
-sobre elevação da superfície livre associado ao vento de sudoeste e,
-para regiões com linha de costa a oeste/sudoeste, observamos um desnível
-da superfície livre.
-
-Para o instante referente a metade do tempo simulado (Figura 5.4),
-observamos a propagação do sinal da elevação nos contornos para o
-interior da região modelada, onde a única subregião associada a um
-desnível da superfície livre situa-se mais leste do domínio,
-possivelmente associada, ainda, ao vento homogêneo de sudoeste. Quanto a
-circulação, observa-se uma intensificação da corrente a oeste do domínio
-com correntes mais fracas próximos aos contorno fechados.
-
-Decorridos toda a simulação, o campo de elevação da superfície livre do
-mar (Figura 5.5, esquerda) mostra uma intensificação do cenário já
-discutido acima. Nota-se que, a leste do domínio modelado, há um
-acentuado desnível, atingindo valores próximos a \(-0.15m\) e, os
-maiores valores encontrados, correspondem ao sinal propagado da condição
-de contorno estabelecida no modelo, de 0.25m em todos os contornos
-abertos. Para o campo de correntes (Figura 5.5, direita), encontramos
-máximos valores de \(0.37 m.s^{-1}\), seguindo o mesmo padrão observado
-ao longo de toda a simulação, com correntes intensificadas nas regiões
-de maior gradiente de elevação do nível do mar.
-
-\begin{figure}
+\begin{figure}[!ht]
 \centering
 \centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5_1.png}}}
 \caption{Fig 5.1 - Batimetria (esquerda) e campo de ventos (direita) utilizados na
@@ -710,7 +697,15 @@ continental adjacente.}
 \label{fig5:1}
 \end{figure}
 
-\begin{figure}
+Como resultado da simulação, observamos o campo de corrente gerado pelas
+forçantes (vento e elevação nos contornos) na primeira hora modelada
+(Figura 5.2) e as oscilações causadas. Nota-se que, as regiões com linha
+de costa situada a leste/nordeste há um acúmulo de água, causando uma
+sobre elevação da superfície livre associado ao vento de sudoeste e,
+para regiões com linha de costa a oeste/sudoeste, observamos um desnível
+da superfície livre.
+
+\begin{figure}[!ht]
 \centering
 \centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5_2.png}}}
 \caption{Fig 5.2 - Campo de elevação da superfície livre do mar (esquerda) e campo de correntes
@@ -718,7 +713,26 @@ geradas (direita), para o instante de 60min de simulação.}
 \label{fig5:2}
 \end{figure}
 
-\begin{figure}
+Para o instante referente a metade do tempo simulado (Figura 5.3),
+observamos a propagação do sinal da elevação nos contornos para o
+interior da região modelada, onde a única subregião associada a um
+desnível da superfície livre situa-se mais leste do domínio,
+possivelmente associada, ainda, ao vento homogêneo de sudoeste. Quanto a
+circulação, observa-se uma intensificação da corrente a oeste do domínio
+com correntes mais fracas próximos aos contorno fechados.
+
+Decorridos toda a simulação, o campo de elevação da superfície livre do
+mar (Figura 5.4, esquerda) mostra uma intensificação do cenário já
+discutido acima. Nota-se que, a leste do domínio modelado, há um
+acentuado desnível, atingindo valores próximos a \(-0.15m\) e, os
+maiores valores encontrados, correspondem ao sinal propagado da condição
+de contorno estabelecida no modelo, de 0.25m em todos os contornos
+abertos. Para o campo de correntes (Figura 5.4, direita), encontramos
+máximos valores de \(0.37 m.s^{-1}\), seguindo o mesmo padrão observado
+ao longo de toda a simulação, com correntes intensificadas nas regiões
+de maior gradiente de elevação do nível do mar.
+
+\begin{figure}[!ht]
 \centering
 \centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5_3.png}}}
 \caption{Fig 5.3 - Vide Fig 5.2, mas para o instante de 1200min.}
@@ -726,7 +740,7 @@ geradas (direita), para o instante de 60min de simulação.}
 \end{figure}
 
 \bigskip
-\begin{figure}
+\begin{figure}[!ht]
 \centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista2/outputs/output_report/fig5_4.png}}}
 \caption{Fig 5.4 -  Vide Fig 5.2, mas para o instante de 2400 min.}
 \label{fig5:4}
