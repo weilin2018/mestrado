@@ -1,7 +1,7 @@
 
 % Default to the notebook output style
 
-    
+
 
 
 % Inherit from the specified cell style.
@@ -9,11 +9,11 @@
 
 
 
-    
+
 \documentclass[11pt]{article}
 
-    
-    
+
+
     \usepackage[T1]{fontenc}
     % Nicer default font (+ math font) than Computer Modern for most use cases
     \usepackage{mathpazo}
@@ -38,7 +38,7 @@
     \DeclareCaptionLabelFormat{nolabel}{}
     \captionsetup{labelformat=nolabel}
 
-    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{adjustbox} % Used to constrain images to a maximum size
     \usepackage{xcolor} % Allow colors to be defined
     \usepackage{enumerate} % Needed for markdown enumerations to work
     \usepackage{geometry} % Used to adjust the document margins
@@ -54,8 +54,8 @@
     \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
     \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
     \usepackage{fancyvrb} % verbatim replacement that allows latex
-    \usepackage{grffile} % extends the file name processing of package graphics 
-                         % to support a larger range 
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
     % The hyperref package gives us a pdf with properly built
     % internal navigation ('pdf bookmarks' for the table of contents,
     % internal cross-reference links, web links for URLs, etc.)
@@ -65,10 +65,10 @@
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
-    
 
-    
-    
+
+
+
     % Colors for the hyperref package
     \definecolor{urlcolor}{rgb}{0,.145,.698}
     \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
@@ -113,7 +113,7 @@
     \newcommand{\RegionMarkerTok}[1]{{#1}}
     \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
     \newcommand{\NormalTok}[1]{{#1}}
-    
+
     % Additional commands for more recent versions of Pandoc
     \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
     \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
@@ -132,12 +132,12 @@
     \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
     \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
     \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
-    
-    
+
+
 \newenvironment{figurehere}
   {\def\@captype{figure}}
   {}
-\makeatother 
+\makeatother
 
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
@@ -147,12 +147,12 @@
     \def\lt{<}
     % Document parameters
     \title{Lista1\_IOF814}
-    
-    
-    
+
+
+
 
     % Pygments definitions
-    
+
 \makeatletter
 \def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
     \let\PY@ul=\relax \let\PY@tc=\relax%
@@ -253,9 +253,9 @@
     % Exact colors from NB
     \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
     \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
- 
+
     % Prevent overflowing lines due to hard-to-break entities
-    \sloppy 
+    \sloppy
     % Setup hyperref package
     \hypersetup{
       breaklinks=true,  % so long urls are correctly broken across lines
@@ -265,11 +265,11 @@
       citecolor=citecolor,
       }
     % Slightly bigger margins than the latex defaults
-    
+
     \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
-    
+
 \begin{document}
-    
+
 
 \title{Lista 1 - IOF814: Modelos Numéricos Aplicados a Processos Costeiros e Estuarinos}
 \maketitle
@@ -488,13 +488,15 @@ renovado do lado esquerdo e os demais termos do lado direito, como a
 seguir:
 
 \begin{equation}
+\begin{multiline}
 \begin{aligned}
-    \frac{1}{2\Delta{t}}f^{n+1}_{j,k} + \frac{u}{4\Delta{x}}f^{n+1}_{j+1,k} - \frac{u}{4\Delta{x}}f^{n+1}_{j-1,k} + \frac{v}{4\Delta{y}}f^{n+1}_{j,k+1} - \frac{v}{4\Delta{y}}f^{n+1}_{j,k-1} = 
+    \frac{1}{2\Delta{t}}f^{n+1}_{j,k} + \frac{u}{4\Delta{x}}f^{n+1}_{j+1,k} - \frac{u}{4\Delta{x}}f^{n+1}_{j-1,k} + \frac{v}{4\Delta{y}}f^{n+1}_{j,k+1} - \frac{v}{4\Delta{y}}f^{n+1}_{j,k-1} =
     \frac{f^{n-1}_{j,k}}{2\Delta{t}} - \\
     \frac{u}{4\Delta{x}}f^{n}_{j+1,k} + \frac{u}{4\Delta{x}}f^{n}_{j-1,k} -
     \frac{v}{4\Delta{y}}f^{n}_{j,k+1} + \frac{v}{4\Delta{y}}f^{n}_{j,k-1}
     \label{ex2:5}
 \end{aligned}
+\end{multiline}
 \end{equation}
 
 A solução numérica de (\ref{ex2:5}) é apresentada no código
@@ -709,7 +711,7 @@ pensando em um aplicação no matlab, onde jmax é o a quantidade máxima de
 pontos em j:
 
 \begin{equation}
-    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} 
+    \frac{\partial{f}}{\partial{x}} = \frac{\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2}
     \bigg)}{12\Delta{x}}
     \label{ex4:6}
 \end{equation}
@@ -742,7 +744,7 @@ mais geral, equações (\ref{ex4:5}) e (\ref{ex4:6}):
 Que, isolando \(f^{n+1}_{j}\) obtemos a função de renovação:
 
 \begin{equation}
-    f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg)    
+    f^{n+1}_{j} = f^{n}_{j}-c\frac{\Delta{t}}{12\Delta{x}}\biggl( f^{n}_{j-2} - 8f^{n}_{j-1} + 8f^{n}_{j+1} - f^{n}_{j+2} \bigg)
     \label{ex4:9}
 \end{equation}
 
@@ -828,10 +830,10 @@ obteremos:
 
 \begin{equation}
 \begin{aligned}
-    \frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} = 
+    \frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} =
     \alpha (f^{n} + \Delta{t}\frac{\partial{f}}{\partial{t}} + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{t^2}}+ \frac{\Delta{t}^3}{3!}\frac{\partial^3{f}}{\partial{t^3}}) +  \\
-    \beta (f_{j} + \Delta{x}\frac{\partial{f}}{\partial{x}} + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{x^2}}- \frac{\Delta{t}^3}{3!}\frac{\partial^3{f}}{\partial{x^3}}) + 
-    \gamma (f^{n} - \Delta{t}\frac{\partial{f}}{\partial{t}} + \\ + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{t^2}}+ \frac{\Delta{t}^3}{3!}\frac{\partial^3{f}}{\partial{t^3}}) + 
+    \beta (f_{j} + \Delta{x}\frac{\partial{f}}{\partial{x}} + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{x^2}}- \frac{\Delta{t}^3}{3!}\frac{\partial^3{f}}{\partial{x^3}}) +
+    \gamma (f^{n} - \Delta{t}\frac{\partial{f}}{\partial{t}} + \\ + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{t^2}}+ \frac{\Delta{t}^3}{3!}\frac{\partial^3{f}}{\partial{t^3}}) +
     \delta (f_{j} - \Delta{x}\frac{\partial{f}}{\partial{x}} + \frac{\Delta{t}^2}{2}\frac{\partial^2{f}}{\partial{x^2}}- \frac{\Delta{t}^3}{3!}\frac{\partial^3{f}}{\partial{x^3}})
 \end{aligned}
     \label{ex5:3}
@@ -858,7 +860,7 @@ Para determinar os coeficientes \(\alpha\), \(\beta\), \(\gamma\) e
 Multiplica-se (4.a) por \(\Delta{t}\) e soma-se (4.b):
 
 \begin{equation}
-    (\alpha + \beta + \gamma + \delta)\Delta{t} + \alpha \Delta{t} - \gamma \Delta{t} = 0 \to 2\alpha{\Delta{t}} + \beta{\Delta{t}} + \gamma{\Delta{t}} = 0 \\ 
+    (\alpha + \beta + \gamma + \delta)\Delta{t} + \alpha \Delta{t} - \gamma \Delta{t} = 0 \to 2\alpha{\Delta{t}} + \beta{\Delta{t}} + \gamma{\Delta{t}} = 0 \\
     \therefore 2\alpha + \beta + \gamma = \frac{1}{\Delta{t}}
     \label{ex5:5}
 \end{equation}
@@ -887,7 +889,7 @@ Aplicando (\ref{ex5:4}.c) em (\ref{ex5:4}.d):
 
 \begin{equation}
     \begin{aligned}
-        \beta{\frac{\Delta{x^2}}{2}} + \beta{\frac{\Delta{x^2}}{2}} = -D \to \beta{\Delta{x^2}} = -D \\ 
+        \beta{\frac{\Delta{x^2}}{2}} + \beta{\frac{\Delta{x^2}}{2}} = -D \to \beta{\Delta{x^2}} = -D \\
         \therefore \beta = -\frac{D}{\Delta{x^2}}
     \end{aligned}
     \label{ex5:8}
@@ -906,10 +908,10 @@ Finalmente, aplicamos as equações (\ref{ex5:6}) a (\ref{ex5:9}) em
 (\ref{ex5:1}) e obteremos:
 
 \begin{equation}
-\frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} = 
-    (\frac{1}{2\Delta{t}} + \frac{D}{\Delta{x^2}})f^{n+1}_{j} + 
-    (-\frac{D}{\Delta{x^2}})f^{n}_{j+1} + 
-    (-\frac{D}{\Delta{x^2}})f^{n}_{j-1} + 
+\frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} =
+    (\frac{1}{2\Delta{t}} + \frac{D}{\Delta{x^2}})f^{n+1}_{j} +
+    (-\frac{D}{\Delta{x^2}})f^{n}_{j+1} +
+    (-\frac{D}{\Delta{x^2}})f^{n}_{j-1} +
     (-\frac{1}{2\Delta{t}} + \frac{D}{\Delta{x^2}})f^{n-1}_{j}
     \label{ex5:10}
 \end{equation}
@@ -917,10 +919,10 @@ Finalmente, aplicamos as equações (\ref{ex5:6}) a (\ref{ex5:9}) em
 Desenvolvendo a equação (\ref{ex5:10}), obteremos:
 
 \begin{equation}
-    \frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} = 
+    \frac{\partial{f}}{\partial{t}} - D\frac{\partial^2{f}}{\partial{x^2}} =
     \frac{f^{n+1}_{j}}{2\Delta{t}} + \frac{Df^{n+1}_{j}}{\Delta{x^2}} -
     \frac{Df^{n}_{j+1}}{\Delta{x^2}} - \frac{Df^{n}_{j-1}}{\Delta{x^2}} -
-    \frac{f^{n-1}_{j}}{2\Delta{t}} + \frac{Df^{n-1}_{j}}{\Delta{x^2}} 
+    \frac{f^{n-1}_{j}}{2\Delta{t}} + \frac{Df^{n-1}_{j}}{\Delta{x^2}}
     \label{ex5:11}
 \end{equation}
 
@@ -929,7 +931,7 @@ difusão discretizada com esquema centrado no tempo e no espaço
 pseudo-implícito:
 
 \begin{equation}
-    \frac{f^{n+1}_{j} - f^{n-1}_{j}}{2\Delta{t}} = 
+    \frac{f^{n+1}_{j} - f^{n-1}_{j}}{2\Delta{t}} =
     \frac{D}{\Delta{x^2}}(f^{n}_{j+1} + f^{n}_{j-1} - f^{n+1}_{j} - f^{n-1}_{j})
     \label{ex5:12}
 \end{equation}
