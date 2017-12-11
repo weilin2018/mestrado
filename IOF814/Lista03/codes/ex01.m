@@ -46,6 +46,10 @@ batv=bat(2:2:end,2:2:end);
 
 [X,Y]=meshgrid(xgrid,ygrid);
 
+%% constantes de discretizacao
+difzdz=difz/dz;
+dens2=dens;
+
 %% definicao das condicoes iniciais: 2 niveis no tempo
 eta1=zeros(kmax,jmax);
 u1=zeros(kmax,jmax,lmax);
