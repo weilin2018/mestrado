@@ -186,7 +186,6 @@ axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
 xlabel('DISTANCIA (m) EW','fontsize',12)
 ylabel('DISTANCIA (m) NS','fontsize',12)
 
-kfig=kfig+1; eval(['print -dpng figuras1a/fig_corr' num2str(kfig)])
    end
 
 pause(1)
