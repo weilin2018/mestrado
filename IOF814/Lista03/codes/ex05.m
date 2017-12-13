@@ -152,12 +152,16 @@ v2      = zeros(kmax,jmax,lmax);
 
 % serie temporal
 ponto1_eta    = zeros(nmax);
+ponto1_u_0m   = zeros(nmax);
+ponto1_u_0m   = zeros(nmax);
 ponto1_u_5m   = zeros(nmax);
 ponto1_v_5m   = zeros(nmax);
 ponto1_u_10m  = zeros(nmax);
 ponto1_u_10m  = zeros(nmax);
 
 ponto2_eta    = zeros(nmax);
+ponto2_u_0m   = zeros(nmax);
+ponto2_v_0m   = zeros(nmax);
 ponto2_u_5m   = zeros(nmax);
 ponto2_v_5m   = zeros(nmax);
 ponto2_u_10m  = zeros(nmax);
@@ -361,12 +365,16 @@ for n=1:nmax
 
   % armazenar a informacao
   ponto1_eta(n)    = eta2(xpnt1,ypnt1);
+  ponto1_u_0m(n)   = u2(xpnt1,ypnt1,1);
+  ponto1_v_0m(n)   = v2(xpnt1,ypnt1,1);
   ponto1_u_5m(n)   = u2(xpnt1,ypnt1,6);
   ponto1_v_5m(n)   = v2(xpnt1,ypnt1,6);
   ponto1_u_10m(n)  = u2(xpnt1,ypnt1,6);
   ponto1_u_10m(n)  = v2(xpnt1,ypnt1,6);
 
   ponto2_eta(n)    = eta2(xpnt2,ypnt2);
+  ponto2_u_0m(n)   = u2(xpnt2,ypnt2,1);
+  ponto2_v_0m(n)   = v2(xpnt2,ypnt2,1);
   ponto2_u_5m(n)   = u2(xpnt2,ypnt2,11);
   ponto2_v_5m(n)   = v2(xpnt2,ypnt2,11);
   ponto2_u_10m(n)  = u2(xpnt2,ypnt2,11);
@@ -400,33 +408,60 @@ for n=1:nmax
    etamax=max(etama);
    etamin=min(etami);
    velo=sqrt(uplot.^2+vplot.^2);
+   velomax0=max(max(velo(:,:,2)));
    velomax5=max(max(velo(:,:,6)));
    velomax10=max(max(velo(:,:,11)));
 
    figure(4)
-   contourf(X,Y,eta2,'LineWidth',2);
+   contourf(llon2',llat2',eta2,'LineWidth',2);
    colorbar;
    title(['Elev (m) - tempo ',num2str(tempo/60),...
          ' min. Limites ',num2str(etamin),' a ',num2str(etamax),' m'],'fontsize',12)
    axis equal
-   axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
+   %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
    xlabel('DISTANCIA (m) EW','fontsize',12)
    ylabel('DISTANCIA (m) NS','fontsize',12)
    % print -djpeg fig_elev
 
      figure(5)
-     subplot(1,2,1)
-     quiver(X,Y,uplot(:,:,6),vplot(:,:,6));
-     title(['Prof 05m - max ',num2str(velomax5),' m/s'])
+     subplot(1,3,1)
+     contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2,'color','k');
+     title('Bathymetry (m)')
+     xlabel('DISTANCE (m) EW', 'fontsize', 12)
+     ylabel('DISTANCE (m) NS', 'fontsize', 12)
+     hold on
+     quiver(llon2',llat2',uplot(:,:,2),vplot(:,:,2));
+     title(['Prof 0m - max ',num2str(velomax0),' m/s'])
      axis equal
-     axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
+     %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
      xlabel('DISTANCIA (m) EW','fontsize',12)
      ylabel('DISTANCIA (m) NS','fontsize',12)
-     subplot(1,2,2)
-     quiver(X,Y,uplot(:,:,11),vplot(:,:,11));
+     hold off
+
+     subplot(1,3,2)
+     contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2,'color','k');
+     title('Bathymetry (m)')
+     xlabel('DISTANCE (m) EW', 'fontsize', 12)
+     ylabel('DISTANCE (m) NS', 'fontsize', 12)
+     hold on
+     quiver(llon2',llat2',uplot(:,:,6),vplot(:,:,6));
+     title(['Prof 05m - max ',num2str(velomax5),' m/s'])
+     axis equal
+     %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
+     xlabel('DISTANCIA (m) EW','fontsize',12)
+     ylabel('DISTANCIA (m) NS','fontsize',12)
+     hold off
+
+     subplot(1,3,3)
+     contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2,'color','k');
+     title('Bathymetry (m)')
+     xlabel('DISTANCE (m) EW', 'fontsize', 12)
+     ylabel('DISTANCE (m) NS', 'fontsize', 12)
+     hold on
+     quiver(llon2',llat2',uplot(:,:,11),vplot(:,:,11));
      title(['Prof 10m - max ',num2str(velomax10),' m/s'])
      axis equal
-     axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
+     %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
      xlabel('DISTANCIA (m) EW','fontsize',12)
      ylabel('DISTANCIA (m) NS','fontsize',12)
 
@@ -434,3 +469,70 @@ for n=1:nmax
 
   pause(0.1)
 end
+
+%% plot final (campo de correntes e series temporais)
+
+fprintf('Gerando imagem com serie temporal dos pontos\n');
+%% plotar as series temporais de cada estacao
+% estacao 1
+figure(6)
+subplot(2,2,1)
+plot(nmax,ponto1_eta);
+xlabel('Tempo de Simulacao','fontsize',8);
+ylabel('Elevacao (m)','fontsize',8);
+title('Elevacao')
+
+subplot(2,2,2)
+plot(nmax,ponto1_u_0m);
+hold on
+plot(nmax,ponto1_v_0m)
+xlabel('Tempo de Simulacao','fontsize',8);
+ylabel('Magnitude (m)','fontsize',8);
+title('Componentes na Superficie')
+
+subplot(2,2,3)
+plot(nmax,ponto1_u_5m);
+hold on
+plot(nmax,ponto1_v_5m)
+xlabel('Tempo de Simulacao','fontsize',8);
+ylabel('Magnitude (m)','fontsize',8);
+title('Correntes em 5m')
+subplot(2,2,4)
+plot(nmax,ponto1_u_10m);
+hold on
+plot(nmax,ponto1_v_10m)
+xlabel('Tempo de Simulacao','fontsize',8);
+ylabel('Magnitude (m)','fontsize',8);
+title('Corrrentes em 10m')
+
+%% plotar as series temporais de cada estacao
+% estacao 2
+figure(6)
+subplot(2,2,1)
+plot(nmax,ponto2_eta);
+xlabel('Tempo de Simulacao','fontsize',8);
+ylabel('Elevacao (m)','fontsize',8);
+title('Elevacao')
+
+subplot(2,2,2)
+plot(nmax,ponto2_u_0m);
+hold on
+plot(nmax,ponto2_v_0m)
+xlabel('Tempo de Simulacao','fontsize',8);
+ylabel('Magnitude (m)','fontsize',8);
+title('Componentes na Superficie')
+
+subplot(2,2,3)
+plot(nmax,ponto2_u_5m);
+hold on
+plot(nmax,ponto2_v_5m)
+xlabel('Tempo de Simulacao','fontsize',8);
+ylabel('Magnitude (m)','fontsize',8);
+title('Correntes em 5m')
+subplot(2,2,4)
+plot(nmax,ponto2_u_10m);
+hold on
+plot(nmax,ponto2_v_10m)
+xlabel('Tempo de Simulacao','fontsize',8);
+ylabel('Magnitude (m)','fontsize',8);
+title('Corrrentes em 10m')
