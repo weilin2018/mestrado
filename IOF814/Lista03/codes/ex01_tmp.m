@@ -31,7 +31,7 @@ concorte=0.0001;
 xgrid=((1:jmax)-1)*dx;
 ygrid=((1:kmax)-1)*dy;
 dens=1024;                                  %densidade media da agua do mar
-latid=30*pi/180;                            %latitude(de graus para rad)
+latid=60*pi/180;                            %latitude(de graus para rad)
 fco=2*7.29E-5*sin(latid);                   %parametro de coriolis
 g=9.8;
 H=100;                                      % profundidade media
@@ -190,7 +190,7 @@ velomax51=max(max(velo(:,:,51)));
 
   set(gcf,'PaperUnits','inches','PaperPosition',[0 0 19 10])
 
-  out = ['../outputs/ex01/sim30/sim2_',int2str(n)];
+  out = ['../outputs/ex01/sim60/sim3_',int2str(n)];
   grafico=['print -djpeg ', out];
   eval(grafico);
 

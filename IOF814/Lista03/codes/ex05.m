@@ -30,7 +30,7 @@ dy        = 2000;             % espacamento de grade em y
 dz        = 1;
 kx        = 10;               % coeficiente de difusao
 ky        = 10;               % coeficiente de difusao
-freqplot  = 10;               % frequencia de plotagem
+freqplot  = 60;               % frequencia de plotagem
 freqForc  = (3*60*60)/dt;          % frequencia de atualizada da forcante (a cada 3h)
 difus     = 0.1;              % coeficiente de difusao
 difz      = 0.001;            % coeficiente de difusao na vertical
@@ -151,21 +151,21 @@ u2      = zeros(kmax,jmax,lmax);
 v2      = zeros(kmax,jmax,lmax);
 
 % serie temporal
-ponto1_eta    = zeros(nmax);
-ponto1_u_0m   = zeros(nmax);
-ponto1_u_0m   = zeros(nmax);
-ponto1_u_5m   = zeros(nmax);
-ponto1_v_5m   = zeros(nmax);
-ponto1_u_10m  = zeros(nmax);
-ponto1_u_10m  = zeros(nmax);
+ponto1_eta    = zeros(nmax,1);
+ponto1_u_0m   = zeros(nmax,1);
+ponto1_u_0m   = zeros(nmax,1);
+ponto1_u_5m   = zeros(nmax,1);
+ponto1_v_5m   = zeros(nmax,1);
+ponto1_u_10m  = zeros(nmax,1);
+ponto1_v_10m  = zeros(nmax,1);
 
-ponto2_eta    = zeros(nmax);
-ponto2_u_0m   = zeros(nmax);
-ponto2_v_0m   = zeros(nmax);
-ponto2_u_5m   = zeros(nmax);
-ponto2_v_5m   = zeros(nmax);
-ponto2_u_10m  = zeros(nmax);
-ponto2_u_10m  = zeros(nmax);
+ponto2_eta    = zeros(nmax,1);
+ponto2_u_0m   = zeros(nmax,1);
+ponto2_v_0m   = zeros(nmax,1);
+ponto2_u_5m   = zeros(nmax,1);
+ponto2_v_5m   = zeros(nmax,1);
+ponto2_u_10m  = zeros(nmax,1);
+ponto2_v_10m  = zeros(nmax,1);
 
 %Condicoes de vento e calculo das tensoes de cisalhamento na superficie
 dens_ar=1.25;
@@ -200,7 +200,7 @@ for n=1:nmax
    fprintf('Calculando timestep %i/%i  \n\n\n',n,nmax);
 
    % teste para usar as primeiras forcantes
-   if contf==freqForc+1
+   if contf==freqForc
       contf = 0;
       nforc = nforc +1;
 
@@ -230,9 +230,14 @@ for n=1:nmax
       ylabel('DISTANCE (m) NS','fontsize',12)
       hold off
       % saving figure
-      %out = ['../outputs/ex05/windField'];
-      %grafico=['print -djpeg ', out];
-      %eval(grafico);
+      if nforc == 1 tipoVento='S'; end
+      if nforc == 2 tipoVento='SE'; end
+      if nforc == 3 tipoVento='E'; end
+      if nforc == 4 tipoVento='SW'; end
+
+      out = ['../outputs/ex05/windField_',tipoVento];
+      grafico=['print -djpeg ', out];
+      eval(grafico);
 
       % desnivel na borda devido ao vento e oscilacoes periodicas no contorno
       for j=1:jmax
@@ -370,7 +375,7 @@ for n=1:nmax
   ponto1_u_5m(n)   = u2(xpnt1,ypnt1,6);
   ponto1_v_5m(n)   = v2(xpnt1,ypnt1,6);
   ponto1_u_10m(n)  = u2(xpnt1,ypnt1,6);
-  ponto1_u_10m(n)  = v2(xpnt1,ypnt1,6);
+  ponto1_v_10m(n)  = v2(xpnt1,ypnt1,6);
 
   ponto2_eta(n)    = eta2(xpnt2,ypnt2);
   ponto2_u_0m(n)   = u2(xpnt2,ypnt2,1);
@@ -378,7 +383,7 @@ for n=1:nmax
   ponto2_u_5m(n)   = u2(xpnt2,ypnt2,11);
   ponto2_v_5m(n)   = v2(xpnt2,ypnt2,11);
   ponto2_u_10m(n)  = u2(xpnt2,ypnt2,11);
-  ponto2_u_10m(n)  = v2(xpnt2,ypnt2,11);
+  ponto2_v_10m(n)  = v2(xpnt2,ypnt2,11);
 
 
   if kplot==freqplot
@@ -412,7 +417,8 @@ for n=1:nmax
    velomax5=max(max(velo(:,:,6)));
    velomax10=max(max(velo(:,:,11)));
 
-   figure(4)
+   figure(10)
+   subplot(2,2,1)
    contourf(llon2',llat2',eta2,'LineWidth',2);
    colorbar;
    title(['Elev (m) - tempo ',num2str(tempo/60),...
@@ -421,49 +427,53 @@ for n=1:nmax
    %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
    xlabel('DISTANCIA (m) EW','fontsize',12)
    ylabel('DISTANCIA (m) NS','fontsize',12)
-   % print -djpeg fig_elev
+   subplot(2,2,2)
+   contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2,'color','k');
+   title('Bathymetry (m)')
+   xlabel('DISTANCE (m) EW', 'fontsize', 12)
+   ylabel('DISTANCE (m) NS', 'fontsize', 12)
+   hold on
+   quiver(llon2',llat2',uplot(:,:,2),vplot(:,:,2));
+   title(['Prof 0m - max ',num2str(velomax0),' m/s'])
+   axis equal
+   %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
+   xlabel('DISTANCIA (m) EW','fontsize',12)
+   ylabel('DISTANCIA (m) NS','fontsize',12)
+   hold off
 
-     figure(5)
-     subplot(1,3,1)
-     contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2,'color','k');
-     title('Bathymetry (m)')
-     xlabel('DISTANCE (m) EW', 'fontsize', 12)
-     ylabel('DISTANCE (m) NS', 'fontsize', 12)
-     hold on
-     quiver(llon2',llat2',uplot(:,:,2),vplot(:,:,2));
-     title(['Prof 0m - max ',num2str(velomax0),' m/s'])
-     axis equal
-     %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
-     xlabel('DISTANCIA (m) EW','fontsize',12)
-     ylabel('DISTANCIA (m) NS','fontsize',12)
-     hold off
+   subplot(2,2,3)
+   contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2,'color','k');
+   title('Bathymetry (m)')
+   xlabel('DISTANCE (m) EW', 'fontsize', 12)
+   ylabel('DISTANCE (m) NS', 'fontsize', 12)
+   hold on
+   quiver(llon2',llat2',uplot(:,:,6),vplot(:,:,6));
+   title(['Prof 05m - max ',num2str(velomax5),' m/s'])
+   axis equal
+   %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
+   xlabel('DISTANCIA (m) EW','fontsize',12)
+   ylabel('DISTANCIA (m) NS','fontsize',12)
+   hold off
 
-     subplot(1,3,2)
-     contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2,'color','k');
-     title('Bathymetry (m)')
-     xlabel('DISTANCE (m) EW', 'fontsize', 12)
-     ylabel('DISTANCE (m) NS', 'fontsize', 12)
-     hold on
-     quiver(llon2',llat2',uplot(:,:,6),vplot(:,:,6));
-     title(['Prof 05m - max ',num2str(velomax5),' m/s'])
-     axis equal
-     %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
-     xlabel('DISTANCIA (m) EW','fontsize',12)
-     ylabel('DISTANCIA (m) NS','fontsize',12)
-     hold off
+   subplot(2,2,4)
+   contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2,'color','k');
+   title('Bathymetry (m)')
+   xlabel('DISTANCE (m) EW', 'fontsize', 12)
+   ylabel('DISTANCE (m) NS', 'fontsize', 12)
+   hold on
+   quiver(llon2',llat2',uplot(:,:,11),vplot(:,:,11));
+   title(['Prof 10m - max ',num2str(velomax10),' m/s'])
+   axis equal
+   %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
+   xlabel('DISTANCIA (m) EW','fontsize',12)
+   ylabel('DISTANCIA (m) NS','fontsize',12)
+   hold off
 
-     subplot(1,3,3)
-     contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2,'color','k');
-     title('Bathymetry (m)')
-     xlabel('DISTANCE (m) EW', 'fontsize', 12)
-     ylabel('DISTANCE (m) NS', 'fontsize', 12)
-     hold on
-     quiver(llon2',llat2',uplot(:,:,11),vplot(:,:,11));
-     title(['Prof 10m - max ',num2str(velomax10),' m/s'])
-     axis equal
-     %axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
-     xlabel('DISTANCIA (m) EW','fontsize',12)
-     ylabel('DISTANCIA (m) NS','fontsize',12)
+   % saving figure
+   fprintf('salvando figura para corrente no tempo %i', tempo );
+   out = ['../outputs/ex05/simulacao_',int2str(n)];
+   grafico=['print -djpeg ', out];
+   eval(grafico);
 
   end
 
@@ -477,62 +487,75 @@ fprintf('Gerando imagem com serie temporal dos pontos\n');
 % estacao 1
 figure(6)
 subplot(2,2,1)
-plot(nmax,ponto1_eta);
-xlabel('Tempo de Simulacao','fontsize',8);
+plot(ponto1_eta);
 ylabel('Elevacao (m)','fontsize',8);
 title('Elevacao')
 
 subplot(2,2,2)
-plot(nmax,ponto1_u_0m);
+plot(ponto1_u_0m);
 hold on
-plot(nmax,ponto1_v_0m)
-xlabel('Tempo de Simulacao','fontsize',8);
+plot(ponto1_v_0m,'--')
 ylabel('Magnitude (m)','fontsize',8);
 title('Componentes na Superficie')
 
 subplot(2,2,3)
-plot(nmax,ponto1_u_5m);
+plot(ponto1_u_5m);
 hold on
-plot(nmax,ponto1_v_5m)
+plot(ponto1_v_5m,'--')
 xlabel('Tempo de Simulacao','fontsize',8);
 ylabel('Magnitude (m)','fontsize',8);
 title('Correntes em 5m')
 subplot(2,2,4)
-plot(nmax,ponto1_u_10m);
+plot(ponto1_u_10m);
 hold on
-plot(nmax,ponto1_v_10m)
+plot(ponto1_v_10m,'--')
 xlabel('Tempo de Simulacao','fontsize',8);
 ylabel('Magnitude (m)','fontsize',8);
 title('Corrrentes em 10m')
+
+legend('comp u', 'comp v','location','southeast');
+
+suptitle('Coordenadas 46.35^oW, 24.01^oS')
+
+% saving figure
+out = ['../outputs/ex05/ponto1'];
+grafico=['print -djpeg ', out];
+eval(grafico);
 
 %% plotar as series temporais de cada estacao
 % estacao 2
-figure(6)
+figure(7)
 subplot(2,2,1)
-plot(nmax,ponto2_eta);
-xlabel('Tempo de Simulacao','fontsize',8);
+plot(ponto2_eta);
 ylabel('Elevacao (m)','fontsize',8);
 title('Elevacao')
 
 subplot(2,2,2)
-plot(nmax,ponto2_u_0m);
+plot(ponto2_u_0m);
 hold on
-plot(nmax,ponto2_v_0m)
-xlabel('Tempo de Simulacao','fontsize',8);
+plot(ponto2_v_0m,'--')
 ylabel('Magnitude (m)','fontsize',8);
 title('Componentes na Superficie')
 
 subplot(2,2,3)
-plot(nmax,ponto2_u_5m);
+plot(ponto2_u_5m);
 hold on
-plot(nmax,ponto2_v_5m)
+plot(ponto2_v_5m,'--')
 xlabel('Tempo de Simulacao','fontsize',8);
 ylabel('Magnitude (m)','fontsize',8);
 title('Correntes em 5m')
 subplot(2,2,4)
-plot(nmax,ponto2_u_10m);
+plot(ponto2_u_10m);
 hold on
-plot(nmax,ponto2_v_10m)
+plot(ponto2_v_10m,'--')
 xlabel('Tempo de Simulacao','fontsize',8);
 ylabel('Magnitude (m)','fontsize',8);
 title('Corrrentes em 10m')
+
+legend('comp u', 'comp v','location','southeast');
+
+suptitle('Coordenadas 46.35^oW, 24.10^oS')
+% saving figure
+out = ['../outputs/ex05/ponto2'];
+grafico=['print -djpeg ', out];
+eval(grafico);
