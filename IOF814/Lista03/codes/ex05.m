@@ -25,8 +25,8 @@ batmax    = max(bat);
 %% Parametros numericos do modelo
 nmax      = 1440;             % numero de passos de tempo maximo
 dt        = 30;               % passo de tempo (segundos)
-dx        = 1000;             % espacamento de grade em x
-dy        = 1000;             % espacamento de grade em y
+dx        = 2000;             % espacamento de grade em x
+dy        = 2000;             % espacamento de grade em y
 dz        = 1;
 kx        = 10;               % coeficiente de difusao
 ky        = 10;               % coeficiente de difusao
@@ -34,6 +34,12 @@ freqplot  = 10;               % frequencia de plotagem
 freqForc  = (3*60*60)/dt;          % frequencia de atualizada da forcante (a cada 3h)
 difus     = 0.1;              % coeficiente de difusao
 difz      = 0.001;            % coeficiente de difusao na vertical
+
+% Pontos para geracao da serie temporal: baseados na lista 1, ex6
+xpnt1=9;%-46.35*60*1852;
+ypnt1=9;%-24.01*60*1852;
+xpnt2=3;%-46.35*60*1852;
+ypnt2=9;%-24.10*60*1852;
 
 % parametros baseado na grade batimetrica utilizada
 jmax      = round((abs(min(lon) - max(lon)))/dx);    % nro de pontos da grade em x
@@ -134,15 +140,28 @@ amplit=ones(kmax,jmax)*ampl;
 omega=2*pi/period;
 
 % Condicoes iniciais de repouso (0 - valores anteriores, 1 - valores atuais, 2 - renovados)
-eta0=zeros(kmax,jmax);
-u0=zeros(kmax,jmax,lmax);
-v0=zeros(kmax,jmax,lmax);
-eta1=zeros(kmax,jmax);
-u1=zeros(kmax,jmax,lmax);
-v1=zeros(kmax,jmax,lmax);
-eta2=zeros(kmax,jmax);
-u2=zeros(kmax,jmax,lmax);
-v2=zeros(kmax,jmax,lmax);
+eta0    = zeros(kmax,jmax);
+u0      = zeros(kmax,jmax,lmax);
+v0      = zeros(kmax,jmax,lmax);
+eta1    = zeros(kmax,jmax);
+u1      = zeros(kmax,jmax,lmax);
+v1      = zeros(kmax,jmax,lmax);
+eta2    = zeros(kmax,jmax);
+u2      = zeros(kmax,jmax,lmax);
+v2      = zeros(kmax,jmax,lmax);
+
+% serie temporal
+ponto1_eta    = zeros(nmax);
+ponto1_u_5m   = zeros(nmax);
+ponto1_v_5m   = zeros(nmax);
+ponto1_u_10m  = zeros(nmax);
+ponto1_u_10m  = zeros(nmax);
+
+ponto2_eta    = zeros(nmax);
+ponto2_u_5m   = zeros(nmax);
+ponto2_v_5m   = zeros(nmax);
+ponto2_u_10m  = zeros(nmax);
+ponto2_u_10m  = zeros(nmax);
 
 %Condicoes de vento e calculo das tensoes de cisalhamento na superficie
 dens_ar=1.25;
@@ -191,14 +210,25 @@ for n=1:nmax
      % plotando os ventos
       ventomax=max(max(wwind));
 
-      figure(2)
-      quiver(X,Y,uwind,vwind,'LineWidth',2)
-      title(['Vento - intensidade maxima ',...
-          num2str(ventomax),' m/s'],'fontsize',12)
-      axis equal
-      axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
-      xlabel('DISTANCIA (m) EW','fontsize',12)
-      ylabel('DISTANCIA (m) NS','fontsize',12)
+      fprintf('Generating figure 2: wind field\n');
+      figure(3)
+      contour(llon,llat,nbat,[0.1 0.2 0.3],'LineWidth',2,'color','k');
+      title('Bathymetry (m)')
+      xlabel('DISTANCE (m) EW', 'fontsize', 12)
+      ylabel('DISTANCE (m) NS', 'fontsize', 12)
+      hold on
+      quiver(llon2',llat2',uwind,vwind,'LineWidth',2);%''
+      title(['Wind - Maximum Intensity ',...
+        num2str(ventomax),' m/s'],'fontsize',12)
+      axis([llon(1) llon(end) llat(1) llat(end)])
+      %axis equal
+      xlabel('DISTANCE (m) EW','fontsize',12)
+      ylabel('DISTANCE (m) NS','fontsize',12)
+      hold off
+      % saving figure
+      %out = ['../outputs/ex05/windField'];
+      %grafico=['print -djpeg ', out];
+      %eval(grafico);
 
       % desnivel na borda devido ao vento e oscilacoes periodicas no contorno
       for j=1:jmax
@@ -329,6 +359,20 @@ for n=1:nmax
   v0=v1;
   v1=v2;
 
+  % armazenar a informacao
+  ponto1_eta(n)    = eta2(xpnt1,ypnt1);
+  ponto1_u_5m(n)   = u2(xpnt1,ypnt1,6);
+  ponto1_v_5m(n)   = v2(xpnt1,ypnt1,6);
+  ponto1_u_10m(n)  = u2(xpnt1,ypnt1,6);
+  ponto1_u_10m(n)  = v2(xpnt1,ypnt1,6);
+
+  ponto2_eta(n)    = eta2(xpnt2,ypnt2);
+  ponto2_u_5m(n)   = u2(xpnt2,ypnt2,11);
+  ponto2_v_5m(n)   = v2(xpnt2,ypnt2,11);
+  ponto2_u_10m(n)  = u2(xpnt2,ypnt2,11);
+  ponto2_u_10m(n)  = v2(xpnt2,ypnt2,11);
+
+
   if kplot==freqplot
     kplot = 0;
 
@@ -356,12 +400,10 @@ for n=1:nmax
    etamax=max(etama);
    etamin=min(etami);
    velo=sqrt(uplot.^2+vplot.^2);
-   velomax2=max(max(velo(:,:,2)));
-   velomax3=max(max(velo(:,:,3)));
-   velomax7=max(max(velo(:,:,7)));
-   velomax8=max(max(velo(:,:,8)));
+   velomax5=max(max(velo(:,:,6)));
+   velomax10=max(max(velo(:,:,11)));
 
-   figure(3)
+   figure(4)
    contourf(X,Y,eta2,'LineWidth',2);
    colorbar;
    title(['Elev (m) - tempo ',num2str(tempo/60),...
@@ -372,17 +414,17 @@ for n=1:nmax
    ylabel('DISTANCIA (m) NS','fontsize',12)
    % print -djpeg fig_elev
 
-     figure(4)
+     figure(5)
      subplot(1,2,1)
      quiver(X,Y,uplot(:,:,6),vplot(:,:,6));
-     title(['Prof 05m - max ',num2str(velomax2),' m/s'])
+     title(['Prof 05m - max ',num2str(velomax5),' m/s'])
      axis equal
      axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
      xlabel('DISTANCIA (m) EW','fontsize',12)
      ylabel('DISTANCIA (m) NS','fontsize',12)
      subplot(1,2,2)
      quiver(X,Y,uplot(:,:,11),vplot(:,:,11));
-     title(['Prof 10m - max ',num2str(velomax3),' m/s'])
+     title(['Prof 10m - max ',num2str(velomax10),' m/s'])
      axis equal
      axis([xgrid(1) xgrid(jmax) ygrid(1) ygrid(kmax)])
      xlabel('DISTANCIA (m) EW','fontsize',12)
