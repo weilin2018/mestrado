@@ -55,6 +55,9 @@
                                 % normalem makes italics be italics, not underlines
 
 
+                                    % novos pacotes
+                                    \usepackage[font=scriptsize]{caption}
+                                    \usepackage{float}
 
 
     % Colors for the hyperref package
@@ -304,11 +307,26 @@ Desta forma, concluímos que o aumento da latitude influenciará a
 resposta do oceano a um vento homogêneo e uniforme, no sentido de
 defletir as correntes geradas no sentido horário da propagação do vento.
 
-\textbf{Fig 1.1}
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex01/vento30_360.png}}}
+\caption{Fig 1.1 - reposta do oceano a um vento homogêneo de NE nas profundidades de 1m, 5m, 30m e 50m.}
+\label{fig1:1}
+\end{figure}
 
-\textbf{Fig 1.2}
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex01/vento45_360.png}}}
+\caption{Fig 1.2 - reposta do oceano a um vento homogêneo de NE nas profundidades de 1m, 5m, 30m e 50m.}
+\label{fig1:2}
+\end{figure}
 
-\textbf{Fig 1.3}
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex01/vento60_360.png}}}
+\caption{Fig 1.3 - reposta do oceano a um vento homogêneo de NE nas profundidades de 1m, 5m, 30m e 50m.}
+\label{fig1:3}
+\end{figure}
 
     \subparagraph{Exercício 2}\label{exercuxedcio-2}
 
@@ -332,7 +350,12 @@ representar movimentos verticais de forma realista. Entretanto, suas
 vantagens superam tal limitação ao estudarmos ondas interna, com
 propragação entre interfaces de diferentes densidades.
 
-\textbf{Fig 2.1}
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/modelo2camadas.png}}}
+\caption{Fig 2.1 - Modelo de duas camadas.}
+\label{fig2:1}
+\end{figure}
 
     \subparagraph{Exercício 3}\label{exercuxedcio-3}
 
@@ -611,7 +634,20 @@ O campo batimétrico (Fig 5.1) utilizado foi extraído do etopo1, onde
 utilizou-se os valores maiores que zero como região de continente,
 gerando-se as chaves 0 (para terra) e 1 (para mar), conforme Fig 5.2.
 
-\textbf{Fig 5.1: batimetria} \textbf{Fig 5.2: chaves}
+
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/bathymetry.png}}}
+\caption{Fig 5.1 - Campo batimétrico extraído do ETOPO1.}
+\label{fig5:1}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/bathymetry.png}}}
+\caption{Fig 5.2 - Chaves utilizada para realizar cálculos somente nas células oceânicas.}
+\label{fig5:2}
+\end{figure}
 
 Os campos de corrente e elevação da superfície livre do mar foram
 plotados sempre um instante anterior à mudança do vento, representando
@@ -619,20 +655,85 @@ um instante de estabilidade do modelo, com o equilíbrio atingido. Foi
 analisado os campos de correntes em três profundidades: superfície, 5m e
 10m.
 
-\textbf{Fig 5.3: vento de sul} \textbf{Fig 5.4: campos}
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windField_S.png}}}
+\caption{Fig 5.3 - Campo de ventos de sul utilizados nas primeiras horas de simulação.}
+\label{fig5:3}
+\end{figure}
 
-\textbf{Fig 5.5: vento de se} \textbf{Fig 5.6: campos}
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeSul.png}}}
+\caption{Fig 5.4 - Resposta do nível do mar (superior esquerdo) e do campo de correntes na superfície (superior direito), a 5 metros de profundidade (inferior esquerdo) e
+10 metros de profundidade (inferior direito).}
+\label{fig5:4}
+\end{figure}
 
-\textbf{Fig 5.7: vento de sudeste} \textbf{Fig 5.8: campos}
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windField_SE.png}}}
+\caption{Fig 5.5 - Campo de ventos de sudeste utilizados entre 3 e 6 horas de simulação.}
+\label{fig5:5}
+\end{figure}
 
-\textbf{Fig 5.9: vento de leste} \textbf{Fig 5.10: campos}
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeSE.png}}}
+\caption{Fig 5.6 - Idem Fig 5.4}
+\label{fig5:6}
+\end{figure}
 
-\textbf{Fig 5.11: serie temporal} \textbf{Fig 5.12: serie temporal}
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windField_E.png}}}
+\caption{Fig 5.7 - Campo de ventos de leste utilizados entre 6 e 9 horas de simulação.}
+\label{fig5:7}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeE.png}}}
+\caption{Fig 5.8 - Idem Fig 5.4}
+\label{fig5:8}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windField_SW.png}}}
+\caption{Fig 5.9 - Campo de ventos de sudeste utilizados nas 3 horas finais de simulação.}
+\label{fig5:9}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeSW.png}}}
+\caption{Fig 5.10 - Idem Fig 5.4}
+\label{fig5:10}
+\end{figure}
 
 Por algum motivo não identificado pelo aluno, o modelo não processou
 regiões mais costeiras, obtendo resultados somente na porção offshore do
 domínio modelado.
 
+Por fim, as séries temporais em dois pontos de interesse foram analisadas (Fig 5.11 e 5.12), onde no ponto
+mais interno, dentro da Baía de Santos, não foram observadas correntes devido ao problema já discutido acima.
+Obtivemos então, somente uma série temporal válida para o ponto de interesse mais offshore, próximo ao contorno
+aberto do domínio modelado.
+
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/santos.png}}}
+\caption{Fig 5.11 - Série temporal para região de interesse dentro da Baía de Santos, para os mesmos parâmetros apresentados na Fig 5.4.}
+\label{fig5:9}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\centerline{\hbox{\includegraphics{/home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/offshore.png}}}
+\caption{Fig 5.12 - Idem Fig 5.11, mas para ponto de interesse offshore.}
+\label{fig5:12}
+\end{figure}
 
     % Add a bibliography block to the postdoc
 
