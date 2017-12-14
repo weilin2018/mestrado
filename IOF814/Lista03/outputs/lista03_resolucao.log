@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.9.13)  14 DEC 2017 14:12
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.9.13)  14 DEC 2017 14:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -566,7 +566,11 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 Package hyperref Info: Option `breaklinks' set `true' on input line 255.
 Package hyperref Info: Option `colorlinks' set `true' on input line 255.
 
-(./lista03_resolucao.aux)
+(./lista03_resolucao.aux
+
+LaTeX Warning: Label `fig5:9' multiply defined.
+
+)
 \openout1 = `lista03_resolucao.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 262.
@@ -584,8 +588,7 @@ LaTeX Font Info:    ... okay on input line 262.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 262.
 LaTeX Font Info:    Try loading font information for TS1+cmr on input line 262.
 
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 262.
@@ -812,80 +815,20 @@ utputs/modelo2camadas.png used on input line 357.
  [3 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex01/vento60_
 360.png> </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/modelo2c
 amadas.png>]
-
-LaTeX Warning: Reference `eq:3.4' on page 4 undefined on input line 393.
-
-
-LaTeX Warning: Reference `eq:3.5' on page 4 undefined on input line 400.
-
-
-LaTeX Warning: Reference `eq:3.4' on page 4 undefined on input line 400.
-
-
-LaTeX Warning: Reference `eq:3.2' on page 4 undefined on input line 428.
-
-
 Overfull \hbox (31.8543pt too wide) detected at line 442
 [][] []
  []
 
-[4]
-Overfull \hbox (555.93596pt too wide) detected at line 465
-[]\OML/zplm/m/it/10.95 w \OT1/zplm/m/n/10.95 = [] \OMS/zplm/m/n/10.95 ! [] ! []
- \OT1/zplm/m/n/10.95 + \OML/zplm/m/it/10.95 u[][] \OT1/zplm/m/n/10.95 + \OML/zp
-lm/m/it/10.95 v[][][] \OMS/zplm/m/n/10.95 ! [] \OML/zplm/m/it/10.95 D[] \OT1/zp
-lm/m/n/10.95 + \OML/zplm/m/it/10.95 ^^[[] \OT1/zplm/m/n/10.95 + [] + \OML/zplm/
-m/it/10.95 u[]D[] \OT1/zplm/m/n/10.95 + \OML/zplm/m/it/10.95 ^^[[] \OT1/zplm/m/
-n/10.95 + [][] + \OML/zplm/m/it/10.95 v[]D[] \OT1/zplm/m/n/10.95 + \OML/zplm/m/
-it/10.95 ^^[[] \OT1/zplm/m/n/10.95 + [][] \OMS/zplm/m/n/10.95 ! [] \OML/zplm/m/
-it/10.95 D[] \OT1/zplm/m/n/10.95 + (\OML/zplm/m/it/10.95 ^^[ \OT1/zplm/m/n/10.9
-5 + \OT1/ppl/m/n/10.95 1\OT1/zplm/m/n/10.95 )[] + \OML/zplm/m/it/10.95 u[]^^[[]
- \OT1/zplm/m/n/10.95 + [][] + []\OML/zplm/m/it/10.95 v[]^^[[] \OT1/zplm/m/n/10.
-95 + [][]
- []
-
-
-LaTeX Warning: Reference `eq:4.2' on page 5 undefined on input line 507.
-
-
-LaTeX Warning: Reference `eq:4.3' on page 5 undefined on input line 507.
-
-
-LaTeX Warning: Reference `eq:4.5' on page 5 undefined on input line 527.
-
-
-LaTeX Warning: Reference `eq:4.1' on page 5 undefined on input line 528.
-
-
-Overfull \hbox (91.00357pt too wide) detected at line 535
-[][] \OMS/zplm/m/n/10.95 ^^@ \OML/zplm/m/it/10.95 fv[] \OT1/zplm/m/n/10.95 = \O
-MS/zplm/m/n/10.95 ^^@\OML/zplm/m/it/10.95 ga[][] \OMS/zplm/m/n/10.95 ^^@ []\OML
-/zplm/m/it/10.95 a[][] \OT1/zplm/m/n/10.95 + [] [][] \OML/zplm/m/it/10.95 f[]\O
-T1/zplm/m/n/10.95 (\OML/zplm/m/it/10.95 z\OT1/zplm/m/n/10.95 )[][]\OML/zplm/m/i
-t/10.95 N[][]dz[] [] \OT1/zplm/m/n/10.95 + \OML/zplm/m/it/10.95 fu[] \OT1/zplm/
-m/n/10.95 = \OMS/zplm/m/n/10.95 ^^@\OML/zplm/m/it/10.95 ga[][] \OMS/zplm/m/n/10
-.95 ^^@ []\OML/zplm/m/it/10.95 a[][] \OT1/zplm/m/n/10.95 + [] [][] \OML/zplm/m/
-it/10.95 f[]\OT1/zplm/m/n/10.95 (\OML/zplm/m/it/10.95 z\OT1/zplm/m/n/10.95 )[][
-]\OML/zplm/m/it/10.95 N[][]dz
- []
-
-
-LaTeX Warning: Reference `eq:4.4' on page 5 undefined on input line 546.
-
-[5]
-
-LaTeX Warning: Reference `eq:4.6' on page 6 undefined on input line 568.
-
-[6]
+[4] [5] [6]
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/bathymetry.p
-ng, id=81, 1067.99pt x 835.12pt>
+ng, id=90, 1067.99pt x 835.12pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/bathyme
 try.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/bathymet
 ry.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/bathymetry.png used on input line 647.
+utputs/ex05/bathymetry.png used on input line 655.
 (pdftex.def)             Requested size: 375.80544pt x 293.86375pt.
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/bathyme
 try.png Graphic file (type png)
@@ -893,151 +836,148 @@ try.png Graphic file (type png)
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/bathymet
 ry.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/bathymetry.png used on input line 654.
+utputs/ex05/bathymetry.png used on input line 662.
 (pdftex.def)             Requested size: 375.80544pt x 293.86375pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windField_S.
-png, id=82, 1084.05pt x 851.18pt>
+png, id=91, 1084.05pt x 851.18pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windFie
 ld_S.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windFiel
 d_S.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/windField_S.png used on input line 667.
+utputs/ex05/windField_S.png used on input line 675.
 (pdftex.def)             Requested size: 375.80544pt x 295.07309pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeSul.p
-ng, id=83, 1501.61pt x 891.33pt>
+ng, id=92, 1501.61pt x 891.33pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventode
 Sul.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeS
 ul.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/ventodeSul.png used on input line 674.
+utputs/ex05/ventodeSul.png used on input line 682.
 (pdftex.def)             Requested size: 375.80544pt x 223.06316pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windField_SE
-.png, id=84, 1084.05pt x 851.18pt>
+.png, id=93, 1084.05pt x 851.18pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windFie
 ld_SE.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windFiel
 d_SE.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/windField_SE.png used on input line 682.
+utputs/ex05/windField_SE.png used on input line 690.
 (pdftex.def)             Requested size: 375.80544pt x 295.07309pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeSE.pn
-g, id=85, 1501.61pt x 891.33pt>
+g, id=94, 1501.61pt x 891.33pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventode
 SE.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeS
 E.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/ventodeSE.png used on input line 689.
+utputs/ex05/ventodeSE.png used on input line 697.
 (pdftex.def)             Requested size: 375.80544pt x 223.06316pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windField_E.
-png, id=86, 1084.05pt x 851.18pt>
+png, id=95, 1084.05pt x 851.18pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windFie
 ld_E.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windFiel
 d_E.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/windField_E.png used on input line 696.
+utputs/ex05/windField_E.png used on input line 704.
 (pdftex.def)             Requested size: 375.80544pt x 295.07309pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeE.png
-, id=87, 1509.64pt x 891.33pt>
+, id=96, 1509.64pt x 891.33pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventode
 E.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeE
 .png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/ventodeE.png used on input line 703.
+utputs/ex05/ventodeE.png used on input line 711.
 (pdftex.def)             Requested size: 375.80544pt x 221.87991pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windField_SW
-.png, id=88, 1059.96pt x 835.12pt>
+.png, id=97, 1059.96pt x 835.12pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windFie
 ld_SW.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/windFiel
 d_SW.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/windField_SW.png used on input line 710.
+utputs/ex05/windField_SW.png used on input line 718.
 (pdftex.def)             Requested size: 375.80544pt x 296.09375pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeSW.pn
-g, id=89, 1494.58376pt x 891.33pt>
+g, id=98, 1494.58376pt x 891.33pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventode
 SW.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeS
 W.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/ventodeSW.png used on input line 717.
+utputs/ex05/ventodeSW.png used on input line 725.
 (pdftex.def)             Requested size: 375.80544pt x 224.11041pt.
-
+ [7 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/bathymet
+ry.png>]
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/santos.png, 
-id=90, 819.06pt x 875.27pt>
+id=107, 819.06pt x 875.27pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/santos.
 png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/santos.p
 ng>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/santos.png used on input line 733.
+utputs/ex05/santos.png used on input line 741.
 (pdftex.def)             Requested size: 375.80544pt x 401.60071pt.
 
 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/offshore.png
-, id=91, 819.06pt x 875.27pt>
+, id=108, 819.06pt x 875.27pt>
 File: /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/offshor
 e.png Graphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/offshore
 .png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/IOF814/Lista03/o
-utputs/ex05/offshore.png used on input line 740.
+utputs/ex05/offshore.png used on input line 748.
 (pdftex.def)             Requested size: 375.80544pt x 401.60071pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 749.
- [7 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/bathymet
-ry.png>] [8 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/
-windField_S.png>] [9 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outp
-uts/ex05/ventodeSul.png> </home/tparente/danilo/mestrado/github/IOF814/Lista03/
-outputs/ex05/windField_SE.png>] [10 </home/tparente/danilo/mestrado/github/IOF8
-14/Lista03/outputs/ex05/ventodeSE.png> </home/tparente/danilo/mestrado/github/I
-OF814/Lista03/outputs/ex05/windField_E.png>] [11 </home/tparente/danilo/mestrad
-o/github/IOF814/Lista03/outputs/ex05/ventodeE.png> </home/tparente/danilo/mestr
-ado/github/IOF814/Lista03/outputs/ex05/windField_SW.png>] [12 </home/tparente/d
-anilo/mestrado/github/IOF814/Lista03/outputs/ex05/ventodeSW.png>] [13 </home/tp
-arente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/santos.png>]
-[14 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/offshore
-.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 749.
- (./lista03_resolucao.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 749.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 749.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 757.
+ [8] [9 </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/wind
+Field_S.png> </home/tparente/danilo/mestrado/github/IOF814/Lista03/outputs/ex05
+/ventodeSul.png>] [10 </home/tparente/danilo/mestrado/github/IOF814/Lista03/out
+puts/ex05/windField_SE.png> </home/tparente/danilo/mestrado/github/IOF814/Lista
+03/outputs/ex05/ventodeSE.png>] [11 </home/tparente/danilo/mestrado/github/IOF8
+14/Lista03/outputs/ex05/windField_E.png> </home/tparente/danilo/mestrado/github
+/IOF814/Lista03/outputs/ex05/ventodeE.png>] [12 </home/tparente/danilo/mestrado
+/github/IOF814/Lista03/outputs/ex05/windField_SW.png> </home/tparente/danilo/me
+strado/github/IOF814/Lista03/outputs/ex05/ventodeSW.png>] [13 </home/tparente/d
+anilo/mestrado/github/IOF814/Lista03/outputs/ex05/santos.png>] [14 </home/tpare
+nte/danilo/mestrado/github/IOF814/Lista03/outputs/ex05/offshore.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 757.
+
+(./lista03_resolucao.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 757.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 757.
 Package rerunfilecheck Info: File `lista03_resolucao.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
 
-LaTeX Warning: There were undefined references.
+LaTeX Warning: There were multiply-defined labels.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 749.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 757.
  ) 
 Here is how much of TeX's memory you used:
  11547 strings out of 494963
  173350 string characters out of 6179647
- 272307 words of memory out of 5000000
+ 275272 words of memory out of 5000000
  14479 multiletter control sequences out of 15000+600000
  34987 words of font info for 92 fonts, out of 8000000 for 9000
  38 hyphenation exceptions out of 8191
@@ -1050,10 +990,10 @@ type1/public/mathpazo/fplmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
 ic/mathpazo/fplmri.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/
 uplb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><
 /usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on lista03_resolucao.pdf (14 pages, 9519831 bytes).
+Output written on lista03_resolucao.pdf (14 pages, 9520202 bytes).
 PDF statistics:
- 184 PDF objects out of 1000 (max. 8388607)
- 143 compressed objects within 2 object streams
+ 194 PDF objects out of 1000 (max. 8388607)
+ 153 compressed objects within 2 object streams
  68 named destinations out of 1000 (max. 500000)
  76 words of extra memory for PDF output out of 10000 (max. 10000000)
 
