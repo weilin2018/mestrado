@@ -457,11 +457,17 @@ E, para a velocidade vertical, consideramos que:
 Então,
 
 \begin{equation}
-    w = \frac{dz}{dt} \rightarrow \frac{d(D\sigma + \zeta)}{dt} \rightarrow
-    \frac{\partial{[(H + \zeta)\sigma + \zeta]}}{\partial{t}} + u\bigg[ \frac{\partial{[(H + \zeta)\sigma + \zeta]}}{\partial{x}} + v\bigg[ \frac{\partial{[(H + \zeta)\sigma + \zeta]}}{\partial{y}} \bigg] \rightarrow  \\
-    D\frac{\partial{\sigma}}{\partial{t}} + \sigma\frac{\partial{\zeta}}{\partial{t}} + \frac{\partial{\zeta}}{\partial{t}} + u\bigg[ D\frac{\partial{\sigma}}{\partial{x}} + \sigma\frac{\partial{D}}{\partial{x}} + \frac{\partial{\zeta}}{\partial{x}} \bigg] + v\bigg[ D\frac{\partial{\sigma}}{\partial{y}} + \sigma\frac{\partial{D}}{\partial{y}} + \frac{\partial{\zeta}}{\partial{y}} \bigg] \rightarrow \\
-    D\frac{\partial{\sigma}}{\partial{t}} + (\sigma + 1)\frac{\partial{\zeta}}{\partial{t}} + u\bigg[ \sigma\frac{\partial{D}}{\partial{x}} + \frac{\partial{\zeta}}{\partial{x}} \bigg] + \frac{\partial}{\partial{\sigma}}v\bigg( \sigma\frac{\partial{D}}{\partial{y}} + \frac{\partial{\zeta}}{\partial{y}} \bigg)
-    \label{eq:3.11}
+  \begin{aligned}
+  w = \frac{dz}{dt} \rightarrow \frac{d(D\sigma + \zeta)}{dt} \rightarrow
+  \frac{\partial{[(H + \zeta)\sigma + \zeta]}}{\partial{t}} + u\bigg[ \frac{\partial{[(H + \zeta)\sigma + \zeta]}}{\partial{x}} + v\bigg[ \frac{\partial{[(H + \zeta)\sigma + \zeta]}}{\partial{y}} \bigg] \rightarrow
+  \\
+  D\frac{\partial{\sigma}}{\partial{t}} + \sigma\frac{\partial{\zeta}}{\partial{t}} + \frac{\partial{\zeta}}{\partial{t}} + u\bigg[ D\frac{\partial{\sigma}}{\partial{x}} + \sigma\frac{\partial{D}}{\partial{x}} +
+  \frac{\partial{\zeta}}{\partial{x}} \bigg] + v\bigg[ D\frac{\partial{\sigma}}{\partial{y}} + \sigma\frac{\partial{D}}{\partial{y}} + \frac{\partial{\zeta}}{\partial{y}} \bigg] \rightarrow
+  \\
+  D\frac{\partial{\sigma}}{\partial{t}} + (\sigma + 1)\frac{\partial{\zeta}}{\partial{t}} + u\bigg[ \sigma\frac{\partial{D}}{\partial{x}} + \frac{\partial{\zeta}}{\partial{x}} \bigg] +
+  \frac{\partial}{\partial{\sigma}}v\bigg( \sigma\frac{\partial{D}}{\partial{y}} + \frac{\partial{\zeta}}{\partial{y}} \bigg)
+  \label{eq:3.11}
+  \end{aligned}
 \end{equation}
 
 Portando, teremos:
