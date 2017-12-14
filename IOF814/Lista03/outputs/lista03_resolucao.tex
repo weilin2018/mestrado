@@ -473,7 +473,12 @@ Então,
 Portando, teremos:
 
 \begin{equation}
-    \frac{\partial{w}}{\partial{\sigma}} = \frac{\partial}{\partial{\sigma}}\bigg[ D\frac{\partial{\sigma}}{\partial{t}} + (\sigma + 1)\frac{\partial{\zeta}}{\partial{t}} \bigg] + \frac{\partial}{\partial{\sigma}}\bigg[ u\bigg( \sigma\frac{\partial{D}}{\partial{x}} + \frac{\partial{\zeta}}{\partial{x}} \bigg) \bigg]+ v\bigg[ \sigma\frac{\partial{D}}{\partial{y}} + \frac{\partial{\zeta}}{\partial{y}} \bigg]
+  \begin{aligned}
+  \frac{\partial{w}}{\partial{\sigma}} = \frac{\partial}{\partial{\sigma}}\bigg[ D\frac{\partial{\sigma}}{\partial{t}} + (\sigma + 1)\frac{\partial{\zeta}}{\partial{t}} \bigg] +
+  \frac{\partial}{\partial{\sigma}}\bigg[ u\bigg( \sigma\frac{\partial{D}}{\partial{x}} + \frac{\partial{\zeta}}{\partial{x}} \bigg) \bigg]+ v\bigg[ \sigma\frac{\partial{D}}{\partial{y}} +
+  \frac{\partial{\zeta}}{\partial{y}} \bigg]
+  \label{eq:3.12}
+  \end{aligned}
 \end{equation}
 
     \subparagraph{Exercício 04}\label{exercuxedcio-04}
@@ -495,28 +500,34 @@ e simplificada (sem termos advectivos e sem difusão horizontal):
 Com as seguintes condições de contorno na superfície:
 
 \begin{equation}
-    \tau_{xs} = -\rho\bigg( N\frac{\partial{u}}{\partial{z}} \bigg)
-    \\
-    \tau_{ys} = -\rho\bigg( N\frac{\partial{v}}{\partial{z}} \bigg)
-    \label{eq:4.2}
+  \begin{aligned}
+  \tau_{xs} = -\rho\bigg( N\frac{\partial{u}}{\partial{z}} \bigg)
+  \\
+  \tau_{ys} = -\rho\bigg( N\frac{\partial{v}}{\partial{z}} \bigg)
+  \label{eq:4.2}
+  \end{aligned}
 \end{equation}
 
 E, no fundo:
 
 \begin{equation}
-    \tau_{xB} = K_b\rho u_D
-    \\
-    \tau_{yB} = K_b\rho v_ D
-    \label{eq:4.3}
+  \begin{aligned}
+  \tau_{xB} = K_b\rho u_D
+  \\
+  \tau_{yB} = K_b\rho v_ D
+  \label{eq:4.3}
+  \end{aligned}
 \end{equation}
 
 Igualando (\ref{eq:4.2}) e (\ref{eq:4.3}), obtemos:
 
 \begin{equation}
-    \bigg( N\frac{\partial{u}}{\partial{z}} \bigg)_D + K_b u_D = 0
-    \\
-    \bigg( N\frac{\partial{v}}{\partial{z}} \bigg)_D + K_b v_ D = 0
-    \label{eq:4.4}
+  \begin{aligned}
+  \bigg( N\frac{\partial{u}}{\partial{z}} \bigg)_D + K_b u_D = 0
+  \\
+  \bigg( N\frac{\partial{v}}{\partial{z}} \bigg)_D + K_b v_ D = 0
+  \label{eq:4.4}
+  \end{aligned}
 \end{equation}
 
 Definimos, assim, as transformadas das componentes de corrente (u e v)
@@ -524,10 +535,12 @@ através das auto-funções \(f_r\), associadas aos auto-valores
 \(\lambda_r\):
 
 \begin{equation}
-    u_r = \frac{1}{D}\int^{D}_{0}u f_r(z) dz
-    \\
-    v_r = \frac{1}{D}\int^{D}_{0}v f_r(z) dz
-    \label{eq:4.5}
+  \begin{aligned}
+  u_r = \frac{1}{D}\int^{D}_{0}u f_r(z) dz
+  \\
+  v_r = \frac{1}{D}\int^{D}_{0}v f_r(z) dz
+  \label{eq:4.5}
+  \end{aligned}
 \end{equation}
 
 Aplicando o operador de transformada (\ref{eq:4.5}) nos termos de
@@ -576,41 +589,49 @@ será:
 Desta forma, reescrevemos (\ref{eq:4.6}) como:
 
 \begin{equation}
+\begin{aligned}
     \frac{\partial{u_r}}{\partial{t}} - fv_r = -ga_r\frac{\partial{\eta}}{\partial{x}} - \frac{1}{\rho}a_r\frac{\partial{p_a}}{\partial{x}} + \frac{\tau_{xs}}{\rho D} - \lambda_ru_r
     \\
     \frac{\partial{v_r}}{\partial{t}} + fu_r = -ga_r\frac{\partial{\eta}}{\partial{y}} - \frac{1}{\rho}a_r\frac{\partial{p_a}}{\partial{y}} + \frac{\tau_{ys}}{\rho D} - \lambda_rv_r
     \label{eq:4.11}
+    \end{aligned}
 \end{equation}
 
 Sendo que a determinação das componentes u e v são feitos através de
 expansões do tipo:
 
 \begin{equation}
+\begin{aligned}
     u = \sum^{\infty}_{r=l} A_rf_r(z)
     \\
     v = \sum^{\infty}_{r=l} B_rf_r(z)
     \label{eq:4.12}
+    \end{aligned}
 \end{equation}
 
 Da condição de ortogonalidade das auto-funções, podemos calcular os
 coeficientes das expansões:
 
 \begin{equation}
+\begin{aligned}
     \int^{D}_{0}f_r(z) f_s(z) dz = 0, r \neq s
     \\
     \int^{D}_{0}f^{2}_{r}(z) dz = I_r(D) - I_r(0)
     \\
     \text{onde, } I_r(z) = N\bigg[ f'\frac{\partial{f}}{\partial{\lambda}} - f\frac{\partial{f'}}{\partial{\lambda}} \bigg]_{\lambda=\lambda_r}
     \label{eq:4.13}
+    \end{aligned}
 \end{equation}
 
 Por fim,
 
 \begin{equation}
+\begin{aligned}
     u = \sum^{\infty}_{r=l} \phi_r u_r f_r(z)
     \\
     v = \sum^{\infty}_{r=l} \phi_r v_r f_r(z)
     \label{eq:4.14}
+    \end{aligned}
 \end{equation}
 
 \begin{equation}
@@ -622,13 +643,17 @@ Com as transformadas das correntes, podemos escrever a equação da
 continuidade como:
 
 \begin{equation}
+\begin{aligned}
     \frac{\partial{\eta}}{\partial{t}} + \sum^{\infty}_{r=l}\bigg( \frac{\partial}{\partial{x}}(D a_r \phi_r u_r) + \frac{\partial}{\partial{y}}D a_r \phi_r v_r \bigg) = 0
+    \end{aligned}
 \end{equation}
 
 E, finalmente, obtemos a componente vertical da velocidade:
 
 \begin{equation}
+\begin{aligned}
     w + \sum^{\infty}_{r=l}\bigg( \frac{\partial}{\partial{x}}(\phi_r u_r\int^{D}_{z}f_r(z)dz) + \frac{\partial}{\partial{y}}(\phi_r v_r\int^{D}_{z}f_r(z)dz) \bigg) = 0
+    \end{aligned}
 \end{equation}
 
 Portanto, as equações do modelo são substituídas pelas equações
