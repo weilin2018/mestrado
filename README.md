@@ -19,5 +19,3 @@ As disciplinas são divididas em pastas (nomeadas pelo código de oferecimento d
 
 
 Para criar um novo diretório, rode o arquivo ./criar_diretorio.py e siga as instruções.
-
-asdjakshdkajshdjasd
