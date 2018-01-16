@@ -1,0 +1,61 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: plano.aux
+A level-1 auxiliary file: conteudo.aux
+The style file: achicago.bst
+White space in argument---line 30 of file plano.aux
+ : \bibdata{../mestrado,
+ :                       ../mestrado_manual}
+I'm skipping whatever remains of this command
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: ../mestrado.bib
+Warning--you've exceeded 250, the entry-string-size, for entry Saha2010
+while executing--line 3529 of file achicago.bst
+*Please notify the bibstyle designer*
+Warning--empty institution in Berrisford2011
+Warning--empty journal in Pereira2007
+You've used 18 entries,
+            3641 wiz_defined-function locations,
+            813 strings with 9307 characters,
+and the built_in function-call counts, 156693 in all, are:
+= -- 25741
+> -- 313
+< -- 2
++ -- 8566
+- -- 230
+* -- 4943
+:= -- 34969
+add.period$ -- 70
+call.type$ -- 18
+change.case$ -- 36
+chr.to.int$ -- 18
+cite$ -- 20
+duplicate$ -- 14320
+empty$ -- 2926
+format.name$ -- 386
+if$ -- 28724
+int.to.chr$ -- 0
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 109
+num.names$ -- 72
+pop$ -- 1097
+preamble$ -- 1
+purify$ -- 54
+quote$ -- 0
+skip$ -- 10026
+stack$ -- 0
+substring$ -- 17082
+swap$ -- 1753
+text.length$ -- 230
+text.prefix$ -- 38
+top$ -- 0
+type$ -- 160
+warning$ -- 2
+while$ -- 4488
+width$ -- 0
+write$ -- 299
+(There was 1 error message)
