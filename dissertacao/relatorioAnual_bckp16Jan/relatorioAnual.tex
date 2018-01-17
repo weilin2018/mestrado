@@ -1,0 +1,123 @@
+%% ----------------------------------------------------------------
+%% Thesis.tex -- MAIN FILE (the one that you compile with LaTeX)
+%% ---------------------------------------------------------------- 
+
+% Set up the document
+\documentclass[a4paper, 11pt, oneside]{Thesis}  % Use the "Thesis" style, based on the ECS Thesis style by Steve Gunn
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+
+\graphicspath{Figures/}  % Location of the graphics files (set up for graphics to be in PDF format)
+
+% Include any extra LaTeX packages required
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\setcitestyle{authoryear,open={(},close={)}}
+\usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
+\usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
+\hypersetup{urlcolor=blue, colorlinks=true}  % Colours hyperlinks in blue, but this can be distracting if there are many links.
+
+% packages included by the author
+\usepackage[portuguese]{babel}
+\usepackage[inline]{enumitem}
+\usepackage{pslatex}
+% \usepackage{achicago}
+
+\makeatletter
+\newenvironment{tablehere}
+  {\def\@captype{table}} {}
+ 
+\newenvironment{figurehere}
+  {\def\@captype{figure}}
+  {}
+\makeatother 
+
+\begin{document}
+\begin{center}
+ \pagenumbering{roman}
+\thispagestyle{empty}
+\Large Danilo Augusto Silva \\[3.5cm] 
+\textbf{\huge Circulação Gerada por Ventos Anômalos na Plataforma Continental Sudeste Durante o Verão de 2014. } 
+\ \\ \ 
+
+\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip
+
+\begin{flushright}
+  \begin{minipage}{8cm}
+  \small Primeiro relatório anual apresentado ao Instituto Oceanográfico da Universidade de São Paulo, como parte dos requisitos
+  para o curso de Mestrado, no programa de Oceanografia, área de concentração Oceanografia Física. Período 2017/2019. \\ \ \\
+  Orientador: Prof. Paulo Simionatto Polito\\ \ \\ \ \\ \ \\
+  \end{minipage}
+\end{flushright}
+
+\ \\[3cm] São Paulo \\ Janeiro/2018
+\end{center} 
+ 
+\selectlanguage{brazil}
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{Contents}}  % Set the left side page header to "Contents"
+\tableofcontents  % Write out the Table of Contents
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{List of Figures}}  % Set the left side page header to "List if Figures"
+\listoffigures  % Write out the List of Figures
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{List of Tables}}  % Set the left side page header to "List of Tables"
+%\listoftables  % Write out the List of Tables
+
+%% ----------------------------------------------------------------
+% End of the pre-able, contents and lists of things
+% Begin the Dedication page
+
+%% ----------------------------------------------------------------
+\mainmatter	  % Begin normal, numeric (1,2,3...) page numbering
+\pagestyle{fancy}  % Return the page headers back to the "fancy" style
+
+% Include the chapters of the thesis, as separate files
+% Just uncomment the lines as you write the chapters
+
+\lhead{\emph{Capítulo 1 - Introdução}} 
+\input{Chapters/Chapter1} % Introduction
+
+\lhead{\emph{Capítulo 2 - Materiais e Métodos}} 
+\input{Chapters/Chapter2}
+
+\lhead{\emph{Capítulo 3 - Resultados Esperados}} 
+\input{Chapters/Chapter3}
+
+\lhead{\emph{Capítulo 4 - Atividades Realizadas}} 
+\input{Chapters/Chapter4}
+
+\lhead{\emph{Capítulo 5 - Cronograma}} 
+\input{Chapters/Chapter5}
+
+%\input{Chapters/Chapter6} % Results and Discussion
+
+%\input{Chapters/Chapter7} % Conclusion
+
+%% ----------------------------------------------------------------
+% Now begin the Appendices, including them as separate files
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+%\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+
+%\input{Appendices/AppendixA}	% Appendix Title
+
+%\input{Appendices/AppendixB} % Appendix Title
+
+%\input{Appendices/AppendixC} % Appendix Title
+
+\addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+\backmatter
+
+%% ----------------------------------------------------------------
+\label{Bibliography}
+\lhead{\emph{Bibliography}}  % Change the left side page header to "Bibliography"
+\bibliographystyle{unsrtnat}  % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+\bibliography{Bibliography}  % The references (bibliography) information are stored in the file named "Bibliography.bib"
+
+\end{document}  % The End
+%% ----------------------------------------------------------------
