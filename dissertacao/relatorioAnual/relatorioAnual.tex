@@ -11,7 +11,7 @@
 
 % Include any extra LaTeX packages required
 \usepackage{natbib}
-\bibliographystyle{abbrvnat}
+\bibliographystyle{chicago}
 \setcitestyle{authoryear,open={(},close={)}}
 \usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
 \usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
@@ -34,6 +34,7 @@
 \makeatother 
 
 \begin{document}
+
 \begin{center}
  \pagenumbering{roman}
 \thispagestyle{empty}
@@ -79,20 +80,20 @@
 % Include the chapters of the thesis, as separate files
 % Just uncomment the lines as you write the chapters
 
-\lhead{\emph{Capítulo 1 - Introdução}} 
-\input{Chapters/Chapter1} % Introduction
-
-\lhead{\emph{Capítulo 2 - Materiais e Métodos}} 
-\input{Chapters/Chapter2}
-
-\lhead{\emph{Capítulo 3 - Resultados Esperados}} 
-\input{Chapters/Chapter3}
-
-\lhead{\emph{Capítulo 4 - Atividades Realizadas}} 
+\lhead{\emph{Capítulo 1 - Atividades Realizadas}} 
 \input{Chapters/Chapter4}
 
-\lhead{\emph{Capítulo 5 - Cronograma}} 
+\lhead{\emph{Capítulo 2 - Cronograma}} 
 \input{Chapters/Chapter5}
+
+% \lhead{\emph{Anexo A - Introdução}} 
+% \input{Chapters/Chapter1} % Introduction
+
+% \lhead{\emph{Anexo B - Materiais e Métodos}} 
+% \input{Chapters/Chapter2}
+
+% \lhead{\emph{Capítulo 3 - Resultados Esperados}} 
+% \input{Chapters/Chapter3}
 
 %\input{Chapters/Chapter6} % Results and Discussion
 
@@ -103,11 +104,11 @@
 
 \addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
 
-%\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
 
-%\input{Appendices/AppendixA}	% Appendix Title
+\input{Chapters/Chapter1}	% Appendix Title
 
-%\input{Appendices/AppendixB} % Appendix Title
+\input{Chapters/Chapter2} % Appendix Title
 
 %\input{Appendices/AppendixC} % Appendix Title
 
@@ -116,8 +117,8 @@
 
 %% ----------------------------------------------------------------
 \label{Bibliography}
-\lhead{\emph{Bibliography}}  % Change the left side page header to "Bibliography"
-\bibliographystyle{unsrtnat}  % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+\lhead{\emph{Bibliografia}}  % Change the left side page header to "Bibliography"
+\bibliographystyle{chicago}  % Use the "unsrtnat" BibTeX style for formatting the Bibliography
 \bibliography{Bibliography}  % The references (bibliography) information are stored in the file named "Bibliography.bib"
 
 \end{document}  % The End
