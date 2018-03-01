@@ -70,7 +70,7 @@ ax = fig.add_subplot(111)
 # m=Basemap(projection='merc',llcrnrlat=llat,urcrnrlat=ulat,llcrnrlon=llon,urcrnrlon=ulon,resolution='f')
 
 # pra agilizar o processo, puxa-se um mapa já feito e salvo em pickle
-m=pickle.load(open("bigmap.p","rb"))
+m=pickle.load(open("/home/danilo/Dropbox/0TG_DANILO/rotinas/rotinas/bigmap.p","rb"))
 
 # plotar outras coisas do mapa
 m.drawcoastlines(linewidth=0.4) #linha de costa em alta resolução
@@ -105,9 +105,9 @@ ax.text(x,y,u'Central Channel',color='#800000', fontsize=12)
 
 
 #### desenhar quadrado
-lats = [lat0,lat1,lat1,lat0]
-lons = [lon0,lon1,lon1,lon0]
-draw_square(lats,lons,m)
+# lats = [lat0,lat1,lat1,lat0]
+# lons = [lon0,lon1,lon1,lon0]
+# draw_square(lats,lons,m)
 
 loc_w210 = [[-23.010962, -44.440706], [-22.9741811,-44.323831], [-23.012479, -44.307350], [-23.059381, -44.241407], [-22.994208,-44.039795],[-23.088036,-44.098059],[-23.096075,-44.010663]]
 nam_w210 = ['Piraquara de Fora','Angra dos Reis (A)', 'Angra dos Reis (B)', 'Canal Central', 'Mangaratiba','Porção Leste (BIG)', 'Marambaia']
@@ -147,8 +147,8 @@ x,y = m(loc_w50[2][1],loc_w50[2][0])
 plt.scatter(x,y,marker='*',color='seagreen',s=100,label=nam_w50[2])
 
 # create legend with semi transparent background
-lg = plt.legend(loc='upper left',fontsize=12,numpoints=1,scatterpoints=1)
-lg.get_frame().set_alpha(.4)
+# lg = plt.legend(loc='upper left',fontsize=12,numpoints=1,scatterpoints=1)
+# lg.get_frame().set_alpha(.4)
 
 
 plt.show()

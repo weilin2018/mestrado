@@ -202,7 +202,7 @@ def plotar_dado(fig,ax,k1,tmpDecor,horas,cbPlot=False,location='bigmap.p'):
         # plotar a colorbar, usando os ticks estabelecidos e o tamanho definido acima.
         cb=plt.colorbar(pc,orientation='horizontal',ticks=ticks_cb,format='%.1d',cax=cbaxes)
         # plotar a legenda da colorbar
-        cb.set_label('Integrated Concentratino (x$10^{7}Bq.m^{-3}$)',fontsize=8)
+        cb.set_label('Integrated Concentration (x$10^{7}Bq.m^{-3}$)',fontsize=10)
         cb.ax.tick_params(labelsize=8)
 
     #########################################################
@@ -261,5 +261,5 @@ plotar_dado(fig,ax[2],k1,tmpDecor=str(timeH[instantes[2]]/24),horas=False,cbPlot
 # k1 = k[instantes[3],:,:]
 # plotar_dado(fig,ax[1][1],k1,tmpDecor=str(timeH[instantes[3]]/24),horas=False,cbPlot=False)
 
-
+# plt.savefig(outputDir+'/fig5.png')
 plt.show()
