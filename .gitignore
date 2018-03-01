@@ -1,5 +1,5 @@
 # exclude everything
-data/*
+artigoTG/data/*
 outros/
 ipynb_checkpoints/
 
