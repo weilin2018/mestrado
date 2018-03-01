@@ -1,35 +1,27 @@
 
-% B.Sc Rafaela Farias do Nascimento
+% Editada por B.Sc. Danilo Augusto Silva
 % Lab. Hidrodinâmica Costeira - IOUSP
-% agosto/2015
+% Fevereiro/2018
 % rotina original de M.Sc. Carine de Godoi Rezende Costa
+% atualizada por B.Sc. Rafaela Farias do Nascimento(agosto/2015)
 
 %%%%%%%%%%%%%%%%%%%%%%%%% O QUE ESTE PROGRAMA FAZ %%%%%%%%%%%%%%%%%%%%%%%%%
 
-% 1) Após dados previamente baixados da base NCEP/DOE Reanalysis 2 (R2)
-% (http://rda.ucar.edu/datasets/ds091.0/index.html#sfol-wl-/data/ds091.0?g=4),
-% nos dias selecionados das frentes registradas por Alexandre Coelho
-% (2007), em formato .tar e após descompressão arquivos em formato .grib
-
-% 2) INTERPOLA pra grade do sECOM
-
-% 3) Cria imagens finais de comparação a cada 6 horas cada frente
-% selecionada
-
-% 4) CRIA ARQUIVO ASCII de entrada pro wind.f: wind_ncar2secom
-% colunas
-% 1     2   3   4         5
-% I     J   u   v   pressão
-% dividido em trechos de tempo, onde a primeira linha contém 1 coluna com o
-% tempo em horas
-
+% Importante: model_grid deve estar completo, com os pontos de terra todos
+% 
+% Em necessidade de baixar os dados, utlizar a rotina em python 'download_ncep.py'
+% 
+% 1) Lê os dados dos arquivos do diretorio selecionado
+%     . como os dados são horarios, lê-se os dados a cada 6 horas
+%     . interpola para a grade do modelo
+%     . cria arquivo ASCII de entrada para o wind.f: wind_ncep
 % OBS: a convenção das componentes do vento é vetorial, ou seja, o vetor
 % apontar na direção que o vento vai
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Variáveis
-%% load longitude and latitude from model_grid
+% load longitude and latitude from model_grid
 
 clear all; close all; clc
 addpath /home/tparente/danilo/matlab_programs/nctoolbox/
@@ -58,12 +50,12 @@ lat=reshape(lat,i,j);
 latsecom=lat';
 
 %% Cria arquivo de saida da interpolação
-wf='wind_ncep_ventodobrado';
+wf='wind_ncep_Castelhanos_dobrado';
 fid=fopen(wf,'wt');
 
 %% Leitura dos arquivos grib2 que serão utilizados na interpolação
 
-arq = dir('/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/wnd10m*');
+arq = dir('/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/castelhanos/wnd10m*');
 % pr = dir('/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/prmsl*');
 
 % aqui posso colocar um código pra baixar direto do ftp: ftp://nomads.ncdc.noaa.gov/CFSR/HP_time_series/
@@ -77,12 +69,11 @@ cont_tempo = 1;
 
 disp('Inicio da leitura dos arquivos')
 
-for k=1for k=1:numel(arq)
-:numel(arq)
+for k=1:numel(arq)
     % leitura do arquivo grib2
     disp(arq(k).name)
 
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/castelhanos/' arq(k).name]);
     % extrair variáveis
     lat = nc.data('lat');
     lon = nc.data('lon');
@@ -187,7 +178,7 @@ tempo = [4368:6:4380];
 cont_tempo = 1;
 
 disp('Inicio da leitura dos arquivos')
-k = 6;
+k = numel(arq);
 
 % repetir o ultimo instante de tempo 2x
 
@@ -195,7 +186,7 @@ for repeat=1:1:2
     % leitura do arquivo grib2
     disp(arq(k).name)
 
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/castelhanos/' arq(k).name]);
     
     % extrair variáveis
     lat = nc.data('lat');
@@ -299,7 +290,7 @@ disp('Parametros numericos e de output para run_data');
 dias = 0;
 
 for k=1:numel(arq)
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/castelhanos2/' arq(k).name]);
     
     time = nc.data('time');
     s = size(time);
