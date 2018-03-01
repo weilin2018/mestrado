@@ -125,7 +125,7 @@ def convertData2Bq(c,unit='mg/L'):
 # determina qual o diretório atual (muito importante para não precisar rodar a rotina somente da pasta em que ela está)
 Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 directory = os.getcwd()
-outputDir = askdirectory(initialdir='/media/danilo/Danilo/TG/article_tg/data/simulacoes/',title='Selecione o diretório para salvar as imagens:')
+outputDir = askdirectory(initialdir='/media/danilo/Danilo/mestrado/github/artigoTG/figures/',title='Selecione o diretório para salvar as imagens:')
 
 # selecionando o titulo fixo dos plots
 # txt = 'Dispersão de $^{3}H$ forçado pelo:\n'+ r'Vento (de NE $5 m s^{-1}$), Maré (TPXO) e Descarga Fluvial - '
@@ -172,7 +172,7 @@ timeH = np.arange(dtImg,(time.shape[0])*dtImg+dtImg,dtImg)
 def plotar_dado(fig,ax,k1,tmpDecor,horas,cbPlot=False,location='bigmap.p'):
     #### plotar dados
     #fig,m=make_map(location=location)
-    m=pickle.load(open("/media/danilo/Danilo/TG/from_tripoli/rotinas/"+location,"rb"))
+    m=pickle.load(open("/media/danilo/Danilo/mestrado/github/artigoTG/rotinas/"+location,"rb"))
     m.ax = ax
 
     lon2,lat2=m(lon,lat)
