@@ -103,7 +103,8 @@ def equi(m, centerlon, centerlat, radius, *args, **kwargs):
     plt.plot(X,Y,**kwargs)
 
 # importar batimetria direto de uma saida do modelo
-data = xr.open_dataset('/media/danilo/Danilo/mestrado/artigo_data/simulacoes/val3/gcmplt.cdf')
+#data = xr.open_dataset('/media/danilo/Danilo/mestrado/artigo_data/simulacoes/val3/gcmplt.cdf')
+data = xr.open_dataset('/home/tparente/danilo/mestrado/artigo_data/simulacoes/val3/gcmplt.cdf')
 depth = data['depth'].values
 lon = data['lon'].values
 lat = data['lat'].values
@@ -166,8 +167,8 @@ ax = fig.add_subplot(111)
 # m=Basemap(projection='merc',llcrnrlat=llat,urcrnrlat=ulat,llcrnrlon=llon,urcrnrlon=ulon,resolution='f')
 
 # pra agilizar o processo, puxa-se um mapa já feito e salvo em pickle
-m=pickle.load(open("/home/danilo/Dropbox/0TG_DANILO/rotinas/rotinas/bigmap.p","rb"))
-
+#m=pickle.load(open("/home/danilo/Dropbox/0TG_DANILO/rotinas/rotinas/bigmap.p","rb"))
+m=pickle.load(open("/home/tparente/danilo/mestrado/github/artigoTG/rotinas/bigmap.p","rb"))
 # plotar outras coisas do mapa
 m.drawcoastlines(linewidth=0.4) #linha de costa em alta resolução
 m.drawmapboundary() # fill_color colore o oceano
