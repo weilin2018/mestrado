@@ -1,3 +1,6 @@
+#!/usr/bin/env python2
+#-*-coding:utf-8-*-
+
 # arquivo contendo funcoes utilizadas no artigo
 
 import numpy as np
@@ -6,6 +9,24 @@ import pandas as pd
 from scipy.spatial import cKDTree
 from scipy import signal, fftpack
 import scipy
+import socket
+
+def make_dir():
+    '''
+        Funcao para gerar o BASE_DIR baseado no computador em que esta rodando
+    '''
+
+    hostname = socket.gethostname()
+
+    if hostname == 'oceano': # estou no meu pc pessoal
+        BASE_DIR = '/media/danilo/Danilo/mestrado/github/'
+
+        return BASE_DIR
+    if hostname == 'tripoli':
+        BASE_DIR = '/home/tparente/danilo/mestrado/github/'
+
+        return BASE_DIR
+
 
 def skill_willmott(re,m):
     """
@@ -85,12 +106,6 @@ def find_nearest(glon,glat,ilon,ilat):
 
     return iss,jss
 
-def criar_diretorio_BASE_DIR(pwd):
-
-    BASE_DIR = pwd.split('/')[:-3]
-
-    BASE_DIR = '/'.join((BASE_DIR))
-    return BASE_DIR
 
 def max_correlacao(modelo, observado):
     '''
