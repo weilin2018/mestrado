@@ -50,7 +50,7 @@ lat=reshape(lat,i,j);
 latsecom=lat';
 
 %% Cria arquivo de saida da interpolação
-wf='wind_Jan97';
+wf='wind_Jan97_aquecimento15dias';
 fid=fopen(wf,'wt');
 
 %% Leitura dos arquivos grib2 que serão utilizados na interpolação
@@ -61,9 +61,12 @@ arq = dir('/home/tparente/danilo/mestrado/artigo_data/CSFR/guaiba/wnd10m*');
 % aqui posso colocar um código pra baixar direto do ftp: ftp://nomads.ncdc.noaa.gov/CFSR/HP_time_series/
 
 %% loop de interpolação de cada arquivo listado
+dias_inicio    = 21; % dia do mes que começará a simulação
+dias_final     = 10; % dia do mês que terminará a simulação
+dias_simulados = 51; % total de dias que serão simulados
 
 % vetor de tempo
-tempo = [0:6:990]; % contabilizando apenas 51 dias (reduzindo o aquecimento para 10 dias)
+tempo = [0:6:dias_simulados*24]; % contabilizando apenas 41 dias (reduzindo o aquecimento para 10 dias)
 cont_tempo = 1;
 
 disp('Inicio da leitura dos arquivos')
@@ -89,7 +92,7 @@ k=1;
     lon     =   double(lon);
     pre     =   double(pre);
     % lendo a partir do 10o dia do mês (2400 horas)
-    for step=506:6:time(end)
+    for step=dias_inicio*24:6:time(end)
         % ler o dado
         us = squeeze(U.data(step,1,1:numel(lat),1:numel(lon)));
         vs = squeeze(V.data(step,1,1:numel(lat),1:numel(lon)));
@@ -168,9 +171,9 @@ k=1;
 
     end
 
-%% fazer para Janeiro, Fevereiro e Março
+%% fazer para Janeiro
+k =2;
 
-for k=2:numel(arq)
     % leitura do arquivo grib2
     disp(arq(k).name)
 
@@ -267,9 +270,106 @@ for k=2:numel(arq)
         end
 
     end
+    
+%%  fazer para Fevereiro
+k = 3;
 
-end
+    % leitura do arquivo grib2
+    disp(arq(k).name)
 
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/guaiba/' arq(k).name]);
+    % extrair variáveis
+    lat = nc.data('lat');
+    lon = nc.data('lon');
+    lon=lon-360;
+    U = nc.variable('u-component_of_wind_height_above_ground');
+    V = nc.variable('v-component_of_wind_height_above_ground');
+    time = nc.data('time');
+    pre = 1024;
+
+    % criar loop aqui para ler os dados de 6 em 6 horas
+    lat     =   double(lat);
+    lon     =   double(lon);
+    pre     =   double(pre);
+
+    for step=1:6:dias_final*24
+        % ler o dado
+        us = squeeze(U.data(step,1,1:numel(lat),1:numel(lon)));
+        vs = squeeze(V.data(step,1,1:numel(lat),1:numel(lon)));
+        
+        us      =   double(us);
+        vs      =   double(vs);
+
+        % recortar 
+        pla     =   find(lat>=min(latsecom(:))-2 & lat<=max(latsecom(:))+2);
+        plo     =   find(lon>=min(lonsecom(:))-2 & lon<=max(lonsecom(:))+2);
+        la      =   lat(pla);
+        lo      =   lon(plo);
+        u       =   us(pla,plo);
+        v       =   vs(pla,plo);
+        %p=pre(pla,plo);
+
+        % vetoriza preservando a correspondência
+        lonc    =   repmat(lo,numel(la),1);  % roda todas as lons primeiro
+        latc    =   repmat(la,1,numel(lo));  % repete a mesma lat primeiro
+        latc    =   latc';                   % transpõe para
+        latc    =   latc(:);                 % vetorizar rodando todas as lons para uma mesma lat
+        uc      =   u';
+        uc      =   uc(:);
+        vc      =   v';
+        vc      =   vc(:);
+        %pc=p';
+        %pc=pc(:);
+
+        % interpolar
+        ui      =   griddata(lonc,latc,uc,lonsecom,latsecom,'linear');
+        vi      =   griddata(lonc,latc,vc,lonsecom,latsecom,'linear');
+        % multiplicando o vento por 2
+        ui      = ui * 2;
+        vi      = vi * 2;
+        %pi=griddata(lonc,latc,pc,lonsecom,latsecom,'linear');
+
+        % gravar 
+        % criar as linhas e colunas de saída
+        usecom  =   nan(JJ,II);
+        vsecom  =   nan(JJ,II);
+        psecom  =   nan(JJ,II);
+        
+        % copia os contornos adjacentes
+        usecom([1 JJ],2:II-1)=ui([1 JJ-2],:);
+        usecom(2:JJ-1,[1 II])=ui(:,[1 II-2]);
+        % copia o cantinho com o vizinho
+        usecom([1 JJ],1)=usecom([1 JJ],2);
+        usecom([1 JJ],II)=usecom([1 JJ],II-1);
+        % preenche o interior
+        usecom(2:JJ-1,2:II-1)=ui;
+        
+        vsecom([1 JJ],2:II-1)=vi([1 JJ-2],:);
+        vsecom(2:JJ-1,[1 II])=vi(:,[1 II-2]);
+        vsecom([1 JJ],1)=vsecom([1 JJ],2);
+        vsecom([1 JJ],II)=vsecom([1 JJ],II-1);
+        vsecom(2:JJ-1,2:II-1)=vi;
+        
+        psecom([1 JJ],2:II-1)=    pre              %pi([1 JJ-2],:);
+        psecom(2:JJ-1,[1 II])=    pre              %pi(:,[1 II-2]);
+        psecom([1 JJ],1)=     pre              %psecom([1 JJ],2);
+        psecom([1 JJ],II)=    pre              %psecom([1 JJ],II-1);
+        psecom(2:JJ-1,2:II-1)=    pre              %pi;
+        
+        % cria arquivos de entrada do modelo 
+
+        % time=arq(k).name(18:19);
+        time=tempo(cont_tempo);
+        cont_tempo = cont_tempo + 1;
+        fprintf(fid,'%10.5f\n',time);
+        for j=1:size(usecom,1)
+            for i=1:size(usecom,2)
+                fprintf(fid,'%5.0f%5.0f%10.3f%10.3f%10.3f\n',...
+                    [i j usecom(j,i) vsecom(j,i) psecom(j,i)]);
+            end 
+        end
+
+    end
 %% complementar o arquivo repetindo o ultimo instante de tempo   
 
 % % vetor de tempo
@@ -278,14 +378,13 @@ end
 % cont_tempo = 1;
 
 % substituir o ultimo tempo criado por 9999.00
-tempo(end) = 9999.00;
+% tempo(end) = 9999.00;
 
 disp('Inicio da leitura dos arquivos')
 k = numel(arq);
 
 % repetir o ultimo instante de tempo 2x
 
-for repeat=1:1:2
     % leitura do arquivo grib2
     disp(arq(k).name)
 
@@ -371,9 +470,9 @@ for repeat=1:1:2
         % cria arquivos de entrada do modelo 
 
         % time=arq(k).name(18:19);
-        time=tempo(cont_tempo);
+        %time=tempo(cont_tempo);
         cont_tempo = cont_tempo + 1;
-        fprintf(fid,'%10.5f\n',time);
+        fprintf(fid,'%10.5f\n',9999.99);
         for j=1:size(usecom,1)
             for i=1:size(usecom,2)
                 fprintf(fid,'%5.0f%5.0f%10.3f%10.3f%10.3f\n',...
@@ -381,7 +480,6 @@ for repeat=1:1:2
             end 
         end
 
-end
 
 %% parametros numericos
 
@@ -390,24 +488,12 @@ clc
 disp('Parametros numericos e de output para run_data');
 
 % imprimir quantos dias e os parametros necessarios no run_data
-dias = 0;
-
-for k=1:numel(arq)
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/guaiba/' arq(k).name]);
-    
-    time = nc.data('time');
-    s = size(time);
-    s = s - 1;
-    dias = dias + s(1)/24;
-    
-end
-
 % parametros numéricos
 dti         = 15; %seg
-nstep       = (dias/dti)*3600*24;
+nstep       = (dias_simulados/dti)*3600*24;
 
 % parametros de output/netcdf
-saving_time = 6*60; % minutos
+saving_time = 1*60; % minutos
 avge        = (saving_time*60)/dti;
 jhm         = nstep/avge;
 
