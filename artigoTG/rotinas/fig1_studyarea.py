@@ -101,7 +101,7 @@ m.drawmeridians(meridians,labels=[True,False,False,True],fontsize=13,
 
 m.drawmapscale(-43.65, -23.55, -43.65, -23.55, 20, barstyle='fancy', yoffset=1000)
 # batimetria em forma de grade
-m.pcolor(lon,lat,depth,latlon=True,cmap=cmo.cm.deep)
+pc = m.pcolor(lon,lat,depth,latlon=True,cmap=cmo.cm.deep)
 
 # plotar detalhes em texto
 x,y=m(CNAAAbase[0], CNAAAbase[0])
@@ -169,5 +169,7 @@ oceano.equi(m, CNAAAbase[0], CNAAAbase[1], 15.,lw=1., **kwargs)
 lg = plt.legend(loc='upper left',fontsize=12,numpoints=1,scatterpoints=1)
 lg.get_frame().set_alpha(.4)
 
+cbar = plt.colorbar(pc, orientation='horizontal', shrink=0.625, aspect=20, fraction=0.2,pad=0.04)
+cbar.set_label('Bathymetry [m]', fontsize=20)
 
 plt.show()
