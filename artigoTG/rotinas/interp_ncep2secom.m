@@ -29,7 +29,7 @@ setup_nctoolbox
 
 load /home/tparente/danilo/matlab_programs/linha_costaJR.mat
 
-fid=fopen('/home/tparente/danilo/mestrado/artigo_tg/grade/model_grid_comterra');
+fid=fopen('/home/tparente/danilo/mestrado/github/artigoTG/grade/model_grid_comterra');
 
 grade=textscan(fid,'%5d%5d%10.2f%10.2f%10.2f%10.2f%10.5f%10.5f%5.1f%5s',...
     'headerlines',20);
@@ -50,7 +50,7 @@ lat=reshape(lat,i,j);
 latsecom=lat';
 
 %% Cria arquivo de saida da interpolação
-wf='wind_guaiba_111dias';
+wf='wind_castelhanos';
 fid=fopen(wf,'wt');
 
 %% Leitura dos arquivos grib2 que serão utilizados na interpolação
@@ -63,18 +63,18 @@ arq = dir('/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/castelhanos
 %% loop de interpolação de cada arquivo listado
 
 % vetor de tempo
-tempo = [0:6:2664]; % contabilizando apenas 111 dias (reduzindo o aquecimento para 8 dias)
+tempo = [0:6:2184]; % contabilizando apenas 111 dias (reduzindo o aquecimento para 8 dias)
 cont_tempo = 1;
 
 disp('Inicio da leitura dos arquivos')
 
-%% fazer para o primeiro arquivo (Dezembro/1996)
+%% fazer para o primeiro arquivo 
 k=1;
 
    % leitura do arquivo grib2
     disp(arq(k).name)
 
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/guaiba/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/castelhanos/' arq(k).name]);
     % extrair variáveis
     lat = nc.data('lat');
     lon = nc.data('lon');
@@ -89,7 +89,7 @@ k=1;
     lon     =   double(lon);
     pre     =   double(pre);
     % lendo a partir do 10o dia do mês (2400 horas)
-    for step=2400:6:time(end)
+    for step=1:6:time(end)
         % ler o dado
         us = squeeze(U.data(step,1,1:numel(lat),1:numel(lon)));
         vs = squeeze(V.data(step,1,1:numel(lat),1:numel(lon)));
@@ -174,7 +174,7 @@ for k=2:numel(arq)
     % leitura do arquivo grib2
     disp(arq(k).name)
 
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/guaiba/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/castelhanos/' arq(k).name]);
     % extrair variáveis
     lat = nc.data('lat');
     lon = nc.data('lon');
@@ -286,7 +286,7 @@ for repeat=1:1:2
     % leitura do arquivo grib2
     disp(arq(k).name)
 
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/guaiba/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/castelhanos/' arq(k).name]);
     
     % extrair variáveis
     lat = nc.data('lat');
@@ -390,7 +390,7 @@ disp('Parametros numericos e de output para run_data');
 dias = 0;
 
 for k=1:numel(arq)
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/guaiba/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/castelhanos/' arq(k).name]);
     
     time = nc.data('time');
     s = size(time);

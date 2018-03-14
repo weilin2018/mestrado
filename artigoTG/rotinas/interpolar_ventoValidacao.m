@@ -50,20 +50,20 @@ lat=reshape(lat,i,j);
 latsecom=lat';
 
 %% Cria arquivo de saida da interpolação
-wf='wind_Jan97_aquecimento15dias';
+wf='wind_castelhanos';
 fid=fopen(wf,'wt');
 
 %% Leitura dos arquivos grib2 que serão utilizados na interpolação
 
-arq = dir('/home/tparente/danilo/mestrado/artigo_data/CSFR/guaiba/wnd10m*');
+arq = dir('/home/tparente/danilo/mestrado/artigo_data/CSFR/castelhanos/wnd10m*');
 % pr = dir('/home/tparente/danilo/mestrado/artigo_tg/dados_vento/CSFR/prmsl*');
 
 % aqui posso colocar um código pra baixar direto do ftp: ftp://nomads.ncdc.noaa.gov/CFSR/HP_time_series/
 
 %% loop de interpolação de cada arquivo listado
-dias_inicio    = 21; % dia do mes que começará a simulação
-dias_final     = 10; % dia do mês que terminará a simulação
-dias_simulados = 51; % total de dias que serão simulados
+dias_inicio    = 1; % dia do mes que começará a simulação
+dias_final     = 30; % dia do mês que terminará a simulação
+dias_simulados = 91; % total de dias que serão simulados
 
 % vetor de tempo
 tempo = [0:6:dias_simulados*24]; % contabilizando apenas 41 dias (reduzindo o aquecimento para 10 dias)
@@ -77,7 +77,7 @@ k=1;
    % leitura do arquivo grib2
     disp(arq(k).name)
 
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/guaiba/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/castelhanos/' arq(k).name]);
     % extrair variáveis
     lat = nc.data('lat');
     lon = nc.data('lon');
@@ -150,11 +150,11 @@ k=1;
         vsecom([1 JJ],II)=vsecom([1 JJ],II-1);
         vsecom(2:JJ-1,2:II-1)=vi;
         
-        psecom([1 JJ],2:II-1)=    pre              %pi([1 JJ-2],:);
-        psecom(2:JJ-1,[1 II])=    pre              %pi(:,[1 II-2]);
-        psecom([1 JJ],1)=     pre              %psecom([1 JJ],2);
-        psecom([1 JJ],II)=    pre              %psecom([1 JJ],II-1);
-        psecom(2:JJ-1,2:II-1)=    pre              %pi;
+        psecom([1 JJ],2:II-1)=    pre;              %pi([1 JJ-2],:);
+        psecom(2:JJ-1,[1 II])=    pre;              %pi(:,[1 II-2]);
+        psecom([1 JJ],1)=     pre;              %psecom([1 JJ],2);
+        psecom([1 JJ],II)=    pre;              %psecom([1 JJ],II-1);
+        psecom(2:JJ-1,2:II-1)=    pre;              %pi;
         
         % cria arquivos de entrada do modelo 
 
@@ -177,7 +177,7 @@ k =2;
     % leitura do arquivo grib2
     disp(arq(k).name)
 
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/guaiba/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/castelhanos/' arq(k).name]);
     % extrair variáveis
     lat = nc.data('lat');
     lon = nc.data('lon');
@@ -250,11 +250,11 @@ k =2;
         vsecom([1 JJ],II)=vsecom([1 JJ],II-1);
         vsecom(2:JJ-1,2:II-1)=vi;
         
-        psecom([1 JJ],2:II-1)=    pre              %pi([1 JJ-2],:);
-        psecom(2:JJ-1,[1 II])=    pre              %pi(:,[1 II-2]);
-        psecom([1 JJ],1)=     pre              %psecom([1 JJ],2);
-        psecom([1 JJ],II)=    pre              %psecom([1 JJ],II-1);
-        psecom(2:JJ-1,2:II-1)=    pre              %pi;
+        psecom([1 JJ],2:II-1)=    pre;              %pi([1 JJ-2],:);
+        psecom(2:JJ-1,[1 II])=    pre ;             %pi(:,[1 II-2]);
+        psecom([1 JJ],1)=     pre;              %psecom([1 JJ],2);
+        psecom([1 JJ],II)=    pre;              %psecom([1 JJ],II-1);
+        psecom(2:JJ-1,2:II-1)=    pre;              %pi;
         
         % cria arquivos de entrada do modelo 
 
@@ -277,7 +277,7 @@ k = 3;
     % leitura do arquivo grib2
     disp(arq(k).name)
 
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/guaiba/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/castelhanos/' arq(k).name]);
     % extrair variáveis
     lat = nc.data('lat');
     lon = nc.data('lon');
@@ -292,7 +292,7 @@ k = 3;
     lon     =   double(lon);
     pre     =   double(pre);
 
-    for step=1:6:dias_final*24
+    for step=1:6:time(end)
         % ler o dado
         us = squeeze(U.data(step,1,1:numel(lat),1:numel(lon)));
         vs = squeeze(V.data(step,1,1:numel(lat),1:numel(lon)));
@@ -350,11 +350,11 @@ k = 3;
         vsecom([1 JJ],II)=vsecom([1 JJ],II-1);
         vsecom(2:JJ-1,2:II-1)=vi;
         
-        psecom([1 JJ],2:II-1)=    pre              %pi([1 JJ-2],:);
-        psecom(2:JJ-1,[1 II])=    pre              %pi(:,[1 II-2]);
-        psecom([1 JJ],1)=     pre              %psecom([1 JJ],2);
-        psecom([1 JJ],II)=    pre              %psecom([1 JJ],II-1);
-        psecom(2:JJ-1,2:II-1)=    pre              %pi;
+        psecom([1 JJ],2:II-1)=    pre;              %pi([1 JJ-2],:);
+        psecom(2:JJ-1,[1 II])=    pre;              %pi(:,[1 II-2]);
+        psecom([1 JJ],1)=     pre;              %psecom([1 JJ],2);
+        psecom([1 JJ],II)=    pre;              %psecom([1 JJ],II-1);
+        psecom(2:JJ-1,2:II-1)=    pre ;             %pi;
         
         % cria arquivos de entrada do modelo 
 
@@ -388,7 +388,7 @@ k = numel(arq);
     % leitura do arquivo grib2
     disp(arq(k).name)
 
-    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/guaiba/' arq(k).name]);
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/castelhanos/' arq(k).name]);
     
     % extrair variáveis
     lat = nc.data('lat');
@@ -461,11 +461,11 @@ k = numel(arq);
         vsecom([1 JJ],II)=vsecom([1 JJ],II-1);
         vsecom(2:JJ-1,2:II-1)=vi;
         
-        psecom([1 JJ],2:II-1)=    pre              %pi([1 JJ-2],:);
-        psecom(2:JJ-1,[1 II])=    pre              %pi(:,[1 II-2]);
-        psecom([1 JJ],1)=     pre              %psecom([1 JJ],2);
-        psecom([1 JJ],II)=    pre              %psecom([1 JJ],II-1);
-        psecom(2:JJ-1,2:II-1)=    pre              %pi;
+        psecom([1 JJ],2:II-1)=    pre;              %pi([1 JJ-2],:);
+        psecom(2:JJ-1,[1 II])=    pre;              %pi(:,[1 II-2]);
+        psecom([1 JJ],1)=     pre ;             %psecom([1 JJ],2);
+        psecom([1 JJ],II)=    pre;              %psecom([1 JJ],II-1);
+        psecom(2:JJ-1,2:II-1)=    pre ;             %pi;
         
         % cria arquivos de entrada do modelo 
 
@@ -486,6 +486,19 @@ k = numel(arq);
 
 clc
 disp('Parametros numericos e de output para run_data');
+
+% imprimir quantos dias e os parametros necessarios no run_data
+dias = 0;
+
+for k=1:numel(arq)
+    nc = ncgeodataset(['/home/tparente/danilo/mestrado/artigo_data/CSFR/castelhanos/' arq(k).name]);
+    
+    time = nc.data('time');
+    s = size(time); % tamanho do vetor time
+    s = s - 1; % subtrai 1 para obter o tanto de horas (pois começa com 0)
+    dias = dias + s(1)/24; % concatena os dias, dividindo as horas totais por 24
+    
+end
 
 % imprimir quantos dias e os parametros necessarios no run_data
 % parametros numéricos

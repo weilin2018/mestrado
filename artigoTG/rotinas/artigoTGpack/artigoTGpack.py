@@ -11,6 +11,7 @@ from scipy import signal, fftpack
 import scipy
 import socket
 import matplotlib.pyplot as plt
+import glob
 
 
 # gerar diretorio base
@@ -57,9 +58,9 @@ def skill_willmott(re,m):
     return skill
 
 # encontrar indices dos pontos mais proximo a uma coordenada
-def find_nearest(glon,glat,ilon,ilat):
+def find_nearest(lon,lat,ilon,ilat):
     '''
-        glon,glat = lat e lon da grade
+        lon,lat = lat e lon da grade
         ilon,ilat = ponto a ser encontrado
     '''
 
@@ -218,4 +219,89 @@ def equi(m, centerlon, centerlat, radius, *args, **kwargs):
     X,Y = m(X,Y)
     plt.plot(X,Y,**kwargs)
 
-#
+def read_BNDO(DATA_DIR):
+    '''
+        ler arquivos BNDO no diretório passado como argumento
+
+        
+
+        retorna os dados de 1997 como pandas.DataFrame
+        
+    '''
+    lfiles = glob.glob(DATA_DIR+'1997/*')   
+    lfiles.sort()
+
+    # ler, inicialmente, os dois primeiros arquivos para ampliar uma série
+    files = lfiles[:2]
+
+    file1 = pd.read_csv(files[0], skiprows=11, delimiter=';', names=['nivel', 'x'])
+    file1.drop(file1.columns[len(file1.columns)-1], axis=1, inplace=True)
+
+    file2 = pd.read_csv(files[1], skiprows=11, delimiter=';', names=['nivel', 'x'])
+    file2.drop(file2.columns[len(file2.columns)-1], axis=1, inplace=True)
+
+    # criar os dataframes
+    dtRange = pd.date_range(start=file1.index[0], end=file1.index[-1], freq='H')
+    df1 = pd.DataFrame({'nivel': file1['nivel'].values/100.}, index=dtRange)
+
+    dtRange = pd.date_range(start="1997-02-02 00:00", end="1997-03-05 23:00", freq='H')
+    df2 = pd.DataFrame({'nivel': file2['nivel'].values/100.}, index=dtRange)
+
+    dtRange = pd.date_range(start='1997-02-01 00:00', end='1997-02-01 23:00', freq='H')
+    df3 = pd.DataFrame({'nivel': np.ones(dtRange.shape[0])*np.nan}, index=dtRange)
+
+    # concatenar as séries
+    observ = pd.concat([df1, df3, df2])
+
+    # controle de qualidade
+    cond = observ['nivel'] > 4.
+    observ[cond] = np.nan
+
+    # removendo a média da série temporal
+    observ['nivel'] = observ['nivel'] - observ['nivel'].mean()
+
+    return observ
+
+
+
+def newTimerange(tm,to,observ):
+
+    ''' pegar os dados mais próximos dos instantes passados do modelo '''
+
+    modelTimestamp = []
+
+    for i in tm:
+        modelTimestamp.append(pd.Timestamp(i).to_julian_date())
+
+    observTimestamp = []
+
+    for i in to:
+        observTimestamp.append(pd.Timestamp(i).to_julian_date())
+        
+    modelTimestamp  = np.asarray(modelTimestamp) 
+    observTimestamp = np.asarray(observTimestamp)
+
+    # search for the closest values between model and observTimestamp
+    def find_nearest(array,value):
+        idx = (np.abs(array-value)).argmin()
+        return idx
+
+    indices = []
+
+    for i in modelTimestamp:
+        indices.append(find_nearest(observTimestamp, i))
+
+    indices = np.asarray(indices)
+
+    ob=observ
+    ob['ind'] = np.arange(0,len(observ))
+    ob['datetime'] = observ.index.values
+    ob.set_index('ind', inplace=True)
+
+    # selected
+    n = []
+    for i in indices:
+        value = ob[ob.index == i].nivel.values
+        n.append(value)
+
+    return np.squeeze(np.asarray(n))
