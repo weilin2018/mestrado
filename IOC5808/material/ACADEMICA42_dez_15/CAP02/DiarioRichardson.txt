@@ -1,0 +1,68 @@
+
+Rie_quad =
+
+    5.7148
+
+Rie
+
+Rie_quad =
+
+    5.7148
+
+<a href="error:E:\ACADEMICA42\CAP02\Rie.m,72,1">72  </a>load roC_siz.dat
+Rie
+
+Rie_quad =
+
+    5.7148
+
+<a href="error:E:\ACADEMICA42\CAP02\Rie.m,72,1">72  </a>load roC_siz.dat
+dir
+
+.                      Richcamada             Rie_siz.dat            uC_quad.dat            ufC_quad.dat           
+..                     Rie.asv                diariowedderburn.txt   uC_siz.dat             ufC_siz.dat            
+DiarioRichardson.txt   Rie.m                  roC_quad.dat           uaC_quad.dat           wedderburn.m           
+Figura Wedderburn.bmp  Rie_quad.dat           roC_siz.dat            uaC_siz.dat            
+
+Rie
+
+Rie_quad =
+
+    5.7148
+
+<a href="error:E:\ACADEMICA42\CAP02\Rie.m,72,1">72  </a>load roC_siz.dat
+dbquit
+Rie
+
+Rie_quad =
+
+    5.7148
+
+<a href="error:E:\ACADEMICA42\CAP02\Rie.m,72,1">72  </a>load roC_siz.dat
+dbquit
+dbquit
+Rie
+
+Rie_quad =
+
+    5.7148
+
+<a href="error:E:\ACADEMICA42\CAP02\Rie.m,72,1">72  </a>load roC_siz.dat
+exit
+
+Rie_quad =
+
+    5.7148
+
+exit
+
+Rie_quad =
+
+    5.7148
+
+
+Rie_siz =
+
+    4.0656
+
+builtin('exit')

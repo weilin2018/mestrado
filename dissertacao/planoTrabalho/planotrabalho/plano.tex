@@ -1,0 +1,186 @@
+% esqueleto básico para elaboração de relatórios/trabalhos simples na graduação
+% Por Danilo A. Silva - nilodna@gmail.com
+
+\documentclass[12pt,times,portuguese,a4paper,pdftex]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvips]{graphicx}
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\usepackage{longtable}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{esint}
+\usepackage[brazil,english]{babel}
+\usepackage{pslatex}
+\usepackage{achicago}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{indentfirst}
+\usepackage{leftidx}
+\usepackage[inline]{enumitem}
+%\usepackage[nottoc]{tocbibind} % pacote para adicionar references no sumário
+%%% DESCOMENTAR LINHAS ABAIXO PARA TIRAR COR E BORDA DE LINK E HYPERLINKS
+\hypersetup{
+    % colorlinks=false,
+    % pdfborder={0 0 0},
+}
+
+%\usepackage[
+ %   dvipdfm,
+ %   pdftitle={[Título do trabalho]}, 
+ %   pdfauthor={[Nome Sobrenome]}, 
+ %   pdfkeywords={[palavras chave]}, 
+ %   bookmarks, 
+ %   bookmarksopen=true, 
+ %   plainpages=false, 
+ %   pdfpagelabels
+%]{hyperref}
+%\usepackage[alf,abnt-etal-text=emph,abnt-etal-cite=2]{abntcite}
+
+
+\providecommand{\citep}{\shortcite}
+\providecommand{\citet}{\shortciteN}
+
+% for fancyboxes
+\setlength{\fboxrule}{0.2mm}
+\setlength{\fboxsep}{2ex}
+
+\makeatletter
+\newenvironment{tablehere}
+  {\def\@captype{table}} {}
+ 
+\newenvironment{figurehere}
+  {\def\@captype{figure}}
+  {}
+\makeatother 
+
+\renewcommand{\figurename}{Fig.}
+
+\begin{document}
+\begin{center}
+ \pagenumbering{roman}
+\thispagestyle{empty}
+\Large Danilo Augusto Silva \\[3.5cm] 
+\textbf{\huge Circulação Gerada por Ventos Anômalos na Plataforma Continental Sudeste Durante o Verão de 2014. } 
+\ \\ \ 
+
+\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip
+
+\begin{flushright}
+  \begin{minipage}{8cm}
+  \small Plano de trabalho apresentado ao Instituto Oceanográfico da Universidade de São Paulo, como parte dos requisitos
+  para o curso de Mestrado, no programa de Oceanografia, área de concentração Oceanografia Física. Período 2017/2019. \\ \ \\
+  Orientador: Prof. Paulo Simionatto Polito\\ \ \\ \ \\ \ \\
+  \end{minipage}
+\end{flushright}
+
+\ \\[3cm] São Paulo \\ Março/2017
+\end{center} 
+ 
+\selectlanguage{brazil}
+
+\newpage
+\tableofcontents
+%\newpage
+%\listoffigures
+%\newpage
+%\listoftables
+%\newpage
+
+\include{conteudo}
+
+%\addcontentsline{toc}{chapter}{Referências}
+\addcontentsline{toc}{section}{Referências}
+\bibliographystyle{achicago}
+\bibliography{../mestrado}
+
+
+\newpage
+\begin{center}
+\textbf{\large UNIVERSIDADE DE SÃO PAULO}\\
+\textbf{\large INSTITUTO OCEANOGRÁFICO}
+
+\bigskip\bigskip\bigskip\bigskip
+
+\bigskip\bigskip\bigskip\bigskip
+
+\large Danilo Augusto Silva
+
+\bigskip\bigskip\bigskip\bigskip
+
+Plano de trabalho apresentado ao Instituto
+Oceanográfico da Universidade de São Paulo, como
+parte dos requisitos para o curso de Mestrado,
+no programa Oceanografia, área de concentração
+Oceanografia Física. Período: 2017/19
+
+\bigskip\bigskip\bigskip\bigskip
+
+São Paulo, \rule[0.3mm]{0.5cm}{0.3mm} /\rule[0.3mm]{0.5cm}{0.3mm} /\rule[0.3mm]{1cm}{0.3mm}
+
+\bigskip\bigskip\bigskip\bigskip
+
+\end{center}
+
+\begin{minipage}{10cm}
+
+\rule[0.3mm]{10cm}{0.3mm}\\
+\small Orientador: Prof. Paulo Simionatto Polito
+
+\bigskip\bigskip
+
+\rule[0.3mm]{10cm}{0.3mm}\\
+\small Aluna: Danilo Augusto Silva
+
+\bigskip\bigskip
+
+\end{minipage}
+\end{document}
+
+% \newpage
+% \begin{center}
+% \textbf{\large UNIVERSIDADE DE SÃO PAULO}\\
+% \textbf{\large INSTITUTO OCEANOGRÁFICO}
+
+% \bigskip\bigskip\bigskip\bigskip
+
+% \bigskip\bigskip\bigskip\bigskip
+
+% \large Danilo Augusto Silva
+
+% \bigskip
+
+% Plano de trabalho apresentado ao Instituto
+% Oceanográfico da Universidade de São Paulo, como
+% parte dos requisitos para o curso de Mestrado,
+% no programa de Oceanografia, área de concentração
+% Oceanografica Física. Período: 2017/19
+
+% \bigskip\bigskip\bigskip\bigskip
+
+% São Paulo, \rule[0.3mm]{10cm}{0.3mm} /\rule[0.3mm]{10cm}{0.3mm} /\rule[0.3mm]{10cm}{0.3mm}
+
+% \bigskip\bigskip\bigskip\bigskip
+
+% \end{center}
+
+% \begin{minipage}{10cm}
+
+% \small Orientador: Prof. Paulo Simionatto Polito
+
+% \bigskip\bigskip
+
+% \rule[0.3mm]{10cm}{0.3mm}\\
+% \small Aluno: Danilo Augusto Silva
+
+% \bigskip\bigskip
+
+% \end{minipage}
+% \end{document}

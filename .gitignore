@@ -1,0 +1,11 @@
+# exclude everything
+artigoTG/data/*
+outros/
+ipynb_checkpoints/
+
+# exclude extensions
+*.pkl
+*.zip
+
+# exception to the rule
+

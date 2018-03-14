@@ -1,0 +1,596 @@
+
+uf =
+
+    0.1000
+
+
+co =
+
+    0.1300
+
+
+psi =
+
+  6.0000e+003
+
+
+xw =
+
+       -3000
+
+
+x =
+
+  Columns 1 through 13 
+
+           0        -100        -200        -300        -400        -500        -600        -700        -800        -900       -1000       -1100       -1200
+
+  Columns 14 through 26 
+
+       -1300       -1400       -1500       -1600       -1700       -1800       -1900       -2000       -2100       -2200       -2300       -2400       -2500
+
+  Columns 27 through 31 
+
+       -2600       -2700       -2800       -2900       -3000
+
+
+arg =
+
+  1.0e+005 *
+
+  Columns 1 through 15 
+
+   -2.3240   -2.2465   -2.1690   -2.0916   -2.0141   -1.9366   -1.8592   -1.7817   -1.7042   -1.6268   -1.5493   -1.4718   -1.3944   -1.3169   -1.2394
+
+  Columns 16 through 30 
+
+   -1.1620   -1.0845   -1.0070   -0.9296   -0.8521   -0.7747   -0.6972   -0.6197   -0.5423   -0.4648   -0.3873   -0.3099   -0.2324   -0.1549   -0.0775
+
+  Column 31 
+
+    0.0000
+
+
+Cab =
+
+  Columns 1 through 15 
+
+    0.0187    0.0200    0.0213    0.0227    0.0243    0.0259    0.0276    0.0295    0.0314    0.0335    0.0357    0.0381    0.0407    0.0434    0.0463
+
+  Columns 16 through 30 
+
+    0.0494    0.0527    0.0562    0.0599    0.0639    0.0682    0.0727    0.0776    0.0827    0.0883    0.0941    0.1004    0.1071    0.1143    0.1219
+
+  Column 31 
+
+    0.1300
+
+
+xx =
+
+  Columns 1 through 13 
+
+       -3000       -3100       -3200       -3300       -3400       -3500       -3600       -3700       -3800       -3900       -4000       -4100       -4200
+
+  Columns 14 through 26 
+
+       -4300       -4400       -4500       -4600       -4700       -4800       -4900       -5000       -5100       -5200       -5300       -5400       -5500
+
+  Columns 27 through 31 
+
+       -5600       -5700       -5800       -5900       -6000
+
+
+arg1 =
+
+  1.0e+005 *
+
+  Columns 1 through 15 
+
+    0.0000   -0.0775   -0.1549   -0.2324   -0.3099   -0.3873   -0.4648   -0.5423   -0.6197   -0.6972   -0.7747   -0.8521   -0.9296   -1.0070   -1.0845
+
+  Columns 16 through 30 
+
+   -1.1620   -1.2394   -1.3169   -1.3944   -1.4718   -1.5493   -1.6268   -1.7042   -1.7817   -1.8592   -1.9366   -2.0141   -2.0916   -2.1690   -2.2465
+
+  Column 31 
+
+   -2.3240
+
+
+Cab =
+
+  Columns 1 through 15 
+
+    0.1300    0.1219    0.1143    0.1071    0.1004    0.0941    0.0883    0.0827    0.0776    0.0727    0.0682    0.0639    0.0599    0.0562    0.0527
+
+  Columns 16 through 30 
+
+    0.0494    0.0463    0.0434    0.0407    0.0381    0.0357    0.0335    0.0314    0.0295    0.0276    0.0259    0.0243    0.0227    0.0213    0.0200
+
+  Column 31 
+
+    0.0187
+
+fschange('E:\ACADEMICA42\CAP07\concentracao.m');
+clear concentracao
+builtin('exit')
+
+uf =
+
+    0.1000
+
+
+co =
+
+    0.1300
+
+
+psi =
+
+  6.0000e+003
+
+
+xw =
+
+       -3000
+
+
+x =
+
+  Columns 1 through 13 
+
+           0        -100        -200        -300        -400        -500        -600        -700        -800        -900       -1000       -1100       -1200
+
+  Columns 14 through 26 
+
+       -1300       -1400       -1500       -1600       -1700       -1800       -1900       -2000       -2100       -2200       -2300       -2400       -2500
+
+  Columns 27 through 31 
+
+       -2600       -2700       -2800       -2900       -3000
+
+
+arg =
+
+  1.0e+005 *
+
+  Columns 1 through 15 
+
+   -2.3240   -2.2465   -2.1690   -2.0916   -2.0141   -1.9366   -1.8592   -1.7817   -1.7042   -1.6268   -1.5493   -1.4718   -1.3944   -1.3169   -1.2394
+
+  Columns 16 through 30 
+
+   -1.1620   -1.0845   -1.0070   -0.9296   -0.8521   -0.7747   -0.6972   -0.6197   -0.5423   -0.4648   -0.3873   -0.3099   -0.2324   -0.1549   -0.0775
+
+  Column 31 
+
+    0.0000
+
+
+Cab =
+
+  Columns 1 through 15 
+
+    0.0187    0.0200    0.0213    0.0227    0.0243    0.0259    0.0276    0.0295    0.0314    0.0335    0.0357    0.0381    0.0407    0.0434    0.0463
+
+  Columns 16 through 30 
+
+    0.0494    0.0527    0.0562    0.0599    0.0639    0.0682    0.0727    0.0776    0.0827    0.0883    0.0941    0.1004    0.1071    0.1143    0.1219
+
+  Column 31 
+
+    0.1300
+
+
+xx =
+
+  Columns 1 through 13 
+
+       -3000       -3100       -3200       -3300       -3400       -3500       -3600       -3700       -3800       -3900       -4000       -4100       -4200
+
+  Columns 14 through 26 
+
+       -4300       -4400       -4500       -4600       -4700       -4800       -4900       -5000       -5100       -5200       -5300       -5400       -5500
+
+  Columns 27 through 31 
+
+       -5600       -5700       -5800       -5900       -6000
+
+
+arg1 =
+
+  1.0e+005 *
+
+  Columns 1 through 15 
+
+    0.0000   -0.0775   -0.1549   -0.2324   -0.3099   -0.3873   -0.4648   -0.5423   -0.6197   -0.6972   -0.7747   -0.8521   -0.9296   -1.0070   -1.0845
+
+  Columns 16 through 30 
+
+   -1.1620   -1.2394   -1.3169   -1.3944   -1.4718   -1.5493   -1.6268   -1.7042   -1.7817   -1.8592   -1.9366   -2.0141   -2.0916   -2.1690   -2.2465
+
+  Column 31 
+
+   -2.3240
+
+
+Cab =
+
+  Columns 1 through 15 
+
+    0.1300    0.1219    0.1143    0.1071    0.1004    0.0941    0.0883    0.0827    0.0776    0.0727    0.0682    0.0639    0.0599    0.0562    0.0527
+
+  Columns 16 through 30 
+
+    0.0494    0.0463    0.0434    0.0407    0.0381    0.0357    0.0335    0.0314    0.0295    0.0276    0.0259    0.0243    0.0227    0.0213    0.0200
+
+  Column 31 
+
+    0.0187
+
+fschange('F:\ACADEMICA42\CAP07\concentracao.m');
+clear concentracao
+cd('F:\ACADEMICA42\CAP07');
+builtin('exit')
+
+uf =
+
+    0.1000
+
+
+co =
+
+    0.1300
+
+
+psi =
+
+  6.0000e+003
+
+
+xw =
+
+       -3000
+
+
+x =
+
+  Columns 1 through 8 
+
+           0        -100        -200        -300        -400        -500        -600        -700
+
+  Columns 9 through 16 
+
+        -800        -900       -1000       -1100       -1200       -1300       -1400       -1500
+
+  Columns 17 through 24 
+
+       -1600       -1700       -1800       -1900       -2000       -2100       -2200       -2300
+
+  Columns 25 through 31 
+
+       -2400       -2500       -2600       -2700       -2800       -2900       -3000
+
+
+arg =
+
+  1.0e+005 *
+
+  Columns 1 through 9 
+
+   -2.3240   -2.2465   -2.1690   -2.0916   -2.0141   -1.9366   -1.8592   -1.7817   -1.7042
+
+  Columns 10 through 18 
+
+   -1.6268   -1.5493   -1.4718   -1.3944   -1.3169   -1.2394   -1.1620   -1.0845   -1.0070
+
+  Columns 19 through 27 
+
+   -0.9296   -0.8521   -0.7747   -0.6972   -0.6197   -0.5423   -0.4648   -0.3873   -0.3099
+
+  Columns 28 through 31 
+
+   -0.2324   -0.1549   -0.0775    0.0000
+
+
+Cab =
+
+  Columns 1 through 9 
+
+    0.0187    0.0200    0.0213    0.0227    0.0243    0.0259    0.0276    0.0295    0.0314
+
+  Columns 10 through 18 
+
+    0.0335    0.0357    0.0381    0.0407    0.0434    0.0463    0.0494    0.0527    0.0562
+
+  Columns 19 through 27 
+
+    0.0599    0.0639    0.0682    0.0727    0.0776    0.0827    0.0883    0.0941    0.1004
+
+  Columns 28 through 31 
+
+    0.1071    0.1143    0.1219    0.1300
+
+
+xx =
+
+  Columns 1 through 8 
+
+       -3000       -3100       -3200       -3300       -3400       -3500       -3600       -3700
+
+  Columns 9 through 16 
+
+       -3800       -3900       -4000       -4100       -4200       -4300       -4400       -4500
+
+  Columns 17 through 24 
+
+       -4600       -4700       -4800       -4900       -5000       -5100       -5200       -5300
+
+  Columns 25 through 31 
+
+       -5400       -5500       -5600       -5700       -5800       -5900       -6000
+
+
+arg1 =
+
+  1.0e+005 *
+
+  Columns 1 through 9 
+
+    0.0000   -0.0775   -0.1549   -0.2324   -0.3099   -0.3873   -0.4648   -0.5423   -0.6197
+
+  Columns 10 through 18 
+
+   -0.6972   -0.7747   -0.8521   -0.9296   -1.0070   -1.0845   -1.1620   -1.2394   -1.3169
+
+  Columns 19 through 27 
+
+   -1.3944   -1.4718   -1.5493   -1.6268   -1.7042   -1.7817   -1.8592   -1.9366   -2.0141
+
+  Columns 28 through 31 
+
+   -2.0916   -2.1690   -2.2465   -2.3240
+
+
+Cab =
+
+  Columns 1 through 9 
+
+    0.1300    0.1219    0.1143    0.1071    0.1004    0.0941    0.0883    0.0827    0.0776
+
+  Columns 10 through 18 
+
+    0.0727    0.0682    0.0639    0.0599    0.0562    0.0527    0.0494    0.0463    0.0434
+
+  Columns 19 through 27 
+
+    0.0407    0.0381    0.0357    0.0335    0.0314    0.0295    0.0276    0.0259    0.0243
+
+  Columns 28 through 31 
+
+    0.0227    0.0213    0.0200    0.0187
+
+??? Error using ==> print
+Error using ==> graphics\private\name
+Cannot create output file 'f:\Academica42\cap07\concentracao.bmp'
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP07\concentracao.m,83,1">concentracao at 83</a>
+print -dbitmap f:\Academica42\cap07\concentracao
+
+uiopen('E:\ACADEMICA42_maio_14\CAP07\concentracao.m', true);
+cd('E:\ACADEMICA42_maio_14\CAP11');
+uiopen('E:\ACADEMICA42_maio_14\CAP11\Officer2.m', true);
+fschange('E:\ACADEMICA42_maio_14\CAP11\Officer2.m');
+clear officer2
+fschange('E:\ACADEMICA42_maio_14\CAP11\Officer2.m');
+clear officer2
+officer2
+
+uf =
+
+    0.1000
+
+
+co =
+
+    0.1300
+
+
+psi =
+
+  6.0000e+003
+
+
+xw =
+
+       -3000
+
+
+x =
+
+  Columns 1 through 8 
+
+           0        -100        -200        -300        -400        -500        -600        -700
+
+  Columns 9 through 16 
+
+        -800        -900       -1000       -1100       -1200       -1300       -1400       -1500
+
+  Columns 17 through 24 
+
+       -1600       -1700       -1800       -1900       -2000       -2100       -2200       -2300
+
+  Columns 25 through 31 
+
+       -2400       -2500       -2600       -2700       -2800       -2900       -3000
+
+
+arg =
+
+  1.0e+005 *
+
+  Columns 1 through 9 
+
+   -2.3240   -2.2465   -2.1690   -2.0916   -2.0141   -1.9366   -1.8592   -1.7817   -1.7042
+
+  Columns 10 through 18 
+
+   -1.6268   -1.5493   -1.4718   -1.3944   -1.3169   -1.2394   -1.1620   -1.0845   -1.0070
+
+  Columns 19 through 27 
+
+   -0.9296   -0.8521   -0.7747   -0.6972   -0.6197   -0.5423   -0.4648   -0.3873   -0.3099
+
+  Columns 28 through 31 
+
+   -0.2324   -0.1549   -0.0775    0.0000
+
+
+Cab =
+
+  Columns 1 through 9 
+
+    0.0187    0.0200    0.0213    0.0227    0.0243    0.0259    0.0276    0.0295    0.0314
+
+  Columns 10 through 18 
+
+    0.0335    0.0357    0.0381    0.0407    0.0434    0.0463    0.0494    0.0527    0.0562
+
+  Columns 19 through 27 
+
+    0.0599    0.0639    0.0682    0.0727    0.0776    0.0827    0.0883    0.0941    0.1004
+
+  Columns 28 through 31 
+
+    0.1071    0.1143    0.1219    0.1300
+
+
+xx =
+
+  Columns 1 through 8 
+
+       -3000       -3100       -3200       -3300       -3400       -3500       -3600       -3700
+
+  Columns 9 through 16 
+
+       -3800       -3900       -4000       -4100       -4200       -4300       -4400       -4500
+
+  Columns 17 through 24 
+
+       -4600       -4700       -4800       -4900       -5000       -5100       -5200       -5300
+
+  Columns 25 through 31 
+
+       -5400       -5500       -5600       -5700       -5800       -5900       -6000
+
+
+arg1 =
+
+  1.0e+005 *
+
+  Columns 1 through 9 
+
+    0.0000   -0.0775   -0.1549   -0.2324   -0.3099   -0.3873   -0.4648   -0.5423   -0.6197
+
+  Columns 10 through 18 
+
+   -0.6972   -0.7747   -0.8521   -0.9296   -1.0070   -1.0845   -1.1620   -1.2394   -1.3169
+
+  Columns 19 through 27 
+
+   -1.3944   -1.4718   -1.5493   -1.6268   -1.7042   -1.7817   -1.8592   -1.9366   -2.0141
+
+  Columns 28 through 31 
+
+   -2.0916   -2.1690   -2.2465   -2.3240
+
+
+Cab =
+
+  Columns 1 through 9 
+
+    0.1300    0.1219    0.1143    0.1071    0.1004    0.0941    0.0883    0.0827    0.0776
+
+  Columns 10 through 18 
+
+    0.0727    0.0682    0.0639    0.0599    0.0562    0.0527    0.0494    0.0463    0.0434
+
+  Columns 19 through 27 
+
+    0.0407    0.0381    0.0357    0.0335    0.0314    0.0295    0.0276    0.0259    0.0243
+
+  Columns 28 through 31 
+
+    0.0227    0.0213    0.0200    0.0187
+
+??? Error using ==> print
+Error using ==> graphics\private\name
+Cannot create output file 'f:\Academica42\cap07\concentracao.bmp'
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP07\concentracao.m,83,1">concentracao at 83</a>
+print -dbitmap f:\Academica42\cap07\concentracao
+
+uiopen('E:\ACADEMICA42_maio_14\CAP07\concentracao.m', true);
+dir
+
+.                    Conc_est_abaixo.jpg  concentracao.m       
+..                   Conc_est_acima.jpg   simulacao1.txt       
+
+cd('E:\ACADEMICA42_maio_14\CAP11');
+dir
+
+.                                     Skill_sal_sizigia.dat                 
+..                                    Skill_vel_quadra.dat                  
+Fig_01_quadra.bmp                     Skill_vel_sizigia.dat                 
+Fig_01_sizigia.bmp                    Sres_pia.txt                          
+Fig_02_quadra.bmp                     out__sizigia_Uobs_Ucal_Sobs_Scal.dat  
+Fig_02_sizigia.bmp                    out_quadra_Uobs_Ucal_Sobs_Scal.dat    
+Fig_03_quadra.bmp                     perf_sal_11_88_89.m                   
+Fig_03_sizigia.bmp                    sal_eq_11_88.m                        
+Figura eq_11_124.jpg                  sal_eq_11_88_89.m                     
+Figura eq_11_125.jpg                  sal_eq_11_89.m                        
+Figura eq_11_45.jpg                   salof.bmp                             
+Figura eq_11_46.jpg                   simulacao1.bmp                        
+Figura eq_11_60.jpg                   simulacao1.txt                        
+Figura eq_11_61.jpg                   vel_u_S_eq_11_124_125.asv             
+Figura eq_11_63.jpg                   vel_u_S_eq_11_124_125.m               
+Figura equ_11_124a.jpg                vel_u_eq_11_45.m                      
+Officer.asv                           vel_u_eq_11_60.m                      
+Officer.m                             vel_u_eq_11_63.m                      
+Officer2.asv                          vel_w_eq_11_46.m                      
+Officer2.m                            vel_w_eq_11_61.m                      
+Qres_pia.txt                          velof.bmp                             
+Sal_88_89.m                           
+Skill_sal_quadra.dat                  
+
+uiopen('E:\ACADEMICA42_maio_14\CAP11\Officer2.m', true);
+fschange('E:\ACADEMICA42_maio_14\CAP11\Officer2.m');
+clear officer2
+dir
+
+.                                     Skill_sal_sizigia.dat                 
+..                                    Skill_vel_quadra.dat                  
+Fig_01_quadra.bmp                     Skill_vel_sizigia.dat                 
+Fig_01_sizigia.bmp                    Sres_pia.txt                          
+Fig_02_quadra.bmp                     out__sizigia_Uobs_Ucal_Sobs_Scal.dat  
+Fig_02_sizigia.bmp                    out_quadra_Uobs_Ucal_Sobs_Scal.dat    
+Fig_03_quadra.bmp                     perf_sal_11_88_89.m                   
+Fig_03_sizigia.bmp                    sal_eq_11_88.m                        
+Figura eq_11_124.jpg                  sal_eq_11_88_89.m                     
+Figura eq_11_125.jpg                  sal_eq_11_89.m                        
+Figura eq_11_45.jpg                   salof.bmp                             
+Figura eq_11_46.jpg                   simulacao1.bmp                        
+Figura eq_11_60.jpg                   simulacao1.txt                        
+Figura eq_11_61.jpg                   vel_u_S_eq_11_124_125.asv             
+Figura eq_11_63.jpg                   vel_u_S_eq_11_124_125.m               
+Figura equ_11_124a.jpg                vel_u_eq_11_45.m                      
+Officer.asv                           vel_u_eq_11_60.m                      
+Officer.m                             vel_u_eq_11_63.m                      
+Officer2.asv                          vel_w_eq_11_46.m                      
+Officer2.m                            vel_w_eq_11_61.m                      
+Qres_pia.txt                          velof.bmp                             
+Sal_88_89.m                           
+Skill_sal_quadra.dat                  
+
+officer2

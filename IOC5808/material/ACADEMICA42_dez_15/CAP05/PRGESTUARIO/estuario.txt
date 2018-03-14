@@ -1,0 +1,3630 @@
+Warning: Function call sw_dens invokes inexact match C:\MATLAB7\toolbox\seawater\SW_DENS.M.
+
+> In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,61,1">estuario at 61</a>
+Warning: Function call sw_dens0 invokes inexact match C:\MATLAB7\toolbox\seawater\SW_DENS0.M.
+
+> In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS.M,92,1">SW_DENS at 92</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,61,1">estuario at 61</a>
+Warning: Function call sw_smow invokes inexact match C:\MATLAB7\toolbox\seawater\SW_SMOW.M.
+
+> In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS0.M,82,1">SW_DENS0 at 82</a>
+  In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS.M,92,1">SW_DENS at 92</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,61,1">estuario at 61</a>
+Warning: Function call sw_seck invokes inexact match C:\MATLAB7\toolbox\seawater\SW_SECK.M.
+
+> In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS.M,93,1">SW_DENS at 93</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,61,1">estuario at 61</a>
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 15 
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434   35.6458   35.6166   35.5101   35.4144   35.2932   35.1322
+
+  Columns 16 through 26 
+
+   34.7416   34.4239   34.2798   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 15 
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425   -0.1467   -0.0803    0.0289    0.1001    0.1116    0.1734
+
+  Columns 16 through 26 
+
+    0.2570    0.3657    0.4606    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 15 
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437   -5.2328   -2.8633    1.0229    3.5467    3.9370    6.0688
+
+  Columns 16 through 26 
+
+    8.8890   12.5146   15.7148   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 15 
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915  122.8813  122.8074  122.7230  122.6213  122.5188  122.3642
+
+  Columns 16 through 26 
+
+  122.0152  121.7570  121.6422  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342  121.6820  121.6443
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0084
+
+
+media_esptemp_S =
+
+   34.8694
+
+
+U_barotrop =
+
+  Columns 1 through 15 
+
+   -0.2735   -0.2585   -0.2197   -0.2489   -0.2513   -0.2719   -0.2835   -0.2732   -0.2341   -0.1384   -0.0720    0.0373    0.1085    0.1200    0.1818
+
+  Columns 16 through 26 
+
+    0.2653    0.3741    0.4690    0.4546    0.3677    0.2429    0.0646   -0.0022   -0.0935   -0.1437   -0.1158
+
+
+S_barotrop =
+
+  Columns 1 through 15 
+
+   -0.2457   -0.1425    0.0105    0.1477    0.2895    0.5669    0.6549    0.7190    0.7740    0.7763    0.7472    0.6407    0.5450    0.4238    0.2628
+
+  Columns 16 through 26 
+
+   -0.1278   -0.4455   -0.5896   -0.7556   -0.6726   -0.6342   -1.0194   -0.6457   -0.5969   -0.5246   -0.5620
+
+
+oscil_mare =
+
+  Columns 1 through 15 
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308   -0.5108   -0.4708   -0.3908
+
+  Columns 16 through 26 
+
+   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0520    0.0612    0.0555    0.0341    0.0090    0.0001   -0.0152   -0.0403   -0.0639   -0.0705    0.0084
+
+
+S_baroclin =
+
+   -0.7874   -0.4907   -0.3204   -0.1937   -0.0717    0.0353    0.1299    0.2780    0.3658    0.4247    0.4730
+
+
+descarga_doce =
+
+    3.5992
+
+
+deriva_stokes =
+
+    0.3360
+
+
+correl_mare =
+
+    0.9179
+
+
+circ_gravit =
+
+    0.1726
+
+
+difusao_turb =
+
+    0.1979
+
+
+dispersao_mare =
+
+    0.0026
+
+
+circ_resid =
+
+    0.0018
+
+
+transp_total =
+
+    5.2280
+
+
+transp_medio_resultante =
+
+    5.2185
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 15 
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007    0.0019    0.0079    0.0746    0.0084    0.0074    0.0046
+
+  Columns 16 through 26 
+
+    0.0021    0.0020    0.0008    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154    0.0066    0.0095
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0361
+
+
+pc =
+
+    5.2057
+
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,38,1">ylabel at 38</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,42,1">ylabel at 42</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,39,1">xlabel at 39</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,43,1">xlabel at 43</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,210,1">axis>LocSetLimits at 210</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,96,1">axis at 96</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,104,1">diagrama_e_c at 104</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+??? Error using ==> print
+Error using ==> graphics\private\name
+Cannot create output file 'f:\estuario\programas\cap3\diagrama.bmp'
+
+Error in ==> <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,125,1">diagrama_e_c at 125</a>
+   print -dbitmap f:\estuario\programas\cap3\diagrama
+
+Error in ==> <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+	diagrama_e_c(pc,pe)	
+
+fschange('E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m');
+clear diagrama_e_c
+fschange('E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m');
+clear diagrama_e_c
+estuario(vl_22_08,ts_22_08,zl_22_08,26,11)
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 15 
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434   35.6458   35.6166   35.5101   35.4144   35.2932   35.1322
+
+  Columns 16 through 26 
+
+   34.7416   34.4239   34.2798   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 15 
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425   -0.1467   -0.0803    0.0289    0.1001    0.1116    0.1734
+
+  Columns 16 through 26 
+
+    0.2570    0.3657    0.4606    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 15 
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437   -5.2328   -2.8633    1.0229    3.5467    3.9370    6.0688
+
+  Columns 16 through 26 
+
+    8.8890   12.5146   15.7148   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 15 
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915  122.8813  122.8074  122.7230  122.6213  122.5188  122.3642
+
+  Columns 16 through 26 
+
+  122.0152  121.7570  121.6422  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342  121.6820  121.6443
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0084
+
+
+media_esptemp_S =
+
+   34.8694
+
+
+U_barotrop =
+
+  Columns 1 through 15 
+
+   -0.2735   -0.2585   -0.2197   -0.2489   -0.2513   -0.2719   -0.2835   -0.2732   -0.2341   -0.1384   -0.0720    0.0373    0.1085    0.1200    0.1818
+
+  Columns 16 through 26 
+
+    0.2653    0.3741    0.4690    0.4546    0.3677    0.2429    0.0646   -0.0022   -0.0935   -0.1437   -0.1158
+
+
+S_barotrop =
+
+  Columns 1 through 15 
+
+   -0.2457   -0.1425    0.0105    0.1477    0.2895    0.5669    0.6549    0.7190    0.7740    0.7763    0.7472    0.6407    0.5450    0.4238    0.2628
+
+  Columns 16 through 26 
+
+   -0.1278   -0.4455   -0.5896   -0.7556   -0.6726   -0.6342   -1.0194   -0.6457   -0.5969   -0.5246   -0.5620
+
+
+oscil_mare =
+
+  Columns 1 through 15 
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308   -0.5108   -0.4708   -0.3908
+
+  Columns 16 through 26 
+
+   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0520    0.0612    0.0555    0.0341    0.0090    0.0001   -0.0152   -0.0403   -0.0639   -0.0705    0.0084
+
+
+S_baroclin =
+
+   -0.7874   -0.4907   -0.3204   -0.1937   -0.0717    0.0353    0.1299    0.2780    0.3658    0.4247    0.4730
+
+
+descarga_doce =
+
+    3.5992
+
+
+deriva_stokes =
+
+    0.3360
+
+
+correl_mare =
+
+    0.9179
+
+
+circ_gravit =
+
+    0.1726
+
+
+difusao_turb =
+
+    0.1979
+
+
+dispersao_mare =
+
+    0.0026
+
+
+circ_resid =
+
+    0.0018
+
+
+transp_total =
+
+    5.2280
+
+
+transp_medio_resultante =
+
+    5.2185
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 15 
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007    0.0019    0.0079    0.0746    0.0084    0.0074    0.0046
+
+  Columns 16 through 26 
+
+    0.0021    0.0020    0.0008    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154    0.0066    0.0095
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0361
+
+
+pc =
+
+    5.2057
+
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,38,1">ylabel at 38</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,42,1">ylabel at 42</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,39,1">xlabel at 39</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,43,1">xlabel at 43</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,210,1">axis>LocSetLimits at 210</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,96,1">axis at 96</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\diagrama_e_c.m,104,1">diagrama_e_c at 104</a>
+  In <a href="error:E:\ESTUARIO-03-MAR\PROGRAMAS-03-MAR\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Current plot released
+Warning: Function call sw_dens invokes inexact match C:\MATLAB7\toolbox\seawater\SW_DENS.M.
+
+> In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\estuario.m,61,1">estuario at 61</a>
+Warning: Function call sw_dens0 invokes inexact match C:\MATLAB7\toolbox\seawater\SW_DENS0.M.
+
+> In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS.M,92,1">SW_DENS at 92</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\estuario.m,61,1">estuario at 61</a>
+Warning: Function call sw_smow invokes inexact match C:\MATLAB7\toolbox\seawater\SW_SMOW.M.
+
+> In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS0.M,82,1">SW_DENS0 at 82</a>
+  In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS.M,92,1">SW_DENS at 92</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\estuario.m,61,1">estuario at 61</a>
+Warning: Function call sw_seck invokes inexact match C:\MATLAB7\toolbox\seawater\SW_SECK.M.
+
+> In <a href="error:C:\MATLAB7\toolbox\seawater\SW_DENS.M,93,1">SW_DENS at 93</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\estuario.m,61,1">estuario at 61</a>
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 15 
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434   35.6458   35.6166   35.5101   35.4144   35.2932   35.1322
+
+  Columns 16 through 26 
+
+   34.7416   34.4239   34.2798   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 15 
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425   -0.1467   -0.0803    0.0289    0.1001    0.1116    0.1734
+
+  Columns 16 through 26 
+
+    0.2570    0.3657    0.4606    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 15 
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437   -5.2328   -2.8633    1.0229    3.5467    3.9370    6.0688
+
+  Columns 16 through 26 
+
+    8.8890   12.5146   15.7148   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 15 
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915  122.8813  122.8074  122.7230  122.6213  122.5188  122.3642
+
+  Columns 16 through 26 
+
+  122.0152  121.7570  121.6422  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342  121.6820  121.6443
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0084
+
+
+media_esptemp_S =
+
+   34.8694
+
+
+U_barotrop =
+
+  Columns 1 through 15 
+
+   -0.2735   -0.2585   -0.2197   -0.2489   -0.2513   -0.2719   -0.2835   -0.2732   -0.2341   -0.1384   -0.0720    0.0373    0.1085    0.1200    0.1818
+
+  Columns 16 through 26 
+
+    0.2653    0.3741    0.4690    0.4546    0.3677    0.2429    0.0646   -0.0022   -0.0935   -0.1437   -0.1158
+
+
+S_barotrop =
+
+  Columns 1 through 15 
+
+   -0.2457   -0.1425    0.0105    0.1477    0.2895    0.5669    0.6549    0.7190    0.7740    0.7763    0.7472    0.6407    0.5450    0.4238    0.2628
+
+  Columns 16 through 26 
+
+   -0.1278   -0.4455   -0.5896   -0.7556   -0.6726   -0.6342   -1.0194   -0.6457   -0.5969   -0.5246   -0.5620
+
+
+oscil_mare =
+
+  Columns 1 through 15 
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308   -0.5108   -0.4708   -0.3908
+
+  Columns 16 through 26 
+
+   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0520    0.0612    0.0555    0.0341    0.0090    0.0001   -0.0152   -0.0403   -0.0639   -0.0705    0.0084
+
+
+S_baroclin =
+
+   -0.7874   -0.4907   -0.3204   -0.1937   -0.0717    0.0353    0.1299    0.2780    0.3658    0.4247    0.4730
+
+
+descarga_doce =
+
+    3.5992
+
+
+deriva_stokes =
+
+    0.3360
+
+
+correl_mare =
+
+    0.9179
+
+
+circ_gravit =
+
+    0.1726
+
+
+difusao_turb =
+
+    0.1979
+
+
+dispersao_mare =
+
+    0.0026
+
+
+circ_resid =
+
+    0.0018
+
+
+transp_total =
+
+    5.2280
+
+
+transp_medio_resultante =
+
+    5.2185
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 15 
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007    0.0019    0.0079    0.0746    0.0084    0.0074    0.0046
+
+  Columns 16 through 26 
+
+    0.0021    0.0020    0.0008    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154    0.0066    0.0095
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0361
+
+
+pc =
+
+    5.2057
+
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,38,1">ylabel at 38</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,42,1">ylabel at 42</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,39,1">xlabel at 39</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,43,1">xlabel at 43</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,210,1">axis>LocSetLimits at 210</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,96,1">axis at 96</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\diagrama_e_c.m,104,1">diagrama_e_c at 104</a>
+  In <a href="error:E:\ACADEMICA42\CAP05\PRGESTUARIO\estuario.m,773,1">estuario at 773</a>
+Current plot released
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 12
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434   35.6458   35.6166   35.5101
+
+  Columns 13 through 24
+
+   35.4144   35.2932   35.1322   34.7416   34.4239   34.2798   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725
+
+  Columns 25 through 26
+
+   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 12
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425   -0.1467   -0.0803    0.0289
+
+  Columns 13 through 24
+
+    0.1001    0.1116    0.1734    0.2570    0.3657    0.4606    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019
+
+  Columns 25 through 26
+
+   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 12
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437   -5.2328   -2.8633    1.0229
+
+  Columns 13 through 24
+
+    3.5467    3.9370    6.0688    8.8890   12.5146   15.7148   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352
+
+  Columns 25 through 26
+
+   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 12
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915  122.8813  122.8074  122.7230
+
+  Columns 13 through 24
+
+  122.6213  122.5188  122.3642  122.0152  121.7570  121.6422  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342
+
+  Columns 25 through 26
+
+  121.6820  121.6443
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0084
+
+
+media_esptemp_S =
+
+   34.8694
+
+
+U_barotrop =
+
+  Columns 1 through 12
+
+   -0.2735   -0.2585   -0.2197   -0.2489   -0.2513   -0.2719   -0.2835   -0.2732   -0.2341   -0.1384   -0.0720    0.0373
+
+  Columns 13 through 24
+
+    0.1085    0.1200    0.1818    0.2653    0.3741    0.4690    0.4546    0.3677    0.2429    0.0646   -0.0022   -0.0935
+
+  Columns 25 through 26
+
+   -0.1437   -0.1158
+
+
+S_barotrop =
+
+  Columns 1 through 12
+
+   -0.2457   -0.1425    0.0105    0.1477    0.2895    0.5669    0.6549    0.7190    0.7740    0.7763    0.7472    0.6407
+
+  Columns 13 through 24
+
+    0.5450    0.4238    0.2628   -0.1278   -0.4455   -0.5896   -0.7556   -0.6726   -0.6342   -1.0194   -0.6457   -0.5969
+
+  Columns 25 through 26
+
+   -0.5246   -0.5620
+
+
+oscil_mare =
+
+  Columns 1 through 12
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308
+
+  Columns 13 through 24
+
+   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992
+
+  Columns 25 through 26
+
+    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0520    0.0612    0.0555    0.0341    0.0090    0.0001   -0.0152   -0.0403   -0.0639   -0.0705    0.0084
+
+
+S_baroclin =
+
+   -0.7874   -0.4907   -0.3204   -0.1937   -0.0717    0.0353    0.1299    0.2780    0.3658    0.4247    0.4730
+
+
+descarga_doce =
+
+    3.5992
+
+
+deriva_stokes =
+
+    0.3360
+
+
+correl_mare =
+
+    0.9179
+
+
+circ_gravit =
+
+    0.1726
+
+
+difusao_turb =
+
+    0.1979
+
+
+dispersao_mare =
+
+    0.0026
+
+
+circ_resid =
+
+    0.0018
+
+
+transp_total =
+
+    5.2280
+
+
+transp_medio_resultante =
+
+    5.2185
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 12
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007    0.0019    0.0079    0.0746
+
+  Columns 13 through 24
+
+    0.0084    0.0074    0.0046    0.0021    0.0020    0.0008    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154
+
+  Columns 25 through 26
+
+    0.0066    0.0095
+
+Current plot held
+{??? Error using ==> <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graphics\print.m',325,0)">print at 325</a>
+Cannot create output file 'e:\Academica42\cap05\prgestuario\perfilu_qu.bmp'
+
+Error in ==> <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',507,0)">estuario at 507</a>
+   print -dbitmap e:\Academica42\cap05\prgestuario\perfilu_qu.bmp
+} 
+
+estuario(vl_22_08,ts_22_08,zl_22_08,26,11)
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 12
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434   35.6458   35.6166   35.5101
+
+  Columns 13 through 24
+
+   35.4144   35.2932   35.1322   34.7416   34.4239   34.2798   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725
+
+  Columns 25 through 26
+
+   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 12
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425   -0.1467   -0.0803    0.0289
+
+  Columns 13 through 24
+
+    0.1001    0.1116    0.1734    0.2570    0.3657    0.4606    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019
+
+  Columns 25 through 26
+
+   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 12
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437   -5.2328   -2.8633    1.0229
+
+  Columns 13 through 24
+
+    3.5467    3.9370    6.0688    8.8890   12.5146   15.7148   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352
+
+  Columns 25 through 26
+
+   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 12
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915  122.8813  122.8074  122.7230
+
+  Columns 13 through 24
+
+  122.6213  122.5188  122.3642  122.0152  121.7570  121.6422  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342
+
+  Columns 25 through 26
+
+  121.6820  121.6443
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0084
+
+
+media_esptemp_S =
+
+   34.8694
+
+
+U_barotrop =
+
+  Columns 1 through 12
+
+   -0.2735   -0.2585   -0.2197   -0.2489   -0.2513   -0.2719   -0.2835   -0.2732   -0.2341   -0.1384   -0.0720    0.0373
+
+  Columns 13 through 24
+
+    0.1085    0.1200    0.1818    0.2653    0.3741    0.4690    0.4546    0.3677    0.2429    0.0646   -0.0022   -0.0935
+
+  Columns 25 through 26
+
+   -0.1437   -0.1158
+
+
+S_barotrop =
+
+  Columns 1 through 12
+
+   -0.2457   -0.1425    0.0105    0.1477    0.2895    0.5669    0.6549    0.7190    0.7740    0.7763    0.7472    0.6407
+
+  Columns 13 through 24
+
+    0.5450    0.4238    0.2628   -0.1278   -0.4455   -0.5896   -0.7556   -0.6726   -0.6342   -1.0194   -0.6457   -0.5969
+
+  Columns 25 through 26
+
+   -0.5246   -0.5620
+
+
+oscil_mare =
+
+  Columns 1 through 12
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308
+
+  Columns 13 through 24
+
+   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992
+
+  Columns 25 through 26
+
+    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0520    0.0612    0.0555    0.0341    0.0090    0.0001   -0.0152   -0.0403   -0.0639   -0.0705    0.0084
+
+
+S_baroclin =
+
+   -0.7874   -0.4907   -0.3204   -0.1937   -0.0717    0.0353    0.1299    0.2780    0.3658    0.4247    0.4730
+
+
+descarga_doce =
+
+    3.5992
+
+
+deriva_stokes =
+
+    0.3360
+
+
+correl_mare =
+
+    0.9179
+
+
+circ_gravit =
+
+    0.1726
+
+
+difusao_turb =
+
+    0.1979
+
+
+dispersao_mare =
+
+    0.0026
+
+
+circ_resid =
+
+    0.0018
+
+
+transp_total =
+
+    5.2280
+
+
+transp_medio_resultante =
+
+    5.2185
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 12
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007    0.0019    0.0079    0.0746
+
+  Columns 13 through 24
+
+    0.0084    0.0074    0.0046    0.0021    0.0020    0.0008    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154
+
+  Columns 25 through 26
+
+    0.0066    0.0095
+
+Current plot held
+{??? Error using ==> <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graphics\print.m',325,0)">print at 325</a>
+Cannot create output file 'e:\Academica42\cap05\prgestuario\perfilu_qu.bmp'
+
+Error in ==> <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',507,0)">estuario at 507</a>
+   print -dbitmap e:\Academica42\cap05\prgestuario\perfilu_qu.bmp
+} 
+exit
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 12
+
+   34.5884   34.7154   34.8786   35.0100   35.1545   35.4238   35.5042   35.5857   35.6432   35.6464   35.6151   35.5101
+
+  Columns 13 through 24
+
+   35.4136   35.2943   35.1434   34.7437   34.3786   34.2806   34.0648   34.1634   34.2270   33.8510   34.2226   34.2689
+
+  Columns 25 through 26
+
+   34.3437   34.3034
+
+
+media_esp_U =
+
+  Columns 1 through 12
+
+   -0.2766   -0.2580   -0.2221   -0.2477   -0.2530   -0.2726   -0.2830   -0.2728   -0.2337   -0.1414   -0.0764    0.0295
+
+  Columns 13 through 24
+
+    0.0953    0.1098    0.1708    0.2508    0.3583    0.4507    0.4392    0.3588    0.2375    0.0600   -0.0054   -0.0980
+
+  Columns 25 through 26
+
+   -0.1443   -0.1181
+
+
+media_esp_US =
+
+  Columns 1 through 12
+
+   -9.5637   -8.9483   -7.7439   -8.6707   -8.8907   -9.6522  -10.0449   -9.7061   -8.3279   -5.0418   -2.7236    1.0464
+
+  Columns 13 through 24
+
+    3.3764    3.8738    5.9779    8.6767   12.2365   15.3731   14.8415   12.1508    8.0487    1.9357   -0.2402   -3.3910
+
+  Columns 25 through 26
+
+   -4.9866   -4.0660
+
+
+media_esp_ro =
+
+  Columns 1 through 12
+
+  121.9733  122.0812  122.2025  122.3062  122.4320  122.6524  122.7591  122.8255  122.8913  122.8822  122.8060  122.7227
+
+  Columns 13 through 24
+
+  122.6210  122.5204  122.3736  122.0174  121.7232  121.6430  121.4654  121.5477  121.5907  121.3040  121.5945  121.6317
+
+  Columns 25 through 26
+
+  121.6814  121.6416
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0058
+
+
+media_esptemp_S =
+
+   34.8611
+
+
+U_barotrop =
+
+  Columns 1 through 12
+
+   -0.2708   -0.2522   -0.2163   -0.2419   -0.2472   -0.2668   -0.2772   -0.2670   -0.2279   -0.1356   -0.0706    0.0353
+
+  Columns 13 through 24
+
+    0.1011    0.1156    0.1766    0.2566    0.3641    0.4565    0.4450    0.3646    0.2433    0.0658    0.0003   -0.0922
+
+  Columns 25 through 26
+
+   -0.1385   -0.1123
+
+
+S_barotrop =
+
+  Columns 1 through 12
+
+   -0.2727   -0.1458    0.0175    0.1489    0.2933    0.5627    0.6431    0.7246    0.7821    0.7853    0.7540    0.6490
+
+  Columns 13 through 24
+
+    0.5525    0.4331    0.2822   -0.1174   -0.4825   -0.5806   -0.7963   -0.6977   -0.6341   -1.0101   -0.6385   -0.5923
+
+  Columns 25 through 26
+
+   -0.5174   -0.5578
+
+
+oscil_mare =
+
+  Columns 1 through 12
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308
+
+  Columns 13 through 24
+
+   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992
+
+  Columns 25 through 26
+
+    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0491    0.0529    0.0470    0.0305    0.0126   -0.0037   -0.0203   -0.0417   -0.0604   -0.0444    0.0058
+
+
+S_baroclin =
+
+   -0.7791   -0.5246   -0.3267   -0.1870   -0.0684    0.0395    0.1560    0.2662    0.3644    0.4295    0.4813
+
+
+descarga_doce =
+
+    2.4921
+
+
+deriva_stokes =
+
+    0.3472
+
+
+correl_mare =
+
+    0.9186
+
+
+circ_gravit =
+
+    0.1515
+
+
+difusao_turb =
+
+    0.2081
+
+
+dispersao_mare =
+
+    0.0021
+
+
+circ_resid =
+
+    0.0012
+
+
+transp_total =
+
+    4.1209
+
+
+transp_medio_resultante =
+
+    4.1122
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 12
+
+    0.0013    0.0007    0.0005    0.0004    0.0005    0.0006    0.0009    0.0006    0.0007    0.0021    0.0087    0.0714
+
+  Columns 13 through 24
+
+    0.0093    0.0076    0.0047    0.0022    0.0021    0.0008    0.0014    0.0018    0.0030    0.0578    4.9379    0.0167
+
+  Columns 25 through 26
+
+    0.0073    0.0105
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+{??? Error using ==> <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graphics\print.m',325,0)">print at 325</a>
+Cannot create output file 'e:\Academica42_maio_14\cap05\prgestuariio\hu_qu.bmp'
+
+Error in ==> <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',667,0)">estuario at 667</a>
+   print -dbitmap e:\Academica42_maio_14\cap05\prgestuariio\hu_qu.bmp
+} 
+uiopen('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m', true);
+estuario(vl_16_08,ts_16_08,zl_16_08,26,11)
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 12
+
+   34.5884   34.7154   34.8786   35.0100   35.1545   35.4238   35.5042   35.5857   35.6432   35.6464   35.6151   35.5101
+
+  Columns 13 through 24
+
+   35.4136   35.2943   35.1434   34.7437   34.3786   34.2806   34.0648   34.1634   34.2270   33.8510   34.2226   34.2689
+
+  Columns 25 through 26
+
+   34.3437   34.3034
+
+
+media_esp_U =
+
+  Columns 1 through 12
+
+   -0.2766   -0.2580   -0.2221   -0.2477   -0.2530   -0.2726   -0.2830   -0.2728   -0.2337   -0.1414   -0.0764    0.0295
+
+  Columns 13 through 24
+
+    0.0953    0.1098    0.1708    0.2508    0.3583    0.4507    0.4392    0.3588    0.2375    0.0600   -0.0054   -0.0980
+
+  Columns 25 through 26
+
+   -0.1443   -0.1181
+
+
+media_esp_US =
+
+  Columns 1 through 12
+
+   -9.5637   -8.9483   -7.7439   -8.6707   -8.8907   -9.6522  -10.0449   -9.7061   -8.3279   -5.0418   -2.7236    1.0464
+
+  Columns 13 through 24
+
+    3.3764    3.8738    5.9779    8.6767   12.2365   15.3731   14.8415   12.1508    8.0487    1.9357   -0.2402   -3.3910
+
+  Columns 25 through 26
+
+   -4.9866   -4.0660
+
+
+media_esp_ro =
+
+  Columns 1 through 12
+
+  121.9733  122.0812  122.2025  122.3062  122.4320  122.6524  122.7591  122.8255  122.8913  122.8822  122.8060  122.7227
+
+  Columns 13 through 24
+
+  122.6210  122.5204  122.3736  122.0174  121.7232  121.6430  121.4654  121.5477  121.5907  121.3040  121.5945  121.6317
+
+  Columns 25 through 26
+
+  121.6814  121.6416
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0058
+
+
+media_esptemp_S =
+
+   34.8611
+
+
+U_barotrop =
+
+  Columns 1 through 12
+
+   -0.2708   -0.2522   -0.2163   -0.2419   -0.2472   -0.2668   -0.2772   -0.2670   -0.2279   -0.1356   -0.0706    0.0353
+
+  Columns 13 through 24
+
+    0.1011    0.1156    0.1766    0.2566    0.3641    0.4565    0.4450    0.3646    0.2433    0.0658    0.0003   -0.0922
+
+  Columns 25 through 26
+
+   -0.1385   -0.1123
+
+
+S_barotrop =
+
+  Columns 1 through 12
+
+   -0.2727   -0.1458    0.0175    0.1489    0.2933    0.5627    0.6431    0.7246    0.7821    0.7853    0.7540    0.6490
+
+  Columns 13 through 24
+
+    0.5525    0.4331    0.2822   -0.1174   -0.4825   -0.5806   -0.7963   -0.6977   -0.6341   -1.0101   -0.6385   -0.5923
+
+  Columns 25 through 26
+
+   -0.5174   -0.5578
+
+
+oscil_mare =
+
+  Columns 1 through 12
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308
+
+  Columns 13 through 24
+
+   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992
+
+  Columns 25 through 26
+
+    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0491    0.0529    0.0470    0.0305    0.0126   -0.0037   -0.0203   -0.0417   -0.0604   -0.0444    0.0058
+
+
+S_baroclin =
+
+   -0.7791   -0.5246   -0.3267   -0.1870   -0.0684    0.0395    0.1560    0.2662    0.3644    0.4295    0.4813
+
+
+descarga_doce =
+
+    2.4921
+
+
+deriva_stokes =
+
+    0.3472
+
+
+correl_mare =
+
+    0.9186
+
+
+circ_gravit =
+
+    0.1515
+
+
+difusao_turb =
+
+    0.2081
+
+
+dispersao_mare =
+
+    0.0021
+
+
+circ_resid =
+
+    0.0012
+
+
+transp_total =
+
+    4.1209
+
+
+transp_medio_resultante =
+
+    4.1122
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 12
+
+    0.0013    0.0007    0.0005    0.0004    0.0005    0.0006    0.0009    0.0006    0.0007    0.0021    0.0087    0.0714
+
+  Columns 13 through 24
+
+    0.0093    0.0076    0.0047    0.0022    0.0021    0.0008    0.0014    0.0018    0.0030    0.0578    4.9379    0.0167
+
+  Columns 25 through 26
+
+    0.0073    0.0105
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0362
+
+
+pc =
+
+    7.4706
+
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\ylabel.m',39,1)">ylabel at 39</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\ylabel.m',21,1)">ylabel at 21</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',97,1)">diagrama_e_c at 97</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',773,1)">estuario at 773</a>
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\xlabel.m',40,1)">xlabel at 40</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\xlabel.m',22,1)">xlabel at 22</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',98,1)">diagrama_e_c at 98</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',773,1)">estuario at 773</a>
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\axis.m',208,1)">axis>LocSetLimits at 208</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\axis.m',94,1)">axis at 94</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',104,1)">diagrama_e_c at 104</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',773,1)">estuario at 773</a>
+Current plot released
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 9 
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434
+
+  Columns 10 through 18 
+
+   35.6458   35.6166   35.5101   35.4144   35.2932   35.1322   34.7416   34.4239   34.2798
+
+  Columns 19 through 26 
+
+   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 9 
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425
+
+  Columns 10 through 18 
+
+   -0.1467   -0.0803    0.0289    0.1001    0.1116    0.1734    0.2570    0.3657    0.4606
+
+  Columns 19 through 26 
+
+    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 9 
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437
+
+  Columns 10 through 18 
+
+   -5.2328   -2.8633    1.0229    3.5467    3.9370    6.0688    8.8890   12.5146   15.7148
+
+  Columns 19 through 26 
+
+   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 9 
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915
+
+  Columns 10 through 18 
+
+  122.8813  122.8074  122.7230  122.6213  122.5188  122.3642  122.0152  121.7570  121.6422
+
+  Columns 19 through 26 
+
+  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342  121.6820  121.6443
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0084
+
+
+media_esptemp_S =
+
+   34.8694
+
+
+U_barotrop =
+
+  Columns 1 through 9 
+
+   -0.2735   -0.2585   -0.2197   -0.2489   -0.2513   -0.2719   -0.2835   -0.2732   -0.2341
+
+  Columns 10 through 18 
+
+   -0.1384   -0.0720    0.0373    0.1085    0.1200    0.1818    0.2653    0.3741    0.4690
+
+  Columns 19 through 26 
+
+    0.4546    0.3677    0.2429    0.0646   -0.0022   -0.0935   -0.1437   -0.1158
+
+
+S_barotrop =
+
+  Columns 1 through 9 
+
+   -0.2457   -0.1425    0.0105    0.1477    0.2895    0.5669    0.6549    0.7190    0.7740
+
+  Columns 10 through 18 
+
+    0.7763    0.7472    0.6407    0.5450    0.4238    0.2628   -0.1278   -0.4455   -0.5896
+
+  Columns 19 through 26 
+
+   -0.7556   -0.6726   -0.6342   -1.0194   -0.6457   -0.5969   -0.5246   -0.5620
+
+
+oscil_mare =
+
+  Columns 1 through 9 
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708
+
+  Columns 10 through 18 
+
+   -0.5308   -0.5508   -0.5308   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792
+
+  Columns 19 through 26 
+
+    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992    0.5792    0.5292
+
+
+U_baroclin =
+
+  Columns 1 through 9 
+
+    0.0520    0.0612    0.0555    0.0341    0.0090    0.0001   -0.0152   -0.0403   -0.0639
+
+  Columns 10 through 11 
+
+   -0.0705    0.0084
+
+
+S_baroclin =
+
+  Columns 1 through 9 
+
+   -0.7874   -0.4907   -0.3204   -0.1937   -0.0717    0.0353    0.1299    0.2780    0.3658
+
+  Columns 10 through 11 
+
+    0.4247    0.4730
+
+
+descarga_doce =
+
+    3.5992
+
+
+deriva_stokes =
+
+    0.3360
+
+
+correl_mare =
+
+    0.9179
+
+
+circ_gravit =
+
+    0.1726
+
+
+difusao_turb =
+
+    0.1979
+
+
+dispersao_mare =
+
+    0.0026
+
+
+circ_resid =
+
+    0.0018
+
+
+transp_total =
+
+    5.2280
+
+
+transp_medio_resultante =
+
+    5.2185
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 9 
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007
+
+  Columns 10 through 18 
+
+    0.0019    0.0079    0.0746    0.0084    0.0074    0.0046    0.0021    0.0020    0.0008
+
+  Columns 19 through 26 
+
+    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154    0.0066    0.0095
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0361
+
+
+pc =
+
+    5.2057
+
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,38,1">ylabel at 38</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,774,1">estuario at 774</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,42,1">ylabel at 42</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,774,1">estuario at 774</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,39,1">xlabel at 39</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,774,1">estuario at 774</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,43,1">xlabel at 43</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,774,1">estuario at 774</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,210,1">axis>LocSetLimits at 210</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,96,1">axis at 96</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,104,1">diagrama_e_c at 104</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,774,1">estuario at 774</a>
+Current plot released
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 9 
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434
+
+  Columns 10 through 18 
+
+   35.6458   35.6166   35.5101   35.4144   35.2932   35.1322   34.7416   34.4239   34.2798
+
+  Columns 19 through 26 
+
+   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 9 
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425
+
+  Columns 10 through 18 
+
+   -0.1467   -0.0803    0.0289    0.1001    0.1116    0.1734    0.2570    0.3657    0.4606
+
+  Columns 19 through 26 
+
+    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 9 
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437
+
+  Columns 10 through 18 
+
+   -5.2328   -2.8633    1.0229    3.5467    3.9370    6.0688    8.8890   12.5146   15.7148
+
+  Columns 19 through 26 
+
+   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 9 
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915
+
+  Columns 10 through 18 
+
+  122.8813  122.8074  122.7230  122.6213  122.5188  122.3642  122.0152  121.7570  121.6422
+
+  Columns 19 through 26 
+
+  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342  121.6820  121.6443
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0084
+
+
+media_esptemp_S =
+
+   34.8694
+
+
+U_barotrop =
+
+  Columns 1 through 9 
+
+   -0.2735   -0.2585   -0.2197   -0.2489   -0.2513   -0.2719   -0.2835   -0.2732   -0.2341
+
+  Columns 10 through 18 
+
+   -0.1384   -0.0720    0.0373    0.1085    0.1200    0.1818    0.2653    0.3741    0.4690
+
+  Columns 19 through 26 
+
+    0.4546    0.3677    0.2429    0.0646   -0.0022   -0.0935   -0.1437   -0.1158
+
+
+S_barotrop =
+
+  Columns 1 through 9 
+
+   -0.2457   -0.1425    0.0105    0.1477    0.2895    0.5669    0.6549    0.7190    0.7740
+
+  Columns 10 through 18 
+
+    0.7763    0.7472    0.6407    0.5450    0.4238    0.2628   -0.1278   -0.4455   -0.5896
+
+  Columns 19 through 26 
+
+   -0.7556   -0.6726   -0.6342   -1.0194   -0.6457   -0.5969   -0.5246   -0.5620
+
+
+oscil_mare =
+
+  Columns 1 through 9 
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708
+
+  Columns 10 through 18 
+
+   -0.5308   -0.5508   -0.5308   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792
+
+  Columns 19 through 26 
+
+    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992    0.5792    0.5292
+
+
+U_baroclin =
+
+  Columns 1 through 9 
+
+    0.0520    0.0612    0.0555    0.0341    0.0090    0.0001   -0.0152   -0.0403   -0.0639
+
+  Columns 10 through 11 
+
+   -0.0705    0.0084
+
+
+S_baroclin =
+
+  Columns 1 through 9 
+
+   -0.7874   -0.4907   -0.3204   -0.1937   -0.0717    0.0353    0.1299    0.2780    0.3658
+
+  Columns 10 through 11 
+
+    0.4247    0.4730
+
+
+descarga_doce =
+
+    3.5992
+
+
+deriva_stokes =
+
+    0.3360
+
+
+correl_mare =
+
+    0.9179
+
+
+circ_gravit =
+
+    0.1726
+
+
+difusao_turb =
+
+    0.1979
+
+
+dispersao_mare =
+
+    0.0026
+
+
+circ_resid =
+
+    0.0018
+
+
+transp_total =
+
+    5.2280
+
+
+transp_medio_resultante =
+
+    5.2185
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 9 
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007
+
+  Columns 10 through 18 
+
+    0.0019    0.0079    0.0746    0.0084    0.0074    0.0046    0.0021    0.0020    0.0008
+
+  Columns 19 through 26 
+
+    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154    0.0066    0.0095
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0361
+
+
+pc =
+
+    5.2057
+
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,38,1">ylabel at 38</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,42,1">ylabel at 42</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,39,1">xlabel at 39</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,43,1">xlabel at 43</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,210,1">axis>LocSetLimits at 210</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,96,1">axis at 96</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,104,1">diagrama_e_c at 104</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Current plot released
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 12
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434   35.6458   35.6166   35.5101
+
+  Columns 13 through 24
+
+   35.4144   35.2932   35.1322   34.7416   34.4239   34.2798   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725
+
+  Columns 25 through 26
+
+   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 12
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425   -0.1467   -0.0803    0.0289
+
+  Columns 13 through 24
+
+    0.1001    0.1116    0.1734    0.2570    0.3657    0.4606    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019
+
+  Columns 25 through 26
+
+   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 12
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437   -5.2328   -2.8633    1.0229
+
+  Columns 13 through 24
+
+    3.5467    3.9370    6.0688    8.8890   12.5146   15.7148   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352
+
+  Columns 25 through 26
+
+   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 12
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915  122.8813  122.8074  122.7230
+
+  Columns 13 through 24
+
+  122.6213  122.5188  122.3642  122.0152  121.7570  121.6422  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342
+
+  Columns 25 through 26
+
+  121.6820  121.6443
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0084
+
+
+media_esptemp_S =
+
+   34.8694
+
+
+U_barotrop =
+
+  Columns 1 through 12
+
+   -0.2735   -0.2585   -0.2197   -0.2489   -0.2513   -0.2719   -0.2835   -0.2732   -0.2341   -0.1384   -0.0720    0.0373
+
+  Columns 13 through 24
+
+    0.1085    0.1200    0.1818    0.2653    0.3741    0.4690    0.4546    0.3677    0.2429    0.0646   -0.0022   -0.0935
+
+  Columns 25 through 26
+
+   -0.1437   -0.1158
+
+
+S_barotrop =
+
+  Columns 1 through 12
+
+   -0.2457   -0.1425    0.0105    0.1477    0.2895    0.5669    0.6549    0.7190    0.7740    0.7763    0.7472    0.6407
+
+  Columns 13 through 24
+
+    0.5450    0.4238    0.2628   -0.1278   -0.4455   -0.5896   -0.7556   -0.6726   -0.6342   -1.0194   -0.6457   -0.5969
+
+  Columns 25 through 26
+
+   -0.5246   -0.5620
+
+
+oscil_mare =
+
+  Columns 1 through 12
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308
+
+  Columns 13 through 24
+
+   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992
+
+  Columns 25 through 26
+
+    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0520    0.0612    0.0555    0.0341    0.0090    0.0001   -0.0152   -0.0403   -0.0639   -0.0705    0.0084
+
+
+S_baroclin =
+
+   -0.7874   -0.4907   -0.3204   -0.1937   -0.0717    0.0353    0.1299    0.2780    0.3658    0.4247    0.4730
+
+
+descarga_doce =
+
+    3.5992
+
+
+deriva_stokes =
+
+    0.3360
+
+
+correl_mare =
+
+    0.9179
+
+
+circ_gravit =
+
+    0.1726
+
+
+difusao_turb =
+
+    0.1979
+
+
+dispersao_mare =
+
+    0.0026
+
+
+circ_resid =
+
+    0.0018
+
+
+transp_total =
+
+    5.2280
+
+
+transp_medio_resultante =
+
+    5.2185
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 12
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007    0.0019    0.0079    0.0746
+
+  Columns 13 through 24
+
+    0.0084    0.0074    0.0046    0.0021    0.0020    0.0008    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154
+
+  Columns 25 through 26
+
+    0.0066    0.0095
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0361
+
+
+pc =
+
+    5.2057
+
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\ylabel.m',39,1)">ylabel at 39</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\ylabel.m',21,1)">ylabel at 21</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',97,1)">diagrama_e_c at 97</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',776,1)">estuario at 776</a>
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\xlabel.m',40,1)">xlabel at 40</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\xlabel.m',22,1)">xlabel at 22</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',98,1)">diagrama_e_c at 98</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',776,1)">estuario at 776</a>
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\axis.m',208,1)">axis>LocSetLimits at 208</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\axis.m',94,1)">axis at 94</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',104,1)">diagrama_e_c at 104</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',776,1)">estuario at 776</a>
+Current plot released
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 12
+
+   34.5884   34.7154   34.8786   35.0100   35.1545   35.4238   35.5042   35.5857   35.6432   35.6464   35.6151   35.5101
+
+  Columns 13 through 24
+
+   35.4136   35.2943   35.1434   34.7437   34.3786   34.2806   34.0648   34.1634   34.2270   33.8510   34.2226   34.2689
+
+  Columns 25 through 26
+
+   34.3437   34.3034
+
+
+media_esp_U =
+
+  Columns 1 through 12
+
+   -0.2766   -0.2580   -0.2221   -0.2477   -0.2530   -0.2726   -0.2830   -0.2728   -0.2337   -0.1414   -0.0764    0.0295
+
+  Columns 13 through 24
+
+    0.0953    0.1098    0.1708    0.2508    0.3583    0.4507    0.4392    0.3588    0.2375    0.0600   -0.0054   -0.0980
+
+  Columns 25 through 26
+
+   -0.1443   -0.1181
+
+
+media_esp_US =
+
+  Columns 1 through 12
+
+   -9.5637   -8.9483   -7.7439   -8.6707   -8.8907   -9.6522  -10.0449   -9.7061   -8.3279   -5.0418   -2.7236    1.0464
+
+  Columns 13 through 24
+
+    3.3764    3.8738    5.9779    8.6767   12.2365   15.3731   14.8415   12.1508    8.0487    1.9357   -0.2402   -3.3910
+
+  Columns 25 through 26
+
+   -4.9866   -4.0660
+
+
+media_esp_ro =
+
+  Columns 1 through 12
+
+  121.9733  122.0812  122.2025  122.3062  122.4320  122.6524  122.7591  122.8255  122.8913  122.8822  122.8060  122.7227
+
+  Columns 13 through 24
+
+  122.6210  122.5204  122.3736  122.0174  121.7232  121.6430  121.4654  121.5477  121.5907  121.3040  121.5945  121.6317
+
+  Columns 25 through 26
+
+  121.6814  121.6416
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0058
+
+
+media_esptemp_S =
+
+   34.8611
+
+
+U_barotrop =
+
+  Columns 1 through 12
+
+   -0.2708   -0.2522   -0.2163   -0.2419   -0.2472   -0.2668   -0.2772   -0.2670   -0.2279   -0.1356   -0.0706    0.0353
+
+  Columns 13 through 24
+
+    0.1011    0.1156    0.1766    0.2566    0.3641    0.4565    0.4450    0.3646    0.2433    0.0658    0.0003   -0.0922
+
+  Columns 25 through 26
+
+   -0.1385   -0.1123
+
+
+S_barotrop =
+
+  Columns 1 through 12
+
+   -0.2727   -0.1458    0.0175    0.1489    0.2933    0.5627    0.6431    0.7246    0.7821    0.7853    0.7540    0.6490
+
+  Columns 13 through 24
+
+    0.5525    0.4331    0.2822   -0.1174   -0.4825   -0.5806   -0.7963   -0.6977   -0.6341   -1.0101   -0.6385   -0.5923
+
+  Columns 25 through 26
+
+   -0.5174   -0.5578
+
+
+oscil_mare =
+
+  Columns 1 through 12
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308
+
+  Columns 13 through 24
+
+   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992
+
+  Columns 25 through 26
+
+    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0491    0.0529    0.0470    0.0305    0.0126   -0.0037   -0.0203   -0.0417   -0.0604   -0.0444    0.0058
+
+
+S_baroclin =
+
+   -0.7791   -0.5246   -0.3267   -0.1870   -0.0684    0.0395    0.1560    0.2662    0.3644    0.4295    0.4813
+
+
+descarga_doce =
+
+    2.4921
+
+
+deriva_stokes =
+
+    0.3472
+
+
+correl_mare =
+
+    0.9186
+
+
+circ_gravit =
+
+    0.1515
+
+
+difusao_turb =
+
+    0.2081
+
+
+dispersao_mare =
+
+    0.0021
+
+
+circ_resid =
+
+    0.0012
+
+
+transp_total =
+
+    4.1209
+
+
+transp_medio_resultante =
+
+    4.1122
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 12
+
+    0.0013    0.0007    0.0005    0.0004    0.0005    0.0006    0.0009    0.0006    0.0007    0.0021    0.0087    0.0714
+
+  Columns 13 through 24
+
+    0.0093    0.0076    0.0047    0.0022    0.0021    0.0008    0.0014    0.0018    0.0030    0.0578    4.9379    0.0167
+
+  Columns 25 through 26
+
+    0.0073    0.0105
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0362
+
+
+pc =
+
+    7.4706
+
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\ylabel.m',39,1)">ylabel at 39</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\ylabel.m',21,1)">ylabel at 21</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',97,1)">diagrama_e_c at 97</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',776,1)">estuario at 776</a>
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\xlabel.m',40,1)">xlabel at 40</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\xlabel.m',22,1)">xlabel at 22</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',98,1)">diagrama_e_c at 98</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',776,1)">estuario at 776</a>
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\axis.m',208,1)">axis>LocSetLimits at 208</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\axis.m',94,1)">axis at 94</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',104,1)">diagrama_e_c at 104</a>
+  In <a href="matlab: opentoline('E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',776,1)">estuario at 776</a>
+Current plot released
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 9 
+
+   34.6237   34.7269   34.8799   35.0171   35.1589   35.4363   35.5243   35.5884   35.6434
+
+  Columns 10 through 18 
+
+   35.6458   35.6166   35.5101   35.4144   35.2932   35.1322   34.7416   34.4239   34.2798
+
+  Columns 19 through 26 
+
+   34.1138   34.1968   34.2352   33.8500   34.2237   34.2725   34.3448   34.3074
+
+
+media_esp_U =
+
+  Columns 1 through 9 
+
+   -0.2818   -0.2669   -0.2281   -0.2573   -0.2597   -0.2803   -0.2919   -0.2816   -0.2425
+
+  Columns 10 through 18 
+
+   -0.1467   -0.0803    0.0289    0.1001    0.1116    0.1734    0.2570    0.3657    0.4606
+
+  Columns 19 through 26 
+
+    0.4462    0.3593    0.2345    0.0562   -0.0106   -0.1019   -0.1520   -0.1242
+
+
+media_esp_US =
+
+  Columns 1 through 9 
+
+   -9.7565   -9.2645   -7.9520   -9.0091   -9.1275   -9.9303  -10.3691  -10.0190   -8.6437
+
+  Columns 10 through 18 
+
+   -5.2328   -2.8633    1.0229    3.5467    3.9370    6.0688    8.8890   12.5146   15.7148
+
+  Columns 19 through 26 
+
+   15.1148   12.1906    7.9473    1.7946   -0.4242   -3.5352   -5.2623   -4.2816
+
+
+media_esp_ro =
+
+  Columns 1 through 9 
+
+  121.9997  122.0891  122.2030  122.3111  122.4351  122.6625  122.7752  122.8275  122.8915
+
+  Columns 10 through 18 
+
+  122.8813  122.8074  122.7230  122.6213  122.5188  122.3642  122.0152  121.7570  121.6422
+
+  Columns 19 through 26 
+
+  121.5031  121.5761  121.6001  121.3030  121.5954  121.6342  121.6820  121.6443
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0084
+
+
+media_esptemp_S =
+
+   34.8694
+
+
+U_barotrop =
+
+  Columns 1 through 9 
+
+   -0.2735   -0.2585   -0.2197   -0.2489   -0.2513   -0.2719   -0.2835   -0.2732   -0.2341
+
+  Columns 10 through 18 
+
+   -0.1384   -0.0720    0.0373    0.1085    0.1200    0.1818    0.2653    0.3741    0.4690
+
+  Columns 19 through 26 
+
+    0.4546    0.3677    0.2429    0.0646   -0.0022   -0.0935   -0.1437   -0.1158
+
+
+S_barotrop =
+
+  Columns 1 through 9 
+
+   -0.2457   -0.1425    0.0105    0.1477    0.2895    0.5669    0.6549    0.7190    0.7740
+
+  Columns 10 through 18 
+
+    0.7763    0.7472    0.6407    0.5450    0.4238    0.2628   -0.1278   -0.4455   -0.5896
+
+  Columns 19 through 26 
+
+   -0.7556   -0.6726   -0.6342   -1.0194   -0.6457   -0.5969   -0.5246   -0.5620
+
+
+oscil_mare =
+
+  Columns 1 through 9 
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708
+
+  Columns 10 through 18 
+
+   -0.5308   -0.5508   -0.5308   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792
+
+  Columns 19 through 26 
+
+    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992    0.5792    0.5292
+
+
+U_baroclin =
+
+  Columns 1 through 9 
+
+    0.0520    0.0612    0.0555    0.0341    0.0090    0.0001   -0.0152   -0.0403   -0.0639
+
+  Columns 10 through 11 
+
+   -0.0705    0.0084
+
+
+S_baroclin =
+
+  Columns 1 through 9 
+
+   -0.7874   -0.4907   -0.3204   -0.1937   -0.0717    0.0353    0.1299    0.2780    0.3658
+
+  Columns 10 through 11 
+
+    0.4247    0.4730
+
+
+descarga_doce =
+
+    3.5992
+
+
+deriva_stokes =
+
+    0.3360
+
+
+correl_mare =
+
+    0.9179
+
+
+circ_gravit =
+
+    0.1726
+
+
+difusao_turb =
+
+    0.1979
+
+
+dispersao_mare =
+
+    0.0026
+
+
+circ_resid =
+
+    0.0018
+
+
+transp_total =
+
+    5.2280
+
+
+transp_medio_resultante =
+
+    5.2185
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 9 
+
+    0.0012    0.0006    0.0005    0.0004    0.0005    0.0006    0.0009    0.0005    0.0007
+
+  Columns 10 through 18 
+
+    0.0019    0.0079    0.0746    0.0084    0.0074    0.0046    0.0021    0.0020    0.0008
+
+  Columns 19 through 26 
+
+    0.0013    0.0018    0.0031    0.0659    1.3144    0.0154    0.0066    0.0095
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0361
+
+
+pc =
+
+    5.2057
+
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,38,1">ylabel at 38</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,42,1">ylabel at 42</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,39,1">xlabel at 39</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,43,1">xlabel at 43</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,210,1">axis>LocSetLimits at 210</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,96,1">axis at 96</a>
+  In <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,104,1">diagrama_e_c at 104</a>
+  In <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+??? Error using ==> print
+Error using ==> graphics\private\name
+Cannot create output file 'e:\estuario-03-mar\programas-03-mar\cap05\prgestuario\diagrama.bmp'
+
+Error in ==> <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,125,1">diagrama_e_c at 125</a>
+   print -dbitmap e:\estuario-03-mar\programas-03-mar\cap05\prgestuario\diagrama
+
+Error in ==> <a href="error:G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+	diagrama_e_c(pc,pe)	
+
+builtin('exit')
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 9 
+
+   34.5884   34.7154   34.8786   35.0100   35.1545   35.4238   35.5042   35.5857   35.6432
+
+  Columns 10 through 18 
+
+   35.6464   35.6151   35.5101   35.4136   35.2943   35.1434   34.7437   34.3786   34.2806
+
+  Columns 19 through 26 
+
+   34.0648   34.1634   34.2270   33.8510   34.2226   34.2689   34.3437   34.3034
+
+
+media_esp_U =
+
+  Columns 1 through 9 
+
+   -0.2766   -0.2580   -0.2221   -0.2477   -0.2530   -0.2726   -0.2830   -0.2728   -0.2337
+
+  Columns 10 through 18 
+
+   -0.1414   -0.0764    0.0295    0.0953    0.1098    0.1708    0.2508    0.3583    0.4507
+
+  Columns 19 through 26 
+
+    0.4392    0.3588    0.2375    0.0600   -0.0054   -0.0980   -0.1443   -0.1181
+
+
+media_esp_US =
+
+  Columns 1 through 9 
+
+   -9.5637   -8.9483   -7.7439   -8.6707   -8.8907   -9.6522  -10.0449   -9.7061   -8.3279
+
+  Columns 10 through 18 
+
+   -5.0418   -2.7236    1.0464    3.3764    3.8738    5.9779    8.6767   12.2365   15.3731
+
+  Columns 19 through 26 
+
+   14.8415   12.1508    8.0487    1.9357   -0.2402   -3.3910   -4.9866   -4.0660
+
+
+media_esp_ro =
+
+  Columns 1 through 9 
+
+  121.9733  122.0812  122.2025  122.3062  122.4320  122.6524  122.7591  122.8255  122.8913
+
+  Columns 10 through 18 
+
+  122.8822  122.8060  122.7227  122.6210  122.5204  122.3736  122.0174  121.7232  121.6430
+
+  Columns 19 through 26 
+
+  121.4654  121.5477  121.5907  121.3040  121.5945  121.6317  121.6814  121.6416
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0058
+
+
+media_esptemp_S =
+
+   34.8611
+
+
+U_barotrop =
+
+  Columns 1 through 9 
+
+   -0.2708   -0.2522   -0.2163   -0.2419   -0.2472   -0.2668   -0.2772   -0.2670   -0.2279
+
+  Columns 10 through 18 
+
+   -0.1356   -0.0706    0.0353    0.1011    0.1156    0.1766    0.2566    0.3641    0.4565
+
+  Columns 19 through 26 
+
+    0.4450    0.3646    0.2433    0.0658    0.0003   -0.0922   -0.1385   -0.1123
+
+
+S_barotrop =
+
+  Columns 1 through 9 
+
+   -0.2727   -0.1458    0.0175    0.1489    0.2933    0.5627    0.6431    0.7246    0.7821
+
+  Columns 10 through 18 
+
+    0.7853    0.7540    0.6490    0.5525    0.4331    0.2822   -0.1174   -0.4825   -0.5806
+
+  Columns 19 through 26 
+
+   -0.7963   -0.6977   -0.6341   -1.0101   -0.6385   -0.5923   -0.5174   -0.5578
+
+
+oscil_mare =
+
+  Columns 1 through 9 
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708
+
+  Columns 10 through 18 
+
+   -0.5308   -0.5508   -0.5308   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792
+
+  Columns 19 through 26 
+
+    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992    0.5792    0.5292
+
+
+U_baroclin =
+
+  Columns 1 through 9 
+
+    0.0491    0.0529    0.0470    0.0305    0.0126   -0.0037   -0.0203   -0.0417   -0.0604
+
+  Columns 10 through 11 
+
+   -0.0444    0.0058
+
+
+S_baroclin =
+
+  Columns 1 through 9 
+
+   -0.7791   -0.5246   -0.3267   -0.1870   -0.0684    0.0395    0.1560    0.2662    0.3644
+
+  Columns 10 through 11 
+
+    0.4295    0.4813
+
+
+descarga_doce =
+
+    2.4921
+
+
+deriva_stokes =
+
+    0.3472
+
+
+correl_mare =
+
+    0.9186
+
+
+circ_gravit =
+
+    0.1515
+
+
+difusao_turb =
+
+    0.2081
+
+
+dispersao_mare =
+
+    0.0021
+
+
+circ_resid =
+
+    0.0012
+
+
+transp_total =
+
+    4.1209
+
+
+transp_medio_resultante =
+
+    4.1122
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 9 
+
+    0.0013    0.0007    0.0005    0.0004    0.0005    0.0006    0.0009    0.0006    0.0007
+
+  Columns 10 through 18 
+
+    0.0021    0.0087    0.0714    0.0093    0.0076    0.0047    0.0022    0.0021    0.0008
+
+  Columns 19 through 26 
+
+    0.0014    0.0018    0.0030    0.0578    4.9379    0.0167    0.0073    0.0105
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0362
+
+
+pc =
+
+    7.4706
+
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,38,1">ylabel at 38</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,42,1">ylabel at 42</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,39,1">xlabel at 39</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,43,1">xlabel at 43</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,210,1">axis>LocSetLimits at 210</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,96,1">axis at 96</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,104,1">diagrama_e_c at 104</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Current plot released
+??? Input argument "ts" is undefined.
+
+Error in ==> <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,53,1">estuario at 53</a>
+	prof=-ts(:,2); % Profundidade adimensional sinal (-) devido a orientação de OZ
+
+load vl_16_08.dat
+load ts_16_08.dat
+load zl_16_08.dat
+estuario(vl_16_08,ts_16_08,zl_16_08,26,11)
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 9 
+
+   34.5884   34.7154   34.8786   35.0100   35.1545   35.4238   35.5042   35.5857   35.6432
+
+  Columns 10 through 18 
+
+   35.6464   35.6151   35.5101   35.4136   35.2943   35.1434   34.7437   34.3786   34.2806
+
+  Columns 19 through 26 
+
+   34.0648   34.1634   34.2270   33.8510   34.2226   34.2689   34.3437   34.3034
+
+
+media_esp_U =
+
+  Columns 1 through 9 
+
+   -0.2766   -0.2580   -0.2221   -0.2477   -0.2530   -0.2726   -0.2830   -0.2728   -0.2337
+
+  Columns 10 through 18 
+
+   -0.1414   -0.0764    0.0295    0.0953    0.1098    0.1708    0.2508    0.3583    0.4507
+
+  Columns 19 through 26 
+
+    0.4392    0.3588    0.2375    0.0600   -0.0054   -0.0980   -0.1443   -0.1181
+
+
+media_esp_US =
+
+  Columns 1 through 9 
+
+   -9.5637   -8.9483   -7.7439   -8.6707   -8.8907   -9.6522  -10.0449   -9.7061   -8.3279
+
+  Columns 10 through 18 
+
+   -5.0418   -2.7236    1.0464    3.3764    3.8738    5.9779    8.6767   12.2365   15.3731
+
+  Columns 19 through 26 
+
+   14.8415   12.1508    8.0487    1.9357   -0.2402   -3.3910   -4.9866   -4.0660
+
+
+media_esp_ro =
+
+  Columns 1 through 9 
+
+  121.9733  122.0812  122.2025  122.3062  122.4320  122.6524  122.7591  122.8255  122.8913
+
+  Columns 10 through 18 
+
+  122.8822  122.8060  122.7227  122.6210  122.5204  122.3736  122.0174  121.7232  121.6430
+
+  Columns 19 through 26 
+
+  121.4654  121.5477  121.5907  121.3040  121.5945  121.6317  121.6814  121.6416
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0058
+
+
+media_esptemp_S =
+
+   34.8611
+
+
+U_barotrop =
+
+  Columns 1 through 9 
+
+   -0.2708   -0.2522   -0.2163   -0.2419   -0.2472   -0.2668   -0.2772   -0.2670   -0.2279
+
+  Columns 10 through 18 
+
+   -0.1356   -0.0706    0.0353    0.1011    0.1156    0.1766    0.2566    0.3641    0.4565
+
+  Columns 19 through 26 
+
+    0.4450    0.3646    0.2433    0.0658    0.0003   -0.0922   -0.1385   -0.1123
+
+
+S_barotrop =
+
+  Columns 1 through 9 
+
+   -0.2727   -0.1458    0.0175    0.1489    0.2933    0.5627    0.6431    0.7246    0.7821
+
+  Columns 10 through 18 
+
+    0.7853    0.7540    0.6490    0.5525    0.4331    0.2822   -0.1174   -0.4825   -0.5806
+
+  Columns 19 through 26 
+
+   -0.7963   -0.6977   -0.6341   -1.0101   -0.6385   -0.5923   -0.5174   -0.5578
+
+
+oscil_mare =
+
+  Columns 1 through 9 
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708
+
+  Columns 10 through 18 
+
+   -0.5308   -0.5508   -0.5308   -0.5108   -0.4708   -0.3908   -0.2608   -0.1008    0.0792
+
+  Columns 19 through 26 
+
+    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992    0.5792    0.5292
+
+
+U_baroclin =
+
+  Columns 1 through 9 
+
+    0.0491    0.0529    0.0470    0.0305    0.0126   -0.0037   -0.0203   -0.0417   -0.0604
+
+  Columns 10 through 11 
+
+   -0.0444    0.0058
+
+
+S_baroclin =
+
+  Columns 1 through 9 
+
+   -0.7791   -0.5246   -0.3267   -0.1870   -0.0684    0.0395    0.1560    0.2662    0.3644
+
+  Columns 10 through 11 
+
+    0.4295    0.4813
+
+
+descarga_doce =
+
+    2.4921
+
+
+deriva_stokes =
+
+    0.3472
+
+
+correl_mare =
+
+    0.9186
+
+
+circ_gravit =
+
+    0.1515
+
+
+difusao_turb =
+
+    0.2081
+
+
+dispersao_mare =
+
+    0.0021
+
+
+circ_resid =
+
+    0.0012
+
+
+transp_total =
+
+    4.1209
+
+
+transp_medio_resultante =
+
+    4.1122
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 9 
+
+    0.0013    0.0007    0.0005    0.0004    0.0005    0.0006    0.0009    0.0006    0.0007
+
+  Columns 10 through 18 
+
+    0.0021    0.0087    0.0714    0.0093    0.0076    0.0047    0.0022    0.0021    0.0008
+
+  Columns 19 through 26 
+
+    0.0014    0.0018    0.0030    0.0578    4.9379    0.0167    0.0073    0.0105
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0362
+
+
+pc =
+
+    7.4706
+
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,38,1">ylabel at 38</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,42,1">ylabel at 42</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\ylabel.m,21,1">ylabel at 21</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,97,1">diagrama_e_c at 97</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,39,1">xlabel at 39</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,43,1">xlabel at 43</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\xlabel.m,22,1">xlabel at 22</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,98,1">diagrama_e_c at 98</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Warning: Negative data ignored.
+> In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,210,1">axis>LocSetLimits at 210</a>
+  In <a href="error:C:\MATLAB7\toolbox\matlab\graph2d\axis.m,96,1">axis at 96</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m,104,1">diagrama_e_c at 104</a>
+  In <a href="error:E:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m,776,1">estuario at 776</a>
+Current plot released
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 15
+
+   34.5884   34.7154   34.8786   35.0100   35.1545   35.4238   35.5042   35.5857   35.6432   35.6464   35.6151   35.5101   35.4136   35.2943   35.1434
+
+  Columns 16 through 26
+
+   34.7437   34.3786   34.2806   34.0648   34.1634   34.2270   33.8510   34.2226   34.2689   34.3437   34.3034
+
+
+media_esp_U =
+
+  Columns 1 through 15
+
+   -0.2766   -0.2580   -0.2221   -0.2477   -0.2530   -0.2726   -0.2830   -0.2728   -0.2337   -0.1414   -0.0764    0.0295    0.0953    0.1098    0.1708
+
+  Columns 16 through 26
+
+    0.2508    0.3583    0.4507    0.4392    0.3588    0.2375    0.0600   -0.0054   -0.0980   -0.1443   -0.1181
+
+
+media_esp_US =
+
+  Columns 1 through 15
+
+   -9.5637   -8.9483   -7.7439   -8.6707   -8.8907   -9.6522  -10.0449   -9.7061   -8.3279   -5.0418   -2.7236    1.0464    3.3764    3.8738    5.9779
+
+  Columns 16 through 26
+
+    8.6767   12.2365   15.3731   14.8415   12.1508    8.0487    1.9357   -0.2402   -3.3910   -4.9866   -4.0660
+
+
+media_esp_ro =
+
+  Columns 1 through 15
+
+  121.9733  122.0812  122.2025  122.3062  122.4320  122.6524  122.7591  122.8255  122.8913  122.8822  122.8060  122.7227  122.6210  122.5204  122.3736
+
+  Columns 16 through 26
+
+  122.0174  121.7232  121.6430  121.4654  121.5477  121.5907  121.3040  121.5945  121.6317  121.6814  121.6416
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0058
+
+
+media_esptemp_S =
+
+   34.8611
+
+
+U_barotrop =
+
+  Columns 1 through 15
+
+   -0.2708   -0.2522   -0.2163   -0.2419   -0.2472   -0.2668   -0.2772   -0.2670   -0.2279   -0.1356   -0.0706    0.0353    0.1011    0.1156    0.1766
+
+  Columns 16 through 26
+
+    0.2566    0.3641    0.4565    0.4450    0.3646    0.2433    0.0658    0.0003   -0.0922   -0.1385   -0.1123
+
+
+S_barotrop =
+
+  Columns 1 through 15
+
+   -0.2727   -0.1458    0.0175    0.1489    0.2933    0.5627    0.6431    0.7246    0.7821    0.7853    0.7540    0.6490    0.5525    0.4331    0.2822
+
+  Columns 16 through 26
+
+   -0.1174   -0.4825   -0.5806   -0.7963   -0.6977   -0.6341   -1.0101   -0.6385   -0.5923   -0.5174   -0.5578
+
+
+oscil_mare =
+
+  Columns 1 through 15
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308   -0.5108   -0.4708   -0.3908
+
+  Columns 16 through 26
+
+   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0491    0.0529    0.0470    0.0305    0.0126   -0.0037   -0.0203   -0.0417   -0.0604   -0.0444    0.0058
+
+
+S_baroclin =
+
+   -0.7791   -0.5246   -0.3267   -0.1870   -0.0684    0.0395    0.1560    0.2662    0.3644    0.4295    0.4813
+
+
+descarga_doce =
+
+    2.4921
+
+
+deriva_stokes =
+
+    0.3472
+
+
+correl_mare =
+
+    0.9186
+
+
+circ_gravit =
+
+    0.1515
+
+
+difusao_turb =
+
+    0.2081
+
+
+dispersao_mare =
+
+    0.0021
+
+
+circ_resid =
+
+    0.0012
+
+
+transp_total =
+
+    4.1209
+
+
+transp_medio_resultante =
+
+    4.1122
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 15
+
+    0.0013    0.0007    0.0005    0.0004    0.0005    0.0006    0.0009    0.0006    0.0007    0.0021    0.0087    0.0714    0.0093    0.0076    0.0047
+
+  Columns 16 through 26
+
+    0.0022    0.0021    0.0008    0.0014    0.0018    0.0030    0.0578    4.9379    0.0167    0.0073    0.0105
+
+Current plot held
+{??? Error using ==> <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graphics\print.m',325,0)">print at 325</a>
+Cannot create output file 'e:\Academica42_maio_14\cap05\prgestuario\perfilu_qu.bmp'
+
+Error in ==> <a href="matlab: opentoline('G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',510,0)">estuario at 510</a>
+   print -dbitmap e:\Academica42_maio_14\cap05\prgestuario\perfilu_qu.bmp
+} 
+
+estuario(vl_16_08,ts_16_08,zl_16_08,26,11)
+
+Delta_ro =
+
+Dro=[dro1 dro2 dro3 dro4 dro5 dro6 dro7 dro8 dro9 dro10 dro11 dro12 dro13 dro14 dro15 dro16 dro17 dro18 dro19 dro20 dro21 dro22 dro23 dro24 dro25 dro26 ];
+
+
+media_esp_S =
+
+  Columns 1 through 15
+
+   34.5884   34.7154   34.8786   35.0100   35.1545   35.4238   35.5042   35.5857   35.6432   35.6464   35.6151   35.5101   35.4136   35.2943   35.1434
+
+  Columns 16 through 26
+
+   34.7437   34.3786   34.2806   34.0648   34.1634   34.2270   33.8510   34.2226   34.2689   34.3437   34.3034
+
+
+media_esp_U =
+
+  Columns 1 through 15
+
+   -0.2766   -0.2580   -0.2221   -0.2477   -0.2530   -0.2726   -0.2830   -0.2728   -0.2337   -0.1414   -0.0764    0.0295    0.0953    0.1098    0.1708
+
+  Columns 16 through 26
+
+    0.2508    0.3583    0.4507    0.4392    0.3588    0.2375    0.0600   -0.0054   -0.0980   -0.1443   -0.1181
+
+
+media_esp_US =
+
+  Columns 1 through 15
+
+   -9.5637   -8.9483   -7.7439   -8.6707   -8.8907   -9.6522  -10.0449   -9.7061   -8.3279   -5.0418   -2.7236    1.0464    3.3764    3.8738    5.9779
+
+  Columns 16 through 26
+
+    8.6767   12.2365   15.3731   14.8415   12.1508    8.0487    1.9357   -0.2402   -3.3910   -4.9866   -4.0660
+
+
+media_esp_ro =
+
+  Columns 1 through 15
+
+  121.9733  122.0812  122.2025  122.3062  122.4320  122.6524  122.7591  122.8255  122.8913  122.8822  122.8060  122.7227  122.6210  122.5204  122.3736
+
+  Columns 16 through 26
+
+  122.0174  121.7232  121.6430  121.4654  121.5477  121.5907  121.3040  121.5945  121.6317  121.6814  121.6416
+
+
+media_temp_Z =
+
+  -12.3292
+
+
+media_esptemp_U =
+
+   -0.0058
+
+
+media_esptemp_S =
+
+   34.8611
+
+
+U_barotrop =
+
+  Columns 1 through 15
+
+   -0.2708   -0.2522   -0.2163   -0.2419   -0.2472   -0.2668   -0.2772   -0.2670   -0.2279   -0.1356   -0.0706    0.0353    0.1011    0.1156    0.1766
+
+  Columns 16 through 26
+
+    0.2566    0.3641    0.4565    0.4450    0.3646    0.2433    0.0658    0.0003   -0.0922   -0.1385   -0.1123
+
+
+S_barotrop =
+
+  Columns 1 through 15
+
+   -0.2727   -0.1458    0.0175    0.1489    0.2933    0.5627    0.6431    0.7246    0.7821    0.7853    0.7540    0.6490    0.5525    0.4331    0.2822
+
+  Columns 16 through 26
+
+   -0.1174   -0.4825   -0.5806   -0.7963   -0.6977   -0.6341   -1.0101   -0.6385   -0.5923   -0.5174   -0.5578
+
+
+oscil_mare =
+
+  Columns 1 through 15
+
+    0.4292    0.3292    0.2092    0.0792   -0.0408   -0.1708   -0.2908   -0.3908   -0.4708   -0.5308   -0.5508   -0.5308   -0.5108   -0.4708   -0.3908
+
+  Columns 16 through 26
+
+   -0.2608   -0.1008    0.0792    0.2492    0.4092    0.5092    0.5792    0.6092    0.5992    0.5792    0.5292
+
+
+U_baroclin =
+
+    0.0491    0.0529    0.0470    0.0305    0.0126   -0.0037   -0.0203   -0.0417   -0.0604   -0.0444    0.0058
+
+
+S_baroclin =
+
+   -0.7791   -0.5246   -0.3267   -0.1870   -0.0684    0.0395    0.1560    0.2662    0.3644    0.4295    0.4813
+
+
+descarga_doce =
+
+    2.4921
+
+
+deriva_stokes =
+
+    0.3472
+
+
+correl_mare =
+
+    0.9186
+
+
+circ_gravit =
+
+    0.1515
+
+
+difusao_turb =
+
+    0.2081
+
+
+dispersao_mare =
+
+    0.0021
+
+
+circ_resid =
+
+    0.0012
+
+
+transp_total =
+
+    4.1209
+
+
+transp_medio_resultante =
+
+    4.1122
+
+
+RiL =
+
+  1.0e+004 *
+
+  Columns 1 through 15
+
+    0.0013    0.0007    0.0005    0.0004    0.0005    0.0006    0.0009    0.0006    0.0007    0.0021    0.0087    0.0714    0.0093    0.0076    0.0047
+
+  Columns 16 through 26
+
+    0.0022    0.0021    0.0008    0.0014    0.0018    0.0030    0.0578    4.9379    0.0167    0.0073    0.0105
+
+Current plot held
+Current plot held
+Current plot held
+Current plot released
+Current plot held
+Current plot held
+
+pe =
+
+    0.0362
+
+
+pc =
+
+    7.4706
+
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\ylabel.m',39,1)">ylabel at 39</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\ylabel.m',21,1)">ylabel at 21</a>
+  In <a href="matlab: opentoline('G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',97,1)">diagrama_e_c at 97</a>
+  In <a href="matlab: opentoline('G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',776,1)">estuario at 776</a>
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\xlabel.m',40,1)">xlabel at 40</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\xlabel.m',22,1)">xlabel at 22</a>
+  In <a href="matlab: opentoline('G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',98,1)">diagrama_e_c at 98</a>
+  In <a href="matlab: opentoline('G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',776,1)">estuario at 776</a>
+{Warning: Negative data ignored} 
+> In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\axis.m',208,1)">axis>LocSetLimits at 208</a>
+  In <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graph2d\axis.m',94,1)">axis at 94</a>
+  In <a href="matlab: opentoline('G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',104,1)">diagrama_e_c at 104</a>
+  In <a href="matlab: opentoline('G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',776,1)">estuario at 776</a>
+{??? Error using ==> <a href="matlab: opentoline('C:\Arquivos de programas\MATLAB\R2009a\toolbox\matlab\graphics\print.m',325,0)">print at 325</a>
+Cannot create output file 'e:\estuario-03-mar\programas-03-mar\cap05\prgestuario\diagrama.bmp'
+
+Error in ==> <a href="matlab: opentoline('G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\diagrama_e_c.m',125,0)">diagrama_e_c at 125</a>
+   print -dbitmap e:\estuario-03-mar\programas-03-mar\cap05\prgestuario\diagrama
+
+Error in ==> <a href="matlab: opentoline('G:\ACADEMICA42_maio_14\CAP05\PRGESTUARIO\estuario.m',776,0)">estuario at 776</a>
+	diagrama_e_c(pc,pe)
+} 
+exit

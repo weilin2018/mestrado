@@ -1,0 +1,118 @@
+### atenção: exercício antigo, o que deu certo é o seguinte. Este está aqui apenas até entregar a lista
+
+##### Q.02 - Implemente um modelo para a solução da equação da advecção bi-dimensional por esquema semi-implícito centrado no tempo e no espaço.
+
+\begin{equation}
+    \frac{\partial{f}}{\partial{t}} + u\frac{\partial{f}}{\partial{x}} + v\frac{\partial{f}}{\partial{y}} = 0
+    \label{ex2:1}
+\end{equation}
+
+O esquema semi-implícito centrado no tempo e espaço é dado através da média ponderada entre o esquema explícito e implícito, onde a soma do peso deve ser 1. Desta forma, precisamos desenvolver ambos os esquemas, para termos o requisitado no exercício.
+
+**Esquema Explícito**
+
+\begin{equation}
+    \frac{ f^{n+1}_{j,k} - f^{n-1}_{j,k} }{2\Delta{x}} + u\frac{ f^{n}_{j+1,k} - f^{n}_{j-1,k} }{2\Delta{x}} + v\frac{f^{n}_{j,k+1} - f^{n}_{j,k-1}}{2\Delta{y}} = 0
+    \label{ex2:2}
+\end{equation}
+
+
+**Esquema Implícito**
+
+\begin{equation}
+    \frac{ f^{n+1}_{j,k} - f^{n-1}_{j,k} }{2\Delta{x}} + u\frac{ f^{n+1}_{j+1,k} - f^{n+1}_{j-1,k} }{2\Delta{x}} + v\frac{f^{n+1}_{j,k+1} - f^{n+1}_{j,k-1}}{2\Delta{y}} = 0
+    \label{ex2:3}
+\end{equation}
+
+A diferença entre (\ref{ex2:2}) e (\ref{ex2:3}) está no nível de tempo utilizado para calcular as derivadas espaciais, respectivamente, n (atual) e n+1 (renovado).
+
+**Esquema Semi-Implícito**
+
+\begin{equation}
+    \frac{f^{n+1}_{j,k} - f^{n-1}_{j,k}}{2\Delta{t}} + \frac{u}{4\Delta{x}}(f^{n+1}_{j+1,k} - f^{n-1}_{j+1,k} + f^{n}_{j+1,k} - f^{n}_{j-1,k}) + \frac{v}{4\Delta{y}}( f^{n}_{j,k+1} - f^{n}_{j,k-1} + f^{n+1}_{j,k+1} -f^{n+1}_{j,k-1} ) = 0
+    \label{ex2:4}
+\end{equation}
+
+Isolando o termo $f^{n+1}_{j,k}$, obteremos:
+
+\begin{equation}
+    f^{n+1}_{j,k} = f^{n-1}_{,k} - \frac{\Delta{t}}{2\Delta{x}}(f^{n+1}_{j+1,k} - f^{n+1}_{j-1,k} + f^{n}_{j+1,k} - f^{n}_{j-1,k}) - \frac{\Delta{t}}{2\Delta{y}}( f^{n}_{j,k+1} - f^{n}_{j,k-1} + f^{n+1}_{j,k+1} - f^{n+1}_{j,k-1})
+    \label{ex2:5}
+\end{equation}
+
+Para resolver a equação (\ref{ex2:5}), devemos reescrevê-la da seguinte forma:
+
+\begin{equation}
+   a_jf^{n+1}_{j-1} + b_jf^{n+1}_{j} + c_jf^{n+1}_{j+1} = d_j
+   \label{ex2:6}
+\end{equation}
+
+\begin{equation}
+    a_kf^{n+1}_{k-1} + b_kf^{n+1}_{k} + c_kf^{n+1}_{k+1} = d_k
+    \label{ex2:7}
+\end{equation}
+
+Nesta etapa do desenvolvimento, convém trabalharmos com cada equação de forma independente. Sendo assim, reescrevemos (\ref{ex2:5}) somente para __as variações em $x$__, de forma que obteremos:
+
+\begin{equation}
+    \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}uf^{n+1}_{j-1} + f^{n+1}_{j} + \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}uf^{n+1}_{j+1}  = f^{n-1}_{j} - \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}u(f^{n}_{j+1} - f^{n}_{j-1})
+    \label{ex2:8}
+\end{equation}
+
+Onde, comparando (\ref{ex2:8}) e (\ref{ex2:6}), temos os seguintes coeficientes:
+
+\begin{equation}
+a_j = \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}u; b_j = 1; c_j = \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}u; d_j = f^{n-1}_{j} - \frac{1}{2}\frac{\Delta{t}}{\Delta{x}}u(f^{n}_{j+1} - f^{n}_{j-1})
+\label{ex2:9}
+\end{equation}
+
+Como (\ref{ex2:8}) é uma equação de três pontos, utilizamos o __método de inversão de linha__ (Lindzen & Kuo, 1969) para transformá-la em uma equação de dois pontos.
+
+Inicialmente, definimos: 
+\begin{equation}
+    f^{n+1}_{j} = s_{j}f^{n+1}_{j+1} + p_j \Rightarrow f^{n+1}_{j-1} = s_{j-1}f^{n+1}_{j} + p_{j-1}
+    \label{ex2:10}
+\end{equation}
+
+Aplicando (\ref{ex2:9}) e (\ref{ex2:10}) em (\ref{ex2:8}), teremos:
+
+\begin{equation}
+    a_j(s_{j-1}f^{n+1}_{j} + p_{j-1}) + b_jf^{n+1}_{j} + c_jf^{n+1}_{j+1} = d_j
+    \label{ex2:11}
+\end{equation}
+
+E, por fim, obtemos:
+
+\begin{equation}
+    s_j = \frac{-c_j}{b_j + a_js_{j-1}}; p_j = \frac{d_j - a_jp_{j-1}}{b_j + a_js_{j-1}}
+    \label{ex2:12}
+\end{equation}
+
+De modo análogo, podemos reescrever (\ref{ex2:5}) para as __variações em $y$__, obtendo $s_k$ e $p_k$:
+
+\begin{equation}
+    \underbrace{-\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v}_{a_k}f^{n+1}_{k-1} + 
+    \underbrace{\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v}_{c_k}f^{n+1}_{k+1}  = 
+    \underbrace{-\frac{1}{2}\frac{\Delta{t}}{\Delta{y}}v(f^{n}_{k+1} - f^{n}_{k-1})}_{d_k}
+    \label{ex2:13}
+\end{equation}
+
+Sendo assim, obtemos:
+
+\begin{equation}
+    s_k = \frac{-c_k}{b_k + a_ks_{k-1}}; p_k = \frac{d_k - a_jp_{k-1}}{b_k + a_ks_{k-1}}
+    \label{ex2:14}
+\end{equation}
+
+Por fim, com as equações (\ref{ex2:11}), (\ref{ex2:12}), (\ref{ex2:13}) e (\ref{ex2:14}) podemos obter a solução geral do problema ao reescrever (10) na forma:
+
+\begin{equation}
+    f^{n+1}_{j,k} = s_{j}f^{n+1}_{j+1,k} + s_{k}f^{n+1}_{j,k+1}- p_{j} - p_{k}
+    \label{ex2:15}
+\end{equation}
+
+A solução numérica do exercício será realizada para a equação (\ref{ex2:15}) e, todo o desenvolvimento numérico pode ser conferido no arquivo __lista1_Q02.m__. A seguir, analisamos os resultados obtidos no modelo elaborado.
+
+<center>
+    <h1><font color='red'>falta finalizar o código para colocar as imagens aqui e discuti-las</font></h1>
+</center>
