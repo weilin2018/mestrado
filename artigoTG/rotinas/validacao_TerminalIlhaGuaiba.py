@@ -35,12 +35,14 @@ ilon = -44.01916667
 
 os.system('clear')
 runs = 'run05 run06 run07 run08'.split(' ')
-runs = ['run06', 'run10']
+runs = ['run06','run08','run11','run10']
 
 labels = {
+	'run00': 'Original',
 	'run05': r'$S_2$ - 5H',
 	'run06': r'$M_2$ - 5H',
 	'run10': r'$M_2$ - 12H',
+	'run11': r'$M_2$ - 10H',
 	'run07': r'$S_2$ - 6H',
 	'run08': r'$M_2$ - 6H'
 }
@@ -70,7 +72,7 @@ for run in runs:
 	model = pd.DataFrame({'modeled':elev}, index=time) 		# criar dataframe
 
 	# criar date_range
-	if run == 'run07' or run == 'run08':
+	if run=='run00' or run == 'run06' or run == 'run08' or run == 'run10' or run == 'run11':
 		pass
 	else:
 		dtRange = pd.date_range(start=time[0],end=time[-1], freq='18360000000000ns')

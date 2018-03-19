@@ -270,11 +270,13 @@ def newTimerange(tm,to,observ):
 
     modelTimestamp = []
 
+    # converting to julian date the data from model
     for i in tm:
         modelTimestamp.append(pd.Timestamp(i).to_julian_date())
 
     observTimestamp = []
 
+    # converting to julian date the data from BNDO
     for i in to:
         observTimestamp.append(pd.Timestamp(i).to_julian_date())
         
