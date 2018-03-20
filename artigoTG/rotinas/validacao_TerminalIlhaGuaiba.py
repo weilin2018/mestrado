@@ -35,16 +35,23 @@ ilon = -44.01916667
 
 os.system('clear')
 runs = 'run05 run06 run07 run08'.split(' ')
+
+# selecione abaixo quais runs devem ser plotados. Tentar manter uns 4, 5 pois isso influencia
+# na quantidade de nrows do subplot
 runs = ['run06','run08','run11','run10']
 
 labels = {
 	'run00': 'Original',
-	'run05': r'$S_2$ - 5H',
-	'run06': r'$M_2$ - 5H',
-	'run10': r'$M_2$ - 12H',
-	'run11': r'$M_2$ - 10H',
-	'run07': r'$S_2$ - 6H',
-	'run08': r'$M_2$ - 6H'
+	'run05': r'run05: $S_2$ - 5H',
+	'run06': r'run06: $M_2$ - 5H',
+	'run10': r'run10: $M_2$ - 12H',
+	'run11': r'run11: $M_2$ - 10H',
+	'run07': r'run07: $S_2$ - 6H',
+	'run08': r'run08: $M_2$ - 6H',
+	'run12': r'run12: $M_2$ - 11H',
+	'run13': r'run12: $M_2$ - 7H',
+	'run14': r'run12: $M_2$ - 8H',
+	'run15': r'run12: $M_2$ - 9H'
 }
 
 

@@ -160,9 +160,6 @@ plt.show()
 
 ############
 
-# detectando se é ou não shelfwaves
-
-
 m=df['sECOM'].rolling(40, center=True).mean()
 o=df['BNDO'].rolling(40, center=True).mean()
 
