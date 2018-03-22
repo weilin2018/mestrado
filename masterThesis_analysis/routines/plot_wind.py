@@ -10,22 +10,34 @@ import pandas as pd
 import matplotlib
 matplotlib.style.use('ggplot')
 
+import matplotlib
+matplotlib.style.use('ggplot')
+
+import sys
+sys.path.append('masterThesisPack/')
+
+import masterThesisPack as oceano
+
+
+BASE_DIR = oceano.make_dir()
+
+DATA_DIR = BASE_DIR.replace('github/','ventopcse/data/csfr2/')
+SIMS_DIR = BASE_DIR.replace('github/','/artigo_data/simulacoes/')
+
 # directory with data
-dataDir = "/home/tparente/danilo/mestrado/ventopcse/data/csfr2/"
+DATA_DIR = "/home/tparente/danilo/mestrado/ventopcse/data/csfr2/"
 # define coords location to extract data
 # pnboia Santos location is: Latitude: -25.27 Longitude: -44.93
 pnboiaSan = [-25.27, -44.93]
 
 # import a grib file to extract latlon's index
-grib = xr.open_dataset(dataDir+"cdas1.20170208.pgrbh.grb2",engine='pynio')
+grib = xr.open_dataset(DATA_DIR+"cdas1.20170208.pgrbh.grb2",engine='pynio')
 
 # extract latlon
 lat = grib['lat_0'].data
 lon = grib['lon_0'].data - 360
 
-# find index
-ilat = np.where(lat == -25.50)[0][0] # 13
-ilon = np.where(lon == -45.00)[0][0] # 12
+ilon, ilat = oceano.find_nearest(lon,lat,pnboiaSan[1],pnboiaSan[0]) 		# encontrar indices do ponto mais proximo
 
 # select date interval
 init_date = '20140101'
@@ -34,7 +46,7 @@ fina_date = '20161231'
 ### plotando 2014
 print('plotando dados de 2014')
 
-arquivo = glob.glob(dataDir+'cdas1.2014*')
+arquivo = glob.glob(DATA_DIR+'cdas1.2014*')
 arquivo.sort() # to organize files 
 
 # grib = xr.open_data(arq,engine='pynio')
