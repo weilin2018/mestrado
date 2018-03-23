@@ -111,3 +111,31 @@ def find_nearest(lon,lat,ilon,ilat):
         jss.append(int(j))
 
     return iss,jss
+
+def downloadCFSR(start='1979',final='2011',MONTHS=np.arange(1,13,1)):
+    '''
+    '''
+
+    try:
+        import wget
+    except:
+        print('Need to instasll wget package. Try pip install wget in the terminal.')
+
+    HTTP_BASE = 'https://nomads.ncdc.noaa.gov/data/cfsr/'
+
+    # create list of year and months
+    YEARS = np.arange(int(start), int(final)+1, 1)
+
+    # create list of dates
+    DATES = []
+    for year in YEARS:
+        for month in MONTHS:
+            DATES.append(str(year)+str(month))
+
+    for date in DATES:
+        fname = HTTP_BASE+date+'wnd10m.gdas.'+date+'.grb2'
+        print('Downloading %s\n' % (fname))
+
+        wget.download(fname)
+
+        
