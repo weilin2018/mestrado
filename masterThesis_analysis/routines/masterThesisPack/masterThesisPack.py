@@ -31,7 +31,6 @@ def make_dir():
 
         return BASE_DIR
 
-
 # funcao de Skill: validacao modelo
 def skill_willmott(re,m):
     """
@@ -112,6 +111,27 @@ def find_nearest(lon,lat,ilon,ilat):
 
     return iss,jss
 
+# baixar dados do Climate Forecast System Version 2
+def downloadCFSv2(year,month):
+    ''' '''
+
+    try:
+        import wget
+    except:
+        print('Need to instasll wget package. Try pip install wget in the terminal.')
+
+    HTTP_BASE = 'https://nomads.ncdc.noaa.gov/modeldata/cfsv2_analysis_timeseries/'
+
+    date = year+month
+
+    http = HTTP_BASE+year+'/'+date+'/'
+
+    fname = http + 'wnd10m.gdas.'+date+'.grb2'
+
+    print('Downloading %s\n'%(fname))
+    wget.download(fname)
+
+# baixar dados do Climate Forecast System Reanalysis
 def downloadCFSR(start='1979',final='2011',MONTHS=np.arange(1,13,1)):
     '''
     '''
@@ -138,4 +158,103 @@ def downloadCFSR(start='1979',final='2011',MONTHS=np.arange(1,13,1)):
 
         wget.download(fname)
 
-        
+# Recortar uma area de arquivos grib2, converter em netCDF usando CDO
+def cut_grb2File(DATA_DIR, SAVE_DIR, PROCESSED_DIR, GRIB_DIR, box=[-55., -35., -15., -35.]):
+
+    '''
+        funcao para recortar os arquivos grb2 para um box especifico.
+
+        converte para netcdf
+
+        dependencia: software CDO instalado
+
+        args:
+            DATA_DIR: diretorio com arquivos .grb2
+            SAVE_DIR: diretorio para armazenar os dados finais
+            PROCESSED_DIR: diretorio para armzenar arquiqvos processados
+            GRIB_DIR: diretorio para separar os gribs recortados dos netcdf
+            box: lista com coordenadas [llon ulon ulat llat]
+
+        Estrutura de diretorios para organizar os dados:
+
+            HOME_DIR/
+                |
+                ------/*.grb2
+                |
+                ------/PROCESSED_DIR/*.grb2
+                |
+                ------/SAVE_DIR/
+                |           |
+                |           -------/*.nc
+                            -------/GRIB_DIR/*cuted_.grb2
+
+
+
+    '''
+
+    # extraindo coordenadas do box
+    llon,llat = box[0], box[3]
+    ulon,ulat = box[1], box[2]
+
+    nfiles = glob.glob(DATA_DIR+'*.grib2') # ler arquivos grb2 no diretorio passado
+    nfiles.sort()                         # ordenar alfabeticamente
+
+    os.system('clear')
+
+    # processar os arquivos para recortar
+    for f in nfiles:
+        print("Cutting: %s"%(f.split('/')[-1]))
+        # criar nome do arquivo de saida com diretorio, baseado no proprio
+        # arquivo de entrada
+        outputFile = SAVE_DIR+f.split("/")[-1]
+        # rodar CDO via terminal linux
+        os.system('cdo -sellonlatbox,%s,%s,%s,%s %s %s' % (llon,ulon,ulat,llat,f,outputFile))
+        # mover o arquivo processado para o diretório correspondente
+        os.system('mv %s %s'%(f,PROCESSED_DIR))
+
+    # listar arquivos recortados para converter
+    nfiles = glob.glob(SAVE_DIR+'*.grib2')
+    nfiles.sort()
+
+    os.system('clear')
+    os.system('Converting grib2 files to netCDF files')
+
+    for f in nfiles:
+        os.system('cdo -f nc copy %s %s' % (f,f.replace('.grib2', '.nc')))
+        os.system('mv %s %s' % (f, GRIB_DIR))
+
+# Quando baixar arquivos já recortados (Bob Dattore), usar a seguinte funcao
+def read_month(date,DATA_DIR):
+    '''
+        Funcao que le os arquivos .nc baixados do NCAR/UCAR, calcula a média
+        diária e mensal e retorna a média mensal pronta para plotar
+
+        date = YEARMONTH (ex: 201411)
+
+    '''
+    nfiles = glob.glob(DATA_DIR + 'cdas1.' + date + '*')
+    nfiles.sort()
+
+    matriz_u, matriz_v = np.zeros([len(nfiles),98,97]), np.zeros([len(nfiles),98,97])
+
+    cont = 0        # contador para o dia
+
+    for f in nfiles: # loop pelos arquivos do mes escolhido
+        ncdata = xr.open_dataset(f)
+
+        # extrair componentes do vento
+        u = ncdata['U_GRD_L103'].values
+        v = ncdata['V_GRD_L103'].values
+
+        # tomar a media diaria
+        umean = u.mean(axis=0)
+        vmean = v.mean(axis=0)
+
+        # armazenar a media diária no dia correspondete da matriz vazia
+        matriz_u[cont,:,:] = umean[:,:]
+        matriz_v[cont,:,:] = vmean[:,:]
+
+        cont += 1
+
+    # retorna a media mensal
+    return matriz_u.mean(axis=0), matriz_v.mean(axis=0)
