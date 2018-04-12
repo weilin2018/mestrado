@@ -3,6 +3,14 @@
 '''
 Calcular produtos mensais do CFSv2 para Novembor, Dezembro, Janeiro, Fevereiro e
 Março, do verão de 2015.
+
+Este código:
+
+	. lê os arquivos do diretório de dados para o verão
+	. calcula a média mensal
+	. plota  os valores para os meses NDJVM
+	. salve um arquivo .pickle com essas médias
+
 '''
 
 import glob
@@ -70,8 +78,10 @@ dctTitles = {
     'mar': 'March/2015'
 }
 
-fig = plt.figure(figsize=(16,8))
+# dicionario para armazenar os dados
+saveData = {}
 
+fig = plt.figure(figsize=(16,8))
 
 for mes,loc,date in zip(meses,locs,dates):
 
@@ -81,8 +91,8 @@ for mes,loc,date in zip(meses,locs,dates):
     # calcular velocidade
     spd = np.sqrt(wu**2 + wv**2)
 
-    # wu = wu
-    # wv = wv
+    data = { 'wu': wu, 'wv': wv }  	# organizando dados para armazenamento
+    saveData[mes] = data   			# dicionario para salvar os dados em pickle
 
     # realizar os plots
     ax = plt.subplot2grid(shape=(2,6), loc=loc, colspan=2)
@@ -102,3 +112,9 @@ for mes,loc,date in zip(meses,locs,dates):
     cb.ax.tick_params(labelsize=8)
 
 plt.show()
+
+
+# salvar os dados em um pickle finalmente
+fname = BASE_DIR.replace('github/', '/ventopcse/data/pickles/summer2015.pickle')
+
+pickle.dump(saveData, open(fname,'w'))

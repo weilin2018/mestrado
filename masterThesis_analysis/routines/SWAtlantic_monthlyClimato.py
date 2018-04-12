@@ -1,18 +1,3 @@
-#!/usr/bin/env python2
-#-*-coding:utf-8-*-
-'''
-Calcular produtos mensais do CFSR para Novembor, Dezembro, Janeiro, Fevereiro e
-Março, de 1992 a 2011
-
-Este código:
-
-	. lê os arquivos do diretório de dados para o verão
-	. calcula a média mensal
-	. plota  os valores para os meses NDJVM
-	. salve um arquivo .pickle com essas médias
-
-'''
-
 import glob
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,6 +8,8 @@ import os
 import pickle
 from scipy.interpolate import griddata
 from mpl_toolkits.basemap import Basemap
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+import os
 
 import matplotlib
 matplotlib.style.use('ggplot')
@@ -32,10 +19,9 @@ sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
 
-
 def make_map(ax):
 
-	m = Basemap(projection='merc', llcrnrlat=-30, urcrnrlat=-20, llcrnrlon=-50, urcrnrlon=-40, resolution='l')
+	m = Basemap(projection='merc', llcrnrlat=-45, urcrnrlat=-15, llcrnrlon=-60, urcrnrlon=-30, resolution='l')
 
 	# m = pickle.load(open("/media/danilo/Danilo/mestrado/ventopcse/rotinas/sudesteBR.pkl", "r"))
 	m.ax = ax
@@ -44,28 +30,26 @@ def make_map(ax):
 	m.drawmapboundary()
 
 	# definir meridianos e paralelos para plotar no mapa
-	meridians=np.arange(-50,-40,3)
-	parallels=np.arange(-30,-20,2)
+	meridians=np.arange(-60,-30,10)
+	parallels=np.arange(-45,-15,5)
 	# desenhar meridianos e paralelos conforme definido acima
 	m.drawparallels(parallels,labels=[True,False,False,True],fontsize=13,fontweight='bold',color='gray')
 	m.drawmeridians(meridians,labels=[True,False,False,True],fontsize=13,fontweight='bold',color='gray')
 
-
 	return m
-
 
 def read_month(date,DATA_DIR):
     '''
         Funcao que le os arquivos .nc baixados do NCAR/UCAR, calcula a média
         diária e mensal e retorna a média mensal pronta para plotar
 
-        date = MONTH (ex: 11)
+        date = YEARMONTH (ex: 201411)
 
     '''
     nfiles = glob.glob(DATA_DIR + '*%s.grb2.nc' % (date))
     nfiles.sort()
 
-    matriz_u, matriz_v = np.zeros([len(nfiles),64,65]), np.zeros([len(nfiles),64,65])
+    matriz_u, matriz_v = np.zeros([len(nfiles),96,97]), np.zeros([len(nfiles),96,97])
 
     cont = 0        # contador para o dia
 
@@ -89,14 +73,27 @@ def read_month(date,DATA_DIR):
     # retorna a media mensal
     return matriz_u.mean(axis=0), matriz_v.mean(axis=0)
 
-
 BASE_DIR = oceano.make_dir()
+DATA_DIR = BASE_DIR.replace('github/', '/ventopcse/data/CFSR/atlanticoSW/')
 
-DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/data/CFSR/1992_2011/')
+# lista com as variaveis disponiveis no diretorio
+# variaveis = ['wnd10m', 'ocnsal', 'prmsl', 'tmpsfc']
+
+# temos dados mensais para todos os meses, mas só é necessário
+# Novembro, Dezembro, Janeiro, Fevereiro e Março:
+years  = np.arange(1993,2011,1) # anos contemplados no diretório
+months = np.arange(04,11,1) # meses q não precisamos dos dados
+prefix = '/media/danilo/Danilo/mestrado//ventopcse/data/CFSR/atlanticoSW/wnd10m/wnd10m.gdas.'
+posfix = '.grb2.nc'
+
+oceano.removeFiles(years,months,prefix,posfix)
+
+# vamos ler qualquer variavel para teste
+nfiles = glob.glob(DATA_DIR + 'wnd10m/*.nc')
+nfiles.sort()
 
 # extrair longitude e latitude
-nfiles = glob.glob(DATA_DIR+"*.nc")[0]
-ncdata = xr.open_dataset(nfiles)
+ncdata = xr.open_dataset(nfiles[0])
 lon    = ncdata['lon'].values - 360
 lat    = ncdata['lat'].values
 
@@ -122,7 +119,7 @@ fig = plt.figure(figsize=(16,8))
 for mes,loc,date in zip(meses,locs,dates):
 
     # ler arquivos referentes ao mes
-    wu,wv = read_month(date,DATA_DIR)
+    wu,wv = read_month(date,DATA_DIR+'wnd10m/')
 
     # calcular velocidade
     spd = np.sqrt(wu**2 + wv**2)
@@ -150,6 +147,6 @@ for mes,loc,date in zip(meses,locs,dates):
 plt.show()
 
 # salvar os dados em um pickle finalmente
-fname = BASE_DIR.replace('github/', '/ventopcse/data/pickles/climatology.pickle')
+fname = BASE_DIR.replace('github/', '/ventopcse/data/pickles/climatology_atlanticSW.pickle')
 
 pickle.dump(saveData, open(fname,'w'))
