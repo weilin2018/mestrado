@@ -400,9 +400,10 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-40,resolution='l'):
 
 	return m
 
-def spdir2uv(spd, ang, deg=False):
+def spdir2uv(spd, ang, deg=False, convention=None):
     """
     Computes u, v components from speed and direction.
+
     Parameters
     ----------
     spd : array_like
@@ -427,3 +428,315 @@ def spdir2uv(spd, ang, deg=False):
     v = spd * np.cos(ang)
 
     return u, v
+
+def rotaciona(u,v,angulo):
+    """Rotacionar as componentes de velocidade (u e v) para paralelo e perpendicular.
+
+    Routine based on the book Data Analysis in Physical Oceanography,
+    page 425.
+
+    Credits
+    -------
+    Created by Paula Birocchi (paula.birocchi@gmail.com)
+
+    Parameters
+    ----------
+    u : array
+        East-West component.
+    v : array
+        North-South component.
+    angulo : float
+        Angle (in radians) to rotate the components, related to the coast. Could
+        be some constant, assuming a rectilinar coast,  or an array with the
+        same size of u and v, in case of a curvilinear coast.
+
+    Returns
+    -------
+    urotated : array
+        Cross-shore velocity (perpendicular component to the coast).
+    vrotated : array
+        Along-shore velocity (parallel component to the coast)
+
+    """
+    urotated = u * np.cos(angulo) - v * np.sin(angulo)
+    vrotated = u * np.sin(angulo) + v*np.cos(angulo)
+
+    return urotated, vrotated
+
+def compass2uv(direction, speed, kind):
+    """Converts speed and direction (of wind) from meteorological convention
+    to oceanographic convention (u,v).
+
+    This function was translated from compass2uv writed to MATLAB,
+    founded in:
+    https://marine.rutgers.edu/~codaradm/metstation/scripts/clean_met_data/compass2uv
+
+    Converting directions to mathematical convention (increasing CCW from x-axis):
+
+    We change angles to progress CCW from north (360-dir), then
+    the angles are rotated by +90degrees ((360-dir)+90).
+
+    After that, this function use pol2cart's function, to convert from polar
+    coordinates to cartesian coordinates.
+
+    Finally, rounding erros are removed from u and v components.
+
+    Credits
+    -------
+    Translated by Danilo Augusto Silva <nilodna@gmail.com>
+
+    Parameters
+    ----------
+    direction : array-like
+        compass direction, in degrees (0 to 360).
+    speed : array-like
+        Vector length, in any units.
+
+    Returns
+    -------
+    u   : array-like
+        east vector component, in the same units as speed.
+    v   : array-like
+        north vector component, in the same units as speed
+    """
+
+    if kind=='meteo2uv':
+        direction = 90 - (direction - 180)
+        u = (-1) * speed * np.cos(direction)
+        v = (-1) * speed * np.sin(direction)
+
+    if kind=='ocean2uv':
+        direction = 90 - direction
+        u = speed * np.cos(direction)
+        v = speed * np.sin(direction)
+
+
+    # direction = (360 - np.asarray(direction)) + 90
+    # direction = angle360(direction) # ensure angles range from 0 to 360
+    #
+    # # converting from polar to cartesian coordinates system
+    # d = (direction*np.pi)/180
+    # u,v = pol2cart(d, speed)
+
+    # # removing any rounding error
+    # roundoff = 1e-14
+    # u = round(u/roundoff)*roundoff
+    # v = round(v/roundoff)*roundoff
+
+    return u,v
+
+def angle360(ang,shift=0):
+    """This function ensures angles (in degrees) range from 0 to 360. An angle shift can be added.
+
+    This function was originally created to MatLab by Mike Whitney (link in the final
+    of this documentation) and translated to python by Danilo Augusto Silva
+    (nilodna@gmail.com).
+
+    If you're using direction's wind and converting then to ocenographic convention,
+    you need to ensure that the directions range between 0 to 360, so the
+    function compass2uv can be used properly.
+
+    Source code: https://marine.rutgers.edu/~codaradm/metstation/scripts/clean_met_data/angle360.m
+
+    Parameters
+    ----------
+    ang : array-like
+        Array containing all angles in degrees.
+    shift : float
+        A shift value to add to the angles.The default is zero.
+
+    Returns
+    -------
+    ang
+        Angles, in degrees, in the interval of 0 to 360.
+
+    """
+    # add an angle shift
+    ang += shift
+
+    ang[ang < 0] = ang[ang < 0]+360
+    ang[ang >= 360] = ang[ang >= 360] - 360
+
+    return ang
+
+def pol2cart(rho, phi):
+    """Convert from polar coordinates to cartesian coordinates.
+
+    Parameters
+    ----------
+    rho : array-like
+        Direction in polar coordinantes.
+    phi : array-like
+        Intensity/speed of vectors.
+
+    Returns
+    -------
+    x,y : array-like
+        Components in cartesian coordinates.
+
+    """
+    x = rho * np.cos(phi)
+    y = rho * np.sin(phi)
+    return x,y
+
+def dirmag2uv(direction,speed,decl_mag,ref_direcao):
+    """ Transforma direcao (referenciada no LESTE - circulo trigonometrico ou Referenciada no NORTE) e magnitude/speed/velocidade em componentes U
+    (leste-oeste) e V (norte-sul) - CHECK! Tudo correto aqui.
+    ATENCAO!!! Se a sua direcao esta referenciada em NORTE, use: u = seno(dir)*speed e v=cos(dir)*speed
+    Se a sua direcao esta referenciada em LESTE (circulo trignometrico) use: u = cosseno(dir)*speed e v=seno(dir)*speed.
+    ref_direcao = 'trignometrico' ou 'norte'. 'trignometrico' se o dir=0 eh no LESTE. 'norte' se dir=0 eh no NORTE.
+    """
+    import math
+    direction = direction + decl_mag
+    # print("direction = " + str(direction))
+    # direction = np.mod(direction, 360)
+    # print("direction = " + str(direction))
+    direction = direction * np.pi / 180
+    if ref_direcao=='trigonometrico':
+        u = np.cos(direction)*speed
+        v = np.sin(direction)*speed
+    if ref_direcao=='norte':
+        u = (-1)*np.sin(direction)*np.abs(speed) # esta assim no BoB.
+        v = (-1)*np.cos(direction)*np.abs(speed)
+    return u,v
+
+# baixar dados do Climate Forecast System Reanalysis
+# def downloadCFSR(start='1979',final='2011',MONTHS=np.arange(1,13,1)):
+
+# convert velocities components to direction and intensity
+def uv2intdir(u,v):
+    """Converting velocities components to intensity and direction.
+
+    Parameters
+    ----------
+    u : numpy.ndarray
+        East vector component [m.s$^{1}$].
+    v : numpy.ndarray
+        North vector component [m.s$^{1}$].
+
+    Returns
+    -------
+    speed : array-like
+        Vector length, in any units.
+    direction : array-like
+        Compass direction, in degrees (0 to 360).
+    """
+
+    from math import atan2
+
+    # create list to store the data calculated
+    ws,wd = [],[]
+
+    for i,j in zip(u,v):
+        intensity = np.sqrt(i**2 + j**2)
+        direction = 270 - (180/np.pi)*atan2(j,i)
+
+        if direction > 360:
+            direction -= 360
+
+        ws.append(intensity)
+        wd.append(direction)
+
+
+    ws = np.asarray(ws)
+    wd = np.asarray(wd)
+
+    return ws,wd
+
+def uv2dirmag(u,v):
+    """ Transforma componente U (leste-oeste) e V (norte-sul) em
+    magnitude e direcao em relacao AO NORTE!!!.
+    CUIDADO: Para o vento, a direcao que esta funcao retorna é pra onde ELE SOPRA e nao da direcao da onde ele vem !!!
+    Exemplo: U = +1 e V = +1 -> gera direcao = 45 graus!!!
+    Paula Birocchi
+    magnitude - corrente resultante
+    direcaorad - direcao em radianos
+    direcaol - direcao em graus em relacao a direcao oeste-leste (0 graus em leste)
+    direcaon - direcao em graus em relacao a direcao norte (0 graus em norte)! --> DIRECAO FINAL!!!!
+    """
+    magnitude     = np.sqrt(u**2+v**2)
+    direcaorad = np.arctan2(v,u)
+    direcaon = direcaorad/np.pi*180 # direcao em relacao a direcao
+    direcaon = np.mod(90 - direcaon,360) #esta linha está na rotina do Bob, e só deve ser usada no caso dos dados do canal de São Sebastião e nos dados do NCEP!.
+    return magnitude, direcaon
+
+#### plotting directional histrogram
+def polarPlot(ws,wd,title):
+    """plot a polar plot with intensity and direction.
+
+    Check the convention you're passing the data,
+    because this may influence in your analyze. Remembering that
+    meteorological convention (show the direction from which the wind is
+    blowing) and oceanographic convention (show the direction towards which wind
+    is blowing).
+
+    Credits
+    -------
+    Function created by Danilo A. Silva <nilodna@gmail.com>,
+    from Coastal Hydrodynamics Lab.
+
+    Parameters
+    ----------
+    ws : numpy.ndarray
+        Wind's intensity.
+    wd : numpy.ndarray
+        Wind's direction.
+    """
+
+    from windrose import WindroseAxes
+
+    ax = WindroseAxes.from_ax()
+    ax.bar(wd,ws, normed=True,opening=0.8)
+    ax.set_legend()
+
+    ax.set_title(title)
+
+    plt.show()
+
+
+
+
+
+
+
+######################################
+
+
+def uv2compass(wve,wvn):
+    """Short summary.
+
+    Parameters
+    ----------
+    wve : array_like
+        eastward component of velocity.
+    wvn : array_like
+        northwart component of velocity.
+
+    Returns
+    -------
+    wmag
+        magnitude of velocity vector in same units as wve and wvn.
+    wdir
+        compass direction of vector (0.deg north)
+
+    """
+
+    from math import atan2
+
+    wmag = np.real(np.sqrt(wve**2 + wvn**2))
+
+    ratio = wvn/wve
+
+    whereLESS = np.where(ratio < 0.)
+    ratio[whereLESS] *= -1.0
+
+    d = 180/np.pi
+
+    wdir = atan2(wvn,wve) * d
+
+    wdir[np.where((wve >= 0.) & (wvn >= 0.))] =  90. - wdir[np.where((wve >= 0.) & (wvn >= 0.))]
+    wdir[np.where((wve >= 0.) & (wvn >= 0.))] = 270. + wdir[np.where((wve <  0.) & (wvn >= 0.))]
+    wdir[np.where((wve >= 0.) & (wvn >= 0.))] =  90. + wdir[np.where((wve >= 0.) & (wvn  < 0.))]
+    wdir[np.where((wve >= 0.) & (wvn >= 0.))] = 270. - wdir[np.where((wve <  0.) & (wvn  < 0.))]
+
+    return wmag,wdir
