@@ -463,6 +463,39 @@ def rotaciona(u,v,angulo):
 
     return urotated, vrotated
 
+def rotateVectors(u,v,angle):
+    """Rotate velocities components to along and cross shore, based
+    on a given angle of rotation.
+
+    This is based on the file available in:
+     <link>
+
+    where we develop the mathematical steps.
+
+    Parameters
+    ----------
+    u : numpy.ndarray
+        Eastward velocity component [m/s].
+    v : numpy.ndarray
+        Northward velocity component [m/s].
+    angle : float
+        Angle of rotation in degrees.
+
+    Returns
+    -------
+    cross,along : numpy.ndarray
+        Cross and Along shore components of velocity.
+
+    """
+    # convert from degrees to radians
+    angle = np.deg2rad(angle)
+
+    # compute cross and along shore components
+    cross = u*np.cos(angle) - v*np.sin(angle)
+    along = u*np.sin(angle) + v*np.cos(angle)
+
+    return cross,along
+
 def compass2uv(direction, speed, kind):
     """Converts speed and direction (of wind) from meteorological convention
     to oceanographic convention (u,v).
@@ -693,12 +726,6 @@ def polarPlot(ws,wd,title):
 
     plt.show()
 
-
-
-
-
-
-
 ######################################
 
 
@@ -740,3 +767,90 @@ def uv2compass(wve,wvn):
     wdir[np.where((wve >= 0.) & (wvn >= 0.))] = 270. - wdir[np.where((wve <  0.) & (wvn  < 0.))]
 
     return wmag,wdir
+
+def save_data(data,directory):
+    """save some variable in a pickle file located in directory pass as argument.
+
+    Parameters
+    ----------
+    data : variable
+        Some variable to store.
+    directory : string
+        Full path + filename.
+
+    """
+
+    import pickle
+
+    pickle.dump(data,open(directory,'w'))
+
+def load_data(directory):
+    """Short summary.
+
+    Parameters
+    ----------
+    directory : string
+        Full path + filename.
+
+    Returns
+    -------
+    data : variable
+        Some saved variable.
+
+    """
+
+    import pickle
+
+    data = pickle.load(open(directory,'r'))
+
+    return data
+
+def stickplot(df,ax):
+    """Create a stickplot.
+
+    With the u and v components given as argument in pd.DataFrame df,
+    this function plot a stickplot, using MPL quiver.
+
+    Parameters
+    ----------
+    df : pandas.Dataframe
+        dataframe containing wu and wv components and datetimeindex.
+    ax : matplotlib.axis
+        axis to stickplot
+
+    Example
+    -------
+    >>>
+    >>>
+
+    Credits
+    -------
+    Stephane Raynaud
+    http://permalink.gmane.org/gmane.comp.python.matplotlib.general/24155
+    """
+
+    # creating the date axis
+    # dates = pd.to_datetime(df.index)
+    # extracting components from dataframe
+    u = df['wu'].values
+    v = df['wv'].values
+
+    # calculating speed
+    spd = np.sqrt(u**2 + v**2)
+    maxSpd = np.nanmax(spd)
+
+    # plotting
+    # fig, ax = plt.subplots()
+
+    qiv = ax.quiver(df.index, [[0]*len(df)], u, v, headlength=0, headwidth=0, headaxislength=0 )
+    key = ax.quiverkey(qiv, 0.25, 0.75, maxSpd, "%0.2f $m^{2}s^{-1}$"%(maxSpd), labelpos='N', coordinates='axes' )
+
+    # plot a horizontal line in y=0.0
+    ax.axhline(y=0.0,xmin=df.index[0],xmax=df.index[-1],linewidth=1.,color='black')
+
+    plt.setp(ax.get_yticklabels(), visible=False)
+    ax.xaxis_date()
+
+    # ax.set_xticks(['2012-01-07', '2012-01-21', '2012-02-04', '2012-02-18', '2012-03-03', '2012-03-17', '2012-03-31'])
+
+    return ax

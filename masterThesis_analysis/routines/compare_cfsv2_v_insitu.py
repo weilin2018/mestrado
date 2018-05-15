@@ -317,7 +317,7 @@ def plot(data1,data2,data1Leg,data2Leg,suptitle='Comparando'):
     ax[0].plot(data2.index, data2.wu.values,label='WU %s'%(data2Leg))
 
     ax[1].plot(data1.index, data1.wv.values,label='WV %s'%(data1Leg))
-    ax[1].plot(data2.index, data2.wu.values,label='WV %s'%(data2Leg))
+    ax[1].plot(data2.index, data2.wv.values,label='WV %s'%(data2Leg))
 
     ax[0].legend(loc='best')
     ax[1].legend(loc='best')
