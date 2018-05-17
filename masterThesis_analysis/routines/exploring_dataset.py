@@ -377,42 +377,42 @@ def stickplot(df,ax):
     return ax
 
 # plot one database only
-def plotTimeSeries(data,period,sub,figdir=None):
+def plotTimeSeries(rotated,data,period,figdir=None):
 
     # interpolate
     data.interpolate(inplace=True)
 
     # plotting data
-    fig, ax = plt.subplots(nrows=2,ncols=1,sharex=True,figsize=(15,10))
+    fig, ax = plt.subplots(nrows=3,ncols=1,sharex=True,figsize=(15,10))
 
-    # first subplots goes with cross shore velocity component
-    data.cross.plot(ax=ax[0])
+    ax[0].plot(rotated.cross,label='CFSv2')
     ax[0].margins(0)
     ax[0].set_ylim(-15,15)
-    ax[0].set_ylabel(r'Cross shore [$m.s^{-1}$]')
-    ax[0].hlines(0.,xmin=data.along.index[0], xmax=data.along.index[-1],alpha=.4)
+    ax[0].set_title('Cross Shore')
 
-    # second axis goes with along shore velocity component
-    data.along.plot(ax=ax[1])
+    ax[0].legend(loc='lower left')
+
+    ax[1].plot(rotated.along,label='CFSv2')
     ax[1].margins(0)
     ax[1].set_ylim(-15,15)
-    ax[1].set_ylabel(r'Along shore [$m.s^{-1}$]')
-    ax[1].hlines(0.,xmin=data.along.index[0], xmax=data.along.index[-1],alpha=.4)
+    ax[1].set_title('Along Shore')
 
-    # presenting date in a better way:
+    ax[1].legend(loc='lower left')
+
+    ax[2] = oceano.stickplot(data,ax[2])
+    ax[2].set_ylim(-0.7,1.)
+    ax[2].set_title('CFSv2')
 
     plt.suptitle('Laje de Santos Location\n CFSv2 dataset %s'%(period.replace('-','/')),fontsize=24)
 
-    # the climax
-    shadeSpaces(ax[0],data.index,sub)
-    shadeSpaces(ax[1],data.index,sub)
-
     # plotar 00H
-    zeroHour = data.iloc[data.index.hour == 0]
+    zeroHour = rotated.iloc[rotated.index.hour == 0]
     ax[0].scatter(zeroHour.index,zeroHour['cross'].values,s=30,c='k',marker='*')
     ax[1].scatter(zeroHour.index,zeroHour['along'].values,s=30,c='k',marker='*')
 
-    # ax[2] = stickplot(data,ax[2])
+    # plot horizontal line at y=0
+    ax[0].axhline(c='k')
+    ax[1].axhline(c='k')
 
     if figdir:
         outFile = figdir + str(period) + '.png'
@@ -422,6 +422,11 @@ def plotTimeSeries(data,period,sub,figdir=None):
         plt.show()
 
     plt.close('all')
+
+
+    # ax[2] = stickplot(data,ax[2])
+
+
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -484,7 +489,8 @@ rotated = pd.DataFrame({'along':along,'cross':cross},index=cfsv2.index)
 # apply a digital filter, with a window of 30 hours, to remove high
 # frequency signals.
 
-filtered_data = rotated.resample('12H').mean()
+filtered_data  = rotated.resample('12H').mean()
+filtered_cfsv2 = cfsv2.resample('12H').mean()
 # ---------------------------- data visualization -------------------------- #
 
 ####### PLOTTING TIMESERIES
@@ -497,19 +503,20 @@ dictData = {}
 
 monthPlot = {}
 
-for year in years:
+for year in years[3:4]:
     for month in months:
         period  = '%s-%s'%(str(year),str(month).zfill(2))
 
         data = filtered_data[period]                   # slicing dataframe
+        cfsv = filtered_cfsv2[period]
 
         # looking for the anomalous episodes
         indexes = findNorthwardsWind(data)[0]
         sub     = findSequence(indexes,above=12)
 
         # if you want to save figure, uncomment next line and comment the next one
-        # plotTimeSeries(data,period,sub,figdir=FIGU_DIR)
-        plotTimeSeries(data,period,sub)
+        # plotTimeSeries(data,cfsv,period,figdir=FIGU_DIR)
+        plotTimeSeries(data,cfsv,period)
 
         # plotTimeSeries(data,period,sub)
         if month == 1:

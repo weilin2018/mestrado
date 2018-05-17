@@ -49,3 +49,28 @@ os.chdir(SAVE_DIR)
 os.system('clear')
 for f in fnames:
     wget.download(f)
+
+##########################################################
+### downloading a specific period
+SAVE_DIR = BASE_DIR.replace('github/','ventopcse/data/synopticChart/201312/')
+
+year = '2013'
+mont = '12'
+days = '19 20 21 22 23 24 25 26'.split(" ")
+hour = '00 06 12 18'.split(" ")
+
+fnames = []
+for m in mont:
+    for d in days:
+        for h in hour:
+            fnames.append(FTP_BASE+'superficie_'+year+m+d+h+'.gif')
+
+fnames = np.asarray(fnames)
+
+# entering the directory to save
+os.chdir(SAVE_DIR)
+
+# download
+os.system('clear')
+for f in fnames:
+    wget.download(f)
