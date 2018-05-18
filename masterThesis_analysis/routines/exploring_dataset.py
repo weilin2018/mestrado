@@ -503,7 +503,7 @@ dictData = {}
 
 monthPlot = {}
 
-for year in years[3:4]:
+for year in years:
     for month in months:
         period  = '%s-%s'%(str(year),str(month).zfill(2))
 
@@ -515,8 +515,8 @@ for year in years[3:4]:
         sub     = findSequence(indexes,above=12)
 
         # if you want to save figure, uncomment next line and comment the next one
-        # plotTimeSeries(data,cfsv,period,figdir=FIGU_DIR)
-        plotTimeSeries(data,cfsv,period)
+        plotTimeSeries(data,cfsv,period,figdir=FIGU_DIR)
+        # plotTimeSeries(data,cfsv,period)
 
         # plotTimeSeries(data,period,sub)
         if month == 1:
@@ -539,22 +539,13 @@ plt.xticks(freq.index, freq.index.strftime('%Y-%m'),rotation=60)
 plt.show()
 
 
+################################
+#           PARTE II           #
+################################
 
-
-
-###############################
 # plotar stickplot dos periodos ja selecionados para confirmar direcao
 
-
-####### PLOTTING STICKPLOT
-# load pickle file
-cfsv2 = oceano.load_data(SAVE_DIR+'cfsv2Data.pickle')
-
-# rotate u and v
-cross,along = oceano.rotateVectors(cfsv2.wu.values,cfsv2.wv.values,40.)
-rotated = pd.DataFrame({'along':along,'cross':cross},index=cfsv2.index)
-
-periods = '20120327_20120404 20121001_20121017 20121117_20121120 20121127_20121205 20130117_20130126 20130304_20130430 20130821_20130829 20130916_20131008 20131224_20140101 20140101_20140406 20140805_20140821 20141013_20141027 20141105_20141115 20141127_20141202 20141206_20150107 20150123_20150129 20150204_20150221 20150307_20150312 20140307_20140312 20150316_20150321 20160101_20160110 20160114_20160125 20160208_20160217 20160417_20160105'.split(" ")
+periods = '20130109_20130122 20130413_20130422 20131221_20131226 20140101_20140228 20160112_20160125 20170326_20170402'.split(" ")
 
 for per in periods:
     p = per.split("_")
