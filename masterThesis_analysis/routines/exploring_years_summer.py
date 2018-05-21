@@ -101,7 +101,7 @@ def extract_timeseries_from_MERRA(nfiles,loc=[6,11]):
     return wu,wv,time
 
 # read files with timeseries in a single point from CFSv2
-def read_cfsv2(nfiles):
+def read_reanalysis(nfiles):
     """Read and extract data from CFSv2 files.
 
     Parameters
@@ -127,7 +127,7 @@ def read_cfsv2(nfiles):
         v     = ncdata['V_GRD_L103'].values
         t     = ncdata['time'].values
 
-        for k in [0,1,2,3]:
+        for k in np.arange(0,t.shape[0]):
             wu.append(np.squeeze(u[k,:,:]))
             wv.append(np.squeeze(v[k,:,:]))
             time.append(np.squeeze(t[k]))
@@ -138,56 +138,28 @@ def read_cfsv2(nfiles):
 
     return wu,wv,time
 
-# plot a stickplot using quiver
-def stickplot(df,ax):
-    """Create a stickplot.
+def read_cfsr( nfiles):
 
-    With the u and v components given as argument in pd.DataFrame df,
-    this function plot a stickplot, using MPL quiver.
+    wu,wv,time = [],[],[]
 
-    Parameters
-    ----------
-    df : pandas.Dataframe
-        dataframe containing wu and wv components and datetimeindex.
-    ax : matplotlib.axis
-        axis to stickplot
+    for f in nfiles:
+        ncdata = xr.open_dataset(f)
+        u = ncdata['U_GRD_L103'].values
+        v = ncdata['V_GRD_L103'].values
+        t = ncdata['time'].values
 
-    Example
-    -------
-    >>>
-    >>>
+        for k in np.arange(0,t.shape[0]):
+            wu.append(np.squeeze(u[k,:,:]))
+            wv.append(np.squeeze(v[k,:,:]))
+            time.append(np.squeeze(t[k]))
 
-    Credits
-    -------
-    Stephane Raynaud
-    http://permalink.gmane.org/gmane.comp.python.matplotlib.general/24155
-    """
+    wu   = np.asarray(np.squeeze(wu))
+    wv   = np.asarray(np.squeeze(wv))
+    time = np.asarray(time)
 
-    # creating the date axis
-    # dates = pd.to_datetime(df.index)
-    # extracting components from dataframe
-    u = df['cross'].values
-    v = df['along'].values
+    return wu,wv,time
 
-    # calculating speed
-    spd = np.sqrt(u**2 + v**2)
-    maxSpd = np.nanmax(spd)
 
-    # plotting
-    # fig, ax = plt.subplots()
-
-    qiv = ax.quiver(df.index, [[0]*len(df)], u, v, headlength=0, headwidth=0, headaxislength=0 )
-    key = ax.quiverkey(qiv, 0.25, 0.75, maxSpd, "%0.2f $m^{2}s^{-1}$"%(maxSpd), labelpos='N', coordinates='axes' )
-
-    # plot a horizontal line in y=0.0
-    ax.axhline(y=0.0,xmin=df.index[0],xmax=df.index[-1],linewidth=1.,color='black')
-
-    plt.setp(ax.get_yticklabels(), visible=False)
-    ax.xaxis_date()
-
-    # ax.set_xticks(['2012-01-07', '2012-01-21', '2012-02-04', '2012-02-18', '2012-03-03', '2012-03-17', '2012-03-31'])
-
-    return ax
 
 # plot two databases
 def statisticalAnaysis(data1,data2,ind):
@@ -324,58 +296,7 @@ def shadeSpaces(ax,index,sub):
     for sequential in sub:
         ax.axvspan(index[sequential][0], index[sequential][-1], facecolor='k',
             alpha=.5)
-
-# stickplot
-def stickplot(df,ax):
-    """Create a stickplot.
-
-    With the u and v components given as argument in pd.DataFrame df,
-    this function plot a stickplot, using MPL quiver.
-
-    Parameters
-    ----------
-    df : pandas.Dataframe
-        dataframe containing wu and wv components and datetimeindex.
-    ax : matplotlib.axis
-        axis to stickplot
-
-    Example
-    -------
-    >>>
-    >>>
-
-    Credits
-    -------
-    Stephane Raynaud
-    http://permalink.gmane.org/gmane.comp.python.matplotlib.general/24155
-    """
-
-    # creating the date axis
-    # dates = pd.to_datetime(df.index)
-    # extracting components from dataframe
-    u = df['cross'].values
-    v = df['along'].values
-
-    # calculating speed
-    spd = np.sqrt(u**2 + v**2)
-    maxSpd = np.nanmax(spd)
-
-    # plotting
-    # fig, ax = plt.subplots()
-
-    qiv = ax.quiver(df.index, [[0]*len(df)], u, v, headlength=0, headwidth=0, headaxislength=0 )
-    key = ax.quiverkey(qiv, 0.25, 0.75, maxSpd, "%0.2f $m^{2}s^{-1}$"%(maxSpd), labelpos='N', coordinates='axes' )
-
-    # plot a horizontal line in y=0.0
-    ax.axhline(y=0.0,xmin=df.index[0],xmax=df.index[-1],linewidth=1.,color='black')
-
-    plt.setp(ax.get_yticklabels(), visible=False)
-    ax.xaxis_date()
-
-    # ax.set_xticks(['2012-01-07', '2012-01-21', '2012-02-04', '2012-02-18', '2012-03-03', '2012-03-17', '2012-03-31'])
-
-    return ax
-
+#
 # plot one database only
 def plotTimeSeries(rotated,data,period,figdir=None):
 
@@ -426,8 +347,6 @@ def plotTimeSeries(rotated,data,period,figdir=None):
 
     # ax[2] = stickplot(data,ax[2])
 
-
-
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -439,27 +358,95 @@ DATA_DIR = BASE_DIR.replace('github/','ventopcse/data/MERRA/data/cut/')
 SAVE_DIR = BASE_DIR + 'masterThesis_analysis/routines/pickles/'
 FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/exploring_datasets/'
 NCEP_DIR = BASE_DIR.replace('github/', 'ventopcse/data/CFSv2/data/')
+CFSR_DIR = BASE_DIR.replace('github/', 'ventopcse/data/CFSR/Laje/')
 
-# ------------------------- reading merra --------------------------------- #
+################################
+#           PARTE I            #
+################################
 
-# try:
-#     # load pickle file
-#     merra = oceano.load_data(SAVE_DIR+'merraData.pickle')
-#
-# except:
-#     # select files, creating a list with all files to be read
-#     nfiles = glob.glob(DATA_DIR+'*.nc')
-#     nfiles.sort()
-#
-#     # load data and save pickle
-#     wu,wv,time = extract_timeseries_from_MERRA(nfiles,loc=[6,11])
-#
-#     # put data into pandas.DataFrame to better visualization
-#     merra = pd.DataFrame({'wu':wu,'wv':wv},index=pd.DatetimeIndex(time))
-#
-#     oceano.save_data(merra,SAVE_DIR+'merraData.pickle')
+# loading files from CFSR and plotting stickplots
+try:
+    # load pickle file
+    cfsr = oceano.load_data(SAVE_DIR+'cfsrData.pickle')
+except:
+    # select files, creating a list with all files to be read
+    nfiles = glob.glob(CFSR_DIR+'*.nc')
+    nfiles.sort()
 
-# ---------------------------- reading cfsv2 ------------------------------- #
+    ### extract timeseries
+    wu,wv,time = read_reanalysis(nfiles)
+
+    # put data into pandas.DataFrame to better visualization
+    cfsr = pd.DataFrame({'wu':wu,'wv':wv},index=pd.DatetimeIndex(time))
+
+    oceano.save_data(cfsr,SAVE_DIR+'cfsrData.pickle')
+
+# ---------------------------- rotate components --------------------------- #
+# rotate u and v to cross and along shore components, using a phi of 40 degrees
+# as used by Dottori and Castro (2009)
+
+cross,along = oceano.rotateVectors(cfsr.wu.values,cfsr.wv.values,40.)
+
+rotated = pd.DataFrame({'along':along,'cross':cross},index=cfsr.index)
+
+# -------------------------- smoothing timeseries -------------------------- #
+# apply a digital filter, with a window of 30 hours, to remove high
+# frequency signals.
+
+# filtered_data  = rotated.resample('12H').mean()
+filtered_cfsr = cfsr.resample('12H').mean()
+
+# ---------------------------- data visualization -------------------------- #
+
+################################
+#           PARTE I            #
+################################
+
+# plotar stickplots de todos os anos (2012 a 2017) do periodo 01-01 a 02-28
+years = list(set(cfsr.index.year))
+years.sort()
+years = years[2:]
+
+def plot_years(years):
+    i = 0               # contador de graficos
+
+    fig,ax = plt.subplots(nrows=len(years),ncols=1,figsize=(15,10))
+
+    for y in years[0:5]:
+        start = str(y)+'-01-01'
+        final = str(y)+'-02-28'
+        cut = filtered_cfsr[start:final]
+
+        ax[i] = oceano.stickplot(cut,ax[i])
+        ax[i].set_ylim(-0.7,1.)
+        ax[i].set_ylabel(y)
+
+        if i != 5:
+            ax[i].get_xaxis().set_ticks([])
+        # else:
+        #     ax[i].get_xaxis().set_ticks(cut.index.day)
+
+        i += 1
+
+    plt.suptitle(u'Período 01/01 a 28/02 - Laje de Santos', fontsize=24)
+    # plt.savefig(FIGU_DIR+'0_JF_20122017.png')
+    plt.show()
+
+
+# 80's
+plot_years(years=years[:5])
+plot_years(years=years[5:10])
+plot_years(years=years[10:15])
+plot_years(years=years[15:20])
+plot_years(years=years[20:25])
+plot_years(years=years[25:])
+
+
+
+################################
+#           PARTE II           #
+################################
+
 
 try:
     # load pickle file
@@ -470,7 +457,7 @@ except:
     nfiles.sort()
 
     ### extract timeseries
-    wu,wv,time = read_cfsv2(nfiles)
+    wu,wv,time = read_reanalysis(nfiles)
 
     # put data into pandas.DataFrame to better visualization
     cfsv2 = pd.DataFrame({'wu':wu,'wv':wv},index=pd.DatetimeIndex(time))
@@ -478,7 +465,7 @@ except:
     oceano.save_data(cfsv2,SAVE_DIR+'cfsv2Data.pickle')
 
 # ---------------------------- rotate components --------------------------- #
-# rotate u and v to cross and along shore components, using a phi of 50 degrees
+# rotate u and v to cross and along shore components, using a phi of 40 degrees
 # as used by Dottori and Castro (2009)
 
 cross,along = oceano.rotateVectors(cfsv2.wu.values,cfsv2.wv.values,40.)
@@ -489,104 +476,13 @@ rotated = pd.DataFrame({'along':along,'cross':cross},index=cfsv2.index)
 # apply a digital filter, with a window of 30 hours, to remove high
 # frequency signals.
 
-filtered_data  = rotated.resample('12H').mean()
+# filtered_data  = rotated.resample('12H').mean()
 filtered_cfsv2 = cfsv2.resample('12H').mean()
+
 # ---------------------------- data visualization -------------------------- #
 
-####### PLOTTING TIMESERIES
-
-# group by month AND year, so we can plot every month of every year separately
-years  = np.arange(2012,2018)
-months = np.arange(1,13)
-
-dictData = {}
-
-monthPlot = {}
-
-for year in years:
-    for month in months:
-        period  = '%s-%s'%(str(year),str(month).zfill(2))
-
-        data = filtered_data[period]                   # slicing dataframe
-        cfsv = filtered_cfsv2[period]
-
-        # looking for the anomalous episodes
-        indexes = findNorthwardsWind(data)[0]
-        sub     = findSequence(indexes,above=12)
-
-        # if you want to save figure, uncomment next line and comment the next one
-        plotTimeSeries(data,cfsv,period,figdir=FIGU_DIR)
-        # plotTimeSeries(data,cfsv,period)
-
-        # plotTimeSeries(data,period,sub)
-        if month == 1:
-            # monthPlot[period+'_cross'] = data.cross
-            monthPlot[period+'_along'] = data.along
-
-        dictData[period] = len(sub)
-
-####### CREATING BAR PLOT
-index = pd.DatetimeIndex(dictData.keys())
-freq = pd.DataFrame({'episodes': dictData.values()}, index=index)
-
-fig, ax = plt.subplots()
-
-for key in freq.index.sort_values():
-    ax.bar(key,freq[key].values,label=key.strftime('%Y-%m'))
-
-plt.bar(freq.index,freq.episodes.values,label=freq.index.strftime('%Y-%m'))
-plt.xticks(freq.index, freq.index.strftime('%Y-%m'),rotation=60)
-plt.show()
-
-
 ################################
-#           PARTE II           #
-################################
-
-# plotar stickplot dos periodos ja selecionados para confirmar direcao
-
-periods = '20130109_20130122 20130413_20130422 20131221_20131226 20140101_20140228 20160112_20160125 20170326_20170402'.split(" ")
-
-for per in periods:
-    p = per.split("_")
-    start = p[0][:4]+'-'+p[0][4:6]+'-'+p[0][6:]
-    end   = p[1][:4]+'-'+p[1][4:6]+'-'+p[1][6:]
-    cut = cfsv2[start:end]
-    cut2 = rotated[start:end]
-
-    if len(cut.index) != 0:
-        # plot data and skill
-        fig, ax = plt.subplots(nrows=3,ncols=1,sharex=True,figsize=(15,10))
-
-        ax[0].plot(cut2.cross,label='CFSv2')
-        ax[0].margins(0)
-        ax[0].set_ylim(-15,15)
-        ax[0].set_title('Cross Shore')
-
-        ax[0].legend(loc='lower left')
-
-        ax[1].plot(cut2.along,label='CFSv2')
-        ax[1].margins(0)
-        ax[1].set_ylim(-15,15)
-        ax[1].set_title('Along Shore')
-
-        ax[1].legend(loc='lower left')
-
-        ax[2] = oceano.stickplot(cut,ax[2])
-        ax[2].set_ylim(-0.7,1.)
-        ax[2].set_title('CFSv2')
-
-        plt.suptitle('CFSv2\n%s' % (per),fontsize=26)
-
-        outFile = FIGU_DIR + str(per) + '.png'
-        outFile = outFile.replace('[','')
-        outFile = outFile.replace(']','')
-        plt.savefig(outFile)
-        plt.close("all")
-
-
-################################
-#           PARTE III          #
+#           PARTE I            #
 ################################
 
 # plotar stickplots de todos os anos (2012 a 2017) do periodo 01-01 a 02-28
@@ -613,5 +509,6 @@ for y in years[1:]:
 
     i += 1
 
-
+plt.suptitle(u'Período 01/01 a 28/02 - Laje de Santos', fontsize=24)
+# plt.savefig(FIGU_DIR+'0_JF_20122017.png')
 plt.show()
