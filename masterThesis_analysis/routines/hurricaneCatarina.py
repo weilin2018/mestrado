@@ -154,34 +154,36 @@ def evolution(lon,lat,u,v,t,ax):
     ax.set_title(str(t))
 
 
-def plot_everything(lon,lat,wu,wv,time):
+def plot_everything(lon,lat,wind,rotated,time):
 
     import matplotlib.gridspec as gridspec
 
     gs = gridspec.GridSpec(2,4)
 
     ax = plt.subplot(gs[0,0])
-    evolution(lon,lat,wu[6,:,:],wv[6,:,:],time[6],ax)
+    evolution(lon,lat,wind['wu'][6,:,:],wind['wv'][6,:,:],time[6],ax)
 
     ax = plt.subplot(gs[0,1])
-    evolution(lon,lat,wu[12,:,:],wv[12,:,:],time[12],ax)
+    evolution(lon,lat,wind['wu'][12,:,:],wind['wv'][12,:,:],time[12],ax)
 
     ax = plt.subplot(gs[0,2])
-    evolution(lon,lat,wu[18,:,:],wv[18,:,:],time[18],ax)
+    evolution(lon,lat,wind['wu'][18,:,:],wind['wv'][18,:,:],time[18],ax)
 
     ax = plt.subplot(gs[0,3])
-    evolution(lon,lat,wu[-1,:,:],wv[-1,:,:],time[-1],ax)
+    evolution(lon,lat,wind['wu'][-1,:,:],wind['wv'][-1,:,:],time[-1],ax)
 
     ax = plt.subplot(gs[1,:])
-    u = wu[:,13,18]
-    v = wv[:,13,18]
 
-    ax.plot(pd.DatetimeIndex(time),u,label='wu')
-    ax.plot(pd.DatetimeIndex(time),v,label='wv')
+    ax.plot(rotated.index,rotated.along.values,label='long shore')
+    ax.plot(rotated.index,rotated.cross.values,label='cross shore')
 
+    # vertical lines
     times = [6,12,18,23]
     for i in times:
         ax.axvline(x=time[i],color='k',alpha=.4)
+
+    # horizontal lines
+    ax.axhline(color='k',alpha=.4)
 
     ax.margins(0)
     plt.legend(loc='best')
@@ -189,48 +191,51 @@ def plot_everything(lon,lat,wu,wv,time):
     plt.suptitle('Hurricane Catarina',fontsize=40)
 
 
-plot_everything(lon,lat,wu,wv,time)
+def visualize_timeseries(rotated):
+
+    # visualizing data
+    fig, ax = plt.subplots(nrows=3,ncols=1,sharex=True,figsize=(15,10))
+
+    ax[0].plot(rotated.cross,label='CFSR')
+    ax[0].margins(0)
+    ax[0].set_ylim(-15,15)
+    ax[0].set_title('Cross Shore')
+
+    ax[0].legend(loc='lower left')
+
+    ax[1].plot(rotated.along,label='CFSR')
+    ax[1].margins(0)
+    ax[1].set_ylim(-15,15)
+    ax[1].set_title('Along Shore')
+
+    ax[1].legend(loc='lower left')
+    ax[1].axhline(color='k',alpha=.5)
+
+    ax[2] = oceano.stickplot(serie,ax[2])
+    ax[2].set_ylim(-0.7,1.)
+    ax[2].set_title('CFSR')
+
+    plt.suptitle('CFSR',fontsize=26)
+
 
 #################################
 #           PART II             #
 #################################
 # extract data
-wu = np.squeeze(ncdata['U_GRD_L103'].data[:,13,18])
-wv = np.squeeze(ncdata['V_GRD_L103'].data[:,13,18])
+u = np.squeeze(ncdata['U_GRD_L103'].data[:,13,18])
+v = np.squeeze(ncdata['V_GRD_L103'].data[:,13,18])
 time = ncdata['time'].data
 
-serie       = pd.DataFrame({'wu':wu,'wv':wv},index=pd.DatetimeIndex(time))
+serie       = pd.DataFrame({'wu':u,'wv':v},index=pd.DatetimeIndex(time))
 cross,along = oceano.rotateVectors(serie.wu.values,serie.wv.values,40.)
 rotated     = pd.DataFrame({'along':along,'cross':cross},index=serie.index)
 
-# visualizing data
-fig, ax = plt.subplots(nrows=3,ncols=1,sharex=True,figsize=(15,10))
 
-ax[0].plot(rotated.cross,label='CFSR')
-ax[0].margins(0)
-ax[0].set_ylim(-15,15)
-ax[0].set_title('Cross Shore')
 
-ax[0].legend(loc='lower left')
+wind = {'wu':wu,'wv':wv}
 
-ax[1].plot(rotated.along,label='CFSR')
-ax[1].margins(0)
-ax[1].set_ylim(-15,15)
-ax[1].set_title('Along Shore')
+plot_everything(lon,lat,wind,rotated,time)
 
-ax[1].legend(loc='lower left')
-ax[1].axhline(color='k',alpha=.5)
 
-ax[2] = oceano.stickplot(serie,ax[2])
-ax[2].set_ylim(-0.7,1.)
-ax[2].set_title('CFSR')
 
-plt.suptitle('CFSR',fontsize=26)
-#
-plt.show()
-
-# outFile = FIGU_DIR + str(per) + '.png'
-# outFile = outFile.replace('[','')
-# outFile = outFile.replace(']','')
-# plt.savefig(outFile)
-# plt.close("all")
+visualize_timeseries(rotated)
