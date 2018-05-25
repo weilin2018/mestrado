@@ -387,7 +387,7 @@ except:
 
 cross,along = oceano.rotateVectors(cfsr.wu.values,cfsr.wv.values,40.)
 
-rotated = pd.DataFrame({'along':along,'cross':cross},index=cfsr.index)
+rotated_cfsr = pd.DataFrame({'along':along,'cross':cross},index=cfsr.index)
 
 # -------------------------- smoothing timeseries -------------------------- #
 # apply a digital filter, with a window of 30 hours, to remove high
@@ -400,6 +400,7 @@ filtered_cfsr = cfsr.resample('12H').mean()
 
 ################################
 #           PARTE I            #
+#   from 1981 to 2011 - CFSR   #
 ################################
 
 # plotar stickplots de todos os anos (2012 a 2017) do periodo 01-01 a 02-28
@@ -429,8 +430,8 @@ def plot_years(years):
         i += 1
 
     plt.suptitle(u'Período 01/01 a 28/02 - Laje de Santos', fontsize=24)
-    # plt.savefig(FIGU_DIR+'0_JF_20122017.png')
-    plt.show()
+    OUTFIGURE = '0_JF_'+str(years[0])+str(years[-1])+'.png'
+    plt.savefig(FIGU_DIR+OUTFIGURE)
 
 
 # 80's
@@ -445,9 +446,8 @@ plot_years(years=years[25:])
 
 ################################
 #           PARTE II           #
+#   from 2012 to 2017 - CFSv2  #
 ################################
-
-
 try:
     # load pickle file
     cfsv2 = oceano.load_data(SAVE_DIR+'cfsv2Data.pickle')
@@ -470,7 +470,7 @@ except:
 
 cross,along = oceano.rotateVectors(cfsv2.wu.values,cfsv2.wv.values,40.)
 
-rotated = pd.DataFrame({'along':along,'cross':cross},index=cfsv2.index)
+rotated_cfsv2 = pd.DataFrame({'along':along,'cross':cross},index=cfsv2.index)
 
 # -------------------------- smoothing timeseries -------------------------- #
 # apply a digital filter, with a window of 30 hours, to remove high
@@ -482,33 +482,48 @@ filtered_cfsv2 = cfsv2.resample('12H').mean()
 # ---------------------------- data visualization -------------------------- #
 
 ################################
-#           PARTE I            #
+#           PARTE III          #
+#     longshore component      #
 ################################
 
 # plotar stickplots de todos os anos (2012 a 2017) do periodo 01-01 a 02-28
-years = list(set(cfsv2.index.year))
+years = list(set(cfsr.index.year))
 years.sort()
+years = years[2:]
 
-i = 0               # contador de graficos
+def plot_years_long(years):
+    i = 0               # contador de graficos
 
-fig,ax = plt.subplots(nrows=len(years)-1,ncols=1,figsize=(15,10))
+    fig,ax = plt.subplots(nrows=len(years),ncols=1,figsize=(15,10))
 
-for y in years[1:]:
-    start = str(y)+('-01-01')
-    final = str(y)+('-02-28')
-    cut = filtered_cfsv2[start:final]
+    for y in years[0:5]:
+        start = str(y)+'-01-01'
+        final = str(y)+'-02-28'
+        cut = rotated_cfsr[start:final]
 
-    ax[i] = oceano.stickplot(cut,ax[i])
-    ax[i].set_ylim(-0.7,1.)
-    ax[i].set_ylabel(y)
+        ax[i].plot(cut.index, cut.along.values)
+        ax[i].axhline(color='k',alpha=.4)
+        ax[i].margins(0)
+        ax[i].set_ylim(-15,15)
+        ax[i].set_ylabel(y)
 
-    if i != 5:
-        ax[i].get_xaxis().set_ticks([])
-    # else:
-    #     ax[i].get_xaxis().set_ticks(cut.index.day)
+        # if i != 5:
+        #     ax[i].get_xaxis().set_ticks([])
+        # else:
+        #     ax[i].get_xaxis().set_ticks(cut.index.day)
 
-    i += 1
+        i += 1
 
-plt.suptitle(u'Período 01/01 a 28/02 - Laje de Santos', fontsize=24)
-# plt.savefig(FIGU_DIR+'0_JF_20122017.png')
-plt.show()
+    title = 'Long shore velocity component at Laje de Santos \n JF from %i to %i' % (years[0], years[-1])
+    plt.suptitle(title, fontsize=24)
+    OUTFIGURE = 'long_JF_'+str(years[0])+str(years[-1])+'.png'
+    # plt.savefig(FIGU_DIR+OUTFIGURE)
+
+
+# 80's
+plot_years_long(years=years[:5])
+plot_years_long(years=years[5:10])
+plot_years_long(years=years[10:15])
+plot_years_long(years=years[15:20])
+plot_years_long(years=years[20:25])
+plot_years_long(years=years[25:])
