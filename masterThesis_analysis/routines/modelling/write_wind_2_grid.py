@@ -251,7 +251,7 @@ if __name__=='__main__':
     t0              = 0
     ano             = 2014
     mes             = 01
-    wind_multiplier = 1. # atualizar ali embaixo na formula!
+    wind_multiplier = 1.6 # atualizar ali embaixo na formula!
     file_name       = 'vento'#+str(ano)+str(mes)
 
     for file_i,nc in enumerate(ncfiles):
