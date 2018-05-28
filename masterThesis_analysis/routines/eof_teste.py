@@ -75,16 +75,7 @@ lon,lat = np.meshgrid(lon,lat)
 
 locs  = [(0,0), (0,2), (0,4)] # vetor com localizacao do subplots
 
-
-##########################################
-nfiles = glob.glob(DATA_DIR+"*.nc")
-ncdata = xr.open_dataset(nfiles[0])
-
-wu = ncdata['U_GRD_L103']
-
-# Read SST anomalies using the xarray module. The file contains November-March
-# averages of SST anomaly in the central and northern Pacific.
-filename = example_data_path('sst_ndjfm_anom.nc')
+wu = ncdata['U_GRD_L103'].values
 
 # Create an EOF solver to do the EOF analysis. Square-root of cosine of
 # latitude weights are applied before the computation of EOFs.
@@ -110,7 +101,7 @@ for loc in locs:
 
     # Plot the leading EOF expressed as correlation in the Pacific domain.
     clevs = np.linspace(-1, 1, 11)
-    m.contourf(x,y,eof1[comp],levels=clevs,cmap=plt.cm.RdBu_r)
+    fill = m.contourf(x,y,eof1[comp],levels=clevs,cmap=plt.cm.RdBu_r)
 
     cb = plt.colorbar(fill, orientation='horizontal')
     cb.set_label('correlation coefficient', fontsize=12)
