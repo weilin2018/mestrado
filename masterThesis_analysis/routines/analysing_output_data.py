@@ -90,7 +90,7 @@ fig, ax = plt.subplots(figsize=(16,8))
 for i in np.arange(0,len(time)-430):
     plt.gca().clear()
 
-    m = oceano.make_map(ax)
+    m = oceano.make_map(ax, ulon=np.nanmax(lon_data))
 
     x,y = m(lon_data,lat_data)
     u,v = wu_data[i,:,:], wv_data[i,:,:]

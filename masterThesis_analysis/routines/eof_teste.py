@@ -75,7 +75,7 @@ lon,lat = np.meshgrid(lon,lat)
 
 locs  = [(0,0), (0,2), (0,4)] # vetor com localizacao do subplots
 
-wu = ncdata['U_GRD_L103'].values
+wu = ncdata['U_GRD_L103']
 
 # Create an EOF solver to do the EOF analysis. Square-root of cosine of
 # latitude weights are applied before the computation of EOFs.
