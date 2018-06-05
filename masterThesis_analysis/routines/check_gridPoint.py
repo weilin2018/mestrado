@@ -42,7 +42,9 @@ import masterThesisPack as oceano
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
 SBB_GRID = BASE_DIR.replace('github/', 'ventopcse/output/')
-CFS_GRID = "/home/danilo/Dropbox/mestrado/data/data2model/JF2014/tuv/"
+CFS_GRID = BASE_DIR.replace('/Danilo/mestrado/github/', '/Dropbox/mestrado/data/data2model/JF2014/tuv/')
+CFS_GRID = CFS_GRID.replace('media','home')
+# CFS_GRID = "/home/danilo/Dropbox/mestrado/data/data2model/JF2014/tuv/"
 
 # load sbb grid
 sbb = xr.open_dataset(glob.glob(SBB_GRID+"*.cdf")[0])
