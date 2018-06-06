@@ -728,7 +728,6 @@ def polarPlot(ws,wd,title):
 
 ######################################
 
-
 def uv2compass(wve,wvn):
     """Short summary.
 
@@ -854,3 +853,37 @@ def stickplot(df,ax):
     # ax.set_xticks(['2012-01-07', '2012-01-21', '2012-02-04', '2012-02-18', '2012-03-03', '2012-03-17', '2012-03-31'])
 
     return ax
+
+###### functions to store data into pickle
+def createPickle(data,namePickle):
+    """Short summary.
+
+    Parameters
+    ----------
+    data : dict
+        dicionary with all data to store into pickle.
+    namePickle : str
+        full path and pickle file name.
+    """
+
+    if not type(data) == dict:
+        print('The argument \'data\' must be a dicionary.')
+    else:
+        pickle.dump(data,open(namePickle,'w'))
+        
+def removeLabelsFromDataset(ncdata):
+    """ Function to remove some labels from xarray.dataset.
+
+    Parameters
+    ----------
+    ncdata : xarray.Dataset
+        Dataset
+    Returns
+    -------
+    nc : xarray.Dataset
+        Dataset with labels removed
+    """
+
+    labels = ['xpos','ypos','time','date','layer_bnds','x','y','h1','h2','depth','ang','FSM','DUM','DVM','lon_bnds','lat_bnds','cbc']
+
+    return ncdata.drop(labels)

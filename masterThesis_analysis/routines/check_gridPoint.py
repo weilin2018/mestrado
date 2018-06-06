@@ -100,13 +100,82 @@ executada.
 
 """
 
-for i in np.arange(0,10):
-    for j in np.arange(0,5):
-        m.scatter(x[i,j]. y[i,j], marker='o', c='k', latlon=True)
-        plt.pause(1)
+from scipy.spatial import cKDTree
 
-for i in np.arange(0,lon_r.shape[0]):
-    for j in np.arange(0,lon_r.shape[1]):
-        m.scatter(lon_r[j,i],lat_r[j,i],c='k',marker='o',latlon=True)
+def find(ilon,ilat,tree):
+    locations = [[ilat,ilon]]
 
-        plt.pause(1)
+    dists,indexes = tree.query(np.asarray(locations),k=1)
+
+    return dists,indexes
+
+
+# testing points
+def test_map(x,y):
+    fig,ax = plt.subplots()
+
+    llat=-40
+    ulat=-10
+    llon=-60
+    ulon=-30
+    resolution='l'
+
+    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
+    m.ax = ax
+    m.drawcoastlines(linewidth=0.2)
+
+    x,y = m(x,y)
+
+    m.scatter(x,y,c='k',marker='o')
+
+# creating a tree with SBB grid
+lo = lon_r.ravel()
+la = lat_r.ravel()
+coords = []
+
+for i,j in zip(la,lo):
+    coords.append([i,j])
+
+coords = np.asarray(coords)
+
+tree = cKDTree(coords)
+
+# loop between latlon of CFSv2 grid
+distances  = []
+indexes = []
+# variable to store each i,j from reanalysis grid
+locs = []
+
+for i in np.arange(0,lon_m.shape[0]+1):
+    for j in np.arange(0,lon_m.shape[1]+1):
+        d,ind = find(i,j,tree)
+
+        # print(ind)
+        locs.append([i,j])
+        distances.append(d)
+        indexes.append(ind[0])
+
+distances = np.squeeze(np.asarray(distances))
+indexe = np.asarray(indexes)
+locate = np.asarray(locs)
+
+# locate minor distance's index
+minorDistance = np.where(distances == distances.min())[0]
+minorIndex = indexe[minorDistance[0]]
+minorLon = locate[0][0]
+minorLat = locate[0][1]
+
+x,y = lon_m[minorLon,minorLat],lat_m[minorLon,minorLat]
+
+test_map(x,y)
+
+
+# remove some point if this point is inside the continent
+def removePoint(array,index):
+    return np.delete(array,index)
+
+distances = removePoint(distances,minorIndex)
+indexe = removePoint(indexe,minorIndex)
+locate = removePoint(locate,minorIndex)
+
+# re run this script from the line 144

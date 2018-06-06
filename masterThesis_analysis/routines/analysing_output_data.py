@@ -65,10 +65,11 @@ def plot_timeserie(index,u,v,ilon=32,ilat=2):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/'
-OUT_FILE = 'exp01.cdf'
+INP_FILE = 'exp03.cdf'
+OUT_FILE = DATA_DIR+INP_FILE.replace('cdf','pickle')
 
 # reading netcdf output file from ECOM
-ncdata = xr.open_dataset(DATA_DIR+OUT_FILE)
+ncdata = xr.open_dataset(DATA_DIR+INP_FILE)
 
 # extracting data from ncdata
 # list of variables we want to extract from output file
@@ -78,33 +79,49 @@ for var in LIST_VAR:
     exec("%s_data = ncdata['%s'].values" % (var,var))
 
 # organizing date - only in case run_data was set with a wrong date
-dt_range = pd.date_range(start='2014-01-01 01:30', end='2014-02-25 01:30', freq='3H')
+dt_range = pd.date_range(start=time[0], end=time[-1], freq='3H')
 
 # lon and lat null data
 lon_data[lon_data == 0.] = np.nan
 lat_data[lat_data == 0.] = np.nan
 
 # plotting data as animation
-fig, ax = plt.subplots(figsize=(16,8))
+# fig, ax = plt.subplots(figsize=(16,8))
+#
+# for i in np.arange(0,len(time)-430):
+#     plt.gca().clear()
+#
+#     m = oceano.make_map(ax, ulon=np.nanmax(lon_data))
+#
+#     x,y = m(lon_data,lat_data)
+#     u,v = wu_data[i,:,:], wv_data[i,:,:]
+#     eta = elev_data[i,:,:]
+#     spd = np.sqrt(u**2 + v**2)
+#     u = u/spd
+#     v = v/spd
+#
+#     c = m.contourf(x,y,spd,extend='max')
+#     q = m.quiver(x[::3,::3],y[::3,::3],u[::3,::3]*2,v[::3,::3]*2,alpha=.7,scale=150,width=0.005,minshaft=2)
+#
+#     m.ax.set_title(str(dt_range[i]))
+#
+#     # cb = plt.colorbar(c,orientation='horizontal',fraction=0.057,pad=.06)
+#     # cb.set_label('Surface Current')
+#
+#     plt.pause(1)
 
-for i in np.arange(0,len(time)-430):
+
+### salt
+salt = ncdata['salt'].values[:,0,:,:]
+
+for i in np.arange(0,len(dt_range)-430):
     plt.gca().clear()
 
     m = oceano.make_map(ax, ulon=np.nanmax(lon_data))
 
-    x,y = m(lon_data,lat_data)
-    u,v = wu_data[i,:,:], wv_data[i,:,:]
-    eta = elev_data[i,:,:]
-    spd = np.sqrt(u**2 + v**2)
-    u = u/spd
-    v = v/spd
+    cb = m.contourf(lon_data,lat_data,salt[-1,:,:],latlon=True)
 
-    c = m.contourf(x,y,spd,extend='max')
-    q = m.quiver(x[::3,::3],y[::3,::3],u[::3,::3]*2,v[::3,::3]*2,alpha=.7,scale=150,width=0.005,minshaft=2)
-
-    m.ax.set_title(str(dt_range[i]))
-
-    # cb = plt.colorbar(c,orientation='horizontal',fraction=0.057,pad=.06)
-    # cb.set_label('Surface Current')
+    plt.colorbar(cb)
+    plt.title(str(dt_range[i]))
 
     plt.pause(1)
