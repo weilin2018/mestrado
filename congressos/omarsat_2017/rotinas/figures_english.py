@@ -103,10 +103,10 @@ def plotar_ventocorrente(fig,ax,item,u,v,spd,curint,location='bigmap.p',save=Fal
         cbaxes = fig.add_axes([0.91, 0.365, 0.01, 0.29])
         cb = plt.colorbar(cs1, orientation='vertical',ticks=ticks_cb,format='%1.1f', cax=cbaxes)
         # plotar a legenda da colorbar
-        cb.set_label('Corrente Média [m.s$^{-1}$]',fontsize=10,labelpad=-1)
+        cb.set_label('Mean Current [m.s$^{-1}$]',fontsize=10,labelpad=-1)
         cb.ax.tick_params(labelsize=10)
 
-    maxcurr = 'Corr. max.: \n %.1fm.s$^{-1}$'%(np.nanmax(spd))
+    maxcurr = 'Max curr: \n %.2fm.s$^{-1}$'%(np.nanmax(spd))
     plt.text(0.9,0.90,maxcurr,ha='center',va='center',transform=m.ax.transAxes,fontsize=10)
 
     q=m.quiver(lon2[skipcurr],lat2[skipcurr],u[skipcurr],v[skipcurr],alpha=.7,scale=30,minshaft=2)
@@ -205,7 +205,7 @@ def criar_figura1(savefig=False):
     print("Plotting tide simulation output ... ")
     # plotar experimento III - Tide
     plotar_ventocorrente(fig,axes[2],item='(c)',u=uTide[:,:],v=vTide[:,:],spd=spdTide[:,:],curint=15,save=False,cbPlot=True)
-    axes[2].title.set_text(u'Cenário 3 - Maré - Enchente de Sizígia')
+    axes[2].title.set_text(u'Experiment III - Flood Spring Tide')
 
     # remove variables
     del uTide, vTide, spdTide
@@ -219,7 +219,7 @@ def criar_figura1(savefig=False):
     print("Plotting NE simulation output ... ")
     # plotar experimento I - w210
     plotar_ventocorrente(fig,axes[0],item='(a)',u=uNE[-1,:,:],v=vNE[-1,:,:],spd=spdNE[-1,:,:],curint=15,save=False,cbPlot=False)
-    axes[0].title.set_text(u'Cenário 1 - Vento de NE [5$ m s^{-1}$]')
+    axes[0].title.set_text(u'Experiment I - Northeasterly Wind [5$ m s^{-1}$]')
 
     # remove variables
     del uNE, vNE, spdNE
@@ -233,7 +233,7 @@ def criar_figura1(savefig=False):
     print("Plotting SW simulation output ... ")
     # plotar experimento II - w50
     plotar_ventocorrente(fig,axes[1],item='(b)',u=uSW[-1,:,:],v=vSW[-1,:,:],spd=spdSW[-1,:,:],curint=15,save=False,cbPlot=False)
-    axes[1].title.set_text(u'Cenário 2 - Vento de SW [5$ m s^{-1}$]')
+    axes[1].title.set_text(u'Experiment II - Southwesterly Wind [5$ m s^{-1}$]')
 
     # remove variables
     del uSW, vSW, spdSW

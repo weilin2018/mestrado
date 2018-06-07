@@ -57,43 +57,31 @@ Instituto Oceanográfico da Universidade de São Paulo (IOUSP)\\ [0.2ex]
 
 \section{Introduction}
 
-Em escala global, grandes reservatórios d'água são utilizados para despejo de materiais,
-sendo que o maior impacto é em regiões de baixa circulação e troca d'água. Grande
-parte das usinas nucleares estão instaladas próximas a estes reservatórios, utilizando
-suas águas no sistema de resfriamento dos reatores nucleares. No Brasil, existem
-duas usinas em funcionamento na Central Nuclear Almirante Álvaro Alberto (CNAAA),
-que captam águas e despejam águas na Baía da Ilha Grande (Figura~\ref{fig:areaestudo}),
-região de importância turística e sócio ambiental.
+In a global scale, water reservoirs are used to dump material from power plants and
+industries, where the biggest impact occur in areas with low circulation and water
+exchange with open ocean. In the context of nuclear power plants, 96$\%$ are installed
+closest to water bodies, using this waters in the cooling system. In Brazil, there is
+two nuclear power plants in operation, located in the Almirante Alvaro Alberto 
+Central Nuclear (AAACN), that captures and discharge water in the Ilha Grande Bay
+(Figure~\ref{fig:areaestudo}), region with great touristic and social ambiental importance.
 
-Assim, compreender o padrão de circulação da região e avaliar o destino de possíveis
-contaminantes radioativos é essencial, no sentido de apoiar os órgãos tomadores de decisão na
-eventualidade de tais cenários.
+Understand the circulation patterns in this region is important to avaliate how the nuclear
+material will disperse supporting the stakeholders, in the case of a nuclear leakage, such
+as occurred in Fukushima, in 2011.
 
-%Usinas nucleares estão instaladas próximas a grandes reservatórios de água,
-%utilizando essas águas para resfriar seus reatores, despejando-as em seguida
-%no mesmo reservatório, com temperatura e concentração de radioativos alteradas.
-%Caso haja algum vazamento no sistema de resfriamento, uma grande quantidade de
-%material radioativo poderá ser lançada no ambiente marinho. Atualmente, no Brasil,
-%existem duas usinas em operação na Central Nuclear Almirante Álvaro Alberto (CNAAA),
-%que captam e despejam águas na Baía da Ilha Grande (Figura~\ref{fig:areaestudo}),
-%região de importância turística e sócio ambiental.
+This study aims to investigate how wind and tide force the dispersion of these radioactive material in the
+estuary system and where they will affect with greater impact.
 
 \vspace{.1in}
 \begin{figure}
 \centering
-\includegraphics[width=0.8\columnwidth]{/home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/imagens_TG/areaestudo2.png}
+\includegraphics[width=0.8\columnwidth]{/home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/fig1.png}
 \vspace{.1in}
-\caption{Área de estudo com região de influência direta da CNAAA destacada e ampliada, apresentando a região de obtenção e despejo de água para resfriamento, bem como a classificação fisiográfica.}
+\caption{The Ilha Grande and Sepetiba Bay domain used for ECOM model runs, showing bathymetry in meters. Several sites that are discussed in the paper are shown.}
 \label{fig:areaestudo}
 \end{figure}
 % \vskip1ex
 \vspace{-.5in}
-
-O objetivo deste trabalho é determinar quão impactante seria um cenário de vazamento
-nuclear da Central Nuclear. Desta forma, foi analisado como as forçantes vento e maré
-influenciam a circulação na região e, então, analisou-se a pluma de dispersão do
-material radioativo em diversos cenários típicos da região de estudo.
-
 % ===================================================================================================================
 \section{Methods}
 
@@ -111,31 +99,50 @@ material radioativo em diversos cenários típicos da região de estudo.
 \centering
 \includegraphics[width=0.69\columnwidth]{/home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/diagramaTGFINAL1.png}
 \vspace{.2in}
-\caption{Fluxograma da metodologia utilizada no trabalho, onde as caixas vermelhas representam os dados de entrada do modelo, as caixas pretas os módulos do sECOM utilizados e as caixas azuis representam os cenários elaborados, onde de 1 a 4 foram realizados para analisar a influência das forçantes individualmente e de 5 a 7 para analisar a pluma de dispersão do material radioativo.}
+\caption{Scheme of the method applied in this work, where the read boxes represent input data, black boxes the modules from
+ECOM and the blue boxes represent the experiments performed in this work.}
 \label{fig:metodologia}
 \end{figure}
 \vskip1ex
-
-% O cenário 3, em vermelho na Fig.~\ref{fig:metodologia}, é o atual estado do trabalho.
-% Em seguida o modelo será validado com dado \textit{in situ} e, então, o módulo \textit{Tracer}
-% será implementado, a fim de determinar a dispersão do material radioativo despejado.
-% \vskip2ex
 
 \vspace{-.7in}
 % ===================================================================================================================
 
 \section{Results and Discussions}
 
-\subsection{Spatial and Temporal Wind Variation}
+\subsection{Wind v. Tide: Surface Circulation}
 
-Nota-se que os ventos de SW (Figura~\ref{fig:cenariosCirc}.b) apresenta correntes
-médias mais intensas quando comparadas ao cenário com ventos de NE
-(Figura~\ref{fig:cenariosCirc}.a), onde a geometria da área estudada
-favorece ventos de SW com uma maior superfície de contato. Este resultado é
-também obtido por [1], onde o transporte gerado por ventos do
-quadrante Sul foram maiores que o transporte por ventos do quadrante Norte.
-Entretando, ao observamos o cenário somente com maré (Figura~\ref{fig:cenariosCirc}.c),
-nota-se que esta forçante gera correntes 2 vezes mais intensas a leste do domínio.
+Was observed an intense eastward current in central channel in the Experiment I, reaching velocities closest
+to 0.25 $m.s^{-1}$, while in the Experiment II such current reach a maximum of 0.23 $m.s^{-1}$, with a 
+westward direction. The difference between those two experiments, considering the same wind's intensity,
+may be cause by the open area available for southwesterly wind.
+Finally, in the Experimet III, only with tides from TPXO 7.2, present the highest velocities,
+concentrated in the eastern region of modelled domain, with maximum of 0.6 $m.s^{-1}$ during flood spring tide.
+
+%\begin{itemize}
+%	\item Direção da pluma é controlada pela direção do vento
+%	\item Scenario I: intense eastward current in central channel, reaching velocities of 0.25 m/s
+%	\item Scenario II: such current observed reach a maximum of 0.23 m/s, with a westward direction.
+%	\item Scenario III: we observe the highest intensities in the domain, concentrated in the eastern region,
+%	reaching 0.6 m/s in flood spring tide.
+%	\item Mini Conclusion: western region dominated by wind-driven circulation and eastern region dominated by tidal-driven circulation.
+%\end{itemize}
+
+The results show that
+
+%Talk about scenarios 5 and 6 (tides with typical winds in each experiment), highlightning regions more intense,
+%direction of surface circulation.
+
+%Quote Signori,1980a and 1980b, about intensity and direction of the surface currents registered in his work.
+
+%Nota-se que os ventos de SW (Figura~\ref{fig:cenariosCirc}.b) apresenta correntes
+%médias mais intensas quando comparadas ao cenário com ventos de NE
+%(Figura~\ref{fig:cenariosCirc}.a), onde a geometria da área estudada
+%favorece ventos de SW com uma maior superfície de contato. Este resultado é
+%também obtido por [1], onde o transporte gerado por ventos do
+%quadrante Sul foram maiores que o transporte por ventos do quadrante Norte.
+%Entretando, ao observamos o cenário somente com maré (Figura~\ref{fig:cenariosCirc}.c),
+%nota-se que esta forçante gera correntes 2 vezes mais intensas a leste do domínio.
 
 % \vskip.5ex
 \begin{figure}
@@ -148,13 +155,17 @@ maré enchente de sizígia do período modelado.}
 
 \vspace{-1ex}
 
-Comparando os experimentos 5 e 6, notamos que a maior diferença está na direção
-preferencial de evolução da pluma, que é comandada pela direção dos ventos em cada
-experimento. Entretanto, no experimento 5, os ventos de SW transportam o material
-radioativo para leste do domínio, atingindo regiões com correntes mais intensas devido à
-influência da maré e, desta forma, diluindo de maneira mais eficaz os radionuclídeos, em
-comparação ao experimento 6 que, para o mesmo instante de tempo, possui uma maior
-concentração do material na região oeste do domínio (Figura~\ref{fig:cenariosDispersao}).
+Falar sobre como a direção da corrente é comandada pela direção do vento, apesar das variações de maré cheia e vazante,
+logo a evolução da pluma de material nuclear será comandada pelo vento, enquanto que a dispersão comandada pela corrente
+de maré.
+
+%Comparando os experimentos 5 e 6, notamos que a maior diferença está na direção
+%preferencial de evolução da pluma, que é comandada pela direção dos ventos em cada
+%experimento. Entretanto, no experimento 5, os ventos de SW transportam o material
+%radioativo para leste do domínio, atingindo regiões com correntes mais intensas devido à
+%influência da maré e, desta forma, diluindo de maneira mais eficaz os radionuclídeos, em
+%comparação ao experimento 6 que, para o mesmo instante de tempo, possui uma maior
+% concentração do material na região oeste do domínio (Figura~\ref{fig:cenariosDispersao}).
 
 \vskip1ex
 \begin{figure}
@@ -167,15 +178,16 @@ a concentração total na coluna.}
 
 \vspace{-1ex}
 
-\subsection{Case Study - 21 August, 2016}
+\subsection{Dispersion in a Scenario Under Nearest to Real Conditions}
 
-Quanto ao cenário 7 (Figura~\ref{fig:evolucaopluma}), observou-se que a evolução da pluma ocorre,
-preferencialmente, para leste do domínio, conforme no cenário 5, onde parte dela
-permanece por mais de 30 dias na Baía da Ribeira e outra parte é transportadapara regiões de
-correntes mais intensas, sendo rapidamente diluídas. Baseando-se nos cenários 5,6 e 7,
-estima-se que levaria mais de 60 dias para que grande parte do material fosse diluído na
-região, o que poderia acarretar em sérios problemas para a biota local, onde o material nuclear
-seria bio incorporado nos organismos e no sedimento, passando a fazer parte da cadeia alimentar.
+
+%Quanto ao cenário 7 (Figura~\ref{fig:evolucaopluma}), observou-se que a evolução da pluma ocorre,
+%preferencialmente, para leste do domínio, conforme no cenário 5, onde parte dela
+%permanece por mais de 30 dias na Baía da Ribeira e outra parte é transportadapara regiões de
+%correntes mais intensas, sendo rapidamente diluídas. Baseando-se nos cenários 5,6 e 7,
+%estima-se que levaria mais de 60 dias para que grande parte do material fosse diluído na
+%região, o que poderia acarretar em sérios problemas para a biota local, onde o material nuclear
+%seria bio incorporado nos organismos e no sedimento, passando a fazer parte da cadeia alimentar.
 
 %O tempo de permanência é melhor apresentado através da . Notamos
 %que, de aproximadamente 150 horas a 500 horas, há uma grande concentração de material nuclear
@@ -192,6 +204,8 @@ seria bio incorporado nos organismos e no sedimento, passando a fazer parte da c
 \label{fig:evolucaopluma}
 \end{figure}
 % \vskip2ex
+
+Quote Rubens work, about concentration of radionuclides in surface sediment in Angra dos Reis.
 
 % ===================================================================================================================
 \vspace{-.5in}
