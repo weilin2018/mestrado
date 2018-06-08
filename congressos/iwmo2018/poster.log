@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.9.13)  7 JUN 2018 17:48
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.9.13)  8 JUN 2018 16:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1552,6 +1552,9 @@ LaTeX Warning: Label `ref2' multiply defined.
 
 LaTeX Warning: Label `ref3' multiply defined.
 
+
+LaTeX Warning: Label `fig:cenariosDispersao' multiply defined.
+
 )
 \openout1 = `poster.aux'.
 
@@ -1799,13 +1802,13 @@ latex/figs/logolhico.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/omars
 at_2017/poster/sharelatex/figs/logolhico.png used on input line 49.
 (pdftex.def)             Requested size: 303.28061pt x 303.2953pt.
-LaTeX Font Info:    Calculating math sizes for size <31.1> on input line 227.
+LaTeX Font Info:    Calculating math sizes for size <31.1> on input line 207.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <31.1> on input line 227.
+(Font)              <31.1> on input line 207.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <21.7699> on input line 227.
+(Font)              <21.7699> on input line 207.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <15.55> on input line 227.
+(Font)              <15.55> on input line 207.
 
 </home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/fig1.png, id=18
 , 1171.37625pt x 836.12375pt>
@@ -1814,7 +1817,7 @@ raphic file (type png)
 
 <use /home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/fig1.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/iwmo2
-018/figs/fig1.png used on input line 227.
+018/figs/fig1.png used on input line 207.
 (pdftex.def)             Requested size: 866.65521pt x 618.64534pt.
 
 </home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/diagramaTGFINAL
@@ -1825,7 +1828,7 @@ FINAL1.png Graphic file (type png)
 <use /home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/diagramaTGF
 INAL1.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/iwmo2
-018/figs/diagramaTGFINAL1.png used on input line 227.
+018/figs/diagramaTGFINAL1.png used on input line 207.
 (pdftex.def)             Requested size: 747.48991pt x 609.2041pt.
 
 </home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/figura1.png, id
@@ -1836,7 +1839,7 @@ g Graphic file (type png)
 <use /home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/figura1.png
 >
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/iwmo2
-018/figs/figura1.png used on input line 227.
+018/figs/figura1.png used on input line 207.
 (pdftex.def)             Requested size: 1083.3149pt x 213.15913pt.
 
 </home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/figura2_integra
@@ -1847,7 +1850,7 @@ tegrada.png Graphic file (type png)
 <use /home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/figura2_int
 egrada.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/iwmo2
-018/figs/figura2_integrada.png used on input line 227.
+018/figs/figura2_integrada.png used on input line 207.
 (pdftex.def)             Requested size: 1072.48769pt x 338.8119pt.
 
 </home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/figura3_superfi
@@ -1858,7 +1861,7 @@ perficie.png Graphic file (type png)
 <use /home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/figura3_sup
 erficie.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/iwmo2
-018/figs/figura3_superficie.png used on input line 227.
+018/figs/figura3_superficie.png used on input line 207.
 (pdftex.def)             Requested size: 974.97679pt x 603.23308pt.
 File: /home/tparente/danilo/mestrado/github/congressos/omarsat_2017/poster/shar
 elatex/figs/omarsatLogo.jpg Graphic file (type jpg)
@@ -1866,7 +1869,7 @@ elatex/figs/omarsatLogo.jpg Graphic file (type jpg)
 <use /home/tparente/danilo/mestrado/github/congressos/omarsat_2017/poster/share
 latex/figs/omarsatLogo.jpg>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/omars
-at_2017/poster/sharelatex/figs/omarsatLogo.jpg used on input line 227.
+at_2017/poster/sharelatex/figs/omarsatLogo.jpg used on input line 207.
 (pdftex.def)             Requested size: 303.28061pt x 198.02255pt.
 File: /home/tparente/danilo/mestrado/github/congressos/omarsat_2017/poster/shar
 elatex/figs/logolhico.png Graphic file (type png)
@@ -1874,7 +1877,7 @@ elatex/figs/logolhico.png Graphic file (type png)
 <use /home/tparente/danilo/mestrado/github/congressos/omarsat_2017/poster/share
 latex/figs/logolhico.png>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/omars
-at_2017/poster/sharelatex/figs/logolhico.png used on input line 227.
+at_2017/poster/sharelatex/figs/logolhico.png used on input line 207.
 (pdftex.def)             Requested size: 303.28061pt x 303.2953pt.
 File: /home/tparente/danilo/mestrado/github/congressos/omarsat_2017/poster/shar
 elatex/figs/omarsatLogo.jpg Graphic file (type jpg)
@@ -1882,7 +1885,7 @@ elatex/figs/omarsatLogo.jpg Graphic file (type jpg)
 <use /home/tparente/danilo/mestrado/github/congressos/omarsat_2017/poster/share
 latex/figs/omarsatLogo.jpg>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/omars
-at_2017/poster/sharelatex/figs/omarsatLogo.jpg used on input line 227.
+at_2017/poster/sharelatex/figs/omarsatLogo.jpg used on input line 207.
 (pdftex.def)             Requested size: 336.98074pt x 220.0266pt.
  [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
@@ -1903,24 +1906,24 @@ estrado/github/congressos/iwmo2018/figs/figura3_superficie.png>]
 \tf@snm=\write8
 \openout8 = `poster.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 228.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 228.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 208.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 208.
 
 (./poster.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 228.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 228.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 208.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 208.
 Package rerunfilecheck Info: File `poster.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 228.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 208.
  ) 
 Here is how much of TeX's memory you used:
  23487 strings out of 494963
  458288 string characters out of 6179647
- 619265 words of memory out of 5000000
+ 624385 words of memory out of 5000000
  26093 multiletter control sequences out of 15000+600000
  103948 words of font info for 140 fonts, out of 8000000 for 9000
  38 hyphenation exceptions out of 8191
@@ -1931,7 +1934,7 @@ nts/type1/public/amsfonts/euler/eurm10.pfb></usr/share/texmf/fonts/type1/public
 /lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmss17.pfb></usr/share/te
 xmf/fonts/type1/public/lm/lmssbo10.pfb></usr/share/texmf/fonts/type1/public/lm/
 lmssbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsso17.pfb>
-Output written on poster.pdf (1 page, 1600167 bytes).
+Output written on poster.pdf (1 page, 1600731 bytes).
 PDF statistics:
  78 PDF objects out of 1000 (max. 8388607)
  48 compressed objects within 1 object stream
