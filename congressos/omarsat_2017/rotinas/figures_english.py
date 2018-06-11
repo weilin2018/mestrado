@@ -584,7 +584,8 @@ def criar_figura3(savefig=False):
     cb = plt.colorbar(pc4, ax=ax.ravel().tolist(), ticks=ticks_cb, extend='max') # inserir colorbar ocupado o eixo y completo
     cb.set_label('Concentração de Trítio (x$10^{7}Bq.m^{-3}$)',fontsize=20)
 
-    plt.suptitle(u"Evolução (em superfície) da Pluma de Dispersão de Trítio liberado em 01/08/2016", fontsize=25, y=0.94)
+    plt.suptitle(u"Surface Evoluion of Tritium Released in Aug, 01", fontsize=25, y=0.94)
+    #plt.suptitle(u"Evolução (em superfície) da Pluma de Dispersão de Trítio liberado em 01/08/2016", fontsize=25, y=0.94)
 
     if savefig:
         output = SAVE_DIR + "figura3_superficie.png"
