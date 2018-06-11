@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.9.13)  11 JUN 2018 09:44
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.9.13)  11 JUN 2018 12:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1552,9 +1552,6 @@ LaTeX Warning: Label `ref2' multiply defined.
 
 LaTeX Warning: Label `ref3' multiply defined.
 
-
-LaTeX Warning: Label `ref4' multiply defined.
-
 )
 \openout1 = `poster.aux'.
 
@@ -1823,16 +1820,21 @@ Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/iwmo2
 018/figs/fig1.png used on input line 202.
 (pdftex.def)             Requested size: 866.65521pt x 618.64534pt.
 
-</home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/diagramaTGFINAL
-1.png, id=20, 455.7025pt x 371.3875pt>
-File: /home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/diagramaTG
-FINAL1.png Graphic file (type png)
+</home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/tcc_method.pdf,
+ id=20, 793.96625pt x 614.295pt>
+File: /home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/tcc_method
+.pdf Graphic file (type pdf)
 
-<use /home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/diagramaTGF
-INAL1.png>
+<use /home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/tcc_method.
+pdf>
 Package pdftex.def Info: /home/tparente/danilo/mestrado/github/congressos/iwmo2
-018/figs/diagramaTGFINAL1.png used on input line 202.
-(pdftex.def)             Requested size: 747.48991pt x 609.2041pt.
+018/figs/tcc_method.pdf used on input line 202.
+(pdftex.def)             Requested size: 2166.62979pt x 1676.77489pt.
+
+Overfull \hbox (1083.3149pt too wide) in paragraph at lines 202--202
+ [] 
+ []
+
 
 </home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/figura1.png, id
 =21, 1214.6178pt x 238.9728pt>
@@ -1871,6 +1873,9 @@ LaTeX Font Info:    Try loading font information for TS1+lmss on input line 202
  (/usr/share/texmf/tex/latex/lm/ts1lmss.fd
 File: ts1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
+Overfull \vbox (494.72542pt too high) detected at line 202
+ []
+
 File: /home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/iwmo2018_l
 ogo.png Graphic file (type png)
 
@@ -1901,11 +1906,16 @@ at_2017/poster/sharelatex/figs/omarsatLogo.jpg used on input line 202.
 png> </home/tparente/danilo/mestrado/github/congressos/omarsat_2017/poster/shar
 elatex/figs/logolhico.png> </home/tparente/danilo/mestrado/github/congressos/iw
 mo2018/figs/fig1.png> </home/tparente/danilo/mestrado/github/congressos/iwmo201
-8/figs/diagramaTGFINAL1.png> </home/tparente/danilo/mestrado/github/congressos/
-iwmo2018/figs/figura1.png> </home/tparente/danilo/mestrado/github/congressos/iw
-mo2018/figs/fig2_combined.png> </home/tparente/danilo/mestrado/github/congresso
-s/iwmo2018/figs/figura3_superficie.png> </home/tparente/danilo/mestrado/github/
-congressos/omarsat_2017/poster/sharelatex/figs/omarsatLogo.jpg>]
+8/figs/tcc_method.pdf
+
+pdfTeX warning: pdflatex (file /home/tparente/danilo/mestrado/github/congressos
+/iwmo2018/figs/tcc_method.pdf): PDF inclusion: invalid other resource which is 
+no dict (key 'ProcSets', type <array>); ignored.
+> </home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/figura1.png> 
+</home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/fig2_combined.p
+ng> </home/tparente/danilo/mestrado/github/congressos/iwmo2018/figs/figura3_sup
+erficie.png> </home/tparente/danilo/mestrado/github/congressos/omarsat_2017/pos
+ter/sharelatex/figs/omarsatLogo.jpg>]
 \tf@nav=\write6
 \openout6 = `poster.nav'.
 
@@ -1917,8 +1927,7 @@ congressos/omarsat_2017/poster/sharelatex/figs/omarsatLogo.jpg>]
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 203.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 203.
-
-(./poster.aux)
+ (./poster.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 203.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 203.
 Package rerunfilecheck Info: File `poster.out' has not changed.
@@ -1930,10 +1939,10 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 203.
  ) 
 Here is how much of TeX's memory you used:
- 23549 strings out of 494963
- 460059 string characters out of 6179647
- 628143 words of memory out of 5000000
- 26150 multiletter control sequences out of 15000+600000
+ 23548 strings out of 494963
+ 460023 string characters out of 6179647
+ 626843 words of memory out of 5000000
+ 26149 multiletter control sequences out of 15000+600000
  104335 words of font info for 141 fonts, out of 8000000 for 9000
  38 hyphenation exceptions out of 8191
  53i,18n,92p,615b,848s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1944,10 +1953,10 @@ ler/eufm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/euler
 /fonts/type1/public/lm/lmss17.pfb></usr/share/texmf/fonts/type1/public/lm/lmssb
 o10.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb></usr/share/texmf/
 fonts/type1/public/lm/lmsso17.pfb>
-Output written on poster.pdf (1 page, 4081824 bytes).
+Output written on poster.pdf (1 page, 4113596 bytes).
 PDF statistics:
- 87 PDF objects out of 1000 (max. 8388607)
- 55 compressed objects within 1 object stream
+ 117 PDF objects out of 1000 (max. 8388607)
+ 76 compressed objects within 1 object stream
  11 named destinations out of 1000 (max. 500000)
  89 words of extra memory for PDF output out of 10000 (max. 10000000)
 
