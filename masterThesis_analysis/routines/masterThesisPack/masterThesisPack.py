@@ -14,6 +14,7 @@ import glob
 from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import os
+import pickle
 
 # gerar diretorio base
 def make_dir():
@@ -380,25 +381,25 @@ def removeFiles(years,months,prefix,posfix):
 
 def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-40,resolution='l'):
 
-	m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
+    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
 
-	m.ax = ax
+    m.ax = ax
 
-	m.drawcoastlines(linewidth=0.2)
-	m.drawmapboundary(fill_color='#e5f2ff')
-	m.fillcontinents(color='gray')
+    m.drawcoastlines(linewidth=0.2)
+    m.drawmapboundary(fill_color='#e5f2ff')
+    m.fillcontinents(color='gray')
 
-	m.drawcoastlines(linewidth=.8)
-	m.drawmapboundary()
+    m.drawcoastlines(linewidth=.8)
+    m.drawmapboundary()
 
 	# definir meridianos e paralelos para plotar no mapa
-	meridians=np.arange(llon,ulon,3)
-	parallels=np.arange(llat,ulat,2)
+    meridians=np.arange(llon,ulon,3)
+    parallels=np.arange(llat,ulat,2)
 	# desenhar meridianos e paralelos conforme definido acima
-	m.drawparallels(parallels,labels=[True,False,False,True],fontsize=13,fontweight='bold',color='gray')
-	m.drawmeridians(meridians,labels=[True,False,False,True],fontsize=13,fontweight='bold',color='gray')
+    m.drawparallels(parallels,labels=[True,False,False,True],fontsize=13,fontweight='bold',color='gray')
+    m.drawmeridians(meridians,labels=[True,False,False,True],fontsize=13,fontweight='bold',color='gray')
 
-	return m
+    return m
 
 def spdir2uv(spd, ang, deg=False, convention=None):
     """
@@ -870,7 +871,7 @@ def createPickle(data,namePickle):
         print('The argument \'data\' must be a dicionary.')
     else:
         pickle.dump(data,open(namePickle,'w'))
-        
+
 def removeLabelsFromDataset(ncdata):
     """ Function to remove some labels from xarray.dataset.
 
