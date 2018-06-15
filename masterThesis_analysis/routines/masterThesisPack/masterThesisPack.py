@@ -385,11 +385,11 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-40,resolution='l'):
 
     m.ax = ax
 
-    m.drawcoastlines(linewidth=0.2)
+    m.drawcoastlines(linewidth=0.1)
     m.drawmapboundary(fill_color='#e5f2ff')
-    m.fillcontinents(color='gray')
+    m.fillcontinents(color='#c0c0c0')
 
-    m.drawcoastlines(linewidth=.8)
+    m.drawcoastlines(linewidth=.1)
     m.drawmapboundary()
 
 	# definir meridianos e paralelos para plotar no mapa

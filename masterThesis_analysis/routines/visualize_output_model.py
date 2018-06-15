@@ -157,28 +157,41 @@ def tempMeanField(fname,savefig=None):
 
     tmean = temp.mean(axis=0)
 
-    fig,ax = plt.subplots()
+    fig = plt.figure(figsize=(20,15))
+    ax = fig.add_subplot(111)
+
     m = oceano.make_map(ax, resolution='i')
     csf = m.contourf(lon,lat,tmean,latlon=True,cmap=cmo.cm.thermal)
     cs  = m.contour(lon,lat,tmean,latlon=True,levels=[18.],colors=('k'),linestyles=('--'))
 
-    divider = make_axes_locatable(ax)
-    cax = divider.append_axes("right", size="5%", pad=0.05)
-    plt.colorbar(cfs,cax=cax)
-
     plt.title('Mean Position for Isotherm of 18, \n During 15/Jan to 13/Feb of 2014',fontsize=24)
 
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="5%", pad=0.05)
+    plt.colorbar(csf,cax=cax)
+
+
+
     # minimap
-    axins = zoomed_inset_axes(m.ax,5,loc=4)
+    axins = zoomed_inset_axes(ax, 1.5, loc=4)
+    # axins.plot(np.arange(0,len(time)), temp[:,55,7])
     axins.set_xlim(-10,0)
     axins.set_ylim(3,10)
+
+    plt.xticks(visible=False)
+    plt.yticks(visible=False)
+
+    m2 = oceano.make_map(axins,llat=-24.23,ulat=-22.62,llon=-46.75,ulon=-43.29,resolution='i')
+    m2.contourf(lon,lat,tmean,latlon=True,cmap=cmo.cm.thermal)
 
 
 
     # m2 = oceano.make_minimap()
-    pc = m2.contourf(lon,lat,tmean,latlon=True,cmap=cmo.cm.thermal)
+    # pc = m2.contourf(lon,lat,tmean,latlon=True,cmap=cmo.cm.thermal)
 
     plt.show()
+
+    return lon,lat,time,temp
 
 
 
@@ -237,3 +250,4 @@ fname = glob.glob(DATA_DIR+"*.cdf")[-1]
 #
 # elevationPlot(fname)
 # elevationField(fname,savefig=FIGU_DIR)
+lon,lat,time,temp = tempMeanField(fname)
