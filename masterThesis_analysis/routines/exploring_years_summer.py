@@ -527,3 +527,19 @@ plot_years_long(years=years[10:15])
 plot_years_long(years=years[15:20])
 plot_years_long(years=years[20:25])
 plot_years_long(years=years[25:])
+
+
+################################
+#           PARTE IV           #
+################################
+"""
+    Procurando por períodos típicos de Janeiro e Fevereiro,
+    com passagem de 4 a 5 frentes frias, que serão utilizados
+    como nosso experimento controle.
+
+    - procurar por stickplots de JF
+    - destacar períodos com 2 ou 3 dias com ventos do quadrante sul 
+    - contabilizar os eventos e, o período que tiver 4 ou 5 passagens, deve ser 
+        classificado.
+"""
+
