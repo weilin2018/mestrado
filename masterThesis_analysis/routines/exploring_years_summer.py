@@ -408,7 +408,7 @@ years = list(set(cfsr.index.year))
 years.sort()
 years = years[2:]
 
-def plot_years(years):
+def plot_years(years,savefig=None):
     i = 0               # contador de graficos
 
     fig,ax = plt.subplots(nrows=len(years),ncols=1,figsize=(15,10))
@@ -430,12 +430,16 @@ def plot_years(years):
         i += 1
 
     plt.suptitle(u'Período 01/01 a 28/02 - Laje de Santos', fontsize=24)
-    OUTFIGURE = '0_JF_'+str(years[0])+str(years[-1])+'.png'
-    plt.savefig(FIGU_DIR+OUTFIGURE)
+
+    if not savefig:
+        plt.show()
+    else:
+        OUTFIGURE = '0_JF_'+str(years[0])+str(years[-1])+'.png'
+        plt.savefig(savefig+OUTFIGURE)
 
 
 # 80's
-plot_years(years=years[:5])
+plot_years(years=years[:5],savefig=FIGU_DIR)
 plot_years(years=years[5:10])
 plot_years(years=years[10:15])
 plot_years(years=years[15:20])
@@ -538,8 +542,21 @@ plot_years_long(years=years[25:])
     como nosso experimento controle.
 
     - procurar por stickplots de JF
-    - destacar períodos com 2 ou 3 dias com ventos do quadrante sul 
-    - contabilizar os eventos e, o período que tiver 4 ou 5 passagens, deve ser 
+    - destacar períodos com 2 ou 3 dias com ventos do quadrante sul
+    - contabilizar os eventos e, o período que tiver 4 ou 5 passagens, deve ser
         classificado.
+
+    variable to use: filtered_cfsr
 """
 
+# selecting 2000'
+cutted = rotated_cfsr['2000':'2010']
+# create mask with positive values
+mask = cutted > 0
+
+# plotting data Jan and Feb
+for y in list(set(cutted.index.year)):
+    startDate = str(y)+'-01'
+    finalDate = str(y)+'-02'
+    cutted[mask][startDate:finalDate].plot(subplots=True)
+    plt.show()
