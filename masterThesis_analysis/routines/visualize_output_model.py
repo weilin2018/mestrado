@@ -86,40 +86,77 @@ def elevationField(fname,savefig=None):
 
     if not savefig:
         plt.ion()
+        # creating structure and plots configuration
+        fig,ax = plt.subplots(ncols=1,nrows=1,figsize=(20,15))
 
-        fig = plt.figure(figsize=(20,15))
-        ax = fig.add_subplot(111)
+        # axes for colorbar
         divider = make_axes_locatable(ax)
-        cax = divider.append_axes("bottom", size="5%",pad=0.05)
+        # celev   = divider.append_axes("right", size="5%", pad=0.05)
+        #celev.set_ylim([22,25])
+        # axes for plot
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("bottom", size="20%",pad=0.6)
+        cax.set_xlim([0,240])
+        cax.set_ylim([-0.3,0.3])
 
         for i in np.arange(0,elev.shape[0]):
             ax.clear()
             cax.clear()
+            plt.title(str(time[i]),fontsize=24)
+
             m = oceano.make_map(ax, resolution='i')
             m.drawstates()
             cs = m.contourf(lon,lat,elev[i,:,:],contour_levels,latlon=True,cmap="RdBu_r")
-            cbar = plt.colorbar(cs,orientation='horizontal',cax=cax)
-            cbar.set_label('Elevation [m]')
-            plt.title(str(time[i]),fontsize=24)
+            # cbar = plt.colorbar(cs,orientation='horizontal',cax=cax)
+            # cbar.set_label('Elevation [m]')
+            
+            
+            tmp = elev[:i,55,7]
+            # cax.title('Temporal evolution of bottom temperature in SBC')
+            cax.set_xlim([0,240])
+            cax.set_ylim([-0.3,0.3])
+            cax.plot(tmp,'k')
+            cax.fill_between(np.arange(0,len(tmp)), -1., tmp,color='k',alpha=0.4)
 
-            plt.pause(.5)
+
+            plt.pause(0.5)
     else:
         for i in np.arange(0,elev.shape[0]):
-            fig, ax = plt.subplots()
+            os.system('clear')
+            print("Plotting timestep: %i" %(i))
+            # creating structure and plots configuration
+            fig,ax = plt.subplots(ncols=1,nrows=1,figsize=(20,15))
+
+            # axes for colorbar
             divider = make_axes_locatable(ax)
-            cax = divider.append_axes("right", size="5%", pad=0.05)
-
-            m = oceano.make_map(ax,resolution='i')
-            m.drawstates()
-            cs = m.contourf(lon,lat,elev[i,:,:],contour_levels,latlon=True,cmap="RdBu_r")
-            cbar = plt.colorbar(cs,orientation='horizontal',cax=cax)
-            cbar.set_label('Elevation [m]')
-
-            plt.colorbar(cs,cax=cax)
+            celev   = divider.append_axes("right", size="5%", pad=0.05)
+            celev.set_ylim([-0.3,0.3])
+            # axes for plot
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes("bottom", size="20%",pad=0.6)
+            cax.set_xlim([0,240])
+            cax.set_ylim([-0.3,0.3])
             plt.suptitle(str(time[i]),fontsize=24)
 
+            m = oceano.make_map(ax, resolution='i')
+            m.drawstates()
+            cs = m.contourf(lon,lat,elev[i,:,:],contour_levels,latlon=True,cmap="RdBu_r")
+            cbar = plt.colorbar(cs,orientation='vertical',cax=celev)
+            cbar.set_label('Elevation [m]')
+            
+            
+            tmp = elev[:i,55,7]
+            # cax.title('Temporal evolution of bottom temperature in SBC')
+            cax.set_xlim([0,240])
+            cax.set_ylim([-0.2,0.1])
+            cax.plot(tmp,'k')
+            cax.fill_between(np.arange(0,len(tmp)), -1., tmp,color='k',alpha=0.4)
+
             outname = str(i).zfill(4)+'.png'
-            plt.savefig(savefig+outname)
+            outname = savefig+outname
+            plt.savefig(outname)
+            os.system('convert -trim %s %s' % (outname,outname))
+
             plt.close("all")
 
 def elevationPlot(fname,ilat=55,jlon=7):
@@ -234,7 +271,7 @@ def temperatureField(fname,isotherm=18.,savefig=None):
         cax.set_xlim([0,240])
         cax.set_ylim([22,25])
 
-        for i in np.arange(0,temp.shape[0]-235):
+        for i in np.arange(0,temp.shape[0]):
             ax.clear()
             cax.clear()
             cax.set_xlim([0,240])
@@ -256,21 +293,18 @@ def temperatureField(fname,isotherm=18.,savefig=None):
             plt.pause(0.5) 
     else:
         # save figures
+        os.system('clear')
+        for i in np.arange(0,temp.shape[0]):
+            print('plotting temp for timestep %s\n' % (i))
+            fig,ax = plt.subplots(figsize=(20,15))
 
-        fig = plt.figure(figsize=(20,15))
-        ax = fig.add_subplot(111)
-        divider = make_axes_locatable(ax)
-        cax = divider.append_axes("bottom", size="20%",pad=0.05)
-        cax.set_xlim([0,240])
-        cax.set_ylim([22,25])
-
-        for i in np.arange(0,temp.shape[0]-230):
-            ax.clear()
-            cax.clear()
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes("bottom", size="20%",pad=0.05)
             cax.set_xlim([0,240])
             cax.set_ylim([22,25])
+
             m = oceano.make_map(ax, resolution='i')
-            csf = m.contourf(lon,lat,temp[i,:,:],latlon=True,cmap=cmo.cm.thermal)
+            # csf = m.contourf(lon,lat,temp[i,:,:],latlon=True,cmap=cmo.cm.thermal)
             cs  = m.contour(lon,lat,temp[i,:,:],latlon=True,levels=[18.],colors=('k'),linestyles=('--'))
             # plt.clabel(cs, fmt='%2.1f',colors='k',fontsize=14)
             ts = pd.to_datetime(str(time[i]))
@@ -384,7 +418,13 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevati
 #OUT_FILE = DATA_DIR+INP_FILE.replace('cdf','pickle')
 
 fname = glob.glob(DATA_DIR+"*.cdf")
-#
-# elevationPlot(fname)
-elevationField(fname,savefig=FIGU_DIR)
-# lon,lat,time,temp = tempMeanField(fname)
+
+os.system('clear')
+var = input("type which variable you want to plot: 1 - elevation, 2 - temperature field and 0 - to exit: ")
+
+if var == 1:
+    elevationField(fname,savefig=FIGU_DIR)
+elif var == 2:
+    temperatureField(fname,savefig=FIGU_DIR.replace('elevation', 'temperature'))
+else:
+    exit
