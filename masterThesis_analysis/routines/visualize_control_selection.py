@@ -109,6 +109,8 @@ def plot_windField(fname,debug=True,savefig=None):
 			ts = pd.to_datetime(str(time[i]))
 			plt.suptitle(ts.strftime('%Y.%m.%d %H:%M'))
 
+			m.scatter(lon[15,15],lat[15,15],latlon=True,marker='o',s=100)
+
 			if i > 3:
 				cax.plot(wu[:i,15,15],color='#12BE0C',label='WU')
 				cax.plot(wv[:i,15,15],color='#4768B0',label='WV')
@@ -120,7 +122,7 @@ def plot_windField(fname,debug=True,savefig=None):
 				cax.plot(wv[:i,15,15],color='#4768B0',label='WV')
 
 				cax.legend(loc='upper left')
-				
+
 			plt.pause(0.1)
 
 
