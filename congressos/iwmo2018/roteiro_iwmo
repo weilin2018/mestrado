@@ -1,0 +1,25 @@
+
+About of 96% nuclear power plants, in the world, are installed closest to water bodies,
+using this water in the cooling system. Based on that e remembering the terrible Fukushima's 
+accident, in 2011, the motivation of this study was to better understand how will be the 
+dispersion of the nuclear material released into the ocean in a semi-enclosed basin, like an
+estuary, in hypothetical scenario of natural disaster (Tsunami,earthquake), who will lead
+to a nuclear accident.
+
+
+The stuty area selected to do this work is Angra dos Reis, located in Southeastern Brazil,
+where there is two nuclear reactors in operation and a third under construction. We use
+the Estuary and Coastal Ocean Model (ECOM), forcing the hydrodynamic circulation with
+tide, wind and river discharge. 
+
+We run three scenarios to evaluate the influence of which variable in surface circulation,
+where the Experiment I we use northeassterly winds, in experiment II southwesterly winds and
+the experiment III, only with tides forcing the boundaries.
+
+Also, more 3 experiments are conducted, considering all forcings acting together
+over circulation and with a instantaneous release of nuclear material. In those
+experiments, we activate the Tracer Module, to visualize the dispersion of the material.
+
+As results, we separate in two sections. First, we discuss how the wind and tide influence
+the surface circulation and, as we can see in this figure, we identify that
+during flood spring tide
