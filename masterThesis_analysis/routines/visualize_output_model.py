@@ -110,8 +110,8 @@ def elevationField(fname,savefig=None):
             cs = m.contourf(lon,lat,elev[i,:,:],contour_levels,latlon=True,cmap="RdBu_r")
             # cbar = plt.colorbar(cs,orientation='horizontal',cax=cax)
             # cbar.set_label('Elevation [m]')
-            
-            
+
+
             tmp = elev[:i,55,7]
             # cax.title('Temporal evolution of bottom temperature in SBC')
             cax.set_xlim([0,240])
@@ -144,8 +144,8 @@ def elevationField(fname,savefig=None):
             cs = m.contourf(lon,lat,elev[i,:,:],contour_levels,latlon=True,cmap="RdBu_r")
             cbar = plt.colorbar(cs,orientation='vertical',cax=celev)
             cbar.set_label('Elevation [m]')
-            
-            
+
+
             tmp = elev[:i,55,7]
             # cax.title('Temporal evolution of bottom temperature in SBC')
             cax.set_xlim([0,240])
@@ -191,7 +191,7 @@ def tempMeanField(fname,savefig=None):
     temp = temp[:,55,7]
     csft = m.contourf(lon,lat,tmean,latlon=True,cmap=cmo.cm.thermal)
     cst  = m.contour(lon,lat,tmean,latlon=True,levels=[18.],colors=('k'),linestyles=('--'))
-    
+
 
     # plot isohaline
     lon,lat,time,salt = load_data(fname[2],vars='salt',sigma=0)  # surface
@@ -291,7 +291,7 @@ def temperatureField(fname,isotherm=18.,savefig=None):
             cax.plot(tmp,'k')
             cax.fill_between(np.arange(0,len(tmp)), 0, tmp,color='k',alpha=0.4)
 
-            plt.pause(0.5) 
+            plt.pause(0.5)
     else:
         # save figures
         os.system('clear')
@@ -322,9 +322,66 @@ def temperatureField(fname,isotherm=18.,savefig=None):
             plt.savefig(savefig+outname)
 
 
+def salinityField(fname,isohaline=36.5,savefig=None):
 
-        # plt.clabel(cst,cst.levels,inline=True,fontsize=10,fmt='%2.1f')
-        # plt.clabel(css,css.levels,inline=True,fontsize=10,fmt='%2.1f')
+    # check if data is already loaded
+    if not 'salt' in locals():
+        lon,lat,time,salt = load_data(fname,vars='salt',sigma=0,startTime=112,endTime=352)
+
+    # testing for shape
+    if len(salt.shape) == 4:
+        salt = salt[:,0,:,:] # select first sigma level
+
+    # creating a mask for values greater than 19. and lower than 18.
+    salt_masked = np.ma.masked_less(salt, 18.)
+    salt_masked = np.ma.masked_greater(salt_masked, 19.)
+
+    if not savefig:
+        plt.ion()
+        # animation
+        fig = plt.figure(figsize=(20,15))
+        ax = fig.add_subplot(111)
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("bottom", size="20%",pad=0.05)
+        cax.set_xlim([0,240])
+        # cax.set_ylim([22,25])
+
+        for i in np.arange(0,salt.shape[0]):
+            ax.clear()
+            cax.clear()
+            cax.set_xlim([0,240])
+            # cax.set_ylim([22,25])
+            m = oceano.make_map(ax, resolution='i')
+            #csf = m.contourf(lon,lat,salt_masked[i,:,:],latlon=True,cmap=cmo.cm.haline)
+            cs  = m.contour(lon,lat,salt[i,:,:],latlon=True,levels=[36.5],colors=('k'),linestyles=('--'))
+            # plt.clabel(cs, fmt='%2.1f',colors='k',fontsize=14)
+            ts = pd.to_datetime(str(time[i]))
+            plt.title(ts.strftime('%Y.%m.%d %H:%M'))
+
+            # plt.gca().clear()
+
+            slt = salt[:i,55,7]
+            # cax.title('Temporal evolution of bottom temperature in SBC')
+            cax.plot(slt,'k')
+            cax.fill_between(np.arange(0,len(slt)), 0, slt,color='k',alpha=0.4)
+
+            plt.pause(0.5)
+    else:
+        # save figures
+        os.system('clear')
+        for i in np.arange(0,salt.shape[0]):
+            print('plotting salt for timestep %s\n' % (i))
+            fig,ax = plt.subplots(figsize=(20,15))
+
+            m = oceano.make_map(ax, resolution='i')
+            # csf = m.contourf(lon,lat,salt[i,:,:],latlon=True,cmap=cmo.cm.thermal)
+            cs  = m.contour(lon,lat,salt[i,:,:],latlon=True,levels=[36.5],colors=('k'),linestyles=('--'))
+            # plt.clabel(cs, fmt='%2.1f',colors='k',fontsize=14)
+            ts = pd.to_datetime(str(time[i]))
+            plt.title(ts.strftime('%Y.%m.%d %H:%M'))
+
+            outname = str(i).zfill(4)+'.png'
+            plt.savefig(savefig+outname)
 
 def meanSubplots(fname,savefig=None):
 
@@ -421,11 +478,24 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevati
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 os.system('clear')
-var = input("type which variable you want to plot: 1 - elevation, 2 - temperature field and 0 - to exit: ")
+var = input("type which variable you want to plot: 1 - elevation, 2 - isotherm, 3 - isohaline and 0 - to exit: ")
+
+sav = input('You want to [0] visualize or [1] save figures? ')
 
 if var == 1:
-    elevationField(fname,savefig=FIGU_DIR)
+    if sav == 0:
+        elevationField(fname)
+    else:
+        elevationField(fname,savefig=FIGU_DIR)
 elif var == 2:
-    temperatureField(fname,savefig=FIGU_DIR.replace('elevation', 'temperature'))
+    if sav == 0:
+        temperatureField(fname)
+    else:
+        temperatureField(fname,savefig=FIGU_DIR.replace('elevation', 'temperature'))
+elif var == 3:
+    if sav == 0:
+        salinityField(fname)
+    else:
+        salinityField(fname,savefig=FIGU_DIR.replace('elevation', 'salinity'))
 else:
     exit
