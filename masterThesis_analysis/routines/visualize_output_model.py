@@ -336,6 +336,8 @@ def salinityField(fname,isohaline=36.5,savefig=None):
     salt_masked = np.ma.masked_less(salt, 18.)
     salt_masked = np.ma.masked_greater(salt_masked, 19.)
 
+    contour_levels = np.arange(32,37,5/100.)
+
     if not savefig:
         plt.ion()
         # animation
@@ -353,7 +355,7 @@ def salinityField(fname,isohaline=36.5,savefig=None):
             # cax.set_ylim([22,25])
             m = oceano.make_map(ax, resolution='i')
             #csf = m.contourf(lon,lat,salt_masked[i,:,:],latlon=True,cmap=cmo.cm.haline)
-            cs  = m.contour(lon,lat,salt[i,:,:],latlon=True,levels=[36.5],colors=('k'),linestyles=('--'))
+            cs  = m.contour(lon,lat,salt[i,:,:],contour_levels,latlon=True,levels=[36.5],colors=('k'),linestyles=('--'))
             # plt.clabel(cs, fmt='%2.1f',colors='k',fontsize=14)
             ts = pd.to_datetime(str(time[i]))
             plt.title(ts.strftime('%Y.%m.%d %H:%M'))
@@ -372,13 +374,19 @@ def salinityField(fname,isohaline=36.5,savefig=None):
         for i in np.arange(0,salt.shape[0]):
             print('plotting salt for timestep %s\n' % (i))
             fig,ax = plt.subplots(figsize=(20,15))
+            divider = make_axes_locatable(ax)
+            csalt   = divider.append_axes("right", size="5%", pad=0.05)
+            csalt.set_ylim([33.0,37.0])
 
             m = oceano.make_map(ax, resolution='i')
-            # csf = m.contourf(lon,lat,salt[i,:,:],latlon=True,cmap=cmo.cm.thermal)
-            cs  = m.contour(lon,lat,salt[i,:,:],latlon=True,levels=[36.5],colors=('k'),linestyles=('--'))
+            csf = m.contourf(lon,lat,salt[i,:,:],latlon=True,cmap=cmo.cm.haline)
+            # cs  = m.contour(lon,lat,salt[i,:,:],latlon=True,levels=[36.5],colors=('k'),linestyles=('--'))
             # plt.clabel(cs, fmt='%2.1f',colors='k',fontsize=14)
             ts = pd.to_datetime(str(time[i]))
             plt.title(ts.strftime('%Y.%m.%d %H:%M'))
+
+            cbar = plt.colorbar(csf,orientation='vertical',cax=csalt)
+            cbar.set_label('Surface Salinity')
 
             outname = str(i).zfill(4)+'.png'
             plt.savefig(savefig+outname)
