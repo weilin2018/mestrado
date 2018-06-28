@@ -1,3 +1,4 @@
+#-*-coding;utf-8-*-
 """
 
 """
@@ -379,7 +380,7 @@ def salinityField(fname,isohaline=36.5,savefig=None):
             csalt.set_ylim([33.0,37.0])
 
             m = oceano.make_map(ax, resolution='i')
-            csf = m.contourf(lon,lat,salt[i,:,:],latlon=True,cmap=cmo.cm.haline)
+            csf = m.contourf(lon,lat,salt[i,:,:],contour_levels,latlon=True,cmap=cmo.cm.haline)
             # cs  = m.contour(lon,lat,salt[i,:,:],latlon=True,levels=[36.5],colors=('k'),linestyles=('--'))
             # plt.clabel(cs, fmt='%2.1f',colors='k',fontsize=14)
             ts = pd.to_datetime(str(time[i]))
@@ -390,6 +391,8 @@ def salinityField(fname,isohaline=36.5,savefig=None):
 
             outname = str(i).zfill(4)+'.png'
             plt.savefig(savefig+outname)
+
+            os.system('convert -trim %s %s'%(savefig+outname,savefig+outname))
 
 def meanSubplots(fname,savefig=None):
 
@@ -476,17 +479,19 @@ def meanSubplots(fname,savefig=None):
 BASE_DIR = oceano.make_dir()
 if BASE_DIR.split("/")[2] == 'tparente':
     DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output_modelo/exp03_variables/')
+    fname = glob.glob(DATA_DIR+"*.cdf")
 else:
     DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
+    fname = glob.glob(DATA_DIR+"*.cdf")[-1]
 
 FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevation/'
 
 #OUT_FILE = DATA_DIR+INP_FILE.replace('cdf','pickle')
 
-fname = glob.glob(DATA_DIR+"*.cdf")
+
 
 os.system('clear')
-var = input("type which variable you want to plot: 1 - elevation, 2 - isotherm, 3 - isohaline and 0 - to exit: ")
+var = input("type which variable you want to plot: 1 - elevation, 2 - isotherm, 3 - Salinity Field and 0 - to exit: ")
 
 sav = input('You want to [0] visualize or [1] save figures? ')
 
