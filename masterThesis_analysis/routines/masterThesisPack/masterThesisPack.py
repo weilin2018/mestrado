@@ -340,44 +340,6 @@ def extrair_grades(coarsedFile, refinedFile):
 
     return coarsedGrid, refinedGrid
 
-# remover arquiqvos baixados do NCEP/NCAR
-def removeFiles(years,months,prefix,posfix):
-    '''
-        Remove file downloaded from cfsr/cfsv2.
-
-        Args:
-            years (list): list with years to be removed
-            months (list): list of months to be removed
-            prefix (string): full path + some pattern
-            posfix (string): basically the extension
-
-        Returns:
-            nothing, because this function will remove files
-            from your computed.
-
-            Be carefull ...
-
-
-        Examples:
-
-            >>> years  = np.arange(1993,2011,1)
-            >>> months = np.arange(04,11,1)
-            >>> prefix = '/media/danilo/Danilo/mestrado//ventopcse/data/CFSR/atlanticoSW/wnd10m/wnd10m.gdas.'
-            >>> posfix = '.grb2.nc'
-
-            >>> removeFiles(years,months,prefix,posfix)
-
-    '''
-    dates = []
-
-    for y in years:
-        for m in months:
-            d = prefix + str(y) + str(m) + posfix
-
-            dates.append(d)
-
-    for f in dates:
-t=
 def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-40,resolution='l'):
 
     m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
