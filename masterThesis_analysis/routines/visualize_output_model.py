@@ -99,9 +99,9 @@ def elevationField(fname,savefig=None):
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("bottom", size="20%",pad=0.6)
         cax.set_xlim([0,240])
-        cax.set_ylim([-0.3,0.3])
+        cax.set_ylim([-0.4,0.4])
 
-        for i in np.arange(0,elev.shape[0]):
+        for i in np.arange(0,time.shape[0]):
             ax.clear()
             cax.clear()
             plt.title(str(time[i]),fontsize=24)
@@ -322,7 +322,6 @@ def temperatureField(fname,isotherm=18.,savefig=None):
             outname = str(i).zfill(4)+'.png'
             plt.savefig(savefig+outname)
 
-
 def salinityField(fname,isohaline=36.5,savefig=None):
 
     # check if data is already loaded
@@ -470,6 +469,57 @@ def meanSubplots(fname,savefig=None):
         plt.savefig(savefig+outname)
     else:
         plt.show()
+
+def velocityField(fname,savefig=None):
+
+    # check if data is already loaded
+    if not 'spd' in locals():
+        lon,lat,time,u = load_data(fname,vars='u',startTime=112,endTime=352)
+        lon,lat,time,u = load_data(fname,vars='u',startTime=112,endTime=352)
+
+    contour_levels = np.arange(0.,5.,5./1000)
+
+    if not savefig:
+        plt.ion()
+        # creating structure and plots configuration
+        fig,ax = plt.subplots(ncols=1,nrows=1,figsize=(20,15))
+
+        # axes for colorbar
+        divider = make_axes_locatable(ax)
+        # celev   = divider.append_axes("right", size="5%", pad=0.05)
+        #celev.set_ylim([22,25])
+        # axes for plot
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("bottom", size="20%",pad=0.6)
+        cax.set_xlim([0,240])
+        cax.set_ylim([-0.4,0.4])
+
+        for i in np.arange(0,time.shape[0]):
+            ax.clear()
+            cax.clear()
+            plt.title(str(time[i]),fontsize=24)
+
+            m = oceano.make_map(ax, resolution='i')
+            m.drawstates()
+            cs = m.contourf(lon,lat,spd[i,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
+            cq = m.quiver(lon[::2,::2],lat[::2,::2],u[i,::2,::2],v[i,::2,::2],latlon=True)
+            # cbar = plt.colorbar(cs,orientation='horizontal',cax=cax)
+            # cbar.set_label('Elevation [m]')
+
+
+            tmpu = u[:i,55,7]
+            tmpv = v[:i,55,7]
+
+            # cax.title('Temporal evolution of bottom temperature in SBC')
+            cax.set_xlim([0,240])
+            cax.set_ylim([-0.4,0.4])
+            cax.plot(tmpu,'b')
+            cax.plot(tmpv,'r')
+            # cax.fill_between(np.arange(0,len(tmp)), -1., tmp,color='k',alpha=0.4)
+
+
+            plt.pause(0.1)
+
 
 ##############################################################################
 #                               MAIN CODE                                    #

@@ -377,8 +377,7 @@ def removeFiles(years,months,prefix,posfix):
             dates.append(d)
 
     for f in dates:
-        os.system('rm %s' % (f))
-
+t=
 def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-40,resolution='l'):
 
     m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
