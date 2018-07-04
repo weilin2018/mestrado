@@ -82,7 +82,7 @@ def elevationField(fname,savefig=None):
 
     # check if data is already loaded
     if not 'elev' in locals():
-        lon,lat,time,elev = load_data(fname[-1])
+        lon,lat,time,elev = load_data(fname)
 
     contour_levels = np.arange(-0.3,0.3,0.3/500)
 
@@ -520,6 +520,229 @@ def velocityField(fname,savefig=None):
 
             plt.pause(0.1)
 
+def compareExperiments(fname1,fname2,var='temp',sigma=-1,savefig=None,colorbar_limits=[22,25]):
+    """Routine to plot data field between two experiments.
+
+    Parameters
+    ----------
+    fname1 : string
+        Full path to experiment 1
+    fname2 : string
+        Full path to experiment 2
+    var : string
+        Which variable to plot. Default is Temperature associated to ..
+    sigma : integer
+        Which sigma level to plot. Default is ... -1, associated to the bottom.
+    savefig : string
+        FIGU_DIR with the full path for the directory to save figures. Default
+        is None.
+    colorbar_limits : vector
+        Vector with inferior and superior limit for the colorbar.
+
+    """
+
+    # load exp03
+    lon,lat,time1,temp1 = load_data(fname1,vars=var,sigma=sigma,startTime=112,endTime=352)
+    # load exp04
+    lon,lat,time2,temp2 = load_data(fname2,vars=var,sigma=sigma,startTime=32,endTime=272)
+
+    if not savefig:
+        plt.ion()
+        # animation
+        fig,ax = plt.subplots(figsize=(15,10), nrows=1, ncols=2)
+
+        divider = make_axes_locatable(ax[0])
+        cax1 = divider.append_axes("bottom", size="20%",pad=0.05)
+        cax1.set_xlim([0,240])
+        cax1.set_ylim(colorbar_limits)
+
+        cbar1 = divider.append_axes("right", size="5%",pad=.5)
+        cbar1.set_ylim(colorbar_limits)
+
+        divider = make_axes_locatable(ax[1])
+        cax2 = divider.append_axes("bottom", size="20%",pad=0.05)
+        cax2.set_xlim([0,240])
+        cax2.set_ylim(colorbar_limits)
+        cbar2 = divider.append_axes("right", size="5%",pad=.5)
+        cbar2.set_ylim(colorbar_limits)
+
+        ax[0].set_title('Exp03')
+        ax[1].set_title('Exp04')
+
+        for i in np.arange(0,240-235):
+            ax[0].clear()
+            ax[1].clear()
+            cax1.clear()
+            cax1.set_xlim([0,240])
+            cax1.set_ylim(colorbar_limits)
+            cax2.clear()
+            cax2.set_xlim([0,240])
+            cax2.set_ylim(colorbar_limits)
+
+            # plot first data
+            m = oceano.make_map(ax[0], resolution='i')
+            csf = m.contourf(lon,lat,temp1[i,:,:],latlon=True,cmap=cmo.cm.thermal)
+            cs  = m.contour(lon,lat,temp1[i,:,:],latlon=True,levels=[18.],colors=('k'),linestyles=('--'))
+            # plt.clabel(cs, fmt='%2.1f',colors='k',fontsize=14)
+            plt.colorbar(csf,cax=cax1,orientation='horizontal')
+
+            # plot second data
+            m = oceano.make_map(ax[1], resolution='i')
+            csf = m.contourf(lon,lat,temp2[i,:,:],latlon=True,cmap=cmo.cm.thermal)
+            cs  = m.contour(lon,lat,temp2[i,:,:],latlon=True,levels=[18.],colors=('k'),linestyles=('--'))
+            # plt.clabel(cs, fmt='%2.1f',colors='k',fontsize=14)
+            plt.colorbar(csf,cax=cax2,orientation='horizontal')
+
+            ts = pd.to_datetime(str(time2[i]))
+            plt.suptitle(ts.strftime('%Y.%m.%d %H:%M'),fontsize=24)
+
+            plt.pause(0.5)
+        else:
+            os.system("clear")
+            for i in np.arange(0,240):
+                print('Plotting timestep: %i' % (i))
+                fig,ax = plt.subplots(figsize=(15,10), nrows=1, ncols=2)
+
+                divider = make_axes_locatable(ax[0])
+                cax1 = divider.append_axes("bottom", size="20%",pad=0.05)
+                cax1.set_xlim([0,240])
+                cax1.set_ylim(colorbar_limits)
+
+                cbar1 = divider.append_axes("right", size="5%",pad=.5)
+                cbar1.set_ylim(colorbar_limits)
+
+                divider = make_axes_locatable(ax[1])
+                cax2 = divider.append_axes("bottom", size="20%",pad=0.05)
+                cax2.set_xlim([0,240])
+                cax2.set_ylim(colorbar_limits)
+                cbar2 = divider.append_axes("right", size="5%",pad=.5)
+                cbar2.set_ylim(colorbar_limits)
+
+                ax[0].set_title('Exp03')
+                ax[1].set_title('Exp04')
+
+                # plot first data
+                m = oceano.make_map(ax[0], resolution='i')
+                csf = m.contourf(lon,lat,temp1[i,:,:],latlon=True,cmap=cmo.cm.thermal)
+                cs  = m.contour(lon,lat,temp1[i,:,:],latlon=True,levels=[18.],colors=('k'),linestyles=('--'))
+                # plt.clabel(cs, fmt='%2.1f',colors='k',fontsize=14)
+                plt.colorbar(csf,cax=cbar1,orientation='vertical')
+                tmp1 = temp1[:i,55,7]
+                cax1.plot(tmp1)
+                cax1.fill_between(np.arange(0,len(tmp1)), 0, tmp1,color='k',alpha=0.4)
+
+                # plot second data
+                m = oceano.make_map(ax[1], resolution='i')
+                csf = m.contourf(lon,lat,temp2[i,:,:],latlon=True,cmap=cmo.cm.thermal)
+                cs  = m.contour(lon,lat,temp2[i,:,:],latlon=True,levels=[18.],colors=('k'),linestyles=('--'))
+                # plt.clabel(cs, fmt='%2.1f',colors='k',fontsize=14)
+                plt.colorbar(csf,cax=cbar2,orientation='vertical')
+                tmp2 = temp2[:i,55,7]
+                cax2.plot(tmp2)
+                cax2.fill_between(np.arange(0,len(tmp2)), 0, tmp2,color='k',alpha=0.4)
+
+                ts = pd.to_datetime(str(time2[i]))
+                plt.suptitle(ts.strftime('%Y.%m.%d %H:%M'),fontsize=24)
+
+                outname = str(i).zfill(4)+'.png'
+                plt.savefig(savefig+outname)
+                plt.close("all")
+                os.system('convert -trim %s %s'%(savefig+outname,savefig+outname))
+
+
+def plotVerticalSection(fname,var='temp',sigma=-1,savefig=None):
+    # plotar secao vertical em 3 posicoes do dominio
+
+    # extrair dados
+    ncdata = xr.open_dataset(fname)
+
+	# extract variables
+    lon,lat = ncdata['lon'].values, ncdata['lat'].values
+    lon[lon == 0.] = np.nan
+    lat[lat == 0.] = np.nan
+    time = ncdata['time'].values[startTime:endTime]
+    depth = ncdata['depth'].values
+
+    data = ncdata[vars].values[]
+
+    if sigma==None:
+        data = ncdata[vars].values[startTime:endTime,:,:]
+    else:
+        data = ncdata[vars].values[startTime:endTime,sigma,:,:]
+
+
+
+    # definindo as secoes verticais
+    isul = 19 # cananeia
+    icen = 28 # santos
+    inor = 99 # ubatuba
+
+
+
+
+    # criar estrutura do plot
+    fig,axes = plt.subplots(nrows=2,ncols=2)
+
+
+def create_newDepth(lon,depth,sigma):
+    """Function to create a depth matrix based in the sigma level and
+    the depth of each cell.
+
+    Parameters
+    ----------
+    lon : vector
+        Longitude vector for a section.
+    depth : vector
+        Depth vector for a section.
+    sigma : vector
+        Sigma level vector.
+
+    Returns
+    -------
+    new_depth : vector
+        2D-vector with the new depths.
+
+    Examples
+    --------
+    >> x,prof,sig = create_newDepth(lon[19,:],depth[19,:],sigma)
+
+    """
+    # criando prof referente aos niveis sigma para secao Cananeia (sCan)
+    x    = np.tile(lon,(sigma.shape[0],1))
+    prof = np.tile(depth,(sigma.shape[0],1))
+    s    = np.tile(sigma,(lon.shape[0],1))
+    s    = np.transpose(s)
+    sig  = prof*s
+
+    return x,prof,sig
+
+# liminf e limsup delimitam os pontos de grade onde temos dados (sem nan)
+
+plt.figure(figsize=[16/2.54,19/2.54])
+
+# cananeia
+x,prof,sig = create_newDepth(lon[19,:],depth[19,:],sigma)
+liminf,limsup = 16,83
+
+plt.subplot(3,1,1)
+c=plt.contourf(x[:,liminf:limsup],prof[:,liminf:limsup],conc[:,liminf:limsup],cmap=cmo.cm.thermal)
+plt.gca().invert_yaxis()
+
+# santos
+x,prof,sig = create_newDepth(lon[28,:],depth[28,:],sigma)
+liminf,limsup = 16,79
+
+plt.subplot(3,1,2)
+c=plt.contourf(x[:,liminf:limsup],prof[:,liminf:limsup],conc[:,liminf:limsup],cmap=cmo.cm.thermal)
+plt.gca().invert_yaxis()
+
+# ubatuba
+x,prof,sig = create_newDepth(lon[99,:],depth[99,:],sigma)
+liminf,limsup = 16,68
+
+plt.subplot(3,1,3)
+c=plt.contourf(x[:,liminf:limsup],prof[:,liminf:limsup],conc[:,liminf:limsup],cmap=cmo.cm.thermal)
+plt.gca().invert_yaxis()
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -538,27 +761,54 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevati
 
 #OUT_FILE = DATA_DIR+INP_FILE.replace('cdf','pickle')
 
+#
+#
+# os.system('clear')
+# var = input("type which variable you want to plot: 1 - elevation, 2 - isotherm, 3 - Salinity Field and 0 - to exit: ")
+#
+# sav = input('You want to [0] visualize or [1] save figures? ')
+#
+# if var == 1:
+#     if sav == 0:
+#         elevationField(fname)
+#     else:
+#         elevationField(fname,savefig=FIGU_DIR)
+# elif var == 2:
+#     if sav == 0:
+#         temperatureField(fname)
+#     else:
+#         temperatureField(fname,savefig=FIGU_DIR.replace('elevation', 'temperature'))
+# elif var == 3:
+#     if sav == 0:
+#         salinityField(fname)
+#     else:
+#         salinityField(fname,savefig=FIGU_DIR.replace('elevation', 'salinity'))
+# else:
+#     exit
+#
+#
+#
+#
+# #######################
 
 
-os.system('clear')
-var = input("type which variable you want to plot: 1 - elevation, 2 - isotherm, 3 - Salinity Field and 0 - to exit: ")
 
-sav = input('You want to [0] visualize or [1] save figures? ')
 
-if var == 1:
-    if sav == 0:
-        elevationField(fname)
-    else:
-        elevationField(fname,savefig=FIGU_DIR)
-elif var == 2:
-    if sav == 0:
-        temperatureField(fname)
-    else:
-        temperatureField(fname,savefig=FIGU_DIR.replace('elevation', 'temperature'))
-elif var == 3:
-    if sav == 0:
-        salinityField(fname)
-    else:
-        salinityField(fname,savefig=FIGU_DIR.replace('elevation', 'salinity'))
-else:
-    exit
+
+
+########################
+
+ncdata = xr.open_dataset(fname)
+sigma = ncdata['sigma'].values # 37
+depth = ncdata['depth'].values # 137x110
+lon   = ncdata['lon'].values
+
+lon[lon == 0.] = np.nan
+depth[depth > 200] = np.nan
+
+
+# plot
+plt.figure()
+# z  = np.tile(np.nanmax(sig[-1,:],sig[-1,:].shape))
+cc = plt.contourf(x,prof,sig,colors='k')
+plt.gca().invert_yaxis()
