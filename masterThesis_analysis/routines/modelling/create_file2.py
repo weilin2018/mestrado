@@ -11,7 +11,21 @@
 
     i = 110
     j = 137
-    t = 301 # numero de timesteps do seu arquivo wind.f!!!(ju.py eh o --> t0/6)
+    """
+    t é a quantidade de timesteps do arquivo file.f
+
+    Atenção aqui:
+        . se você estiver para rodar uma simulação HOT START, então:
+            t0 em create_wind_files.py deve conter a quantidade de horas
+            já simuladas no aquecimento e, para calcular t desta rotina,
+            deve-se subtrair essa quantidade de horas e então dividir pela
+            frequência de input dos dados (ex: no caso de vento são 6 horas)
+
+        . se você estiver para rodar uma simulação COLD START, então:
+            t0 = 0
+            t = t0/frequencia dos dados (vento = 6 horas)
+    """
+    t = 253 # numero de timesteps do seu arquivo wind.f!!!
 
     g ="""
     ! original script adapted from test case by Rafaela F. Nascimento (LHiCo-IOUSP june/2015) and Carine G. R. Costa (LHiCo-IOUSP july/2015)
@@ -20,6 +34,7 @@
 
           INTEGER K, KI, KJ, NI, NJ, NT
           dimension I(%d,%d), J(%d,%d), TIME(%d)
+          dimension I2(%d,%d), J2(%d,%d), TIME2(%d)
           dimension U(%d,%d), V(%d,%d), P(%d,%d)
           dimension H(%d,%d)
 
@@ -41,8 +56,8 @@
         1    format (2I5,3F10.3)
 
     !        read heat_syn_cptec2sbb file, time by time
-             read(60,*)TIME(K)
-             read(60,1)((I(KI,KJ),J(KI,KJ),H(KI,KJ),KI=1,NI),KJ=1,NJ)
+             read(60,*)TIME2(K)
+             read(60,2)((I2(KI,KJ),J2(KI,KJ),H(KI,KJ),KI=1,NI),KJ=1,NJ)
         2    format (2I5,1F10.3)
 
     !        do KI=1,NI
@@ -73,6 +88,9 @@
 
     f = open('file.f','w+')
     f.write(g % (i,j,
+                 i,j,
+                 t,
+                 i,j,
                  i,j,
                  t,
                  i,j,

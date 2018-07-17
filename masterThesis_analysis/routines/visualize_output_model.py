@@ -651,7 +651,7 @@ def compareExperiments(fname1,fname2,var='temp',sigma=-1,savefig=None,colorbar_l
                 os.system('convert -trim %s %s'%(savefig+outname,savefig+outname))
 
 ###################### working for the last timestep
-def crossSection(DATA_DIR,savefig=None):
+def crossSection(experiment,DATA_DIR,savefig=None):
     """Main function to plot cross section of temperature.
 
     Parameters
@@ -663,8 +663,9 @@ def crossSection(DATA_DIR,savefig=None):
     """
 
     # liminf e limsup delimitam os pontos de grade onde temos dados (sem nan)
-    fname = glob.glob(DATA_DIR+"*.cdf")
-    fname = fname[-1]
+    # fname = glob.glob(DATA_DIR+"*.cdf")
+    # fname = fname[-1]
+    fname = experiment
 
     ncdata = xr.open_dataset(fname)
 
@@ -841,31 +842,6 @@ def crossSection_temp_animated(lon,lat,depth,sigma,temp,savefig=None):
 
             plt.pause(0.3)
 
-def plotVerticalSection(fname,var='temp',sigma=-1,savefig=None):
-    # plotar secao vertical em 3 posicoes do dominio
-
-    # extrair dados
-    ncdata = xr.open_dataset(fname)
-
-	# extract variables
-    lon,lat = ncdata['lon'].values, ncdata['lat'].values
-    lon[lon == 0.] = np.nan
-    lat[lat == 0.] = np.nan
-    time = ncdata['time'].values[startTime:endTime]
-    depth = ncdata['depth'].values
-
-    # data = ncdata[vars].values[]
-
-    if sigma==None:
-        data = ncdata[vars].values[startTime:endTime,:,:]
-    else:
-        data = ncdata[vars].values[startTime:endTime,sigma,:,:]
-
-    # definindo as secoes verticais
-    isul = 19 # cananeia
-    icen = 28 # santos
-    inor = 99 # ubatuba
-
 def create_newDepth(lon,depth,sigma,ind):
     """Function to create a depth matrix based in the sigma level and
     the depth of each cell.
@@ -911,11 +887,20 @@ if BASE_DIR.split("/")[2] == 'tparente':
     fname = glob.glob(DATA_DIR+"*.cdf")
 else:
     DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
-    fname = glob.glob(DATA_DIR+"*.cdf")[-1]
+    fname = glob.glob(DATA_DIR+"*.cdf")
 
 FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevation/'
 
-crossSection(DATA_DIR,savefig=None)
+
+# select which experiment you want to plot:
+exp = 'exp04'
+SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/'%(exp)
+
+for f in fname:
+    if exp in f:
+        experiment = f
+
+crossSection(experiment,DATA_DIR,savefig=SAVE_FIG)
 
 #OUT_FILE = DATA_DIR+INP_FILE.replace('cdf','pickle')
 ######################
