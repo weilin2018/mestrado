@@ -296,20 +296,20 @@ if __name__=='__main__':
     import glob
 
     #essa primeira parte e de leitura de dados
-    arquivo  = '/home/tparente/Dropbox/mestrado/data/data2model/JF2014/tuv/' #onde esta o dado de vento .nc
+    arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/JF2014/tuv/' #onde esta o dado de vento .nc
     nc    = '*.nc'
-    f_mg  = '/home/tparente/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
+    f_mg  = '/home/danilo/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
                                              # só funcina com esse model grid, mas pra rodar o modelo é sem os pontos em terra depois
 
     ncfiles_wind = glob.glob(arquivo+nc)
     ncfiles_wind.sort()
 
-    arquivo  = '/home/tparente/Dropbox/mestrado/data/data2model/JF2014/hflx/' #onde esta o dado de vento .nc
+    arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/JF2014/hflx/' #onde esta o dado de vento .nc
     ncfiles_hflx = glob.glob(arquivo+nc)
     ncfiles_hflx.sort()
 
     timestep        = 6 #horas (dado original)
-    t0              = 288 # não começa em zero pq estou rodando hot start
+    t0              = 0 # não começa em zero pq estou rodando hot start
     ano             = 2014
     mes             = 01
     wind_multiplier = 1.6 # atualizar ali embaixo na formula!
