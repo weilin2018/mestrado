@@ -1,70 +1,35 @@
-%reset -f
-"""
-performing download from multplies .nc files from ftp:
-
-nlon = 34
-nlat = 17
-ndy  = 36
-
-startY = 1982
-endY   = 2000
-
-ny = endY - startY + 1
-
-nm = 12
-nd = 366
-nt = ny*ndy
-
-for i in range(startY, startY+ny): # for in years
-    for j in range(1,13):          # for in months
-        fname = str(i)+"{0:0>2}".format(j)+'*.nc'
-        os.system('wget ftp://podaac.jpl.nasa.gov/allData/common/sw/eof/eof_data/%s'%(fname))
+#!  /usr/bin/env python2
+#
 
 """
+Compute and plot the leading EOF of sea surface temperature in the
+central Pacific during winter time.
 
-import glob
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
+The spatial pattern of this EOF is the canonical El Nino pattern, and
+the associated time series shows large peaks and troughs for well-known
+El Nino and La Nina events.
+
+This example uses the plain numpy interface.
+"""
+
+from matplotlib.backends.backend_pdf import PdfPages
+# from netCDF4 import Dataset
 import xarray as xr
-import pandas as pd
-import os
-import pickle
-from scipy.interpolate import griddata
+import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
-
+import numpy as np
+import os
+import glob
 from scipy import signal
 import calendar
 from datetime import date, timedelta
+import time
+import pickle
 import math
 import numpy.polynomial.polynomial as poly
 
 from eofs.standard import Eof
 from eofs.examples import example_data_path
-
-import matplotlib
-matplotlib.style.use('ggplot')
-
-import sys
-sys.path.append('masterThesisPack/')
-
-import masterThesisPack as oceano
-
-##############################################################################
-#                          [GEN] FUNCTIONS                                   #
-##############################################################################
-# insert functions here
-def calculateEof(ncdata):
-
-	coslat = np.cos(np.deg2rad(ncdata['lat'].values))
-	wgts   = np.sqrt(coslat)[..., np.newaxis]
-	solver = Eof(ncdata[''])
-
-##############################################################################
-#                               MAIN CODE                                    #
-##############################################################################
-# beginnig of the main code
-
 
 #*** Declare parameters ****************************************************
 nlon = 34
@@ -99,9 +64,7 @@ sst_season=np.empty((37,nlat,nlon))
 sst_detrend[:,:,:] = np.nan
 sst_all[:,:,:,:] = np.nan
 
-
 id = 0
-
 for i in range(startY,startY+ny):
   for j in range(1,13):
     for filename in glob.glob('/home/danilo/Dropbox/mestrado/data/eof_data/'+str(i)+"{0:0>2}".format(j)+'*.nc'):
@@ -112,64 +75,57 @@ for i in range(startY,startY+ny):
        id = id + 1
        ncin.close()
 
-# #*** Detrend **************************************************************
-# x=np.empty((nt))
-# for i in range(0,nt):
-#   x[i] = i
-#
-# for i in range(0,nlat):
-#   for j in range(0,nlon):
-#     ytemp = np.copy(sst_raw[:,i,j])
-#     y = sst_raw[:,i,j]
-#     b = ~np.isnan(y)
-#     if len(b)!=0:
-#         coefs = poly.polyfit(x[b], y[b], 1)
-#         sst_coeffs[0,i,j] = coefs[0]
-#         sst_coeffs[1,i,j] = coefs[1]
-#         ffit = poly.polyval(x[b], coefs)
-#         sst_detrend[b,i,j] = y[b] - ffit
-#     else:
-#         sst_detrend[b,i,j] = np.nan
-#
-# #*** Rearrange data for seasonal removal *******************************************************
-# id1 = 0
-# for i in range(startY,startY+ny):
-#    id2 = id1 + ndy
-#    sst_all[i-startY,0:id2-id1,:,:] = sst_detrend[id1:id2,:,:]
-#    id1 = id2
-#
-#
-# #*** Calculate seasonal cycle *******************************************************
-# sst_season = np.mean(sst_all, axis=0)
-#
-# #*** Remove seasonal cycle *******************************************************
-# for i in range(0,ny):
-#    sst_diff[i,:,:,:] = sst_all[i,:,:,:] - sst_season[:,:,:]
-#
-# #*** Rearrange array for EOF *******************************************************
-# id1 = 0
-# for i in range(startY,startY+ny):
-#    id2 = id1 + ndy
-#    sst_final[id1:id2,:,:] = sst_diff[i-startY,0:id2-id1,:,:]
-#    id1 = id2
+#*** Detrend **************************************************************
+x=np.empty((nt))
+for i in range(0,nt):
+  x[i] = i
 
-sst = np.ma.MaskedArray(sst_raw)
+for i in range(0,nlat):
+  for j in range(0,nlon):
+    ytemp = np.copy(sst_raw[:,i,j])
+    y = sst_raw[:,i,j]
+    b = ~np.isnan(y)
+    coefs = poly.polyfit(x[b], y[b], 1)
+    sst_coeffs[0,i,j] = coefs[0]
+    sst_coeffs[1,i,j] = coefs[1]
+    ffit = poly.polyval(x[b], coefs)
+    sst_detrend[b,i,j] = y[b] - ffit
+
+#*** Rearrange data for seasonal removal *******************************************************
+id1 = 0
+for i in range(startY,startY+ny):
+   id2 = id1 + ndy
+   sst_all[i-startY,0:id2-id1,:,:] = sst_detrend[id1:id2,:,:]
+   id1 = id2
+
+#*** Calculate seasonal cycle *******************************************************
+sst_season = np.mean(sst_all, axis=0)
+
+#*** Remove seasonal cycle *******************************************************
+for i in range(0,ny):
+   sst_diff[i,:,:,:] = sst_all[i,:,:,:] - sst_season[:,:,:]
+
+#*** Rearrange array for EOF *******************************************************
+id1 = 0
+for i in range(startY,startY+ny):
+   id2 = id1 + ndy
+   sst_final[id1:id2,:,:] = sst_diff[i-startY,0:id2-id1,:,:]
+   id1 = id2
 
 #*** Create an EOF solver to do the EOF analysis. Square-root of cosine of **********
 #*** latitude weights are applied before the computation of EOFs.          **********
 coslat = np.cos(np.deg2rad(lats))
 wgts = np.sqrt(coslat)[..., np.newaxis]
-solver = Eof(sst, weights=wgts)
+solver = Eof(sst_final, weights=wgts)
 
 # Retrieve the leading EOF, expressed as the correlation between the leading
 # PC time series and the input SST anomalies at each grid point, and the
 # leading PC time series itself.
 
-eof1 = solver.eofs(neofs=3)
-pc1 = solver.pcs(npcs=3, pcscaling=0)
+eof1 = solver.eofs(neofs=10)
+pc1 = solver.pcs(npcs=10, pcscaling=0)
 varfrac = solver.varianceFraction()
 lambdas = solver.eigenvalues()
-
 
 # Plot the leading EOF expressed as correlation in the Pacific domain.
 

@@ -85,7 +85,20 @@ class HeatFlux_data_input(object):
 
         # changing sign, because Total Downward Heat Flux must to be Total Upward: from the ocean to the atmosphere.
         # So, following the suggestion in www.ccpo.odu.edu/POMWEB/FAQ.txt, we need to multiply these data by (-1).
-        # for more information, check in these website, searching for the Question. "I have heat flux data in W/m2, how to I convert it to WTSURF"
+        # for more information, check in these website, searching for the Question. "I have heat flux data in W/m2, how to I convert it to WTSURF":
+        """
+            Q:
+               I have heat flux data in W/m2, how do I convert it to WTSURF?
+
+            A:
+               The model surface heat flux forcing WTSURF (as well as the short wave
+            radiation SWRAD) are in units of Km/s; so you have to divide the fields by
+            the factor 4.1876E6. Note also that WTSURF is the flux from the ocean upward
+            into the atmosphere, so that WTSURF>0 -> cooling; some atmospheric data sets
+            (e.g., Oberhuber's COADS) give downward fluxes from the atmosphere to the
+            ocean, so you will need to change the sign too.
+
+        """
         self.hflx *= -1
 
 class Wind_data_input(object):
