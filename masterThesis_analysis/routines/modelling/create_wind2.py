@@ -83,6 +83,11 @@ class HeatFlux_data_input(object):
         self.t     = var(t)
         self.xm,self.ym = np.meshgrid(self.x,self.y)
 
+        # changing sign, because Total Downward Heat Flux must to be Total Upward: from the ocean to the atmosphere.
+        # So, following the suggestion in www.ccpo.odu.edu/POMWEB/FAQ.txt, we need to multiply these data by (-1).
+        # for more information, check in these website, searching for the Question. "I have heat flux data in W/m2, how to I convert it to WTSURF"
+        self.hflx *= -1
+
 class Wind_data_input(object):
     # def __init__(self):
     #     self.wnd = Object()
@@ -291,15 +296,15 @@ if __name__=='__main__':
     import glob
 
     #essa primeira parte e de leitura de dados
-    arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/JF2014/tuv/' #onde esta o dado de vento .nc
+    arquivo  = '/home/tparente/Dropbox/mestrado/data/data2model/JF2014/tuv/' #onde esta o dado de vento .nc
     nc    = '*.nc'
-    f_mg  = '/home/danilo/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
+    f_mg  = '/home/tparente/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
                                              # só funcina com esse model grid, mas pra rodar o modelo é sem os pontos em terra depois
 
     ncfiles_wind = glob.glob(arquivo+nc)
     ncfiles_wind.sort()
 
-    arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/JF2014/hflx/' #onde esta o dado de vento .nc
+    arquivo  = '/home/tparente/Dropbox/mestrado/data/data2model/JF2014/hflx/' #onde esta o dado de vento .nc
     ncfiles_hflx = glob.glob(arquivo+nc)
     ncfiles_hflx.sort()
 
