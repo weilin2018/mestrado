@@ -1,6 +1,11 @@
 
 #add some description here
+"""
+Important:
 
+Run this routine in shelfwaves, otherwise you'll have a memory error.
+
+"""
 import glob
 import matplotlib.pyplot as plt
 import numpy as np
@@ -13,7 +18,7 @@ from scipy.interpolate import griddata
 from mpl_toolkits.basemap import Basemap
 
 from eofs.standard import Eof
-from eofs.multivariate.standard import MultivariateEof 
+from eofs.multivariate.standard import MultivariateEof
 
 import matplotlib
 #matplotlib.style.use('ggplot')
