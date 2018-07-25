@@ -28,6 +28,25 @@ import artigoTGpack as oceano
 ##############################################################################
 # insert functions here
 def locate_coord(ilat,ilon,lon,lat):
+    """Find the nearest coordinate point to the [ilon,ilat] in [lon,lat].
+
+    Parameters
+    ----------
+    ilat : float
+        Latitude point.
+    ilon : float
+        Longitude point.
+    lon : np.ndarray
+        Matrix with all longitude coordinates.
+    lat : np.ndarray
+        Matrix with all latitude coordinates.
+
+    Returns
+    -------
+    iss,jss : list
+        Indexes of the closests points selected.
+
+    """
 
     lo = lon.ravel()
     la = lat.ravel()
@@ -68,8 +87,6 @@ def locate_coord(ilat,ilon,lon,lat):
         jss.append(int(j))
 
     return iss,jss
-
-
 
 def load_bndo(DATA_DIR,kind='mean'):
     """Load and process data from BNDO dataset. If you set kind as 'mean',
@@ -128,6 +145,21 @@ def load_bndo(DATA_DIR,kind='mean'):
     return observ
 
 def load_ecom(SIMS_DIR,locs=[-23.,-44.01916667]):
+    """Load ECOM product (elevation,time,lon and lat).
+
+    Parameters
+    ----------
+    SIMS_DIR : string
+        Full path to the directory where files are stored.
+    locs : list
+        Latitude and Longitude (must be in this order), to extract time series.
+
+    Returns
+    -------
+    df : pandas.DataFrame
+        Dataframe with the elevation timeseries extracted at the given location.
+
+    """
 
     ncin  = xr.open_dataset(SIMS_DIR)
     lon   = ncin['lon'].data
@@ -149,9 +181,21 @@ def load_ecom(SIMS_DIR,locs=[-23.,-44.01916667]):
 
     return df
 
-
 def plot(data1,data2,title):
+    """Simple plot of two datasets.
 
+    Parameters
+    ----------
+    data1 : pd.DataFrame
+        Dataframe containing data from in situ observations.
+    data2 : pd.DataFrame
+        Dataframe containing product from ECOM simulation.
+    title : string
+        Title.
+    """
+
+    plt.ion()
+    
     fig,ax = plt.subplots()
 
     ax.plot(data1,'k',label='bndo')
