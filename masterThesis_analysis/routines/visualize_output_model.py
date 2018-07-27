@@ -705,7 +705,7 @@ def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits):
     temp : numpy.ndarray
         Array with temperature data.
     limits : list
-        Limits of values not-nan.
+        Limits of non-nan values
 
     Returns
     -------
@@ -893,7 +893,7 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevati
 
 
 # select which experiment you want to plot:
-exp = 'exp04'
+exp = 'exp07'
 SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/'%(exp)
 
 for f in fname:

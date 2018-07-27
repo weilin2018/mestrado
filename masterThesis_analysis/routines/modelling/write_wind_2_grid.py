@@ -225,7 +225,7 @@ if __name__=='__main__':
 
         # Danilo: repetir os ultimos dados de vento para um tempo 9999.00
  #       vento.write("%10f"%(9999))
- #       vento.write("\n")      
+ #       vento.write("\n")
  #       for i in range(U.shape[1]):
  #           for j in range(U.shape[2]):
  #               vento.write("%5d%5d%10.3f%10.3f%10.3f" % (j+1,i+1,U[t,i,j],V[t,i,j],P[t,i,j]))
