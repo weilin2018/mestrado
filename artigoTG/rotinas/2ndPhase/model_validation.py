@@ -10,6 +10,7 @@ import os
 import pickle
 from scipy.interpolate import griddata
 from mpl_toolkits.basemap import Basemap
+from sklearn.metrics import mean_squared_error
 # from mpl_toolkits.axes_grid1 import make_axes_locatable
 # from matplotlib import dates
 # import datetime
@@ -195,7 +196,7 @@ def plot(data1,data2,title):
     """
 
     plt.ion()
-    
+
     fig,ax = plt.subplots()
 
     ax.plot(data1,'k',label='bndo')
@@ -205,6 +206,40 @@ def plot(data1,data2,title):
 
     plt.legend()
 
+def statisticalParameters(data1,data2):
+    """calculate skill, correlation coeficient and root mean squared error.
+
+    Parameters
+    ----------
+    data1 : np.ndarray
+        In situ observation timeseries.
+    data2 : nd.ndarray
+        Model product timeseries.
+
+    Returns
+    -------
+    skill,corre,rmse : float
+        Statistical parameters calculated.
+
+    """
+
+    skill = oceano.skill_willmott(data1,data2)
+    corre = np.corrcoef(data1,data2)[0][1]
+    rmse  = np.sqrt(mean_squared_error(data1,data2))
+
+    return skill,corre,rmse
+
+def removeTidalSignal(x,window_len,window='hanning'):
+
+    # creating the window with maximum value normalized to one
+    w = eval('np.'+window+'(window_len)')
+    #
+    s = np.r_[x[window_len-1:0:-1],x,x[-2:-window_len-1:-1]]
+
+    # apply filter
+    y = np.convolve(w/w.sum(),s,mode='valid')
+
+    return y
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -214,7 +249,10 @@ def plot(data1,data2,title):
 BASE_DIR = oceano.make_dir()
 
 DATA_DIR = BASE_DIR.replace('github/','artigo_data/BNDO/')
-SIMS_DIR = BASE_DIR.replace('github/','/artigo_data/simulacoes/2ndPhase/')
+SIMS_DIR = BASE_DIR.replace('github/','artigo_data/simulacoes/2ndPhase/')
+
+# define which simulation
+run = 'pcse_elevation'
 
 os.system('clear')
 
@@ -234,9 +272,9 @@ first_period_observe.fillna(first_period_observe.mean(),inplace=True)
 # ainda podemos pegar uma segunda parte da série temporal, sem nan values:
 # second_period_observe = observ['1997-02-02':].copy()
 
-
 ### ---------- reading ECOM data ---------------- ###
-model  = load_ecom(SIMS_DIR+'run01_validation/elevation.cdf')
+fname  = '/'+run+'.cdf'
+model  = load_ecom(SIMS_DIR+fname)
 
 ### --------- ajuste de maré: ecom x bndo ------- ###
 time_data = model.index
@@ -269,6 +307,8 @@ bndo_filtered = first_period_observe.iloc[::6,:]
 # se fizermos um teste tomando um resample de 6H do BNDO:
 skill = oceano.skill_willmott(bndo_filtered.nivel.values,product_selected.elev.values)
 corr  = np.corrcoef(bndo_filtered.nivel.values,product_selected.elev.values)[0][1]
+skill,corr,rmse = statisticalParameters(bndo_filtered.nivel.values,product_selected.elev.values)
+
 plot(bndo_filtered,product_selected,title='Both with 6-hourly frequency \n skill: %.2f corr: %.2f'%(skill,corr))
 # figure saved in: /media/danilo/Danilo/mestrado/github/artigoTG/figures/2ndPhase/rerun00_v_bndo_.png
 
@@ -277,8 +317,11 @@ plot(bndo_filtered,product_selected,title='Both with 6-hourly frequency \n skill
 Realizei um teste aqui para verificar o que poderia estar reduzingo meu coeficientes
 estatísticos: maré ou vento.
 
-Para tanto fiz uma média móvel, com janela de 20 hroas, nos dados observados do BNDO,
-obtendo, assim, somente o sinal de elevação relacionado à maré meteorológica.
+Modificacao:
+Dottori sugeriu mudar a janela para 30 horas e usar um filtro Hanning ou Hamming.
+A filtragem se mostrou muito melhor que apenas a média móvel, ao remover
+totalmente o sinal da maré, obtendo somente o sinal de elevação do nível do mar
+associado a maré meteorológica
 
 Adicionei este sinal ao meu produto do modelo (reRUN00_ECOM) e calculei os
 valores estatísticos novamente. Desta vez, pude aumentar os valores de skill para
@@ -287,26 +330,67 @@ valores estatísticos novamente. Desta vez, pude aumentar os valores de skill pa
 Com isso, chego a conclusão que, se eu conseguir melhorar como o modelo
 representa o vento, eu talvez obtenha uma melhor validação.
 
-Proximos passos: refazer os dados de ventos e colocar o reRUN01_ECOM
 
 """
 # removendo maré astronomica dos dados do bndo
-mare_meteorologica = pd.rolling_mean(bndo_filtered,window=20,center=True)
-mare_meteorologica = pd.DataFrame({'MeteorTide_BNDO':mare_meteorologica.nivel.values},index=product_selected.index)
+mare_meteorologica = removeTidalSignal(bndo_filtered.nivel.values,window_len=5,window='hamming')
+mare_meteorologica = pd.DataFrame({'MeteorTide_BNDO':mare_meteorologica[2:-2]},index=product_selected.index)
 
-mare_meteorologica = pd.DataFrame({'metBNDO':mare_meteorologica.MeteorTide_BNDO.values},index=product_selected.index)
 
 # maré meteorologica + ecom
-met_ecom = mare_meteorologica.metBNDO.values + product_selected.elev.values
+met_ecom = mare_meteorologica.MeteorTide_BNDO.values + product_selected.elev.values
 met_ecom = pd.DataFrame({'metBNDO_ECOM':met_ecom},index=product_selected.index)
 
-fig,ax = plt.subplots(nrows=4,sharex=True)
+# calcular novos parametros estatísticos
+indNan = np.where(~np.isnan(met_ecom.metBNDO_ECOM.values))
+skill2,corr2,rmse2 = statisticalParameters(met_ecom.metBNDO_ECOM.values[indNan],bndo_filtered.nivel.values[indNan])
+
+"""
+Um novo teste que pode ser feito é: remover o sinal da maré meteorológica da
+série do BNDO (apenas por subtração) e comparar essa nova série com minha
+saída de modelo.g
+
+Isso é feito abaixo
+"""
+
+bndo_sem_mareMet = bndo_filtered.nivel.values - mare_meteorologica.MeteorTide_BNDO.values
+bndo_semMet = pd.DataFrame({'BNDOsemMet':bndo_sem_mareMet},index=product_selected.index)
+
+# usando o mesmo indNan já calculado acima
+skill3,corr3,rmse3 = statisticalParameters(bndo_semMet.BNDOsemMet.values[indNan],product_selected.elev.values[indNan])
+
+# calculando variancias
+var_orig_bndo = np.nanvar(observ.nivel.values)
+var_mete_bndo = np.nanvar(mare_meteorologica.MeteorTide_BNDO.values)
+var_bndo_semM = np.nanvar(bndo_semMet.BNDOsemMet.values)
+
+### ---------- plotting data ---------------- ###
+
+fig,ax = plt.subplots(nrows=5,sharex=True)
+
+# boxes parameters:
+props = dict(boxstyle='round',facecolor='gray',alpha=0.5)
+xbox = 0.03
+ybox = 0.90
 
 # set y-axis Limits
 for i in range(ax.shape[0]):
     ax[i].set_ylim(-0.8,1.2)
 
-bndo_filtered.plot(ax=ax[0],title='BNDO - Terminal Ilha Guaiba [Freq. 6 horas]')
-mare_meteorologica.plot(ax=ax[1],title=u'Maré Meteorológica extraída do BNDO [Média móvel, window=20 horas]')
-product_selected.plot(ax=ax[2],title='ECOM - reRUN00 [x BNDO = Skill: %.2f, Corr: %.2f]'%(skill,corr))
-met_ecom.plot(ax=ax[3],title='MetBNDO + ECOM [x BNDO = Skill: %.2f, Corr: %.2f]'%(0.88,0.89))
+bndo_filtered.plot(ax=ax[0],title='BNDO - Ilha Guaiba Terminal [6-hourly frequency]')
+# inserting box with statistical informations
+textstr = r'$\sigma$: %.4f'%(var_orig_bndo)
+ax[0].text(xbox,ybox,textstr,transform=ax[0].transAxes,fontsize=14,verticalalignment='top',bbox=props)
+
+mare_meteorologica.plot(ax=ax[1],title=u'Meteorological Tide extracted from BNDO [Hamming, window=30h]')
+# inserting box with statistical informations
+textstr = r'$\sigma$: %.4f'%(var_mete_bndo)
+ax[1].text(xbox,ybox,textstr,transform=ax[1].transAxes,fontsize=14,verticalalignment='top',bbox=props)
+
+product_selected.plot(ax=ax[2],title='ECOM - %s [x BNDO = Skill: %.2f, Corr: %.2f, RMSE: %.2fcm]'%(run,skill,corr,rmse/0.01))
+met_ecom.plot(ax=ax[3],title='MetBNDO + %s [x BNDO = Skill: %.2f, Corr: %.2f, RMSE: %.2fcm]'%(run,skill2,corr2,rmse2/0.01))
+
+bndo_semMet.plot(ax=ax[4],title='BNDO - Meteorological Tide. [x %s = Skill: %.2f, Corr: %.2f, RMSE: %.2fcm]'%(run,skill3,corr3,rmse3/0.01))
+# inserting box with statistical informations
+textstr = r'$\sigma$: %.4f'%(var_bndo_semM)
+ax[4].text(xbox,ybox,textstr,transform=ax[4].transAxes,fontsize=14,verticalalignment='top',bbox=props)

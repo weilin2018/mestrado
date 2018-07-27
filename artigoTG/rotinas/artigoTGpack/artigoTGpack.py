@@ -12,7 +12,7 @@ import scipy
 import socket
 import matplotlib.pyplot as plt
 import glob
-
+import gsw
 
 # gerar diretorio base
 def make_dir():
@@ -105,9 +105,16 @@ def find_nearest(lon,lat,ilon,ilat):
     iss=[]
     jss=[]
 
-    for i,j in ind:
-        iss.append(int(i))
-        jss.append(int(j))
+    # se tiver retornado mais de um ponto, entao ind tera um shape > 1
+    if ind.ndim > 2:
+        for dim in range(ind.shape[0]):
+            for i,j in ind[dim]:
+                iss.append(int(i))
+                jss.append(int(j))
+    else:
+        for i,j in ind:
+            iss.append(int(i))
+            jss.append(int(j))
 
     return iss,jss
 
@@ -223,12 +230,12 @@ def read_BNDO(DATA_DIR):
     '''
         ler arquivos BNDO no diretório passado como argumento
 
-        
+
 
         retorna os dados de 1997 como pandas.DataFrame
-        
+
     '''
-    lfiles = glob.glob(DATA_DIR+'1997/*')   
+    lfiles = glob.glob(DATA_DIR+'1997/*')
     lfiles.sort()
 
     # ler, inicialmente, os dois primeiros arquivos para ampliar uma série
@@ -262,8 +269,6 @@ def read_BNDO(DATA_DIR):
 
     return observ
 
-
-
 def newTimerange(tm,to,observ):
 
     ''' pegar os dados mais próximos dos instantes passados do modelo '''
@@ -279,8 +284,8 @@ def newTimerange(tm,to,observ):
     # converting to julian date the data from BNDO
     for i in to:
         observTimestamp.append(pd.Timestamp(i).to_julian_date())
-        
-    modelTimestamp  = np.asarray(modelTimestamp) 
+
+    modelTimestamp  = np.asarray(modelTimestamp)
     observTimestamp = np.asarray(observTimestamp)
 
     # search for the closest values between model and observTimestamp
@@ -307,3 +312,29 @@ def newTimerange(tm,to,observ):
         n.append(value)
 
     return np.squeeze(np.asarray(n))
+
+def calculate_Rdi(ncdata):
+    """Calculate the internal deformation radius, for a barotropic ocean.
+
+    Parameters
+    ----------
+    ncdata : xarray.core.dataset.Dataset
+        Xarray dataset.
+
+    Returns
+    -------
+    Rdi : numpy.ndarray
+        Radius calculated.
+
+    """
+
+    lat = ncdata.lat.values.copy()
+    lat[lat == .0] = np.nan
+
+    Rdi = np.zeros(ncdata.depth.shape)*np.nan
+    fo  = gsw.f(lat)                    # calculate coriolis parameter
+    g   = gsw.grav(lat,p=0)             # calculate acceleration due to gravity
+
+    Rdi = np.sqrt(g*ncdata.depth.values)/fo
+
+    return Rdi
