@@ -849,3 +849,38 @@ def removeLabelsFromDataset(ncdata):
     labels = ['xpos','ypos','time','date','layer_bnds','x','y','h1','h2','depth','ang','FSM','DUM','DVM','lon_bnds','lat_bnds','cbc']
 
     return ncdata.drop(labels)
+
+
+def create_newDepth(lon,depth,sigma,ind):
+    """Function to create a depth matrix based in the sigma level and
+    the depth of each cell.
+
+    Parameters
+    ----------
+    lon : vector
+        Longitude vector for a section.
+    depth : vector
+        Depth vector for a section.
+    sigma : vector
+        Sigma level vector.
+    ind : integer
+        Index for latitude to plot cross section.
+
+    Returns
+    -------
+    x,prof,sig : vector
+        2D-vector with the new depths.
+
+    Examples
+    --------
+    >> x,prof,sig = create_newDepth(lon[19,:],depth[19,:],sigma)
+
+    """
+    # creating depth related to sigma levels
+    x    = np.tile(lon[ind,:],(37,1))
+    prof = np.tile(depth[ind,:],(37,1))
+    s    = np.tile(sigma,(110,1))
+    s    = np.transpose(s)
+    sig  = prof*s
+
+    return x,prof,sig

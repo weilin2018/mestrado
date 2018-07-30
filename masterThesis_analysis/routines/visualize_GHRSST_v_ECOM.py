@@ -302,7 +302,7 @@ plot_animation(-1,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod)
 plt.ion()
 fig,ax = plt.subplots(ncols=2)
 
-sst_mod_alterado = sst + 4.
+# sst_mod_alterado = sst + 4.
 
 ax[0].set_ylim([15,32])
 ax[1].set_ylim([15,32])
@@ -313,7 +313,7 @@ ax[0].plot(sst_sat[:i,sat_jsan,sat_isan],'r',label='Santos')
 ax[0].plot(sst_sat[:i,sat_juba,sat_iuba],'b',label='Ubatuba')
 ax[0].plot(sst_sat[:i,sat_jcab,sat_icab],'y',label='Cabo Frio')
 
-ax[1].plot(sst_mod_alterado[:i,mod_jcan,mod_ican],'k',label='Cananeia')
-ax[1].plot(sst_mod_alterado[:i,mod_jsan,mod_isan],'r',label='Santos')
-ax[1].plot(sst_mod_alterado[:i,mod_juba,mod_iuba],'b',label='Ubatuba')
-ax[1].plot(sst_mod_alterado[:i,mod_jcab,mod_icab],'y',label='Cabo Frio')
+ax[1].plot(sst_mod[:i,mod_jcan,mod_ican],'k',label='Cananeia')
+ax[1].plot(sst_mod[:i,mod_jsan,mod_isan],'r',label='Santos')
+ax[1].plot(sst_mod[:i,mod_juba,mod_iuba],'b',label='Ubatuba')
+ax[1].plot(sst_mod[:i,mod_jcab,mod_icab],'y',label='Cabo Frio')
