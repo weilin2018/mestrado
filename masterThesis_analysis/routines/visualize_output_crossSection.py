@@ -32,7 +32,7 @@ import masterThesisPack as oceano
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
-def crossSection(experiment,DATA_DIR,savefig=None):
+def crossSection(fname,DATA_DIR,savefig=None):
     """Main function to plot cross section of temperature.
 
     Parameters
@@ -42,11 +42,8 @@ def crossSection(experiment,DATA_DIR,savefig=None):
     savefig : string
         Full path to the directory.
     """
-
-    # liminf e limsup delimitam os pontos de grade onde temos dados (sem nan)
-    # fname = glob.glob(DATA_DIR+"*.cdf")
-    # fname = fname[-1]
-    fname = experiment
+    # clear screen
+    os.system('clear')
 
     ncdata = xr.open_dataset(fname)
 
@@ -61,13 +58,67 @@ def crossSection(experiment,DATA_DIR,savefig=None):
     depth = ncdata['depth'].values
     sigma = ncdata['sigma'].values
 
-    # extract data to plot
-    if not 'temp' in locals():
-        temp = ncdata['temp'].values[startTime:endTime,:,:,:]
+    # settings configurations for the figure
+    plt.figure(figsize=[16/2.54,19/2.54])
 
-    ncdata.close()
+    grid = plt.GridSpec(3,3,wspace=0.5,hspace=0.3)
 
-    crossSection_temp_animated(lon,lat,depth,sigma,temp,savefig=savefig)
+    northsec_axis = plt.subplot(grid[0,:2])
+    northMap_axis = plt.subplot(grid[0,2])
+    mnorth = oceano.make_map(northMap_axis,resolution='i')
+
+    centralsec_axis = plt.subplot(grid[1,:2])
+    centralMap_axis = plt.subplot(grid[1,2])
+    mcentral = oceano.make_map(centralMap_axis,resolution='i')
+
+    southsec_axis = plt.subplot(grid[2,:2])
+    southMap_axis = plt.subplot(grid[2,2])
+    msouth = oceano.make_map(southMap_axis,resolution='i')
+
+    # select latitude index for cross section
+    isul = 19
+    icen = 28
+    inor = 99
+
+    for t in range(len(time)):
+        print('Timestep: %i'%(t))
+        temp = ncdata.temp[t]           # import data
+        # plot data
+
+        # cleaning axis
+        southsec_axis.clear()
+        centralsec_axis.clear()
+        northsec_axis.clear()
+        southMap_axis.clear()
+        centralMap_axis.clear()
+        northMap_axis.clear()
+        # updating time
+        plt.suptitle(time[t],fontsize=24)
+
+        # plotting data for each location
+        msouth = oceano.make_map(southMap_axis,resolution='i')
+        mcentral = oceano.make_map(centralMap_axis,resolution='i')
+        mnorth = oceano.make_map(northMap_axis,resolution='i')
+
+        southsec_axis = plotCrossSection(southsec_axis,lon,lat,depth,sigma,isul,temp[:,:,:],limits=[5,83])
+        southsec_axis.text(-47.4,-100,u'Cananéia',horizontalalignment='center')
+        msouth.plot(lon[isul,5:83],lat[isul,5:83],'r',latlon=True)
+
+        ################### santos
+        centralsec_axis = plotCrossSection(centralsec_axis,lon,lat,depth,sigma,icen,temp[:,:,:],limits=[5,82])
+        centralsec_axis.text(-46.3,-100,u'Santos',horizontalalignment='center')
+        mcentral.plot(lon[icen,5:82],lat[icen,5:82],'r',latlon=True)
+
+        ################### ubatuba
+        northsec_axis = plotCrossSection(northsec_axis,lon,lat,depth,sigma,inor,temp[:,:,:],limits=[5,83])
+        northsec_axis.text(-44.8,-100,u'Ubatuba',horizontalalignment='center')
+        mnorth.plot(lon[inor,5:83],lat[inor,5:83],'r',latlon=True)
+
+        # control time to the next plot
+        if savefig:
+            plt.savefig(savefig+str(t).zfill(4)+'.png')
+
+        plt.pause(0.1)
 
 def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits):
     """Apenas plota os dados em uma secao vertical, fazendo a conversão de nível
@@ -112,143 +163,32 @@ def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits):
 
     return ax
 
-def crossSection_temp_animated(lon,lat,depth,sigma,temp,savefig=None):
-    """Plot the time variation and save figure or show animation, using
-    function plotCrossSection.
-
-    Parameters
-    ----------
-    lon : numpy.ndarray
-        Longitude vector 2D.
-    depth : v
-        Depth field (bathymetry).
-    sigma : numpy.ndarray
-        Array with sigma levels.
-    ind : integer
-        Index of each latitude is to be plotted.
-    temp : numpy.ndarray
-        Array with temperature data.
-    savefig : string
-        Full path to the directory.
-
-    """
-
-    if savefig:
-        os.system('clear')
-        for i in np.arange(0,temp.shape[0]):
-            print('timestep: %i'%(i))
-            # estrutura dos plots
-            plt.figure(figsize=[16/2.54,19/2.54])
-
-            grid = plt.GridSpec(3,3,wspace=0.5,hspace=0.3)
-
-            northsec_axis = plt.subplot(grid[0,:2])
-            northMap_axis = plt.subplot(grid[0,2])
-            mnorth = oceano.make_map(northMap_axis,resolution='i')
-
-            centralsec_axis = plt.subplot(grid[1,:2])
-            centralMap_axis = plt.subplot(grid[1,2])
-            mcentral = oceano.make_map(centralMap_axis,resolution='i')
-
-            southsec_axis = plt.subplot(grid[2,:2])
-            southMap_axis = plt.subplot(grid[2,2])
-            msouth = oceano.make_map(southMap_axis,resolution='i')
-
-            # select latitude index for cross section
-            isul = 19
-            icen = 28
-            inor = 99
-
-            ################### ubatuba
-            northsec_axis = plotCrossSection(northsec_axis,lon,lat,depth,sigma,inor,temp[i,:,:,:],limits=[5,83])
-            northsec_axis.text(-44.8,-100,u'Ubatuba',horizontalalignment='center')
-            mnorth.plot(lon[inor,5:83],lat[inor,5:83],'r',latlon=True)
-
-            ################### santos
-            centralsec_axis = plotCrossSection(centralsec_axis,lon,lat,depth,sigma,icen,temp[i,:,:,:],limits=[5,82])
-            centralsec_axis.text(-46.3,-100,u'Santos',horizontalalignment='center')
-            mcentral.plot(lon[icen,5:82],lat[icen,5:82],'r',latlon=True)
-
-            ################### cananeia
-            southsec_axis = plotCrossSection(southsec_axis,lon,lat,depth,sigma,isul,temp[i,:,:,:],limits=[5,83])
-            southsec_axis.text(-47.4,-100,u'Cananéia',horizontalalignment='center')
-            msouth.plot(lon[isul,5:83],lat[isul,5:83],'r',latlon=True)
-
-            outname = savefig+str(i).zfill(4)+'.png'
-            plt.savefig(outname)
-            plt.close()
-    else:
-        plt.ion()
-
-        # select latitude index for cross section
-        isul = 19
-        icen = 28
-        inor = 99
-
-        # estrutura dos plots
-        grid = plt.GridSpec(3,3,wspace=0.2,hspace=0.3)
-
-        southsec_axis = plt.subplot(grid[0,:2])
-        southMap_axis = plt.subplot(grid[0,2])
-        msouth = oceano.make_map(southMap_axis,resolution='i')
-
-        centralsec_axis = plt.subplot(grid[1,:2])
-        centralMap_axis = plt.subplot(grid[1,2])
-        mcentral = oceano.make_map(centralMap_axis,resolution='i')
-
-        northsec_axis = plt.subplot(grid[2,:2])
-        northMap_axis = plt.subplot(grid[2,2])
-        mnorth = oceano.make_map(northMap_axis,resolution='i')
-
-        for i in np.arange(0,temp.shape[0]):
-            southsec_axis.clear()
-            centralsec_axis.clear()
-            northsec_axis.clear()
-            southMap_axis.clear()
-            centralMap_axis.clear()
-            northMap_axis.clear()
-
-            msouth = oceano.make_map(southMap_axis,resolution='i')
-            mcentral = oceano.make_map(centralMap_axis,resolution='i')
-            mnorth = oceano.make_map(northMap_axis,resolution='i')
-
-            southsec_axis = plotCrossSection(southsec_axis,lon,lat,depth,sigma,isul,temp[i,:,:,:],limits=[5,83])
-            msouth.plot(lon[isul,5:83],lat[isul,5:83],'r',latlon=True)
-
-            ################### santos
-            centralsec_axis = plotCrossSection(centralsec_axis,lon,lat,depth,sigma,icen,temp[i,:,:,:],limits=[5,82])
-            mcentral.plot(lon[icen,5:82],lat[icen,5:82],'r',latlon=True)
-
-            ################### ubatuba
-            northsec_axis = plotCrossSection(northsec_axis,lon,lat,depth,sigma,inor,temp[i,:,:,:],limits=[5,83])
-            mnorth.plot(lon[inor,5:83],lat[inor,5:83],'r',latlon=True)
-
-            plt.pause(0.3)
-
-
-
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
 # beginnig of the main code
 
 BASE_DIR = oceano.make_dir()
-if BASE_DIR.split("/")[2] == 'tparente':
-    DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output_modelo/exp03_variables/')
-    fname = glob.glob(DATA_DIR+"*.cdf")
-else:
-    DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
-    fname = glob.glob(DATA_DIR+"*.cdf")
+# if BASE_DIR.split("/")[2] == 'tparente':
+#     DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output_modelo/exp03_variables/')
+#     fname = glob.glob(DATA_DIR+"*.cdf")
+# else:
+#     DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
+#     fname = glob.glob(DATA_DIR+"*.cdf")
+
+DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
+fname = glob.glob(DATA_DIR+"*.cdf")
+
 
 FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevation/'
 
 
 # select which experiment you want to plot:
-exp = 'exp07'
+exp = 'exp06'
 SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/'%(exp)
 
 for f in fname:
     if exp in f:
         experiment = f
 
-crossSection(experiment,DATA_DIR)
+crossSection(experiment,DATA_DIR,savefig=SAVE_FIG)

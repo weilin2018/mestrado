@@ -233,7 +233,13 @@ def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=Non
 
     # plot sattelite data
     cb1 = m1.contourf(lon_sat,lat_sat,sst_sat[i,:,:],contour_levels,latlon=True,cmap=cmo.cm.thermal)
+    c   = m1.contour(lon_sat,lat_sat,sst_sat[i,:,:],levels=['18.'],colors=('k'),linestyles=('--'))
     plt.colorbar(cb1,cax=cax1)
+
+    # plot ecom's grid
+    m1.plot(lon_mod[1,:],lat_mod[1,:],'k',alpha=.5,latlon=True)
+    m1.plot(lon_mod[:,-2],lat_mod[:,-2],'k',alpha=.5,latlon=True)
+    m1.plot(lon_mod[-2,:],lat_mod[-2,:],'k',alpha=.5,latlon=True)
 
     # # cax.title('Temporal evolution of bottom temperature in SBC')
     sattemp.plot(sst_sat[:i,sat_jcan,sat_ican],'k',label='Cananeia')
@@ -246,6 +252,7 @@ def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=Non
 
     # plot modelling data
     cb2 = m2.contourf(lon_mod,lat_mod,sst_mod[i,:,:],contour_levels,latlon=True,cmap=cmo.cm.thermal)
+    c   = m2.contour(lon_mod,lat_mod,sst_mod[i,:,:],levels=['18.'],colors=('k'),linestyles=('--'))
     plt.colorbar(cb2,cax=cax2)
 
     modtemp.plot(sst_mod[:i,mod_jcan,mod_ican],'k',label='Cananeia')
@@ -299,21 +306,24 @@ lat_mod[lat_mod == 0] = np.nan
 plot_animation(-1,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod)
 
 ################### testing temperature calibration
-plt.ion()
-fig,ax = plt.subplots(ncols=2)
+ncin = xr.open_dataset(fname.replace('06','07'))
+lon  = ncin.lon.values
+lat  = ncin.lat.values
+contour_levels = np.arange(15.,32.,17./500)
 
-# sst_mod_alterado = sst + 4.
+fig,ax = plt.subplots()
+plt.colorbar(cb)
 
-ax[0].set_ylim([15,32])
-ax[1].set_ylim([15,32])
+for i in range(ncin.time.shape[0]):
+    ax.clear()
+    m = oceano.make_map(ax, resolution='i')
 
-# # cax.title('Temporal evolution of bottom temperature in SBC')
-ax[0].plot(sst_sat[:i,sat_jcan,sat_ican],'k',label='Cananeia')
-ax[0].plot(sst_sat[:i,sat_jsan,sat_isan],'r',label='Santos')
-ax[0].plot(sst_sat[:i,sat_juba,sat_iuba],'b',label='Ubatuba')
-ax[0].plot(sst_sat[:i,sat_jcab,sat_icab],'y',label='Cabo Frio')
+    temp = ncin.temp[i,0,:,:].values
+    time = ncin.time.values[i]
 
-ax[1].plot(sst_mod[:i,mod_jcan,mod_ican],'k',label='Cananeia')
-ax[1].plot(sst_mod[:i,mod_jsan,mod_isan],'r',label='Santos')
-ax[1].plot(sst_mod[:i,mod_juba,mod_iuba],'b',label='Ubatuba')
-ax[1].plot(sst_mod[:i,mod_jcab,mod_icab],'y',label='Cabo Frio')
+    cb = m.contourf(lon,lat,temp,contour_levels,latlon=True,cmap=cmo.cm.thermal)
+    c  = m.contour(lon,lat,temp,latlon=True,levels=[18.],colors=('k'),linestyles=('--'))
+
+    plt.suptitle(str(time))
+
+    plt.pause(0.01)
