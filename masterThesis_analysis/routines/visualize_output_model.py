@@ -684,6 +684,8 @@ def crossSection(experiment,DATA_DIR,savefig=None):
     if not 'temp' in locals():
         temp = ncdata['temp'].values[startTime:endTime,:,:,:]
 
+    ncdata.close()
+
     crossSection_temp_animated(lon,lat,depth,sigma,temp,savefig=savefig)
 
 def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits):
