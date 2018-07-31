@@ -32,7 +32,7 @@ import masterThesisPack as oceano
 # define which experiment to load
 # trabalhar somente com os experimentos em cold start, até
 # eu conseguir avaliar qual é o mais adequado
-run = 'exp06'
+run = 'exp07'
 startTime=112 # 32
 endTime=353 # 272
 
