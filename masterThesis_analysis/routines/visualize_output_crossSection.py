@@ -116,7 +116,9 @@ def crossSection(fname,DATA_DIR,savefig=None):
 
         # control time to the next plot
         if savefig:
-            plt.savefig(savefig+str(t).zfill(4)+'.png')
+            outname = savefig+str(t).zfill(4)+'.png'
+            plt.savefig(outname)
+            os.system('convert -trim %s %s'%(outname,outname))
 
         plt.pause(0.1)
 
@@ -184,7 +186,7 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevati
 
 
 # select which experiment you want to plot:
-exp = 'exp06'
+exp = 'exp07'
 SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/'%(exp)
 
 for f in fname:
