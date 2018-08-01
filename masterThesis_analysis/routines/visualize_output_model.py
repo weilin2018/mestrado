@@ -667,7 +667,7 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevati
 
 
 # select which experiment you want to plot:
-exp = 'exp07'
+exp = 'exp06'
 SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/'%(exp)
 
 for f in fname:
@@ -683,19 +683,19 @@ sav = input('You want to [0] visualize or [1] save figures? ')
 
 if var == 1:
     if sav == 0:
-        elevationField(fname)
+        elevationField(experiment)
     else:
-        elevationField(fname,savefig=FIGU_DIR)
+        elevationField(experiment,savefig=FIGU_DIR)
 elif var == 2:
     if sav == 0:
-        temperatureField(fname)
+        temperatureField(experiment)
     else:
-        temperatureField(fname,savefig=FIGU_DIR.replace('elevation', 'temperature'))
+        temperatureField(experiment,savefig=FIGU_DIR.replace('elevation', 'temperature'))
 elif var == 3:
     if sav == 0:
-        salinityField(fname)
+        salinityField(experiment)
     else:
-        salinityField(fname,savefig=FIGU_DIR.replace('elevation', 'salinity'))
+        salinityField(experiment,savefig=FIGU_DIR.replace('elevation', 'salinity'))
 else:
     exit
 
