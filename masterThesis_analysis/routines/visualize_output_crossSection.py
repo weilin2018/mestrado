@@ -186,7 +186,7 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevati
 
 
 # select which experiment you want to plot:
-exp = 'exp07'
+exp = 'control_2010'
 SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/'%(exp)
 
 for f in fname:
