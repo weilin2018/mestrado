@@ -13,6 +13,7 @@ from mpl_toolkits.basemap import Basemap
 from scipy.spatial import cKDTree
 from matplotlib import dates
 import datetime
+from scipy.spatial import kdtree as kd
 
 import matplotlib
 matplotlib.style.use('ggplot')
@@ -258,6 +259,9 @@ def find(lon_coarsed,lat_coarsed,lonBnd,latBnd):
     # based on points, find Is and Js
     ind    = np.asarray([np.where(lon_coarsed == p[0]) for p in points])
 
+    iss = []
+    jss = []
+
     # classifying all point found, separating in iss and jss, with same size
     for index in ind:
         if index[-1].shape == 1:
@@ -322,6 +326,7 @@ iss_east,jss_east = find(lon_coarsed,lat_coarsed,lonBnd,latBnd)
 #### --------------- visualize both grids together
 offset = 0.25                # offset for coordinates
 
+plt.ion()
 fig,ax = plt.subplots()
 m = oceano.make_map(ax,llat=np.nanmin(lat_refined)-offset, ulat=np.nanmax(lat_refined), llon=np.nanmin(lon_refined)-offset, ulon=np.nanmax(lon_refined)+offset,resolution='i')
 
