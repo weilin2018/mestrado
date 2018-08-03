@@ -21,10 +21,22 @@ sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
 
+
+os.system('clear')
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
 # insert functions here
+class Test(object):
+
+    def __init__():
+        if ~hasattr(self,'time'):
+            self.importBasicInformations()
+            print(self.time.shape[0])
+        else:
+            print('Yeap')
+
+
 class Experiment(object):
     def __init__(self,fname,timeStart=0,timeEnd=-1):
         """
@@ -79,7 +91,7 @@ class Experiment(object):
         self.lon,self.lat = self.treatCoordinates(lon,lat)
 
 
-    def elevationPlot(self,i,j):
+    def elevationPlot(self,i,j,points=None):
         """Simple test to plot an elevatino timeseries, based on i,j given location.
 
         Parameters
@@ -88,33 +100,38 @@ class Experiment(object):
             Description of parameter `i`.
         j : integer
             Description of parameter `j`.
+        points : list
+            Title locations for multiples plots.
+
+        Example
+        -------
+        >> exp = Experiment('/media/danilo/Danilo/mestrado/ventopcse/output/gcmplt.cdf')
+        >> exp.importBasicInformations()
+        >> iss = [50,7,22]
+        >> jss = [29,55,94]
+        >> exp.elevationPlot(iss,jss,points=['Laje de Santos','CSB','Ubatuba'])
         """
-        # extract elevation data
-        elev = self.ncin.elev.values[self.timeStart:self.timeEnd,j,i]# add some description here
-        time = self.time
-        # plot
-        plt.plot(time,elev,label=self.fname[-9:-4])
 
-        plt.show()
+        if type(i) == int: # plot just one location
+            # extract elevation data
+            elev = self.ncin.elev.values[self.timeStart:self.timeEnd,j,i]# add some description here
+            time = self.time
+            # plot
+            plt.plot(time,elev,label=points)
 
-    def windField(self):
+            plt.show()
+        else:
+            # plot multiples location
+            fig,axes = plt.subplots(nrows=len(i))
+            for loc in range(len(i)):
+                elev = exp.ncin.elev.values[exp.timeStart:exp.timeEnd,j[loc],i[loc]]
+                axes[loc].plot(exp.time,elev,label=points[loc])
+                plt.legend()
 
-        fig,ax = plt.subplots()
+            plt.show()
 
-        spd = np.sqrt(self.ncin.wu.values[self.timeStart:self.timeEnd,:,:]**2 + self.ncin.wv.values[self.timeStart:self.timeEnd,:,:]**2)
 
-        for i in range(self.time.shape[0]):
-            ax.clear()
-            m = oceano.make_map(ax,resolution='i')
-
-            wu = self.ncin.wu.values[i,:,:]/spd
-            wv = self.ncin.wv.values[i,:,:]/spd
-
-            m.quiver(self.lon,self.lat,wu,wv,latlon=True)
-
-            plt.pause(0.1)
-
-    def windField(self,xStep=4,yStep=4):
+    def plot_windField(self,xStep=4,yStep=4):
 
         fig,ax = plt.subplots()
 
@@ -138,81 +155,104 @@ class Experiment(object):
         del spd,contour_levels,wu,wv
 
 
-    def wind_elev(self,xStep=4,yStep=4,beginPlot=0,endPlot=-1):
+    def plot_windVectors_with_elevation(self,t=None,xStep=4,yStep=4,beginPlot=0,endPlot=-1,offset=0):
+        """plot wind vectors over elevation field.
 
-        # calculate speed wind to normalize arrows, based in all data for wind
-        spd_norm = np.sqrt(self.ncin.wu[self.timeStart:self.timeEnd,:,:].values**2 + self.ncin.wv[self.timeStart:self.timeEnd,:,:].values**2)
+        Parameters
+        ----------
+        t : integer
+            Index for some specific timestep to plot. If None, then will be plotted
+            an animation.
+        xStep : integer
+            How much index to skip when plotting.
+        yStep : integer
+            How much index to skip when plotting.
+        beginPlot : integer
+            Index to begin the plot. Default is 0.
+        endPlot : integer
+            Index to end the plot. Default is the last index -1.
+        offset : float
+            Some value to add ou sub in contour levels of elevation.Could be
+            positive, to add, or negative, to subtract.
+        """
 
-        # define contour_levels for each contourf
-        clevs_elev = np.arange(-0.3,0.3,0.01)
-        clevs_wind = np.arange(-15,15,0.01)
+        # contour levels for elevation
+        minValue = np.nanmin(self.ncin.elev.values[beginPlot:endPlot,:,:])+offset
+        maxValue = np.nanmax(self.ncin.elev.values[beginPlot:endPlot,:,:])+offset
+        clevs_elev = np.arange(-.3,0.3,0.001)
 
-        # start animation
+        # based on xStep and yStep, create a scheme to skip vectors
+        # skipwind = (slice(None,None,xStep),slice(None,None,xStep))
+
         plt.ion()
-        fig, ax = plt.subplots(ncols=2)
-        # divider = make_axes_locatable(ax[0])
-        # c_wind= divider.append_axes("right", size="5%",pad=0.05)
-        # c_wind.set_ylim([-0.4,0.4])
-        #
-        # divider = make_axes_locatable(ax[1])
-        # c_elev = divider.append_axes("right", size="5%", pad=0.05)
-        # c_elev.set_ylim([-0.4,0.4])
+        fig,ax = plt.subplots()
 
-
-        # checking if the object had the attributes needed
-        if hasattr(self, 'time') != True:
-            # if the object doesn't:
+        if hasattr(self,'time') != True:
             self.importBasicInformations()
         else:
-            for i in range(self.time[beginPlot:endPlot].shape[0]):
-            # for i in range(10):
+            if t:
+                divider = make_axes_locatable(ax)
+                cax = divider.append_axes("right", size="5%",pad=0.05)
+                cax.set_ylim([minValue,maxValue])
 
-                # cleaning screen
-                ax[0].clear()
-                ax[1].clear()
+                m = oceano.make_map(ax,resolution='i')
 
-                # printing time
-                plt.suptitle(self.time[i])
+                wu   = self.ncin.wu.values[t,::xStep,::yStep]
+                wv   = self.ncin.wv.values[t,::xStep,::yStep]
+                elev = self.ncin.elev.values[t,:,:]
 
-                # defining basemap instance for each subplot
-                m_wind = oceano.make_map(ax[0],resolution='i')
-                m_elev = oceano.make_map(ax[1],resolution='i')
+                # plot elevation as contourf
+                ce = m.contourf(self.lon,self.lat,elev,clevs_elev,latlon=True,cmap="RdBu_r")
+                cbar = plt.colorbar(ce,cax=cax,orientation='vertical')
+                cbar.set_label('Elevation [m]')
 
-                # importing data in each time i
-                wu  = self.ncin.wu.values[i,::xStep,::yStep]
-                wv  = self.ncin.wv.values[i,::xStep,::yStep]
-                spd = np.sqrt(wu**2 + wv**2)
-                elev= self.ncin.elev.values[i,:,:]
+                # plot wind data as quiver
+                qw = m.quiver(self.lon[::xStep,::yStep],self.lat[::xStep,::yStep],wu,wv,latlon=True,alpha=.3,scale=150,width=0.005,pivot='middle')
+                ax.set_title(str(self.time[t]),fontsize=24)
+            else:
+                for i in range(self.time[beginPlot:endPlot].shape[0]):
+                    ax.clear()
+                    m = oceano.make_map(ax,resolution='i')
 
-                # normalizing vectors with the total speed
-                wun = wu/spd_norm[i,::xStep,::yStep]
-                wvn = wv/spd_norm[i,::xStep,::yStep]
+                    wu   = self.ncin.wu.values[i,::xStep,::yStep]
+                    wv   = self.ncin.wv.values[i,::xStep,::yStep]
+                    elev = self.ncin.elev.values[i,:,:]
 
-                # plot wind velocity information in axis 0
-                cw = m_wind.contourf(self.lon[::xStep,::yStep],self.lat[::xStep,::yStep],spd,clevs_wind,latlon=True)
-                qw = m_wind.quiver(self.lon[::xStep,::yStep],self.lat[::xStep,::yStep],wun,wvn,latlon=True)
+                    # plot elevation as contourf
+                    ce = m.contourf(self.lon,self.lat,elev,clevs_elev,latlon=True,cmap="RdBu_r")
 
-                # plot elevation information in axis 1
-                ce = m_elev.contourf(self.lon,self.lat,elev,clevs_elev,latlon=True,cmap="RdBu_r")
+                    if i == 0:
+                        divider = make_axes_locatable(ax)
+                        cax = divider.append_axes("right", size="5%",pad=0.05)
+                        cax.set_ylim([minValue,maxValue])
 
-                # if i == 0:
-                #     cbar_elev = plt.colorbar(ce,orientation='vertical')
-                #     cbar_wind = plt.colorbar(cw,orientation='vertical')
+                        cbar = plt.colorbar(ce,cax=cax,orientation='vertical')
+                        cbar.set_label('Elevation [m]')
 
-                plt.pause(0.1)
+                    # plot wind data as quiver
+                    qw = m.quiver(self.lon[::xStep,::yStep],self.lat[::xStep,::yStep],wu,wv,latlon=True,alpha=.3,scale=150,width=0.005,pivot='middle')
+                    ax.set_title(str(self.time[i]),fontsize=24)
+                    plt.pause(0.1)
 
-
-
-
-        # criar
+    def locate_index_timeAxis(self,startDate=None,endDate=None):
+        """ procurar no vetor self.time os indices da primeira ocorrencia das datas
+        passadas como argumento. Retornar indices. Assim não vou precisar ficando mandando o
+        timeStart e o timeEnd sempre."""
 
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
 # beginnig of the main code
-fname = '/media/danilo/Danilo/mestrado/ventopcse/output/exp06.cdf'
+# Type the name of the gcmplt you want to analyze, without the ext (e.g., exp06)
+exp = 'control_2010'
+fname = '/media/danilo/Danilo/mestrado/ventopcse/output/%s.cdf'%(exp)
 
 # instanciate an object, passing as argument, the full name
 exp = Experiment(fname,timeStart=112,timeEnd=352)
 # import basic informations
 exp.importBasicInformations()
+
+# plotting multiple elevations locations
+iss = [50,7,22]
+jss = [29,55,94]
+exp.elevationPlot(iss,jss,points=['Laje de Santos','CSB','Ubatuba'])
