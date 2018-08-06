@@ -52,7 +52,19 @@ ColNaval  =  [-44.31833333, -23.01694444, 'v', 'black']
 squareWP      = [[-23.25,-22.89,-22.89,-23.25],[-44.72,-44.72,-44.29,-44.29]]
 squareEP      = [[-23.15,-22.94,-22.94,-23.15],[-44.15,-44.15,-43.99,-43.99]]
 porOeste      = [-44.72,-22.89]#[-44.508007, -23.194821]
-porLeste      = [-44.15,-22.94]#[-44.113577, -23.070955]
+porLeste      = [-43.99,-22.94]#[-44.113577, -23.070955]
+
+## scale position
+scaleLon      = [-44.65]
+scaleLat      = [-23.55]
+
+##  arrows [lon,lat,dx,dy]
+RibeiraArrow  = [-44.4,-23.,10000,10000,12000,12000]
+ParatyMirimArr= [-44.64,-23.24,-5000,-5000,-7000,-7000]
+JacuecangaArro= [-44.26,-23.02,4000,4000,5000,7000]
+MambucabaArrow= [-44.525,-23.03, -2000,2000,-5000,5000]
+MangaratibaArr= [-43.95,-23.07,5000,-5000,7000,-8000]
+
 CNAAAbase     = [-44.460789, -23.006711]
 ilhagrande    = [-44.613300, -23.141362]#-23.137504, -44.613300
 sepetiba      = [-43.864138, -23.003667]
@@ -88,10 +100,12 @@ ax = fig.add_subplot(111)
 # ---------------------    PLOTANDO A BASE DO MAPA   --------------------------
 # -----------------------------------------------------------------------------
 m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution='f')
+m.ax = ax
 # plotar outras coisas do mapa
 m.drawcoastlines(linewidth=0.2) #linha de costa em alta resolução
-m.drawmapboundary() # fill_color colore o oceano
-m.fillcontinents(color='#ffd480') # colorir o continente
+m.drawmapboundary(fill_color='#f2f2f2') # fill_color colore o oceano
+# m.fillcontinents(color='#ffd480') # colorir o continente
+m.fillcontinents(color='0.85')
 m.drawrivers()
 # definir meridianos e paralelos para plotar no mapa
 meridians=np.arange(-44.9,-33.4,0.25)
@@ -102,24 +116,23 @@ m.drawparallels(parallels,labels=[True,False,False,True],fontsize=13,
 m.drawmeridians(meridians,labels=[True,False,False,True],fontsize=13,
                                     fontweight='bold',color='gray',linewidth=0.5)
 
-m.drawmapscale(-43.65, -23.55, -43.65, -23.55, 20, barstyle='fancy', yoffset=1000)
+m.drawmapscale(scaleLon[0], scaleLat[0], scaleLon[0], scaleLat[0], 20, barstyle='fancy', yoffset=1000)
 # batimetria em forma de grade
 pc = m.pcolor(lon,lat,depth,latlon=True,cmap=cmo.cm.deep)
 
 # -----------------------------------------------------------------------------
 # ------------------------RETANGULOS DA DIVISAO--------------------------------
 # -----------------------------------------------------------------------------
-kwargs = {'linestyle': '--', 'alpha':0.4, 'color': 'black','facecolor':'none'}
+kwargs = {'linestyle': '--', 'alpha':0.7, 'color': '#800000','facecolor':'none','fill':None}
 draw_screen_poly(squareWP[0],squareWP[1],m,**kwargs)
-kwargs = {'linestyle': '--', 'alpha':0.4, 'color': 'black','facecolor':'none'}
+kwargs = {'linestyle': '--', 'alpha':0.7, 'color': '#800000','facecolor':'none','fill':None}
 draw_screen_poly(squareEP[0],squareEP[1],m,**kwargs)
 
 # -----------------------------------------------------------------------------
 # --------------------------LOCALIZACOES EM TEXTO -----------------------------
 # -----------------------------------------------------------------------------
-x,y=m(CNAAAbase[0], CNAAAbase[0])
-m.plot(x,y, 'bo', markersize=14)
 
+########### physiographic classification
 x,y=m(ilhagrande[0]+.100,ilhagrande[1]+.02)
 ax.text(x,y,u'ILHA GRANDE\nBAY',color='#000000', fontsize=15, ha='center',va='center')
 
@@ -127,13 +140,24 @@ x,y=m(sepetiba[0]+.080,sepetiba[1])
 ax.text(x,y,u'SEPETIBA\nBAY',color='#000000', fontsize=15, ha='center',va='center')
 
 x,y=m(porOeste[0],porOeste[1])
-ax.text(x,y,u'WEST\nPORTION',color='#800000', fontsize=8, ha='center',va='center')
+ax.text(x,y,u'WEST PORTION',color='#800000', fontsize=8, ha='left',va='baseline')
 
 x,y=m(porLeste[0],porLeste[1])
-ax.text(x,y,u'EAST\nPORTION',color='#800000', fontsize=8, ha='center',va='center')
+ax.text(x,y,u'EAST PORTION',color='#800000', fontsize=8, ha='right',va='baseline')
 
-x,y=m(canCentral[0],canCentral[1])
-ax.text(x,y,u'CENTRAL CHANNEL',color='#800000', fontsize=8, ha='center',va='center')
+x,y=m(-44.230458, -23.151578)
+ax.text(x,y,u'Ilha Grande',color='k',fontsize=12,ha='center', va='center')
+
+########### Important Locations
+x,y=m(CNAAAbase[0], CNAAAbase[0])
+m.plot(x,y, 'bo', markersize=14)
+
+# x,y=m(riomambuca[0], riomambuca[1]+0.01)
+# ax.text(x,y,u'Mambucaba\nRiver',color='k',fontsize=10, ha='center',va='center')
+
+
+# x,y=m(canCentral[0],canCentral[1])
+# ax.text(x,y,u'CENTRAL CHANNEL',color='#800000', fontsize=8, ha='center',va='center')
 
 x,y=m(picinguaba[0]+0.05, picinguaba[1]+0.015)
 ax.text(x,y,u'Picinguaba',color='k',fontsize=8, ha='center',va='center')
@@ -141,17 +165,33 @@ ax.text(x,y,u'Picinguaba',color='k',fontsize=8, ha='center',va='center')
 x,y=m(guaratiba[0]+0.035, guaratiba[1]+0.025)
 ax.text(x,y,u'Barra de\nGuaratiba',color='k',fontsize=8, ha='center',va='center')
 
-x,y=m(riomambuca[0], riomambuca[1]+0.01)
-ax.text(x,y,u'Mambucaba\nRiver',color='k',fontsize=10, ha='center',va='center')
 
-x,y=m(angradosreis[0]+0.01, angradosreis[1]+0.03)
-ax.text(x,y,u'Angra dos\nReis', color='k', fontsize=11, ha='center',va='center')
+# x,y=m(angradosreis[0]+0.01, angradosreis[1]+0.03)
+# ax.text(x,y,u'Angra dos\nReis', color='k', fontsize=11, ha='center',va='center')
+
+#### PRINCIPAL LOCATIONS
+x,y=m(RibeiraArrow[0],RibeiraArrow[1])
+ax.arrow(x,y,RibeiraArrow[2],RibeiraArrow[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
+ax.text(x+RibeiraArrow[4],y+RibeiraArrow[5],u'Ribeira Bay',fontsize=10,ha='center',va='center')
+
+x,y=m(ParatyMirimArr[0],ParatyMirimArr[1])
+ax.arrow(x,y,ParatyMirimArr[2],ParatyMirimArr[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
+ax.text(x+ParatyMirimArr[4],y+ParatyMirimArr[5],u'Paraty Mirim',fontsize=10,ha='center',va='center')
+
+x,y=m(JacuecangaArro[0],JacuecangaArro[1])
+ax.arrow(x,y,JacuecangaArro[2],JacuecangaArro[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
+ax.text(x+JacuecangaArro[4],y+JacuecangaArro[5],u'Jacuecanga\nBay',fontsize=10,ha='center',va='center')
+
+x,y=m(MambucabaArrow[0],MambucabaArrow[1])
+ax.arrow(x,y,MambucabaArrow[2],MambucabaArrow[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
+ax.text(x+MambucabaArrow[4],y+MambucabaArrow[5],u'Mambucaba\nRiver Mouth',fontsize=8,ha='center',va='center')
+
+x,y=m(MangaratibaArr[0],MangaratibaArr[1])
+ax.arrow(x,y,MangaratibaArr[2],MangaratibaArr[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
+ax.text(x+MangaratibaArr[4],y+MangaratibaArr[5],u'Marambaia\nBarrier',fontsize=10,ha='center',va='center')
 
 x,y=m(paraty[0]+0.01, paraty[1]+0.03)
-ax.text(x,y,u'Paraty', color='k', fontsize=12, ha='center',va='center')
-
-x,y=m(-44.230458, -23.151578)
-ax.text(x,y,u'Ilha Grande',color='k',fontsize=12,ha='center', va='center')
+ax.text(x,y,u'Paraty', color='k', fontsize=10, ha='center',va='center')
 
 # plt.scatter(x,y,marker='o',color='k',alpha=.2,label='Direct Impact Area (20km)')
 
@@ -172,13 +212,32 @@ plt.scatter(x,y, marker=ColNaval[2], color=ColNaval[3], s=60, label='Naval Colle
 # -----------------------        ID RADIUS            -------------------------
 # -----------------------------------------------------------------------------
 
-kwargs = {'linestyle': '--', 'alpha':0.4, 'color': 'black'}
-oceano.equi(m, CNAAAbase[0], CNAAAbase[1], 15.,lw=1., **kwargs)
+# kwargs = {'linestyle': '--', 'alpha':0.4, 'color': 'black'}
+# oceano.equi(m, CNAAAbase[0], CNAAAbase[1], 15.,lw=1., **kwargs)
 # create legend with semi transparent background
-lg = plt.legend(loc='upper left',fontsize=12,numpoints=1,scatterpoints=1)
+lg = plt.legend(loc='upper right',fontsize=12,numpoints=1,scatterpoints=1)
 lg.get_frame().set_alpha(.4)
 
 cbar = plt.colorbar(pc, orientation='horizontal', shrink=0.625, aspect=20, fraction=0.2,pad=0.04)
 cbar.set_label('Bathymetry [m]', fontsize=20)
+
+# -----------------------------------------------------------------------------
+# -----------------------    MINI GLOBE LOCATION      -------------------------
+# -----------------------------------------------------------------------------
+# m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution='f')
+#
+
+axin = inset_axes(m.ax, width='30%', height='30%', loc=4)
+# inmap = Basemap(projection='ortho', lon_0=-44.5,lat_0=-25.5,ax=axin)
+inmap = Basemap(projection='merc', llcrnrlat=-35,urcrnrlat=7,llcrnrlon=-77,urcrnrlon=-32,ax=axin)
+inmap.drawmapboundary(fill_color='#f2f2f2')
+inmap.drawcoastlines(linewidth=.1)
+inmap.drawcountries(linewidth=.1,color='white')
+inmap.fillcontinents(color='gray')
+
+bx,by = inmap(m.boundarylons,m.boundarylats)
+xy = list(zip(bx,by))
+mapboundary = Polygon(xy,edgecolor='b',linewidth=1,fill=True)
+inmap.ax.add_patch(mapboundary)
 
 plt.show()
