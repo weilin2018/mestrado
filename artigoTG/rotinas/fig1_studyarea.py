@@ -16,20 +16,23 @@ import pickle
 from artigoTGpack import artigoTGpack as oceano
 
 #
+def draw_screen_poly( lats, lons, m,**kwargs):
+    x, y = m( lons, lats )
+    xy = zip(x,y)
+    poly = Polygon( list(xy), **kwargs)
+    plt.gca().add_patch(poly)
+
 # # diretorio base
-# pwd = os.getcwd() # get current directory
-# BASE_DIR = pwd.split('/')[:-3]
-#
-# BASE_DIR = '/'.join((BASE_DIR))
 BASE_DIR = oceano.make_dir()
 
 SIMS_DIR = BASE_DIR.replace('github/', 'artigo_data/simulacoes/')
-
+SIMS_DIR = '/media/danilo/Danilo/mestrado/artigo_data/simulacoes/2ndPhase/'
 
 # importar batimetria direto de uma saida do modelo
 #data = xr.open_dataset('/media/danilo/Danilo/mestrado/artigo_data/simulacoes/val3/gcmplt.cdf')
-data = xr.open_dataset(SIMS_DIR+'val3/gcmplt.cdf')
-depth = data['depth'].values
+data = xr.open_dataset(SIMS_DIR+'reRUN00.cdf')
+ncin = xr.open_dataset(SIMS_DIR+'depth_rerun00.cdf')
+depth = ncin['depth'].values
 lon = data['lon'].values
 lat = data['lat'].values
 lon[lon == 0.] = np.nan
@@ -46,13 +49,15 @@ TermGuaiba = [-44.01916667, -23.00000000, '^', 'black']
 ColNaval  =  [-44.31833333, -23.01694444, 'v', 'black']
 
 ######### DETALHES PARA PLOTAR
+squareWP      = [[-23.25,-22.89,-22.89,-23.25],[-44.72,-44.72,-44.29,-44.29]]
+squareEP      = [[-23.15,-22.94,-22.94,-23.15],[-44.15,-44.15,-43.99,-43.99]]
+porOeste      = [-44.72,-22.89]#[-44.508007, -23.194821]
+porLeste      = [-44.15,-22.94]#[-44.113577, -23.070955]
 CNAAAbase     = [-44.460789, -23.006711]
 ilhagrande    = [-44.613300, -23.141362]#-23.137504, -44.613300
 sepetiba      = [-43.864138, -23.003667]
-piraquaraf    = [-44.441523, -23.011983]
+piraquaraf    = [-44.440706, -23.010962]
 itaorna       = [-44.472463, -23.006116]#-23.017116,
-porOeste      = [-44.508007, -23.194821]
-porLeste      = [-44.113577, -23.070955]
 canCentral    = [-44.333599, -23.083153]
 picinguaba    = [-44.830344, -23.378115]
 guaratiba     = [-43.561320, -23.064399]
@@ -79,12 +84,10 @@ lon1 = -44.558726
 fig = plt.figure(figsize=(20,15))
 ax = fig.add_subplot(111)
 
-# Plotando a base do mapa
-# m=Basemap(projection='merc',llcrnrlat=llat,urcrnrlat=ulat,llcrnrlon=llon,urcrnrlon=ulon,resolution='f')
-
-# pra agilizar o processo, puxa-se um mapa já feito e salvo em pickle
-#m=pickle.load(open("/home/danilo/Dropbox/0TG_DANILO/rotinas/rotinas/bigmap.p","rb"))
-m=pickle.load(open(BASE_DIR+"artigoTG/rotinas/bigmap.p","rb"))
+# -----------------------------------------------------------------------------
+# ---------------------    PLOTANDO A BASE DO MAPA   --------------------------
+# -----------------------------------------------------------------------------
+m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution='f')
 # plotar outras coisas do mapa
 m.drawcoastlines(linewidth=0.2) #linha de costa em alta resolução
 m.drawmapboundary() # fill_color colore o oceano
@@ -103,7 +106,17 @@ m.drawmapscale(-43.65, -23.55, -43.65, -23.55, 20, barstyle='fancy', yoffset=100
 # batimetria em forma de grade
 pc = m.pcolor(lon,lat,depth,latlon=True,cmap=cmo.cm.deep)
 
-# plotar detalhes em texto
+# -----------------------------------------------------------------------------
+# ------------------------RETANGULOS DA DIVISAO--------------------------------
+# -----------------------------------------------------------------------------
+kwargs = {'linestyle': '--', 'alpha':0.4, 'color': 'black','facecolor':'none'}
+draw_screen_poly(squareWP[0],squareWP[1],m,**kwargs)
+kwargs = {'linestyle': '--', 'alpha':0.4, 'color': 'black','facecolor':'none'}
+draw_screen_poly(squareEP[0],squareEP[1],m,**kwargs)
+
+# -----------------------------------------------------------------------------
+# --------------------------LOCALIZACOES EM TEXTO -----------------------------
+# -----------------------------------------------------------------------------
 x,y=m(CNAAAbase[0], CNAAAbase[0])
 m.plot(x,y, 'bo', markersize=14)
 
@@ -114,13 +127,13 @@ x,y=m(sepetiba[0]+.080,sepetiba[1])
 ax.text(x,y,u'SEPETIBA\nBAY',color='#000000', fontsize=15, ha='center',va='center')
 
 x,y=m(porOeste[0],porOeste[1])
-ax.text(x,y,u'WEST\nPORTION',color='#800000', fontsize=12, ha='center',va='center')
+ax.text(x,y,u'WEST\nPORTION',color='#800000', fontsize=8, ha='center',va='center')
 
 x,y=m(porLeste[0],porLeste[1])
-ax.text(x,y,u'EAST\nPORTION',color='#800000', fontsize=12, ha='center',va='center')
+ax.text(x,y,u'EAST\nPORTION',color='#800000', fontsize=8, ha='center',va='center')
 
 x,y=m(canCentral[0],canCentral[1])
-ax.text(x,y,u'CENTRAL CHANNEL',color='#800000', fontsize=12, ha='center',va='center')
+ax.text(x,y,u'CENTRAL CHANNEL',color='#800000', fontsize=8, ha='center',va='center')
 
 x,y=m(picinguaba[0]+0.05, picinguaba[1]+0.015)
 ax.text(x,y,u'Picinguaba',color='k',fontsize=8, ha='center',va='center')
@@ -143,18 +156,11 @@ ax.text(x,y,u'Ilha Grande',color='k',fontsize=12,ha='center', va='center')
 # plt.scatter(x,y,marker='o',color='k',alpha=.2,label='Direct Impact Area (20km)')
 
 # -----------------------------------------------------------------------------
+# ---------------------    MARKERS PARA LEGENDA         -----------------------
+# -----------------------------------------------------------------------------
 
-loc_w210 = [[-23.010962, -44.440706], [-22.9741811,-44.323831],
-            [-23.012479, -44.307350], [-23.059381, -44.241407],
-            [-22.994208,-44.0397950], [-23.088036,-44.0980590],
-            [-23.096075,-44.010663]]
-nam_w210 = ['Piraquara de Fora Inlet','Angra dos Reis (A)',
-            'Angra dos Reis (B)', 'Canal Central',
-            'Mangaratiba','Porção Leste (BIG)',
-            'Marambaia']
-
-x,y = m(loc_w210[0][1],loc_w210[0][0])
-plt.scatter(x,y,marker='*',color='black',s=80,label=nam_w210[0],zorder=2)
+x,y = m(piraquaraf[0],piraquaraf[1])
+plt.scatter(x,y,marker='*',color='black',s=80,label='Piraquara de Fora Inlet',zorder=2)
 
 x,y = m(TermGuaiba[0], TermGuaiba[1])
 plt.scatter(x,y, marker=TermGuaiba[2], color=TermGuaiba[3], s=60, label='Guaiba Island Terminal', zorder=2)
@@ -162,6 +168,9 @@ plt.scatter(x,y, marker=TermGuaiba[2], color=TermGuaiba[3], s=60, label='Guaiba 
 x,y = m(ColNaval[0], ColNaval[1])
 plt.scatter(x,y, marker=ColNaval[2], color=ColNaval[3], s=60, label='Naval College', zorder=2)
 
+# -----------------------------------------------------------------------------
+# -----------------------        ID RADIUS            -------------------------
+# -----------------------------------------------------------------------------
 
 kwargs = {'linestyle': '--', 'alpha':0.4, 'color': 'black'}
 oceano.equi(m, CNAAAbase[0], CNAAAbase[1], 15.,lw=1., **kwargs)

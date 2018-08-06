@@ -252,7 +252,7 @@ DATA_DIR = BASE_DIR.replace('github/','artigo_data/BNDO/')
 SIMS_DIR = BASE_DIR.replace('github/','artigo_data/simulacoes/2ndPhase/')
 
 # define which simulation
-run = 'pcse_elevation'
+run = 'reRUN00'
 
 os.system('clear')
 
