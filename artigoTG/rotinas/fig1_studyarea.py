@@ -155,16 +155,14 @@ m.plot(x,y, 'bo', markersize=14)
 # x,y=m(riomambuca[0], riomambuca[1]+0.01)
 # ax.text(x,y,u'Mambucaba\nRiver',color='k',fontsize=10, ha='center',va='center')
 
-
 # x,y=m(canCentral[0],canCentral[1])
 # ax.text(x,y,u'CENTRAL CHANNEL',color='#800000', fontsize=8, ha='center',va='center')
 
 x,y=m(picinguaba[0]+0.05, picinguaba[1]+0.015)
-ax.text(x,y,u'Picinguaba',color='k',fontsize=8, ha='center',va='center')
+ax.text(x,y,u'Picinguaba',color='k',fontsize=10, ha='center',va='center')
 
 x,y=m(guaratiba[0]+0.035, guaratiba[1]+0.025)
-ax.text(x,y,u'Barra de\nGuaratiba',color='k',fontsize=8, ha='center',va='center')
-
+ax.text(x,y,u'Barra de\nGuaratiba',color='k',fontsize=10, ha='center',va='center')
 
 # x,y=m(angradosreis[0]+0.01, angradosreis[1]+0.03)
 # ax.text(x,y,u'Angra dos\nReis', color='k', fontsize=11, ha='center',va='center')
@@ -176,7 +174,7 @@ ax.text(x+RibeiraArrow[4],y+RibeiraArrow[5],u'Ribeira Bay',fontsize=10,ha='cente
 
 x,y=m(ParatyMirimArr[0],ParatyMirimArr[1])
 ax.arrow(x,y,ParatyMirimArr[2],ParatyMirimArr[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
-ax.text(x+ParatyMirimArr[4],y+ParatyMirimArr[5],u'Paraty Mirim',fontsize=10,ha='center',va='center')
+ax.text(x+ParatyMirimArr[4],y+ParatyMirimArr[5],u'Mamanguá Sac',fontsize=10,ha='center',va='center')
 
 x,y=m(JacuecangaArro[0],JacuecangaArro[1])
 ax.arrow(x,y,JacuecangaArro[2],JacuecangaArro[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
@@ -184,7 +182,7 @@ ax.text(x+JacuecangaArro[4],y+JacuecangaArro[5],u'Jacuecanga\nBay',fontsize=10,h
 
 x,y=m(MambucabaArrow[0],MambucabaArrow[1])
 ax.arrow(x,y,MambucabaArrow[2],MambucabaArrow[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
-ax.text(x+MambucabaArrow[4],y+MambucabaArrow[5],u'Mambucaba\nRiver Mouth',fontsize=8,ha='center',va='center')
+ax.text(x+MambucabaArrow[4],y+MambucabaArrow[5],u'Mambucaba\nRiver Mouth',fontsize=10,ha='center',va='center')
 
 x,y=m(MangaratibaArr[0],MangaratibaArr[1])
 ax.arrow(x,y,MangaratibaArr[2],MangaratibaArr[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
@@ -198,7 +196,6 @@ ax.text(x,y,u'Paraty', color='k', fontsize=10, ha='center',va='center')
 # -----------------------------------------------------------------------------
 # ---------------------    MARKERS PARA LEGENDA         -----------------------
 # -----------------------------------------------------------------------------
-
 x,y = m(piraquaraf[0],piraquaraf[1])
 plt.scatter(x,y,marker='*',color='black',s=80,label='Piraquara de Fora Inlet',zorder=2)
 
@@ -211,7 +208,6 @@ plt.scatter(x,y, marker=ColNaval[2], color=ColNaval[3], s=60, label='Naval Colle
 # -----------------------------------------------------------------------------
 # -----------------------        ID RADIUS            -------------------------
 # -----------------------------------------------------------------------------
-
 # kwargs = {'linestyle': '--', 'alpha':0.4, 'color': 'black'}
 # oceano.equi(m, CNAAAbase[0], CNAAAbase[1], 15.,lw=1., **kwargs)
 # create legend with semi transparent background
@@ -224,9 +220,6 @@ cbar.set_label('Bathymetry [m]', fontsize=20)
 # -----------------------------------------------------------------------------
 # -----------------------    MINI GLOBE LOCATION      -------------------------
 # -----------------------------------------------------------------------------
-# m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution='f')
-#
-
 axin = inset_axes(m.ax, width='30%', height='30%', loc=4)
 # inmap = Basemap(projection='ortho', lon_0=-44.5,lat_0=-25.5,ax=axin)
 inmap = Basemap(projection='merc', llcrnrlat=-35,urcrnrlat=7,llcrnrlon=-77,urcrnrlon=-32,ax=axin)
@@ -240,4 +233,12 @@ xy = list(zip(bx,by))
 mapboundary = Polygon(xy,edgecolor='b',linewidth=1,fill=True)
 inmap.ax.add_patch(mapboundary)
 
+m.plot(lon,lat,'k',alpha=.1,latlon=True);
+m.plot(lon.T,lat.T,'k',alpha=.1,latlon=True);
+
+plt.savefig('/media/danilo/Danilo/mestrado/github/artigoTG/figures/Fig1.pdf',dpi=300)
+
 plt.show()
+
+
+#### ---------------------- FIG.2 -----------------------------------------
