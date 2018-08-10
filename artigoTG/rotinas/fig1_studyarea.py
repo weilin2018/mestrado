@@ -28,6 +28,11 @@ BASE_DIR = oceano.make_dir()
 SIMS_DIR = BASE_DIR.replace('github/', 'artigo_data/simulacoes/')
 SIMS_DIR = '/media/danilo/Danilo/mestrado/artigo_data/simulacoes/2ndPhase/'
 
+############### FIGURE PARAMETERS
+figWdith  = 17.4/2.54
+figHeight = 12./2.54
+
+
 # importar batimetria direto de uma saida do modelo
 #data = xr.open_dataset('/media/danilo/Danilo/mestrado/artigo_data/simulacoes/val3/gcmplt.cdf')
 data = xr.open_dataset(SIMS_DIR+'reRUN00.cdf')
@@ -93,8 +98,11 @@ lat1 = -23.054853
 lon0 = -44.374144
 lon1 = -44.558726
 
-fig = plt.figure(figsize=(20,15))
+fig = plt.figure(figsize=(figWdith,figHeight))
 ax = fig.add_subplot(111)
+
+# colorbar axes
+# cax = fig.add_axes([0.05,0.05,0.76,0.2])
 
 # -----------------------------------------------------------------------------
 # ---------------------    PLOTANDO A BASE DO MAPA   --------------------------
@@ -111,10 +119,10 @@ m.drawrivers()
 meridians=np.arange(-44.9,-33.4,0.25)
 parallels=np.arange(-23.6,-22.75,0.1)
 # desenhar meridianos e paralelos conforme definido acima
-m.drawparallels(parallels,labels=[True,False,False,True],fontsize=13,
-                                    fontweight='bold',color='gray',linewidth=0.5)
-m.drawmeridians(meridians,labels=[True,False,False,True],fontsize=13,
-                                    fontweight='bold',color='gray',linewidth=0.5)
+m.drawparallels(parallels,labels=[True,False,False,True],fontsize=8,
+                                    color='gray',linewidth=0.5)
+m.drawmeridians(meridians,labels=[True,False,False,True],fontsize=8,
+                                    color='gray',linewidth=0.5)
 
 m.drawmapscale(scaleLon[0], scaleLat[0], scaleLon[0], scaleLat[0], 20, barstyle='fancy', yoffset=1000)
 # batimetria em forma de grade
@@ -134,23 +142,23 @@ draw_screen_poly(squareEP[0],squareEP[1],m,**kwargs)
 
 ########### physiographic classification
 x,y=m(ilhagrande[0]+.100,ilhagrande[1]+.02)
-ax.text(x,y,u'ILHA GRANDE\nBAY',color='#000000', fontsize=15, ha='center',va='center')
+ax.text(x,y,u'ILHA GRANDE\nBAY',color='#000000', fontsize=9, ha='center',va='center')
 
 x,y=m(sepetiba[0]+.080,sepetiba[1])
-ax.text(x,y,u'SEPETIBA\nBAY',color='#000000', fontsize=15, ha='center',va='center')
+ax.text(x,y,u'SEPETIBA\nBAY',color='#000000', fontsize=9, ha='center',va='center')
 
 x,y=m(porOeste[0],porOeste[1])
-ax.text(x,y,u'WEST PORTION',color='#800000', fontsize=8, ha='left',va='baseline')
+ax.text(x,y,u'Western Portion',color='#800000', fontsize=8, ha='left',va='baseline')
 
 x,y=m(porLeste[0],porLeste[1])
-ax.text(x,y,u'EAST PORTION',color='#800000', fontsize=8, ha='right',va='baseline')
+ax.text(x,y,u'Eastern Portion',color='#800000', fontsize=8, ha='right',va='baseline')
 
 x,y=m(-44.230458, -23.151578)
-ax.text(x,y,u'Ilha Grande',color='k',fontsize=12,ha='center', va='center')
+ax.text(x,y,u'Ilha Grande',color='k',fontsize=10,ha='center', va='center')
 
 ########### Important Locations
 x,y=m(CNAAAbase[0], CNAAAbase[0])
-m.plot(x,y, 'bo', markersize=14)
+m.plot(x,y, 'bo', markersize=8)
 
 # x,y=m(riomambuca[0], riomambuca[1]+0.01)
 # ax.text(x,y,u'Mambucaba\nRiver',color='k',fontsize=10, ha='center',va='center')
@@ -159,10 +167,10 @@ m.plot(x,y, 'bo', markersize=14)
 # ax.text(x,y,u'CENTRAL CHANNEL',color='#800000', fontsize=8, ha='center',va='center')
 
 x,y=m(picinguaba[0]+0.05, picinguaba[1]+0.015)
-ax.text(x,y,u'Picinguaba',color='k',fontsize=10, ha='center',va='center')
+ax.text(x,y,u'Picinguaba',color='k',fontsize=8, ha='center',va='center')
 
 x,y=m(guaratiba[0]+0.035, guaratiba[1]+0.025)
-ax.text(x,y,u'Barra de\nGuaratiba',color='k',fontsize=10, ha='center',va='center')
+ax.text(x,y,u'Barra de\nGuaratiba',color='k',fontsize=8, ha='center',va='center')
 
 # x,y=m(angradosreis[0]+0.01, angradosreis[1]+0.03)
 # ax.text(x,y,u'Angra dos\nReis', color='k', fontsize=11, ha='center',va='center')
@@ -170,26 +178,26 @@ ax.text(x,y,u'Barra de\nGuaratiba',color='k',fontsize=10, ha='center',va='center
 #### PRINCIPAL LOCATIONS
 x,y=m(RibeiraArrow[0],RibeiraArrow[1])
 ax.arrow(x,y,RibeiraArrow[2],RibeiraArrow[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
-ax.text(x+RibeiraArrow[4],y+RibeiraArrow[5],u'Ribeira Bay',fontsize=10,ha='center',va='center')
+ax.text(x+RibeiraArrow[4],y+RibeiraArrow[5],u'Ribeira Bay',fontsize=8,ha='center',va='center')
 
 x,y=m(ParatyMirimArr[0],ParatyMirimArr[1])
 ax.arrow(x,y,ParatyMirimArr[2],ParatyMirimArr[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
-ax.text(x+ParatyMirimArr[4],y+ParatyMirimArr[5],u'Mamanguá Sac',fontsize=10,ha='center',va='center')
+ax.text(x+ParatyMirimArr[4],y+ParatyMirimArr[5],u'Mamanguá Sac',fontsize=8,ha='center',va='center')
 
 x,y=m(JacuecangaArro[0],JacuecangaArro[1])
 ax.arrow(x,y,JacuecangaArro[2],JacuecangaArro[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
-ax.text(x+JacuecangaArro[4],y+JacuecangaArro[5],u'Jacuecanga\nBay',fontsize=10,ha='center',va='center')
+ax.text(x+JacuecangaArro[4],y+JacuecangaArro[5],u'Jacuecanga\nBay',fontsize=8,ha='center',va='center')
 
 x,y=m(MambucabaArrow[0],MambucabaArrow[1])
 ax.arrow(x,y,MambucabaArrow[2],MambucabaArrow[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
-ax.text(x+MambucabaArrow[4],y+MambucabaArrow[5],u'Mambucaba\nRiver Mouth',fontsize=10,ha='center',va='center')
+ax.text(x+MambucabaArrow[4],y+MambucabaArrow[5],u'Mambucaba\nRiver Mouth',fontsize=8,ha='center',va='center')
 
 x,y=m(MangaratibaArr[0],MangaratibaArr[1])
 ax.arrow(x,y,MangaratibaArr[2],MangaratibaArr[3],head_width=0.5,head_length=0.1,fc='k',ec='k')
-ax.text(x+MangaratibaArr[4],y+MangaratibaArr[5],u'Marambaia\nBarrier',fontsize=10,ha='center',va='center')
+ax.text(x+MangaratibaArr[4],y+MangaratibaArr[5],u'Marambaia\nBarrier',fontsize=8,ha='center',va='center')
 
 x,y=m(paraty[0]+0.01, paraty[1]+0.03)
-ax.text(x,y,u'Paraty', color='k', fontsize=10, ha='center',va='center')
+ax.text(x,y,u'Paraty', color='k', fontsize=8, ha='center',va='center')
 
 # plt.scatter(x,y,marker='o',color='k',alpha=.2,label='Direct Impact Area (20km)')
 
@@ -197,13 +205,13 @@ ax.text(x,y,u'Paraty', color='k', fontsize=10, ha='center',va='center')
 # ---------------------    MARKERS PARA LEGENDA         -----------------------
 # -----------------------------------------------------------------------------
 x,y = m(piraquaraf[0],piraquaraf[1])
-plt.scatter(x,y,marker='*',color='black',s=80,label='Piraquara de Fora Inlet',zorder=2)
+plt.scatter(x,y,marker='*',color='black',s=40,label='Piraquara de Fora Inlet',zorder=2)
 
 x,y = m(TermGuaiba[0], TermGuaiba[1])
-plt.scatter(x,y, marker=TermGuaiba[2], color=TermGuaiba[3], s=60, label='Guaiba Island Terminal', zorder=2)
+plt.scatter(x,y, marker=TermGuaiba[2], color=TermGuaiba[3], s=30, label='Guaiba Island Terminal', zorder=2)
 
 x,y = m(ColNaval[0], ColNaval[1])
-plt.scatter(x,y, marker=ColNaval[2], color=ColNaval[3], s=60, label='Naval College', zorder=2)
+plt.scatter(x,y, marker=ColNaval[2], color=ColNaval[3], s=30, label='Naval College', zorder=2)
 
 # -----------------------------------------------------------------------------
 # -----------------------        ID RADIUS            -------------------------
@@ -211,11 +219,11 @@ plt.scatter(x,y, marker=ColNaval[2], color=ColNaval[3], s=60, label='Naval Colle
 # kwargs = {'linestyle': '--', 'alpha':0.4, 'color': 'black'}
 # oceano.equi(m, CNAAAbase[0], CNAAAbase[1], 15.,lw=1., **kwargs)
 # create legend with semi transparent background
-lg = plt.legend(loc='upper right',fontsize=12,numpoints=1,scatterpoints=1)
+lg = plt.legend(loc='upper right',fontsize=8,numpoints=1,scatterpoints=1)
 lg.get_frame().set_alpha(.4)
 
 cbar = plt.colorbar(pc, orientation='horizontal', shrink=0.625, aspect=20, fraction=0.2,pad=0.04)
-cbar.set_label('Bathymetry [m]', fontsize=20)
+cbar.set_label('Bathymetry [m]', fontsize=10)
 
 # -----------------------------------------------------------------------------
 # -----------------------    MINI GLOBE LOCATION      -------------------------
@@ -236,9 +244,9 @@ inmap.ax.add_patch(mapboundary)
 m.plot(lon,lat,'k',alpha=.1,latlon=True);
 m.plot(lon.T,lat.T,'k',alpha=.1,latlon=True);
 
-plt.savefig('/media/danilo/Danilo/mestrado/github/artigoTG/figures/Fig1.pdf',dpi=300)
+# plt.tight_layout()
+# plt.subplots_adjust(right=0.993,left=0.067,wspace=0.178)
+
+# plt.savefig('/media/danilo/Danilo/mestrado/github/artigoTG/figures/Fig1.eps')
 
 plt.show()
-
-
-#### ---------------------- FIG.2 -----------------------------------------

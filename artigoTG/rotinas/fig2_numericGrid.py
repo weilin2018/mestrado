@@ -45,6 +45,9 @@ picinguaba    = [-44.830344, -23.378115]
 guaratiba     = [-43.561320, -23.064399]
 MambucabaArrow= [-44.525,-23.03, -2000,2000,-5000,5000]
 
+## scale position
+scaleLon      = [-44.65]
+scaleLat      = [-23.55]
 
 fig = plt.figure(figsize=(20,15))
 ax = fig.add_subplot(111)
