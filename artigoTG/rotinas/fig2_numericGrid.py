@@ -49,7 +49,11 @@ MambucabaArrow= [-44.525,-23.03, -2000,2000,-5000,5000]
 scaleLon      = [-44.65]
 scaleLat      = [-23.55]
 
-fig = plt.figure(figsize=(20,15))
+############### FIGURE PARAMETERS
+figWdith  = 17.4/2.54
+figHeight = 12./2.54
+
+fig = plt.figure(figsize=(figWdith,figHeight))
 ax = fig.add_subplot(111)
 
 # -----------------------------------------------------------------------------

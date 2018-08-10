@@ -46,7 +46,7 @@ def make_map(ax,region='bigs',resolution='i',parallels_label=[True,False,False,T
     m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
     m.ax = ax
     # plotar outras coisas do mapa
-    m.drawcoastlines(linewidth=0.2) #linha de costa em alta resolução
+    m.drawcoastlines(linewidth=0.1,color='#c0c0c0') #linha de costa em alta resolução
     m.drawmapboundary(fill_color='#f2f2f2') # fill_color colore o oceano
     # m.fillcontinents(color='#ffd480') # colorir o continente
     m.fillcontinents(color='0.85')
@@ -68,7 +68,7 @@ def create_Figure_structure(figsize=(20,15),resolution='i'):
 
     # divider = make_axes_locatable(ax[1])
     # cax = divider.append_axes("bottom",size='5%',pad=0.15)
-    cax = fig.add_axes([0.13,0.12,0.76,0.02])
+    cax = fig.add_axes([0.135,0.12,0.76,0.02])
 
     # for orient in ['top','bottom','left','right']:
     #     m_allArea.ax.spines[orient].set_visible(False)
@@ -83,13 +83,8 @@ def create_Figure_structure_2ndVersion(figsize=(20,15),resolution='i',rotation=N
     m_allArea  = make_map(ax[0],region='ribeira',resolution=resolution,parallels_label=[True,False,False,False],rotation=rotation)
     m_zoomBay  = make_map(ax[1],region='ribeira',resolution=resolution)
 
-    # divider = make_axes_locatable(ax[1])
-    # cax = divider.append_axes("bottom",size='5%',pad=0.15)
-    cax = fig.add_axes([0.13,0.12,0.76,0.02])
-
-    # for orient in ['top','bottom','left','right']:
-    #     m_allArea.ax.spines[orient].set_visible(False)
-    #     m_zoomBay.ax.spines[orient].set_visible(False)
+    # define position of colorbar's axis
+    cax = fig.add_axes([0.14,0.12,0.765,0.02])
 
     return m_allArea, m_zoomBay, cax
 
@@ -119,7 +114,6 @@ class Experiment(object):
         # convert figsize from cm to inches dividing by 2.54
         self.figSize = (figsize[0]/2.54, figsize[1]/2.54)
         self.region  = region
-
 
     def importVariables_basic(self):
         """ importing basic variables, as latitude and longitude """
@@ -161,7 +155,6 @@ class Experiment(object):
         self.un    = self.u/self.imean
         self.vn    = self.v/self.imean
 
-
     def calcMax(self,data):
         # condition to select some specific region
         ilonlat = ((self.lon > -44.4) & (self.lon < -43.9) & (self.lat > -23.2) & (self.lat < -23))
@@ -180,6 +173,14 @@ class Experiment(object):
         self.uRib = self.un[:,80:130,:30]
         self.vRib = self.vn[:,80:130,:30]
 
+    def define_adjustSubplot_Parameters(self,top,bottom,left,right,hspace,wspace):
+        self.subAdjust_top     = top
+        self.subAdjust_bottom  = bottom
+        self.subAdjust_left    = left
+        self.subAdjust_right   = right
+        self.subAdjust_hspace  = hspace
+        self.subAdjust_wspace  = wspace
+
     def plot_Figure_WindDriven_Circulation(self):
         """ plot figure 3 related to experiment I output - circulation """
         if ~hasattr(self,'umean'):
@@ -194,7 +195,7 @@ class Experiment(object):
         # plot normalized vectors
         # create subplot structure
         self.m_all, self.m_rib, self.cax = create_Figure_structure(figsize=self.figSize,resolution='f')
-        contour_levels = np.arange(0,0.5,0.01)
+        contour_levels = np.arange(0,0.3,0.01)
 
         cf = self.m_all.contourf(self.lon,self.lat,self.imean,contour_levels,latlon=True,cmap=cmo.cm.speed)
         self.m_rib.contourf(self.lon,self.lat,self.imean,contour_levels,latlon=True,cmap=cmo.cm.speed)
@@ -203,8 +204,8 @@ class Experiment(object):
         self.m_rib.quiver(self.lon[skip_bay],self.lat[skip_bay],self.un[skip_bay],self.vn[skip_bay],latlon=True,scale=20,minshaft=4)
 
         # plot colorbar using the first contourf
-        cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.2,0.4],cax=self.cax,format='%.1f')
-        cb.set_label('Average Circulation'+ ' [m.s' +r'$^{-1}$]',fontsize=10)
+        cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.1,0.2],cax=self.cax,format='%.1f')
+        cb.set_label('Average Circulation'+ ' (ms' +r'$^{-1}$)',fontsize=10)
 
         # insert panels identification (a) and (b)
         self.m_all.ax.text(0.03,0.85,'(a)',transform=self.m_all.ax.transAxes)
@@ -234,21 +235,21 @@ class Experiment(object):
         qv = self.m1.quiver(self.lon[::15,::15],self.lat[::15,::15],self.un[spring_flood,::15,::15],self.vn[spring_flood,::15,::15],latlon=True)
         # self.m1.ax.set_title('Spring Flood, with max of %0.2f'%(self.calcMax(np.squeeze(self.imean[spring_flood,:,:]))))
         maxValue = self.calcMax(np.squeeze(self.imean[spring_flood,:,:]))
-        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
-        self.m1.ax.text(0.90,0.90,textMax,transform=self.m1.ax.transAxes,ha='center',va='center',fontsize=8)
+        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
+        self.m1.ax.text(0.90,0.91,textMax,transform=self.m1.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m1.ax.text(0.03,0.85,'(a)',transform=self.m1.ax.transAxes)
         self.m1.ax.set_title('Spring Flood',fontsize=10)
 
         cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.2,0.4,0.6],cax=self.cax,format='%.1f')
-        cb.set_label('Surface Circulation'+r' [m s$^{-1}$]',fontsize=10,labelpad=-1)
+        cb.set_label('Surface Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
 
         # plotting spring ebb
         self.m2.contourf(self.lon,self.lat,self.imean[spring_ebb,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
         self.m2.quiver(self.lon[::15,::15],self.lat[::15,::15],self.un[spring_ebb,::15,::15],self.vn[spring_ebb,::15,::15],latlon=True)
         # self.m2.ax.set_title('Spring Ebb, with max of %0.2f'%(self.calcMax(np.squeeze(self.imean[spring_ebb,:,:]))))
         maxValue = self.calcMax(np.squeeze(self.imean[spring_ebb,:,:]))
-        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
-        self.m2.ax.text(0.90,0.90,textMax,transform=self.m2.ax.transAxes,ha='center',va='center',fontsize=8)
+        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
+        self.m2.ax.text(0.90,0.91,textMax,transform=self.m2.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m2.ax.text(0.03,0.85,'(b)',transform=self.m2.ax.transAxes)
         self.m2.ax.set_title('Spring Ebb',fontsize=10)
 
@@ -256,8 +257,8 @@ class Experiment(object):
         self.m3.contourf(self.lon,self.lat,self.imean[neap_flood,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
         self.m3.quiver(self.lon[::15,::15],self.lat[::15,::15],self.un[neap_flood,::15,::15],self.vn[neap_flood,::15,::15],latlon=True)
         maxValue = self.calcMax(np.squeeze(self.imean[neap_flood,:,:]))
-        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
-        self.m3.ax.text(0.90,0.90,textMax,transform=self.m3.ax.transAxes,ha='center',va='center',fontsize=8)
+        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
+        self.m3.ax.text(0.90,0.91,textMax,transform=self.m3.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m3.ax.text(0.03,0.85,'(c)',transform=self.m3.ax.transAxes)
         self.m3.ax.set_title('Neap Flood',fontsize=10)
 
@@ -265,8 +266,8 @@ class Experiment(object):
         self.m4.contourf(self.lon,self.lat,self.imean[neap_ebb,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
         self.m4.quiver(self.lon[::15,::15],self.lat[::15,::15],self.un[neap_ebb,::15,::15],self.vn[neap_ebb,::15,::15],latlon=True)
         maxValue = self.calcMax(np.squeeze(self.imean[neap_ebb,:,:]))
-        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
-        self.m4.ax.text(0.90,0.90,textMax,transform=self.m4.ax.transAxes,ha='center',va='center',fontsize=8)
+        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
+        self.m4.ax.text(0.90,0.91,textMax,transform=self.m4.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m4.ax.text(0.03,0.85,'(d)',transform=self.m4.ax.transAxes)
         self.m4.ax.set_title('Neap Ebb',fontsize=10)
 
@@ -297,19 +298,19 @@ class Experiment(object):
         qv = self.m1.quiver(self.lonRib[::4,::4],self.latRib[::4,::4],self.uRib[spring_flood,::4,::4],self.vRib[spring_flood,::4,::4],latlon=True)
         # self.m1.ax.set_title('Spring Flood, with max of %0.2f'%(self.calcMax(np.squeeze(self.s[spring_flood,:,:]))))
         maxValue = np.nanmax(self.spdRib[spring_flood,:,:])
-        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
+        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
         self.m1.ax.text(0.90,0.90,textMax,transform=self.m1.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m1.ax.text(0.03,0.85,'(a)',transform=self.m1.ax.transAxes)
         self.m1.ax.set_title('Spring Flood',fontsize=10,y=.97)
 
         cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.2,0.4,0.6],cax=self.cax,format='%.1f')
-        cb.set_label('Surface Circulation'+r' [m s$^{-1}$]',fontsize=10,labelpad=-1)
+        cb.set_label('Surface Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
 
         # plotting spring ebb
         self.m2.contourf(self.lonRib,self.latRib,self.spdRib[spring_ebb,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
         self.m2.quiver(self.lonRib[::4,::4],self.latRib[::4,::4],self.uRib[spring_ebb,::4,::4],self.vRib[spring_ebb,::4,::4],latlon=True)
         maxValue = np.nanmax(self.spdRib[spring_ebb,:,:])
-        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
+        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
         self.m2.ax.text(0.90,0.90,textMax,transform=self.m2.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m2.ax.text(0.03,0.85,'(b)',transform=self.m2.ax.transAxes)
         self.m2.ax.set_title('Spring Ebb',fontsize=10,y=.97)
@@ -318,7 +319,7 @@ class Experiment(object):
         self.m3.contourf(self.lonRib,self.latRib,self.spdRib[neap_flood,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
         self.m3.quiver(self.lonRib[::4,::4],self.latRib[::4,::4],self.uRib[neap_flood,::4,::4],self.vRib[neap_flood,::4,::4],latlon=True)
         maxValue = np.nanmax(self.spdRib[neap_flood,:,:])
-        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
+        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
         self.m3.ax.text(0.90,0.90,textMax,transform=self.m3.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m3.ax.text(0.03,0.85,'(c)',transform=self.m3.ax.transAxes)
         self.m3.ax.set_title('Neap Flood',fontsize=10,y=.97)
@@ -327,7 +328,7 @@ class Experiment(object):
         self.m4.contourf(self.lonRib,self.latRib,self.spdRib[neap_ebb,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
         self.m4.quiver(self.lonRib[::4,::4],self.latRib[::4,::4],self.uRib[neap_ebb,::4,::4],self.vRib[neap_ebb,::4,::4],latlon=True)
         maxValue = np.nanmax(self.spdRib[neap_ebb,:,:])
-        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
+        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
         self.m4.ax.text(0.90,0.90,textMax,transform=self.m4.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m4.ax.text(0.03,0.85,'(d)',transform=self.m4.ax.transAxes)
         self.m4.ax.set_title('Neap Ebb',fontsize=10,y=.97)
@@ -350,7 +351,7 @@ class Experiment(object):
             self.cutData4Ribeira()
 
         # define contours
-        contour_levels = np.arange(0,0.7,0.001)
+        contour_levels = np.arange(0,0.3,0.001)
 
         self.m1,self.m2,self.cax = create_Figure_structure_2ndVersion(figsize=self.figSize,rotation=20,resolution='f')
 
@@ -358,18 +359,18 @@ class Experiment(object):
         qv = self.m1.quiver(self.lonRib[::4,::4],self.latRib[::4,::4],self.uRib[spring_ebb,::4,::4],self.vRib[spring_ebb,::4,::4],latlon=True)
         # self.m1.ax.set_title('Spring Flood, with max of %0.2f'%(self.calcMax(np.squeeze(self.s[spring_flood,:,:]))))
         maxValue = np.nanmax(self.spdRib[spring_ebb,:,:])
-        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
-        self.m1.ax.text(0.90,0.90,textMax,transform=self.m1.ax.transAxes,ha='center',va='center',fontsize=8)
+        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
+        self.m1.ax.text(0.88,0.88,textMax,transform=self.m1.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m1.ax.text(0.03,0.85,'(a)',transform=self.m1.ax.transAxes)
 
-        cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.2,0.4,0.6],cax=self.cax,format='%.1f')
-        cb.set_label('Surface Circulation'+r' [m s$^{-1}$]',fontsize=10,labelpad=-1)
+        cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.1,0.2],cax=self.cax,format='%.1f')
+        cb.set_label('Surface Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
 
         self.m2.contourf(self.lonRib,self.latRib,self.spdRib[neap_ebb,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
         self.m2.quiver(self.lonRib[::4,::4],self.latRib[::4,::4],self.uRib[neap_ebb,::4,::4],self.vRib[neap_ebb,::4,::4],latlon=True)
         maxValue = np.nanmax(self.spdRib[neap_ebb,:,:])
-        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
-        self.m2.ax.text(0.90,0.90,textMax,transform=self.m2.ax.transAxes,ha='center',va='center',fontsize=8)
+        textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
+        self.m2.ax.text(0.88,0.88,textMax,transform=self.m2.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m2.ax.text(0.03,0.85,'(b)',transform=self.m2.ax.transAxes)
 
         if hasattr(self,'subAdjust_left'):
@@ -398,7 +399,7 @@ def fig4():
 
 def fig5():
     expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(17.4,12))
-    # expIII.figname = 'Fig5'
+    expIII.figname = 'Fig5'
     # define some values for tight_subplot_layout
     expIII.subAdjust_top    = 0.973
     expIII.subAdjust_bottom = 0.132
@@ -431,12 +432,7 @@ def fig6():
     # if you want to plot 4 subplots for each tidal condition and phase, uncomment the 7 lines below
     expIII.figSize = (8.4/2.54,10./2.54)
     expIII.figname = 'Fig6_2ndVersion'
-    expIII.subAdjust_top    = 0.977
-    expIII.subAdjust_bottom = 0.172
-    expIII.subAdjust_left   = 0.072
-    expIII.subAdjust_right  = 0.973
-    expIII.subAdjust_hspace = 0.072
-    expIII.subAdjust_wspace = 0.082
+    expIII.define_adjustSubplot_Parameters(top=0.977,bottom=0.172,left=0.072,right=0.973,hspace=0.072,wspace=0.082)
     expIII.plot_Figure6_2ndVersion(229,218,290,293)
 
 
@@ -479,7 +475,7 @@ def fig6():
 # qv = expIII.m1.quiver(expIII.lonRib[skip_all],expIII.latRib[skip_all],expIII.uRib[skip_all2],expIII.vRib[skip_all2],latlon=True)
 # # expIII.m1.ax.set_title('Spring Flood, with max of %0.2f'%(expIII.calcMax(np.squeeze(expIII.s[spring_flood,:,:]))))
 # maxValue = np.nanmax(expIII.spdRib[spring_flood,:,:])
-# textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
+# textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
 # expIII.m1.ax.text(0.90,0.90,textMax,transform=expIII.m1.ax.transAxes,ha='center',va='center',fontsize=8)
 # expIII.m1.ax.text(0.03,0.85,'(a)',transform=expIII.m1.ax.transAxes)
 # expIII.m1.ax.set_title('Spring Flood',fontsize=10,y=.97)
