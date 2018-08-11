@@ -9,7 +9,7 @@ from matplotlib.patches import Polygon
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset, inset_axes
 import xray as xr
-
+import pandas as pd
 import cmocean as cmo
 
 import pickle
@@ -100,6 +100,24 @@ def create_Figure_structure_4plots(figsize=(20,15),resolution='i',region='bigs',
     cax = fig.add_axes(cax_parameters)
 
     return m1,m2,m3,m4,cax
+
+def nearest_date(items,pivot):
+    nearest=min(items, key=lambda x: abs(x - pivot))
+    timedelta = abs(nearest - pivot)
+    return nearest, timedelta
+
+def locate_closest_date(time,day):
+
+    # convert into datetimeindex
+    dates = pd.DatetimeIndex(time)
+
+    pivot = dates[0] + pd.DateOffset(days=day)
+
+    # locate the closest datetime index
+    nearestDate = nearest_date(dates,pivot)
+    index = np.where(dates == nearestDate[0])
+
+    return index
 
 # ----- Defining class
 class Experiment(object):
@@ -383,6 +401,10 @@ class Experiment(object):
         else:
             plt.show()
 
+    def loadConcentration(self,time_i):
+
+        return False
+
 # ----- load file from Oceano Computer ----- #
 DATA_DIR = '/media/danilo/Danilo/mestrado/artigo_data/simulacoes/sims_dispersao/'
 
@@ -436,80 +458,16 @@ def fig6():
     expIII.plot_Figure6_2ndVersion(229,218,290,293)
 
 
-
-
 # -------------- TESTING ZONE
-#
-#
-# # testing plot experiment III / Figure 5
-# expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(8.4,12))
-# expIII.subAdjust_top    = 0.977
-# expIII.subAdjust_bottom = 0.172
-# expIII.subAdjust_left   = 0.072
-# expIII.subAdjust_right  = 0.973
-# expIII.subAdjust_hspace = 0.072
-# expIII.subAdjust_wspace = 0.082
-# expIII.importVariables_basic()
-# expIII.importvariables_Circulation()
-# expIII.calculateSpeed()
-# expIII.cutData4Ribeira()
-# # expIII.calculateMean_verticalVelocity(axis=1)
-#
-#
-# expIII.m1,expIII.m3,expIII.cax = create_Figure_structure_2ndVersion(figsize=expIII.figSize)
-#
-#
-#
-#
-# spring_flood = 229 #229 # 66.9 cm/s (210)
-# spring_ebb   = 218 #218 #
-# neap_flood   = 290 #290 # 0.28 m/s
-# neap_ebb     = 293 #293 # 0.12 m/s
-#
-# # define contours
-# contour_levels = np.arange(0,0.7,0.001)
-#
-# # expIII.m1,expIII.m2,expIII.m3,expIII.m4, expIII.cax = create_Figure_structure_4plots(figsize=expIII.figSize,resolution='i',region='ribeira',rotation=20,cax_parameters=[0.12,0.10,0.78,0.02])
-# # plotting spring flood
-# cf = expIII.m1.contourf(expIII.lonRib,expIII.latRib,expIII.spdRib[spring_flood,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
-# qv = expIII.m1.quiver(expIII.lonRib[skip_all],expIII.latRib[skip_all],expIII.uRib[skip_all2],expIII.vRib[skip_all2],latlon=True)
-# # expIII.m1.ax.set_title('Spring Flood, with max of %0.2f'%(expIII.calcMax(np.squeeze(expIII.s[spring_flood,:,:]))))
-# maxValue = np.nanmax(expIII.spdRib[spring_flood,:,:])
-# textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
-# expIII.m1.ax.text(0.90,0.90,textMax,transform=expIII.m1.ax.transAxes,ha='center',va='center',fontsize=8)
-# expIII.m1.ax.text(0.03,0.85,'(a)',transform=expIII.m1.ax.transAxes)
-# expIII.m1.ax.set_title('Spring Flood',fontsize=10,y=.97)
-#
-# cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.2,0.4,0.6],cax=expIII.cax,format='%.1f')
-# cb.set_label('Surface Circulation'+r' [m s$^{-1}$]',fontsize=10,labelpad=-1)
-#
-# # plotting spring ebb
-# expIII.m2.contourf(expIII.lonRib,expIII.latRib,expIII.spdRib[spring_ebb,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
-# expIII.m2.quiver(expIII.lonRib[::4,::4],expIII.latRib[::4,::4],expIII.uRib[spring_ebb,::4,::4],expIII.vRib[spring_ebb,::4,::4],latlon=True)
-# maxValue = np.nanmax(expIII.spdRib[spring_ebb,:,:])
-# textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
-# expIII.m2.ax.text(0.90,0.90,textMax,transform=expIII.m2.ax.transAxes,ha='center',va='center',fontsize=8)
-# expIII.m2.ax.text(0.03,0.85,'(b)',transform=expIII.m2.ax.transAxes)
-# expIII.m2.ax.set_title('Spring Ebb',fontsize=10,y=.97)
-#
-# # plotting neap flood
-# expIII.m3.contourf(expIII.lonRib,expIII.latRib,expIII.spdRib[neap_flood,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
-# expIII.m3.quiver(expIII.lonRib[::4,::4],expIII.latRib[::4,::4],expIII.uRib[neap_flood,::4,::4],expIII.vRib[neap_flood,::4,::4],latlon=True)
-# maxValue = np.nanmax(expIII.spdRib[neap_flood,:,:])
-# textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
-# expIII.m3.ax.text(0.90,0.90,textMax,transform=expIII.m3.ax.transAxes,ha='center',va='center',fontsize=8)
-# expIII.m3.ax.text(0.03,0.85,'(c)',transform=expIII.m3.ax.transAxes)
-# expIII.m3.ax.set_title('Neap Flood',fontsize=10,y=.97)
-#
-# # plotting neap ebb
-# expIII.m4.contourf(expIII.lonRib,expIII.latRib,expIII.spdRib[neap_ebb,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
-# expIII.m4.quiver(expIII.lonRib[::4,::4],expIII.latRib[::4,::4],expIII.uRib[neap_ebb,::4,::4],expIII.vRib[neap_ebb,::4,::4],latlon=True)
-# maxValue = np.nanmax(expIII.spdRib[neap_ebb,:,:])
-# textMax = 'Max Curr\n%0.2f'%(maxValue) + 'm s' +r'$^{-1}$'
-# expIII.m4.ax.text(0.90,0.90,textMax,transform=expIII.m4.ax.transAxes,ha='center',va='center',fontsize=8)
-# expIII.m4.ax.text(0.03,0.85,'(d)',transform=expIII.m4.ax.transAxes)
-# expIII.m4.ax.set_title('Neap Ebb',fontsize=10,y=.97)
-#
-# rect = (0.13,0.11,1.,1.)
-# plt.tight_layout(rect=rect)
-# plt.subplots_adjust(top=0.975,bottom=0.197,left=0.057,right=0.995,wspace=0.047,hspace=0.00)
+exp = Experiment(DATA_DIR+"expIV.cdf",figsize=(17.4,12.))
+
+# selecionar os indices dos dias que eu quero plotar
+timestep_1 = locate_closest_date(exp.ncin.time.values,10)[0][0]
+timestep_2 = locate_closest_date(exp.ncin.time.values,20)[0][0]
+timestep_3 = locate_closest_date(exp.ncin.time.values,30)[0][0]
+timestep_4 = locate_closest_date(exp.ncin.time.values,40)[0][0]
+# mandar pra funcao igual mandei no expIII, mas posso só importar os dados
+# nos dias que eu quero, pra facilitar  o load dos dados e não ficar demorando
+
+# seria ideal montar uma funcao pra localizar, na variavel ncin.time, os indices
+# dos dias que eu quero.
