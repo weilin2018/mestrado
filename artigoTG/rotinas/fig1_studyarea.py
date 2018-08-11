@@ -51,21 +51,22 @@ llat = -23.6;
 ulat = -22.75;
 
 ######### DETALHES PARA PLOTAR
+biggestSquare = [[-23.30,-22.90,-22.90,-23.3,],[-44.72,-44.72,-43.99,-43.99]]
 squareWP      = [[-23.25,-22.89,-22.89,-23.25],[-44.72,-44.72,-44.29,-44.29]]
 squareEP      = [[-23.15,-22.94,-22.94,-23.15],[-44.15,-44.15,-43.99,-43.99]]
 porOeste      = [-44.72,-22.89]#[-44.508007, -23.194821]
-porLeste      = [-43.99,-22.94]#[-44.113577, -23.070955]
+porLeste      = [-44.04,-23.09]#[-44.113577, -23.070955]
 
 ## scale position
-scaleLon      = [-44.65]
+scaleLon      = [-44.78]
 scaleLat      = [-23.55]
 
 RibeiraArrow  = [-44.4,-23.,10000,13000,15000,15000]
-JacuecangaArro= [-44.26,-23.02,4000,4000,5000,6000]
-MambucabaArrow= [-44.525,-23.03, -2000,2000,-5000,5000]
-MarambaiaArrow= [-43.95,-23.07,5000,-5000,7000,-8000]
+JacuecangaArro= [-44.26,-23.02,4000,4000,5000,7000]
+MambucabaArrow= [-44.525,-23.03, -2000,2000,-5000,5500]
+MarambaiaArrow= [-43.95,-23.07,5000,-5000,7000,-8500]
 GuaratibaArrow= [-43.561320, -23.064399, -1000, 1500,0,5000]
-PicinguabaArro= [-44.827, -23.376, 2000,2800,2000,5000]
+PicinguabaArro= [-44.827, -23.376, 2000,2800,2500,5000]
 MamanguaArrow = [-44.644, -23.285, -5000,0,-9000,0]
 
 CNAAAbase     = [-44.460789, -23.006711]
@@ -111,10 +112,8 @@ pc = m.contourf(lon,lat,depth,latlon=True,cmap=cmo.cm.deep)
 # -----------------------------------------------------------------------------
 # ------------------------RETANGULOS DA DIVISAO--------------------------------
 # -----------------------------------------------------------------------------
-kwargs = {'linestyle': '--', 'alpha':0.1, 'color': '#800000','facecolor':'none','fill':"#800000",'linewidth':0.2}
-draw_screen_poly(squareWP[0],squareWP[1],m,**kwargs)
-kwargs = {'linestyle': '--', 'alpha':0.1, 'color': '#800000','facecolor':'none','fill':"#800000",'linewidth':0.2}
-draw_screen_poly(squareEP[0],squareEP[1],m,**kwargs)
+kwargs = {'linestyle': '--', 'alpha':0.1, 'color': '#000000','facecolor':'none','fill':"#000000",'linewidth':0.2}
+draw_screen_poly(biggestSquare[0],biggestSquare[1],m,**kwargs)
 
 # -----------------------------------------------------------------------------
 # --------------------------LOCALIZACOES EM TEXTO -----------------------------
@@ -122,19 +121,19 @@ draw_screen_poly(squareEP[0],squareEP[1],m,**kwargs)
 
 ########### physiographic classification
 x,y=m(ilhagrande[0]+.100,ilhagrande[1]+.02)
-ax.text(x,y,u'Ilha Grande\nBay',color='#000000', fontsize=9, ha='center',va='center')
+ax.text(x,y,u'Western\nPortion',color='#000000', fontsize=8, ha='center',va='center')
 
 x,y=m(sepetiba[0]+.080,sepetiba[1])
-ax.text(x,y,u'Sepetiba\nBay',color='#000000', fontsize=9, ha='center',va='center')
+ax.text(x,y,u'Sepetiba\nBay',color='#000000', fontsize=8, ha='center',va='center')
 
 x,y=m(porOeste[0],porOeste[1])
-ax.text(x,y,u'Western Portion',color='#800000', fontsize=8, ha='left',va='baseline')
+ax.text(x,y,u'Ilha Grande Bay',color='#000000', fontsize=8, ha='left',va='baseline')
 
 x,y=m(porLeste[0],porLeste[1])
-ax.text(x,y,u'Eastern Portion',color='#800000', fontsize=8, ha='right',va='baseline')
+ax.text(x,y,u'Eastern\nPortion',color='#000000', fontsize=8, ha='right',va='baseline')
 
 x,y=m(-44.230458, -23.151578)
-ax.text(x,y,u'Ilha Grande',color='k',fontsize=10,ha='center', va='center')
+ax.text(x,y,u'Ilha Grande',color='k',fontsize=8,ha='center', va='center')
 
 ########### Important Locations
 x,y=m(CNAAAbase[0], CNAAAbase[0])
@@ -152,7 +151,7 @@ ax.text(x+JacuecangaArro[4],y+JacuecangaArro[5],u'Jacuecanga\nBay',fontsize=8,ha
 
 x,y=m(MambucabaArrow[0],MambucabaArrow[1])
 ax.arrow(x,y,MambucabaArrow[2],MambucabaArrow[3],head_width=1.5,head_length=0.99,fc='k',ec='k',lw=.5)
-ax.text(x+MambucabaArrow[4],y+MambucabaArrow[5],u'Mambucaba\nRiver Mouth',fontsize=8,ha='center',va='center')
+ax.text(x+MambucabaArrow[4],y+MambucabaArrow[5],u'Mambucaba\nRiver',fontsize=8,ha='center',va='center')
 
 x,y=m(MarambaiaArrow[0],MarambaiaArrow[1])
 ax.arrow(x,y,MarambaiaArrow[2],MarambaiaArrow[3],head_width=1.5,head_length=0.99,fc='k',ec='k',lw=.5)
@@ -167,8 +166,10 @@ ax.arrow(x,y,PicinguabaArro[2],PicinguabaArro[3],head_width=1.5,head_length=0.99
 ax.text(x+PicinguabaArro[4],y+PicinguabaArro[5],u'Picinguaba',fontsize=8,ha='center',va='center')
 
 x,y=m(MamanguaArrow[0],MamanguaArrow[1])
-ax.arrow(x,y,MamanguaArrow[2],MamanguaArrow[3],head_width=1.5,head_length=0.99,fc='k',ec='k',lw=.5)
-ax.text(x+MamanguaArrow[4],y+MamanguaArrow[5],u'Mamangua\nSac',fontsize=8,ha='center',va='center')
+# ax.arrow(x,y,MamanguaArrow[2],MamanguaArrow[3],head_width=1.5,head_length=0.99,fc='k',ec='k',lw=.5)
+# ax.text(x+MamanguaArrow[4],y+MamanguaArrow[5],u'Mamangua\nSac',fontsize=8,ha='center',va='center')
+m.scatter(x,y,s=5,c='k',marker='o',zorder=2)
+ax.text(x,y,u'Mamangua\nSac',fontsize=8,ha='center',va='center')
 
 x,y=m(paraty[0]+0.01, paraty[1]+0.03)
 ax.text(x,y,u'Paraty', color='k', fontsize=8, ha='center',va='center')
@@ -179,10 +180,10 @@ ax.text(x,y,u'Paraty', color='k', fontsize=8, ha='center',va='center')
 # ---------------------    MARKERS PARA LEGENDA         -----------------------
 # -----------------------------------------------------------------------------
 x,y = m(piraquaraf[0],piraquaraf[1])
-plt.scatter(x,y,marker='*',color='black',s=20,label='Piraquara de Fora Inlet',zorder=2)
+plt.scatter(x,y,marker='*',color='black',s=9,label='Piraquara de Fora Inlet',zorder=2)
 
 x,y = m(TermGuaiba[0], TermGuaiba[1])
-plt.scatter(x,y, marker=TermGuaiba[2], color=TermGuaiba[3], s=15, label='Guaiba Island Terminal', zorder=2)
+plt.scatter(x,y, marker=TermGuaiba[2], color=TermGuaiba[3], s=9, label='Guaiba Island Terminal', zorder=2)
 
 # -----------------------------------------------------------------------------
 # -----------------------        ID RADIUS            -------------------------
@@ -191,8 +192,15 @@ plt.scatter(x,y, marker=TermGuaiba[2], color=TermGuaiba[3], s=15, label='Guaiba 
 lg = plt.legend(loc='upper right',fontsize=8,numpoints=1,scatterpoints=1)
 lg.get_frame().set_alpha(.4)
 
-cbar = plt.colorbar(pc, orientation='horizontal', shrink=0.625, aspect=20, fraction=0.2,pad=0.04)
-cbar.set_label('Bathymetry (m)', fontsize=8)
+# cbar = plt.colorbar(pc, orientation='horizontal', shrink=0.625, aspect=20, fraction=0.2,pad=0.04)
+# cbar.set_label('Bathymetry (m)', fontsize=8)
+
+cax  = fig.add_axes([0.30,0.1,0.35,0.015])
+cbar = plt.colorbar(pc,cax=cax,orientation='horizontal')
+cbar.set_label('Bathymetry (m)',fontsize=8)
+cbar.ax.xaxis.set_label_position('top') # colocando titulo acima
+cbar.ax.xaxis.set_tick_params(pad=-1) # reduzindo distancia entre xticks e colorbar
+cbar.ax.xaxis.set_ticklabels(['0','','20','','40','','60','','80'])
 
 # -----------------------------------------------------------------------------
 # -----------------------    MINI GLOBE LOCATION      -------------------------
@@ -211,10 +219,8 @@ mapboundary = Polygon(xy,edgecolor='b',linewidth=1,fill=True)
 inmap.ax.add_patch(mapboundary)
 
 plt.tight_layout()
-plt.subplots_adjust(top=.99,bottom=-0.045,right=0.993,left=0.0,wspace=0.)
+plt.subplots_adjust(top=.99,bottom=0.05,right=0.993,left=0.0,wspace=0.)
 
-plt.savefig('/media/danilo/Danilo/mestrado/github/artigoTG/figures/Fig1.png',dpi=600)
+plt.savefig('/media/danilo/Danilo/mestrado/github/artigoTG/figures/Fig1_version2.png',dpi=600)
 
-# plt.show()
-#
-# os.system('evince /media/danilo/Danilo/mestrado/github/artigoTG/figures/Fig1.eps')
+plt.close()
