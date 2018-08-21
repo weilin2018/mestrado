@@ -262,7 +262,7 @@ class Experiment(object):
 
         plt.savefig('/media/danilo/Danilo/mestrado/github/artigoTG/figures/%s.eps'%(self.figname))
 
-    def plot_Figure5(self,spring_flood,spring_ebb,neap_flood,neap_ebb):
+    def plot_Figure4(self,spring_flood,spring_ebb,neap_flood,neap_ebb):
         """ this function plot only the surface circulation """
         if ~hasattr(self,'imean'):
             self.importVariables_basic()
@@ -356,7 +356,7 @@ class Experiment(object):
             else:
                 plt.pause(0.5)
 
-    def plot_Figure6(self,spring_flood,spring_ebb,neap_flood,neap_ebb):
+    def plot_Figure5(self,spring_flood,spring_ebb,neap_flood,neap_ebb):
         """ this function plot only the surface circulation """
         if ~hasattr(self,'imean'):
             self.importVariables_basic()
@@ -418,7 +418,7 @@ class Experiment(object):
         else:
             plt.show()
 
-    def plot_Figure6_2ndVersion(self,spring_flood,spring_ebb,neap_flood,neap_ebb):
+    def plot_Figure5_2ndVersion(self,spring_flood,spring_ebb,neap_flood,neap_ebb):
         if ~hasattr(self,'imean'):
             self.importVariables_basic()
             self.importvariables_Circulation() # import all timestep data
@@ -478,7 +478,7 @@ class Experiment(object):
         contour_levels = np.arange(0,50.,0.01)
 
         # create structure
-        self.m1,self.m2,self.m3,self.m4,self.cax = create_Figure_structure_4plots(cax_parameters=[0.125,0.10,0.75,0.02],resolution='f')
+        self.m1,self.m2,self.m3,self.m4,self.cax = create_Figure_structure_4plots(figsize=self.figSize,resolution=self.resolution,cax_parameters=[0.125,0.12,0.75,0.02])
 
         cf = self.m1.contourf(self.lon,self.lat,self.conc1,contour_levels,latlon=True,cmap=cmo.cm.matter,extend='max')
         self.m1.ax.text(0.9,0.91,'%i days'%(time1),transform=self.m1.ax.transAxes,ha='center',va='center',fontsize=8)
@@ -499,9 +499,11 @@ class Experiment(object):
         self.m4.ax.text(0.9,0.91,'%i days'%(time4),transform=self.m4.ax.transAxes,ha='center',va='center',fontsize=8)
         self.m4.ax.text(0.03,0.85,'(d)',transform=self.m4.ax.transAxes)
 
-        rect = (0.13,0.16,1.,1.)
-        plt.tight_layout(rect=rect)
-        plt.subplots_adjust(top=0.99,bottom=0.15,left=0.125,right=0.875,hspace=0.0,wspace=0.026)
+
+        if hasattr(self,'subAdjust_left'):
+            rect = (0.13,0.16,1.,1.)
+            plt.tight_layout(rect=rect)
+            plt.subplots_adjust(top=self.subAdjust_top,bottom=self.subAdjust_bottom,left=self.subAdjust_left,right=self.subAdjust_right,wspace=self.subAdjust_wspace,hspace=self.subAdjust_hspace)
 
         if hasattr(self,'figname'):
             plt.savefig('/media/danilo/Danilo/mestrado/github/artigoTG/figures/%s.png'%(self.figname),dpi=600)
@@ -513,86 +515,95 @@ class Experiment(object):
 DATA_DIR = '/media/danilo/Danilo/mestrado/artigo_data/simulacoes/sims_dispersao/'
 
 # ----
-# def fig6():
-instantes = [3, 10, 21, 60]
+def fig2():
+    expI = Experiment(DATA_DIR+'expI.cdf',figsize=(8.4,10.))
+    expI.figname = 'Fig2'
+    expI.plot_Figure_WindDriven_Circulation()
 
-expIV = Experiment(DATA_DIR+"expIV.cdf",figsize=(17.4,10.))
-expIV.importVariables_basic()
-expIV.figname = 'Fig6_conc'
-# expIV.subAdjust_top    = 0.975
-# expIV.subAdjust_bottom = 0.150
-# expIV.subAdjust_left   = 0.110
-# expIV.subAdjust_right  = 0.900
-# expIV.subAdjust_hspace = 0.065
-# expIV.subAdjust_wspace = 0.000
+def fig3():
+    expII = Experiment(DATA_DIR+'expII.cdf',figsize=(8.4,10.))
+    expII.figname = 'Fig3'
+    expII.plot_Figure_WindDriven_Circulation()
 
+def fig4():
+    expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(17.4,12))
+    # expIII.figname = 'Fig4'
+    # define some values for tight_subplot_layout
+    expIII.subAdjust_top    = 0.973
+    expIII.subAdjust_bottom = 0.132
+    expIII.subAdjust_left   = 0.057
+    expIII.subAdjust_right  = 0.995
+    expIII.subAdjust_hspace = 0.003
+    expIII.subAdjust_wspace = 0.047
+    expIII.importVariables_basic() # import lat and lon
+    expIII.importvariables_Circulation() # import velocities components
+    expIII.calculateSpeed() # calculate speed and normalize vectors
+    expIII.plot_Figure4(229,218,290,293)
 
-expIV.plot_Concentration(instantes[0],instantes[1],instantes[2],instantes[3])
+def fig5():
+    expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(17.4,12))
+    expIII.importVariables_basic()
+    expIII.importvariables_Circulation()
+    expIII.calculateSpeed()
+    expIII.cutData4Ribeira()
+    # if you want to plot 4 subplots for each tidal condition and phase, uncomment the 7 lines below
+    # expIII.figSize = (17.4/2.54,12./2.54)
+    # expIII.figname = 'Fig6'
+    # expIII.subAdjust_top    = 0.977
+    # expIII.subAdjust_bottom = 0.172
+    # expIII.subAdjust_left   = 0.072
+    # expIII.subAdjust_right  = 0.973
+    # expIII.subAdjust_hspace = 0.072
+    # expIII.subAdjust_wspace = 0.082
+    # expIII.plot_Figure5(229,218,290,293)
 
+    # if you want to plot 4 subplots for each tidal condition and phase, uncomment the 7 lines below
+    expIII.figSize = (8.4/2.54,10./2.54)
+    expIII.figname = 'Fig5'
+    expIII.define_adjustSubplot_Parameters(top=0.977,bottom=0.172,left=0.072,right=0.973,hspace=0.072,wspace=0.082)
+    expIII.plot_Figure5_2ndVersion(229,218,290,293)
 
+def fig6():
+    instantes = [3, 10, 21, 60]
+    expIV = Experiment(DATA_DIR+"expIV.cdf",figsize=(17.4,10.))
+    expIV.resolution = 'f'
+    expIV.importVariables_basic()
+    expIV.figname = 'Fig6'
+    expIV.subAdjust_top    = 0.995
+    expIV.subAdjust_bottom = 0.160
+    expIV.subAdjust_left   = 0.125
+    expIV.subAdjust_right  = 0.875
+    expIV.subAdjust_hspace = 0.000
+    expIV.subAdjust_wspace = 0.026
 
+    expIV.plot_Concentration(instantes[0],instantes[1],instantes[2],instantes[3])
 
+def fig7():
+    instantes = [3, 10, 27, 60]
+    expV = Experiment(DATA_DIR+"expV.cdf",figsize=(17.4,10.))
+    expV.resolution = 'f'
+    expV.importVariables_basic()
+    expV.figname = 'Fig7'
+    expV.subAdjust_top    = 0.995
+    expV.subAdjust_bottom = 0.160
+    expV.subAdjust_left   = 0.125
+    expV.subAdjust_right  = 0.875
+    expV.subAdjust_hspace = 0.000
+    expV.subAdjust_wspace = 0.026
 
+    expV.plot_Concentration(instantes[0],instantes[1],instantes[2],instantes[3])
 
+def fig8():
+    instantes = [7, 12, 22, 30]
+    expVI = Experiment(DATA_DIR+"expVI.cdf",figsize=(17.4,10.))
+    expVI.resolution = 'f'
+    expVI.importVariables_basic()
+    expVI.figname = 'Fig8'
+    expVI.subAdjust_top    = 0.995
+    expVI.subAdjust_bottom = 0.160
+    expVI.subAdjust_left   = 0.125
+    expVI.subAdjust_right  = 0.875
+    expVI.subAdjust_hspace = 0.000
+    expVI.subAdjust_wspace = 0.026
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# ----------
-# def fig2():
-#     expI = Experiment(DATA_DIR+'expI.cdf',figsize=(8.4,10.))
-#     expI.figname = 'Fig2'
-#     expI.plot_Figure_WindDriven_Circulation()
-#
-# def fig3():
-#     expII = Experiment(DATA_DIR+'expII.cdf',figsize=(8.4,10.))
-#     expII.figname = 'Fig3'
-#     expII.plot_Figure_WindDriven_Circulation()
-#
-# def fig4():
-#     expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(17.4,12))
-#     expIII.figname = 'Fig4'
-#     # define some values for tight_subplot_layout
-#     expIII.subAdjust_top    = 0.973
-#     expIII.subAdjust_bottom = 0.132
-#     expIII.subAdjust_left   = 0.057
-#     expIII.subAdjust_right  = 0.995
-#     expIII.subAdjust_hspace = 0.003
-#     expIII.subAdjust_wspace = 0.047
-#     expIII.importVariables_basic() # import lat and lon
-#     expIII.importvariables_Circulation() # import velocities components
-#     expIII.calculateSpeed() # calculate speed and normalize vectors
-#     expIII.plot_Figure5(229,218,290,293)
-#
-# def fig5():
-#     expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(17.4,12))
-#     expIII.importVariables_basic()
-#     expIII.importvariables_Circulation()
-#     expIII.calculateSpeed()
-#     expIII.cutData4Ribeira()
-#     # if you want to plot 4 subplots for each tidal condition and phase, uncomment the 7 lines below
-#     # expIII.figSize = (17.4/2.54,12./2.54)
-#     # expIII.figname = 'Fig6'
-#     # expIII.subAdjust_top    = 0.977
-#     # expIII.subAdjust_bottom = 0.172
-#     # expIII.subAdjust_left   = 0.072
-#     # expIII.subAdjust_right  = 0.973
-#     # expIII.subAdjust_hspace = 0.072
-#     # expIII.subAdjust_wspace = 0.082
-#     # expIII.plot_Figure6(229,218,290,293)
-#
-#     # if you want to plot 4 subplots for each tidal condition and phase, uncomment the 7 lines below
-#     expIII.figSize = (8.4/2.54,10./2.54)
-#     expIII.figname = 'Fig5_2ndVersion'
-#     expIII.define_adjustSubplot_Parameters(top=0.977,bottom=0.172,left=0.072,right=0.973,hspace=0.072,wspace=0.082)
-#     expIII.plot_Figure6_2ndVersion(229,218,290,293)
+    expVI.plot_Concentration(instantes[0],instantes[1],instantes[2],instantes[3])
