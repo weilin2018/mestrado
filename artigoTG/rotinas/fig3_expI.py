@@ -11,6 +11,7 @@ from mpl_toolkits.axes_grid1.inset_locator import mark_inset, inset_axes
 import xray as xr
 import pandas as pd
 import cmocean as cmo
+import os
 
 import pickle
 
@@ -119,6 +120,21 @@ def locate_closest_date(time,day):
 
     return index
 
+def convertData2Bq(c,unit='mg/L'):
+
+    # constante = 0.3e+22
+    c[c<0.0] = np.nan # valores negativos são removidos
+    if unit == 'mg/L':
+        # converter de mg para g
+        c = c*.1e-3
+    else:
+        # converter de kg para g
+        c = c*.1e3
+
+    c = c*35334440479135.016 # converter de g para Bq
+
+    return c
+
 # ----- Defining class
 class Experiment(object):
 
@@ -190,6 +206,17 @@ class Experiment(object):
         # cut also velocities vectors
         self.uRib = self.un[:,80:130,:30]
         self.vRib = self.vn[:,80:130,:30]
+
+    def extract_concentration(self,time_i):
+        """ extract concentration from time_i, calculate vertical integration
+        and mask negative values [bad flag] """
+        conc = np.nansum(self.ncin.conc[time_i,:,:,:], axis=0)
+        conc[conc < 0] = np.nan
+
+        # convert to Bq
+        # k = convertData2Bq(conc)
+
+        return conc
 
     def define_adjustSubplot_Parameters(self,top,bottom,left,right,hspace,wspace):
         self.subAdjust_top     = top
@@ -299,6 +326,36 @@ class Experiment(object):
         else:
             plt.show()
 
+    def animation_expIII(self):
+
+        contour_levels = np.arange(0,0.7,0.001)
+
+        fig,ax = plt.subplots(figsize=self.figSize)
+        cax = fig.add_axes([0.135,0.12,0.76,0.02])
+
+        for i in range(len(self.ncin.time.values)):
+            ax.clear()
+            cax.clear()
+            m = make_map(ax,region='bigs',resolution='i')
+
+            cf = m.contourf(self.lon,self.lat,self.imean[i,:,:],contour_levels, latlon=True,cmap=cmo.cm.speed)
+            qv = m.quiver(self.lon[::15,::15],self.lat[::15,::15],self.un[i,::15,::15],self.vn[i,::15,::15],latlon=True)
+            # self.m1.ax.set_title('Spring Flood, with max of %0.2f'%(self.calcMax(np.squeeze(self.imean[spring_flood,:,:]))))
+            maxValue = self.calcMax(np.squeeze(self.imean[i,:,:]))
+            textMax = 'Max Curr\n%0.2f'%(maxValue) + 'ms' +r'$^{-1}$'
+            m.ax.text(0.90,0.91,textMax,transform=m.ax.transAxes,ha='center',va='center',fontsize=8)
+            m.ax.text(0.03,0.85,'(a)',transform=m.ax.transAxes)
+            m.ax.set_title('%s'%(str(self.ncin.time[i])),fontsize=10)
+
+            cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.2,0.4,0.6],cax=cax,format='%.1f')
+            cb.set_label('Surface Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
+
+            if hasattr(self,'figname'):
+                plt.savefig('/media/danilo/Danilo/mestrado/github/artigoTG/figures/animation/%s.png'%(str(i).zfill(3)),dpi=600)
+                os.system('convert -trim %s %s' % ('/media/danilo/Danilo/mestrado/github/artigoTG/figures/animation/%s.png'%(str(i).zfill(3)),'/media/danilo/Danilo/mestrado/github/artigoTG/figures/animation/%s.png'%(str(i).zfill(3))))
+            else:
+                plt.pause(0.5)
+
     def plot_Figure6(self,spring_flood,spring_ebb,neap_flood,neap_ebb):
         """ this function plot only the surface circulation """
         if ~hasattr(self,'imean'):
@@ -401,73 +458,141 @@ class Experiment(object):
         else:
             plt.show()
 
-    def loadConcentration(self,time_i):
+    def plot_Concentration(self,time1,time2,time3,time4):
+        if ~hasattr(self,'lon'):
+            self.importVariables_basic()
 
-        return False
+        # find index for each time passed as argument (in days)
+        timestep_1 = locate_closest_date(self.ncin.time.values,time1)[0][0]
+        timestep_2 = locate_closest_date(self.ncin.time.values,time2)[0][0]
+        timestep_3 = locate_closest_date(self.ncin.time.values,time3)[0][0]
+        timestep_4 = locate_closest_date(self.ncin.time.values,time4)[0][0]
+
+        # load vertical integrated concentration
+        self.conc1 = self.extract_concentration(timestep_1)*100
+        self.conc2 = self.extract_concentration(timestep_2)*100
+        self.conc3 = self.extract_concentration(timestep_3)*100
+        self.conc4 = self.extract_concentration(timestep_4)*100
+
+        # create contour_levels [0 to 100]
+        contour_levels = np.arange(0,50.,0.01)
+
+        # create structure
+        self.m1,self.m2,self.m3,self.m4,self.cax = create_Figure_structure_4plots(cax_parameters=[0.125,0.10,0.75,0.02],resolution='f')
+
+        cf = self.m1.contourf(self.lon,self.lat,self.conc1,contour_levels,latlon=True,cmap=cmo.cm.matter,extend='max')
+        self.m1.ax.text(0.9,0.91,'%i days'%(time1),transform=self.m1.ax.transAxes,ha='center',va='center',fontsize=8)
+        self.m1.ax.text(0.03,0.85,'(a)',transform=self.m1.ax.transAxes)
+
+        cbar = plt.colorbar(cf,cax=self.cax,orientation='horizontal')
+        cbar.set_label('Vertical Integrated Concentration (%)')
+
+        self.m2.contourf(self.lon,self.lat,self.conc2,contour_levels,latlon=True,cmap=cmo.cm.matter,extend='max')
+        self.m2.ax.text(0.9,0.91,'%i days'%(time2),transform=self.m2.ax.transAxes,ha='center',va='center',fontsize=8)
+        self.m2.ax.text(0.03,0.85,'(b)',transform=self.m2.ax.transAxes)
+
+        self.m3.contourf(self.lon,self.lat,self.conc3,contour_levels,latlon=True,cmap=cmo.cm.matter,extend='max')
+        self.m3.ax.text(0.9,0.91,'%i days'%(time3),transform=self.m3.ax.transAxes,ha='center',va='center',fontsize=8)
+        self.m3.ax.text(0.03,0.85,'(c)',transform=self.m3.ax.transAxes)
+
+        self.m4.contourf(self.lon,self.lat,self.conc4,contour_levels,latlon=True,cmap=cmo.cm.matter,extend='max')
+        self.m4.ax.text(0.9,0.91,'%i days'%(time4),transform=self.m4.ax.transAxes,ha='center',va='center',fontsize=8)
+        self.m4.ax.text(0.03,0.85,'(d)',transform=self.m4.ax.transAxes)
+
+        rect = (0.13,0.16,1.,1.)
+        plt.tight_layout(rect=rect)
+        plt.subplots_adjust(top=0.99,bottom=0.15,left=0.125,right=0.875,hspace=0.0,wspace=0.026)
+
+        if hasattr(self,'figname'):
+            plt.savefig('/media/danilo/Danilo/mestrado/github/artigoTG/figures/%s.png'%(self.figname),dpi=600)
+        else:
+            plt.show()
+
 
 # ----- load file from Oceano Computer ----- #
 DATA_DIR = '/media/danilo/Danilo/mestrado/artigo_data/simulacoes/sims_dispersao/'
 
-# ----- showing information in a Basemap instance
-def fig3():
-    expI = Experiment(DATA_DIR+'expI.cdf',figsize=(8.4,10.))
-    expI.figname = 'Fig3'
-    expI.plot_Figure_WindDriven_Circulation()
+# ----
+# def fig6():
+instantes = [3, 10, 21, 60]
 
-def fig4():
-    expII = Experiment(DATA_DIR+'expII.cdf',figsize=(8.4,10.))
-    expII.figname = 'Fig4'
-    expII.plot_Figure_WindDriven_Circulation()
-
-def fig5():
-    expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(17.4,12))
-    expIII.figname = 'Fig5'
-    # define some values for tight_subplot_layout
-    expIII.subAdjust_top    = 0.973
-    expIII.subAdjust_bottom = 0.132
-    expIII.subAdjust_left   = 0.057
-    expIII.subAdjust_right  = 0.995
-    expIII.subAdjust_hspace = 0.003
-    expIII.subAdjust_wspace = 0.047
-    expIII.importVariables_basic() # import lat and lon
-    expIII.importvariables_Circulation() # import velocities components
-    expIII.calculateSpeed() # calculate speed and normalize vectors
-    expIII.plot_Figure5(229,218,290,293)
-
-def fig6():
-    expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(17.4,12))
-    expIII.importVariables_basic()
-    expIII.importvariables_Circulation()
-    expIII.calculateSpeed()
-    expIII.cutData4Ribeira()
-    # if you want to plot 4 subplots for each tidal condition and phase, uncomment the 7 lines below
-    # expIII.figSize = (17.4/2.54,12./2.54)
-    # expIII.figname = 'Fig6'
-    # expIII.subAdjust_top    = 0.977
-    # expIII.subAdjust_bottom = 0.172
-    # expIII.subAdjust_left   = 0.072
-    # expIII.subAdjust_right  = 0.973
-    # expIII.subAdjust_hspace = 0.072
-    # expIII.subAdjust_wspace = 0.082
-    # expIII.plot_Figure6(229,218,290,293)
-
-    # if you want to plot 4 subplots for each tidal condition and phase, uncomment the 7 lines below
-    expIII.figSize = (8.4/2.54,10./2.54)
-    expIII.figname = 'Fig6_2ndVersion'
-    expIII.define_adjustSubplot_Parameters(top=0.977,bottom=0.172,left=0.072,right=0.973,hspace=0.072,wspace=0.082)
-    expIII.plot_Figure6_2ndVersion(229,218,290,293)
+expIV = Experiment(DATA_DIR+"expIV.cdf",figsize=(17.4,10.))
+expIV.importVariables_basic()
+expIV.figname = 'Fig6_conc'
+# expIV.subAdjust_top    = 0.975
+# expIV.subAdjust_bottom = 0.150
+# expIV.subAdjust_left   = 0.110
+# expIV.subAdjust_right  = 0.900
+# expIV.subAdjust_hspace = 0.065
+# expIV.subAdjust_wspace = 0.000
 
 
-# -------------- TESTING ZONE
-exp = Experiment(DATA_DIR+"expIV.cdf",figsize=(17.4,12.))
+expIV.plot_Concentration(instantes[0],instantes[1],instantes[2],instantes[3])
 
-# selecionar os indices dos dias que eu quero plotar
-timestep_1 = locate_closest_date(exp.ncin.time.values,10)[0][0]
-timestep_2 = locate_closest_date(exp.ncin.time.values,20)[0][0]
-timestep_3 = locate_closest_date(exp.ncin.time.values,30)[0][0]
-timestep_4 = locate_closest_date(exp.ncin.time.values,40)[0][0]
-# mandar pra funcao igual mandei no expIII, mas posso só importar os dados
-# nos dias que eu quero, pra facilitar  o load dos dados e não ficar demorando
 
-# seria ideal montar uma funcao pra localizar, na variavel ncin.time, os indices
-# dos dias que eu quero.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ----------
+# def fig2():
+#     expI = Experiment(DATA_DIR+'expI.cdf',figsize=(8.4,10.))
+#     expI.figname = 'Fig2'
+#     expI.plot_Figure_WindDriven_Circulation()
+#
+# def fig3():
+#     expII = Experiment(DATA_DIR+'expII.cdf',figsize=(8.4,10.))
+#     expII.figname = 'Fig3'
+#     expII.plot_Figure_WindDriven_Circulation()
+#
+# def fig4():
+#     expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(17.4,12))
+#     expIII.figname = 'Fig4'
+#     # define some values for tight_subplot_layout
+#     expIII.subAdjust_top    = 0.973
+#     expIII.subAdjust_bottom = 0.132
+#     expIII.subAdjust_left   = 0.057
+#     expIII.subAdjust_right  = 0.995
+#     expIII.subAdjust_hspace = 0.003
+#     expIII.subAdjust_wspace = 0.047
+#     expIII.importVariables_basic() # import lat and lon
+#     expIII.importvariables_Circulation() # import velocities components
+#     expIII.calculateSpeed() # calculate speed and normalize vectors
+#     expIII.plot_Figure5(229,218,290,293)
+#
+# def fig5():
+#     expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(17.4,12))
+#     expIII.importVariables_basic()
+#     expIII.importvariables_Circulation()
+#     expIII.calculateSpeed()
+#     expIII.cutData4Ribeira()
+#     # if you want to plot 4 subplots for each tidal condition and phase, uncomment the 7 lines below
+#     # expIII.figSize = (17.4/2.54,12./2.54)
+#     # expIII.figname = 'Fig6'
+#     # expIII.subAdjust_top    = 0.977
+#     # expIII.subAdjust_bottom = 0.172
+#     # expIII.subAdjust_left   = 0.072
+#     # expIII.subAdjust_right  = 0.973
+#     # expIII.subAdjust_hspace = 0.072
+#     # expIII.subAdjust_wspace = 0.082
+#     # expIII.plot_Figure6(229,218,290,293)
+#
+#     # if you want to plot 4 subplots for each tidal condition and phase, uncomment the 7 lines below
+#     expIII.figSize = (8.4/2.54,10./2.54)
+#     expIII.figname = 'Fig5_2ndVersion'
+#     expIII.define_adjustSubplot_Parameters(top=0.977,bottom=0.172,left=0.072,right=0.973,hspace=0.072,wspace=0.082)
+#     expIII.plot_Figure6_2ndVersion(229,218,290,293)
