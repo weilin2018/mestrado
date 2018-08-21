@@ -475,7 +475,7 @@ class Experiment(object):
         self.conc4 = self.extract_concentration(timestep_4)*100
 
         # create contour_levels [0 to 100]
-        contour_levels = np.arange(0,50.,0.01)
+        contour_levels = np.arange(0,30.,0.5)
 
         # create structure
         self.m1,self.m2,self.m3,self.m4,self.cax = create_Figure_structure_4plots(figsize=self.figSize,resolution=self.resolution,cax_parameters=[0.125,0.12,0.75,0.02])
@@ -566,9 +566,9 @@ def fig5():
 def fig6():
     instantes = [3, 10, 21, 60]
     expIV = Experiment(DATA_DIR+"expIV.cdf",figsize=(17.4,10.))
-    expIV.resolution = 'f'
+    expIV.resolution = 'i'
     expIV.importVariables_basic()
-    expIV.figname = 'Fig6'
+    # expIV.figname = 'Fig6'
     expIV.subAdjust_top    = 0.995
     expIV.subAdjust_bottom = 0.160
     expIV.subAdjust_left   = 0.125
