@@ -160,8 +160,10 @@ class Experiment(object):
     def importvariables_Circulation(self,i=None,sigma=None):
         """ importing zonal and meridional velocity """
         if i == None:
-            u = self.ncin.u.values[:,0,:,:]
-            v = self.ncin.v.values[:,0,:,:]
+            u = self.ncin.u.values[:,:,:,:]
+            v = self.ncin.v.values[:,:,:,:]
+            u = np.nanmean(u,axis=1)
+            v = np.nanmean(v,axis=1)
         else:
             u = self.ncin.u.values[i,:,:,:]
             v = self.ncin.v.values[i,:,:,:]
@@ -286,7 +288,7 @@ class Experiment(object):
         self.m1.ax.set_title('Spring Flood',fontsize=10)
 
         cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.2,0.4,0.6],cax=self.cax,format='%.1f')
-        cb.set_label('Surface Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
+        cb.set_label('Average Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
 
         # plotting spring ebb
         self.m2.contourf(self.lon,self.lat,self.imean[spring_ebb,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
@@ -348,7 +350,7 @@ class Experiment(object):
             m.ax.set_title('%s'%(str(self.ncin.time[i])),fontsize=10)
 
             cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.2,0.4,0.6],cax=cax,format='%.1f')
-            cb.set_label('Surface Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
+            cb.set_label('Average Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
 
             if hasattr(self,'figname'):
                 plt.savefig('/media/danilo/Danilo/mestrado/github/artigoTG/figures/animation/%s.png'%(str(i).zfill(3)),dpi=600)
@@ -379,7 +381,7 @@ class Experiment(object):
         self.m1.ax.set_title('Spring Flood',fontsize=10,y=.97)
 
         cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.2,0.4,0.6],cax=self.cax,format='%.1f')
-        cb.set_label('Surface Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
+        cb.set_label('Average Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
 
         # plotting spring ebb
         self.m2.contourf(self.lonRib,self.latRib,self.spdRib[spring_ebb,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
@@ -439,7 +441,7 @@ class Experiment(object):
         self.m1.ax.text(0.03,0.85,'(a)',transform=self.m1.ax.transAxes)
 
         cb = plt.colorbar(cf,orientation='horizontal',ticks=[0.0,0.1,0.2],cax=self.cax,format='%.1f')
-        cb.set_label('Surface Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
+        cb.set_label('Average Circulation'+r' (ms$^{-1}$)',fontsize=10,labelpad=-1)
 
         self.m2.contourf(self.lonRib,self.latRib,self.spdRib[neap_ebb,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
         self.m2.quiver(self.lonRib[::4,::4],self.latRib[::4,::4],self.uRib[neap_ebb,::4,::4],self.vRib[neap_ebb,::4,::4],latlon=True)
@@ -469,13 +471,13 @@ class Experiment(object):
         timestep_4 = locate_closest_date(self.ncin.time.values,time4)[0][0]
 
         # load vertical integrated concentration
-        self.conc1 = self.extract_concentration(timestep_1)*100
-        self.conc2 = self.extract_concentration(timestep_2)*100
-        self.conc3 = self.extract_concentration(timestep_3)*100
-        self.conc4 = self.extract_concentration(timestep_4)*100
+        self.conc1 = self.extract_concentration(timestep_1)#*100
+        self.conc2 = self.extract_concentration(timestep_2)#*100
+        self.conc3 = self.extract_concentration(timestep_3)#*100
+        self.conc4 = self.extract_concentration(timestep_4)#*100
 
         # create contour_levels [0 to 100]
-        contour_levels = np.arange(0,30.,0.5)
+        contour_levels = np.arange(0,0.4,0.01)
 
         # create structure
         self.m1,self.m2,self.m3,self.m4,self.cax = create_Figure_structure_4plots(figsize=self.figSize,resolution=self.resolution,cax_parameters=[0.125,0.12,0.75,0.02])
@@ -527,7 +529,7 @@ def fig3():
 
 def fig4():
     expIII = Experiment(DATA_DIR+'expIII.cdf',figsize=(17.4,12))
-    # expIII.figname = 'Fig4'
+    expIII.figname = 'Fig4'
     # define some values for tight_subplot_layout
     expIII.subAdjust_top    = 0.973
     expIII.subAdjust_bottom = 0.132
@@ -566,9 +568,9 @@ def fig5():
 def fig6():
     instantes = [3, 10, 21, 60]
     expIV = Experiment(DATA_DIR+"expIV.cdf",figsize=(17.4,10.))
-    expIV.resolution = 'i'
+    expIV.resolution = 'f'
     expIV.importVariables_basic()
-    # expIV.figname = 'Fig6'
+    expIV.figname = 'Fig6'
     expIV.subAdjust_top    = 0.995
     expIV.subAdjust_bottom = 0.160
     expIV.subAdjust_left   = 0.125
@@ -607,3 +609,10 @@ def fig8():
     expVI.subAdjust_wspace = 0.026
 
     expVI.plot_Concentration(instantes[0],instantes[1],instantes[2],instantes[3])
+
+# fig2()
+# fig3()
+# fig4()
+# fig6()
+# fig7()
+# fig8()

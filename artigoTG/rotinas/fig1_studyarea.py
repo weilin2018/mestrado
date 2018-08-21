@@ -70,6 +70,7 @@ PicinguabaArro= [-44.827, -23.376, 2000,2800,2500,5000]
 MamanguaArrow = [-44.644, -23.285, -5000,0,-9000,0]
 
 CNAAAbase     = [-44.460789, -23.006711]
+itaorna       = [-44.459445, -23.009400]
 ilhagrande    = [-44.613300, -23.141362]#-23.137504, -44.613300
 sepetiba      = [-43.864138, -23.003667]
 piraquaraf    = [-44.440706, -23.010962]
@@ -181,6 +182,9 @@ ax.text(x,y,u'Paraty', color='k', fontsize=8, ha='center',va='center')
 # -----------------------------------------------------------------------------
 x,y = m(piraquaraf[0],piraquaraf[1])
 plt.scatter(x,y,marker='*',color='black',s=9,label='Piraquara de Fora Inlet',zorder=2)
+
+x,y = m(itaorna[0],itaorna[1])
+plt.scatter(x,y,marker=',',color='black',s=9,label='Itaorna Cove',zorder=2)
 
 x,y = m(TermGuaiba[0], TermGuaiba[1])
 plt.scatter(x,y, marker=TermGuaiba[2], color=TermGuaiba[3], s=9, label='Guaiba Island Terminal', zorder=2)
