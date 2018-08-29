@@ -26,16 +26,23 @@ os.system('clear')
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
-# insert functions here
-class Test(object):
+def nearest_date(items,pivot):
+    nearest=min(items, key=lambda x: abs(x - pivot))
+    timedelta = abs(nearest - pivot)
+    return nearest, timedelta
 
-    def __init__():
-        if ~hasattr(self,'time'):
-            self.importBasicInformations()
-            print(self.time.shape[0])
-        else:
-            print('Yeap')
+def locate_closest_date(time,day,month,year):
 
+    # convert into datetimeindex
+    dates = pd.DatetimeIndex(time)
+
+    pivot = dates[0] + pd.DateOffset(days=day,month=month,year=year)
+
+    # locate the closest datetime index
+    nearestDate = nearest_date(dates,pivot)
+    index = np.where(dates == nearestDate[0])
+
+    return index
 
 class Experiment(object):
     def __init__(self,fname,timeStart=0,timeEnd=-1):
@@ -50,10 +57,11 @@ class Experiment(object):
             Index to end the cut in the time axis of the data.
         """
         self.ncin      = xr.open_dataset(fname) # define xarray instance
-        self.timeStart = timeStart              # define timeStart as attribute
-        self.timeEnd   = timeEnd                # define timeEnd as attribute
         self.fname     = fname                  # define fname as attribute
 
+    def set_indexes4time(self,timeStart,timeEnd):
+        self.timeStart = timeStart              # define timeStart as attribute
+        self.timeEnd   = timeEnd                # define timeEnd as attribute
 
     def treatCoordinates(self,lon,lat):
         """Remove 0.0 values of longitude and latitude, replacing by NaN.
@@ -89,7 +97,6 @@ class Experiment(object):
 
         # treat coordinates
         self.lon,self.lat = self.treatCoordinates(lon,lat)
-
 
     def elevationPlot(self,i,j,points=None):
         """Simple test to plot an elevatino timeseries, based on i,j given location.
@@ -130,7 +137,6 @@ class Experiment(object):
 
             plt.show()
 
-
     def plot_windField(self,xStep=4,yStep=4):
 
         fig,ax = plt.subplots()
@@ -153,7 +159,6 @@ class Experiment(object):
 
         # remove variables from the memory
         del spd,contour_levels,wu,wv
-
 
     def plot_windVectors_with_elevation(self,t=None,xStep=4,yStep=4,beginPlot=0,endPlot=-1,offset=0):
         """plot wind vectors over elevation field.
@@ -234,10 +239,6 @@ class Experiment(object):
                     ax.set_title(str(self.time[i]),fontsize=24)
                     plt.pause(0.1)
 
-    def locate_index_timeAxis(self,startDate=None,endDate=None):
-        """ procurar no vetor self.time os indices da primeira ocorrencia das datas
-        passadas como argumento. Retornar indices. Assim não vou precisar ficando mandando o
-        timeStart e o timeEnd sempre."""
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -247,8 +248,13 @@ class Experiment(object):
 exp = 'control_2010'
 fname = '/media/danilo/Danilo/mestrado/ventopcse/output/%s.cdf'%(exp)
 
-# instanciate an object, passing as argument, the full name
-exp = Experiment(fname,timeStart=112,timeEnd=352)
+# instanciate an object, passing as argument, the full name:,timeStart=112,timeEnd=352
+exp = Experiment(fname)
+# find indexes for start and final date to extract data
+timeStart = locate_closest_date(exp.ncin.time.values,year=2010,month=01,day=14)[0][0]
+timeEnd   = locate_closest_date(exp.ncin.time.values,year=2010,month=02,day=13)[0][0]
+exp.set_indexes4time(timeStart=timeStart,timeEnd=timeEnd)
+
 # import basic informations
 exp.importBasicInformations()
 

@@ -254,7 +254,7 @@ def temperatureField(fname,isotherm=18.,savefig=None):
 
     # check if data is already loaded
     if not 'temp' in locals():
-        lon,lat,time,temp = load_data(fname[0],vars='temp',sigma=-1)
+        lon,lat,time,temp = load_data(fname,vars='temp',sigma=-1,startTime=112,endTime=352)
 
     # testing for shape
     if len(temp.shape) == 4:
@@ -304,7 +304,7 @@ def temperatureField(fname,isotherm=18.,savefig=None):
             divider = make_axes_locatable(ax)
             cax = divider.append_axes("bottom", size="20%",pad=0.05)
             cax.set_xlim([0,240])
-            cax.set_ylim([22,25])
+            cax.set_ylim([15,26])
 
             m = oceano.make_map(ax, resolution='i')
             # csf = m.contourf(lon,lat,temp[i,:,:],latlon=True,cmap=cmo.cm.thermal)
@@ -667,7 +667,7 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevati
 
 
 # select which experiment you want to plot:
-exp = 'exp06'
+exp = 'control_2010'
 SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/'%(exp)
 
 for f in fname:
@@ -675,6 +675,10 @@ for f in fname:
         experiment = f
 
 
+temperatureField(experiment,savefig=FIGU_DIR.replace('elevation', 'temperature/isotherm18_control2010'))
+%reset -f
+
+# - ----------------------------------------------
 
 os.system('clear')
 var = input("type which variable you want to plot: 1 - elevation, 2 - isotherm, 3 - Salinity Field and 0 - to exit: ")
@@ -690,7 +694,7 @@ elif var == 2:
     if sav == 0:
         temperatureField(experiment)
     else:
-        temperatureField(experiment,savefig=FIGU_DIR.replace('elevation', 'temperature'))
+        temperatureField(experiment,savefig=FIGU_DIR.replace('elevation', 'temperature/isotherm18_exp06'))
 elif var == 3:
     if sav == 0:
         salinityField(experiment)

@@ -32,7 +32,7 @@ import masterThesisPack as oceano
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
-def crossSection(fname,DATA_DIR,savefig=None):
+def crossSection(fname,DATA_DIR,limits,region='pcse',savefig=None):
     """Main function to plot cross section of temperature.
 
     Parameters
@@ -58,6 +58,11 @@ def crossSection(fname,DATA_DIR,savefig=None):
     depth = ncdata['depth'].values
     sigma = ncdata['sigma'].values
 
+    # refined variables for CSS
+    depth = depth[40:90,:40]
+    lon   = lon[40:90,:40]
+    lat   = lat[40:90,:40]
+
     # settings configurations for the figure
     plt.figure(figsize=[16/2.54,19/2.54])
 
@@ -75,12 +80,27 @@ def crossSection(fname,DATA_DIR,savefig=None):
     southMap_axis = plt.subplot(grid[2,2])
     msouth = oceano.make_map(southMap_axis,resolution='i')
 
-    # select latitude index for cross section
-    isul = 19
-    icen = 28
-    inor = 99
+    # cutting coordinates only for CSS
+    # lon = lon[40:90,:40]
+    # lat = lat[40:90,:40]
+    # selecting latitudes for each section plot, based on Birocchi (2018)
+    isul = 8  #46
+    icen = 13 #60
+    inor = 32 #80
+    llat =-24
+    ulat =-23.6
+    llon =-45.62
+    ulon =-45.18
 
-    for t in range(len(time)):
+    liminf_sul = 8  #limits[0][0]
+    limsup_sul = 22 #limits[0][1]
+    liminf_cen = 4  #limits[1][0]
+    limsup_cen = 22 #limits[1][1]
+    liminf_nor = 5  #limits[2][0]
+    limsup_nor = 18 #limits[2][1]
+
+    # for t in range(len(time)):
+    for t in range(5):
         print('Timestep: %i'%(t))
         temp = ncdata.temp[t]           # import data
         # plot data
@@ -96,23 +116,23 @@ def crossSection(fname,DATA_DIR,savefig=None):
         plt.suptitle(time[t],fontsize=24)
 
         # plotting data for each location
-        msouth = oceano.make_map(southMap_axis,resolution='i')
-        mcentral = oceano.make_map(centralMap_axis,resolution='i')
-        mnorth = oceano.make_map(northMap_axis,resolution='i')
+        msouth = oceano.make_map(southMap_axis,resolution='i',ulat=ulat,ulon=ulon,llon=llon,llat=llat)
+        mcentral = oceano.make_map(centralMap_axis,resolution='i',ulat=ulat,ulon=ulon,llon=llon,llat=llat)
+        mnorth = oceano.make_map(northMap_axis,resolution='i',ulat=ulat,ulon=ulon,llon=llon,llat=llat)
 
-        southsec_axis = plotCrossSection(southsec_axis,lon,lat,depth,sigma,isul,temp[:,:,:],limits=[5,83])
+        southsec_axis = plotCrossSection(southsec_axis,lon,lat,depth,sigma,isul,temp[:,:,:],limits=[liminf_sul,limsup_sul],depthReference=-50)
         southsec_axis.text(-47.4,-100,u'Cananéia',horizontalalignment='center')
-        msouth.plot(lon[isul,5:83],lat[isul,5:83],'r',latlon=True)
+        msouth.plot(lon[isul,liminf_sul:limsup_sul],lat[isul,liminf_sul:limsup_sul],'r',latlon=True)
 
         ################### santos
-        centralsec_axis = plotCrossSection(centralsec_axis,lon,lat,depth,sigma,icen,temp[:,:,:],limits=[5,82])
+        centralsec_axis = plotCrossSection(centralsec_axis,lon,lat,depth,sigma,icen,temp[:,:,:],limits=[liminf_cen,limsup_cen],depthReference=-35)
         centralsec_axis.text(-46.3,-100,u'Santos',horizontalalignment='center')
-        mcentral.plot(lon[icen,5:82],lat[icen,5:82],'r',latlon=True)
+        mcentral.plot(lon[icen,liminf_cen:limsup_cen],lat[icen,liminf_cen:limsup_cen],'r',latlon=True)
 
         ################### ubatuba
-        northsec_axis = plotCrossSection(northsec_axis,lon,lat,depth,sigma,inor,temp[:,:,:],limits=[5,83])
+        northsec_axis = plotCrossSection(northsec_axis,lon,lat,depth,sigma,inor,temp[:,:,:],limits=[liminf_nor,limsup_nor],depthReference=-20)
         northsec_axis.text(-44.8,-100,u'Ubatuba',horizontalalignment='center')
-        mnorth.plot(lon[inor,5:83],lat[inor,5:83],'r',latlon=True)
+        mnorth.plot(lon[inor,liminf_nor:limsup_nor],lat[inor,liminf_nor:limsup_nor],'r',latlon=True)
 
         # control time to the next plot
         if savefig:
@@ -122,7 +142,7 @@ def crossSection(fname,DATA_DIR,savefig=None):
 
         plt.pause(0.1)
 
-def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits):
+def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits,depthReference):
     """Apenas plota os dados em uma secao vertical, fazendo a conversão de nível
     sigma para profundidade.
 
@@ -156,11 +176,12 @@ def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits):
     liminf,limsup = limits[0],limits[1]               # limits with non-nan values
 
     cfs = ax.contourf(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],contour_levels,cmap=cmo.cm.thermal)
-    cs  = ax.contour(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],levels=[18.],colors=('k'),linestyles=('--'))
+    cs  = ax.contour(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],levels=np.arange(18.,28.,2.),colors=('k'),linestyles=('--'))
+    ax.clabel(cs,fmt='%i',inline=True)
     ax.plot(lon[ind,liminf:limsup],-depth[ind,liminf:limsup],'k')
-    ax.fill_between(lon[ind,liminf:limsup], -200, -depth[ind,liminf:limsup],color='#c0c0c0')
-    ax.set_ylim([-200,1])
-    ax.margins(0)
+    ax.fill_between(lon[ind,liminf:limsup], -50, -depth[ind,liminf:limsup],color='#c0c0c0')
+    ax.set_ylim([-32,1])
+    # ax.margins(0)
     ax.set_ylabel(u'Depth [m]',fontsize=18)
 
     return ax
@@ -186,11 +207,28 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevati
 
 
 # select which experiment you want to plot:
-exp = 'control_2010'
-SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/'%(exp)
+exp = 'exp06'
+SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/css/'%(exp)
 
 for f in fname:
     if exp in f:
         experiment = f
 
-crossSection(experiment,DATA_DIR,savefig=SAVE_FIG)
+# to plot cross sections in Cananeia, Santos and Ubatuba:
+# crossSection(experiment,DATA_DIR,region='pcse',limits=[[5,83],[5,82],[5,83]],savefig=SAVE_FIG)
+
+# only for Sao Sebastiao Channel, we have to change all limits, so:
+crossSection(experiment,DATA_DIR,region='css',limits=[[2,32],[5,23],[3,28]])
+
+
+
+
+
+
+# - --
+depth = ncdata['depth'][40:90,0:40].data.copy()
+sigma = ncdata['sigma'].data.copy()
+ss =np.tile(sigma,(37,1))
+ss=np.transpose(ss)
+prof =depth[latt,:]* ss
+ll = np.tile(lon[latt,:],(37,1))

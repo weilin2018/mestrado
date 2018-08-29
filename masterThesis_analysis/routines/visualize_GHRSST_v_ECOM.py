@@ -32,7 +32,7 @@ import masterThesisPack as oceano
 # define which experiment to load
 # trabalhar somente com os experimentos em cold start, até
 # eu conseguir avaliar qual é o mais adequado
-run = 'exp07'
+run = 'exp06'
 startTime=112 # 32
 endTime=353 # 272
 
@@ -194,7 +194,7 @@ def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=Non
     contour_levels = np.arange(15.,32.,17./500)
 
     # plotar
-    fig,ax = plt.subplots(ncols=2,figsize=[16/2.54,19/2.54])
+    fig,ax = plt.subplots(ncols=2,figsize=(20,15))
 
     # plot sattelite
     m1 = oceano.make_map(ax[0],resolution='i')
@@ -241,6 +241,10 @@ def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=Non
     m1.plot(lon_mod[:,-2],lat_mod[:,-2],'k',alpha=.5,latlon=True)
     m1.plot(lon_mod[-2,:],lat_mod[-2,:],'k',alpha=.5,latlon=True)
 
+    # plot bathymetry
+    cs1 = m1.contour(lon_mod,lat_mod,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
+    plt.clabel(cs1,fontsize=9,inline=1,fmt='%i')
+
     # # cax.title('Temporal evolution of bottom temperature in SBC')
     sattemp.plot(sst_sat[:i,sat_jcan,sat_ican],'k',label='Cananeia')
     sattemp.plot(sst_sat[:i,sat_jsan,sat_isan],'r',label='Santos')
@@ -255,12 +259,19 @@ def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=Non
     c   = m2.contour(lon_mod,lat_mod,sst_mod[i,:,:],levels=['18.'],colors=('k'),linestyles=('--'))
     plt.colorbar(cb2,cax=cax2)
 
+    cs2 = m2.contour(lon_mod,lat_mod,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
+    plt.clabel(cs2,fontsize=9,inline=1,fmt='%i')
+
     modtemp.plot(sst_mod[:i,mod_jcan,mod_ican],'k',label='Cananeia')
     modtemp.plot(sst_mod[:i,mod_jsan,mod_isan],'r',label='Santos')
     modtemp.plot(sst_mod[:i,mod_juba,mod_iuba],'b',label='Ubatuba')
     modtemp.plot(sst_mod[:i,mod_jcab,mod_icab],'y',label='Cabo Frio')
 
-    plt.show()
+    basefig = '/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/ghrsst_v_ecom/'
+    outname = basefig + str(i).zfill(4) + '.png'
+    plt.savefig(outname)
+    os.system('convert -trim %s %s'%(outname, outname))
+
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -285,6 +296,9 @@ nfiles.sort()                                # sort by name
 fname = glob.glob(DATA_DIR+run+'.cdf')[0]    # always catching the RUN file
 experiment = run                             # storing the experiment name
 
+ncin  = xr.open_dataset(fname)
+depth = ncin.depth.values
+
 # extract data from files
 lon_sat,lat_sat,time_sat,sst_sat = create_matriz_ghrsst(nfiles)
 
@@ -303,10 +317,14 @@ lat_mod[lat_mod == 0] = np.nan
 
 ########### PLOTTING last timestep only to visualize how the figure will be
 
-plot_animation(-1,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod)
+for i in np.arange(1,31):
+    print('plotting %i'%(i))
+    plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod)
+
+# plot_animation(-1,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod)
 
 ################### testing temperature calibration
-ncin = xr.open_dataset(fname.replace('06','07'))
+ncin = xr.open_dataset(fname)
 lon  = ncin.lon.values
 lat  = ncin.lat.values
 contour_levels = np.arange(15.,32.,17./500)

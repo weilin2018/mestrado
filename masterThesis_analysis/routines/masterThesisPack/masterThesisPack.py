@@ -879,7 +879,7 @@ def create_newDepth(lon,depth,sigma,ind):
     # creating depth related to sigma levels
     x    = np.tile(lon[ind,:],(37,1))
     prof = np.tile(depth[ind,:],(37,1))
-    s    = np.tile(sigma,(110,1))
+    s    = np.tile(sigma,(lon.shape[1],1))
     s    = np.transpose(s)
     sig  = prof*s
 
