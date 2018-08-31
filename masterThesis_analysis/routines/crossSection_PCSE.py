@@ -16,6 +16,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import dates
 import datetime
 import cmocean as cmo
+import gsw
 
 # pacotes para minimap
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
@@ -32,7 +33,7 @@ import masterThesisPack as oceano
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
-def crossSection(fname,DATA_DIR,limits,region='pcse',savefig=None):
+def crossSection(fname,DATA_DIR,region='pcse',savefig=None):
     """Main function to plot cross section of temperature.
 
     Parameters
@@ -85,13 +86,8 @@ def crossSection(fname,DATA_DIR,limits,region='pcse',savefig=None):
         icen = 60
         inor = 80
 
-    liminf_sul = limits[]
-    limsup_sul =
-    liminf_cen =
-    limsup_cen =
-    liminf_nor =
-    limsup_nor =
-    for t in range(len(time)):
+    # for t in range(len(time)):
+    for t in range(5):
         print('Timestep: %i'%(t))
         temp = ncdata.temp[t]           # import data
         # plot data
@@ -162,6 +158,9 @@ def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits):
     # create contour levels
     contour_levels = np.arange(10,27,20/200.)
     ################### cananeia
+    eixoX_m = gsw.distance(lon[ind,:],lat[ind,:])
+
+    # x,prof,sig = oceano.create_newDepth(eixoX_m,depth,sigma,ind,kind='km')      # create new depth
     x,prof,sig = oceano.create_newDepth(lon,depth,sigma,ind)      # create new depth
     conc = temp[:,ind,:]            # extract cross section data
     liminf,limsup = limits[0],limits[1]               # limits with non-nan values
@@ -200,4 +199,37 @@ for f in fname:
     if exp in f:
         experiment = f
 
-crossSection(experiment,DATA_DIR,region='pcse',limits=[[5,83],[5,82],[5,83]]savefig=SAVE_FIG)
+crossSection(experiment,DATA_DIR,region='pcse')#,savefig=SAVE_FIG)
+
+# --------------------------------------------------------------------
+""" Plotando seção vertical a norte do CAnal de São Sebastião
+e um seção na Porção Oeste da Baía de Ilha Grande, para verificar
+a assinatura estranha da isoterma próxima a costa.
+"""
+lon,lat = ncin.lon.values, ncin.lat.values
+depth = ncin.depth.values
+sigma = ncin.sigma.values
+lon[lon == 0.] = np.nan
+lat[lat == 0.] = np.nan
+
+# index for each latitude
+icss = 85
+ibig = 110
+
+# for t in range(ncin.time[300:352].shape[0]):
+for t in np.arange(112,353,1):
+    fig, ax = plt.subplots(ncols=2,figsize=(15,10))
+    # apenas para facilitar
+    css_ax = ax[0]
+    big_ax = ax[1]
+
+    css_ax.set_title('Sao Sebastiao')
+    big_ax.set_title('Ilha Grande')
+
+    temp = ncin.temp[t,:,:,:]
+
+    css_ax = plotCrossSection(css_ax,lon,lat,depth,sigma,icss,temp,limits=[0,-1])
+    big_ax = plotCrossSection(big_ax,lon,lat,depth,sigma,ibig,temp,limits=[0,-1])
+
+    plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_control_2010/northCSS_and_BIG/%s'%(str(t).zfill(4)))
+    plt.close()

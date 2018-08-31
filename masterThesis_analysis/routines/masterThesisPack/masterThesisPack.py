@@ -851,7 +851,7 @@ def removeLabelsFromDataset(ncdata):
     return ncdata.drop(labels)
 
 
-def create_newDepth(lon,depth,sigma,ind):
+def create_newDepth(lon,depth,sigma,ind,kind='coord'):
     """Function to create a depth matrix based in the sigma level and
     the depth of each cell.
 
@@ -865,6 +865,8 @@ def create_newDepth(lon,depth,sigma,ind):
         Sigma level vector.
     ind : integer
         Index for latitude to plot cross section.
+    kind : string
+        Specification of x axis unit [coordinate/longitude or distance/km]
 
     Returns
     -------
@@ -876,10 +878,21 @@ def create_newDepth(lon,depth,sigma,ind):
     >> x,prof,sig = create_newDepth(lon[19,:],depth[19,:],sigma)
 
     """
+    import gsw
     # creating depth related to sigma levels
-    x    = np.tile(lon[ind,:],(37,1))
+    if kind == 'km':
+        dist = np.insert(lon,lon.shape[-1],lon[0,-1])
+        x    = np.tile(dist,(37,1))
+        # converting from meters to kilometers
+        x = x/1000.
+        # we have to add 1 in the shape, because when we calculate
+        # distance between each coordinate, we reduce the shape in 1 unit
+        s    = np.tile(sigma,(lon.shape[1]+1,1))
+    else:
+        x    = np.tile(lon[ind,:],(37,1))
+        s    = np.tile(sigma,(lon.shape[1],1))
+
     prof = np.tile(depth[ind,:],(37,1))
-    s    = np.tile(sigma,(lon.shape[1],1))
     s    = np.transpose(s)
     sig  = prof*s
 

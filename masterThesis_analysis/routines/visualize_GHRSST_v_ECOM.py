@@ -175,7 +175,7 @@ def find_nearest(lon,lat,ilon,ilat):
 ##############################################################################
 #                   VISUALIZATION FUNCTIONS                                  #
 ##############################################################################
-def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=None):
+def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=False):
 
     # selecionar os indices dos locais para geracao de serie temporal no modelo
     # indexes for model_grid
@@ -194,13 +194,13 @@ def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=Non
     contour_levels = np.arange(15.,32.,17./500)
 
     # plotar
-    fig,ax = plt.subplots(ncols=2,figsize=(20,15))
+    fig,ax = plt.subplots(ncols=2,figsize=(28,15))
 
     # plot sattelite
     m1 = oceano.make_map(ax[0],resolution='i')
     divider = make_axes_locatable(ax[0])
     cax1 = divider.append_axes("right", size="5%",pad=0.05)
-    cax1.set_ylim([15,32])
+    # cax1.set_ylim([15,32])
     divider = make_axes_locatable(ax[0])
     sattemp = divider.append_axes("bottom", size="20%",pad=0.3)
     sattemp.set_xlim([0,31])
@@ -211,7 +211,7 @@ def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=Non
     m2 = oceano.make_map(ax[1],resolution='i')
     divider = make_axes_locatable(ax[1])
     cax2 = divider.append_axes("right", size="5%",pad=0.05)
-    cax2.set_ylim([15,32])
+    # cax2.set_ylim([15,32])
     divider = make_axes_locatable(ax[1])
     modtemp = divider.append_axes("bottom", size="20%",pad=0.3)
     modtemp.set_xlim([0,31])
@@ -232,7 +232,7 @@ def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=Non
         # m2 = oceano.make_map(ax[1],resolution='i')
 
     # plot sattelite data
-    cb1 = m1.contourf(lon_sat,lat_sat,sst_sat[i,:,:],contour_levels,latlon=True,cmap=cmo.cm.thermal)
+    cb1 = m1.contourf(lon_sat,lat_sat,sst_sat[i,:,:],np.arange(19.,33.,1.),latlon=True,cmap=cmo.cm.thermal)
     c   = m1.contour(lon_sat,lat_sat,sst_sat[i,:,:],levels=['18.'],colors=('k'),linestyles=('--'))
     plt.colorbar(cb1,cax=cax1)
 
@@ -255,7 +255,7 @@ def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=Non
     # cax.fill_between(np.arange(0,len(tmp)), 0, tmp,color='k',alpha=0.4)
 
     # plot modelling data
-    cb2 = m2.contourf(lon_mod,lat_mod,sst_mod[i,:,:],contour_levels,latlon=True,cmap=cmo.cm.thermal)
+    cb2 = m2.contourf(lon_mod,lat_mod,sst_mod[i,:,:],np.arange(14.,32.,2.),latlon=True,cmap=cmo.cm.thermal)
     c   = m2.contour(lon_mod,lat_mod,sst_mod[i,:,:],levels=['18.'],colors=('k'),linestyles=('--'))
     plt.colorbar(cb2,cax=cax2)
 
@@ -267,10 +267,13 @@ def plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=Non
     modtemp.plot(sst_mod[:i,mod_juba,mod_iuba],'b',label='Ubatuba')
     modtemp.plot(sst_mod[:i,mod_jcab,mod_icab],'y',label='Cabo Frio')
 
-    basefig = '/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/ghrsst_v_ecom/'
-    outname = basefig + str(i).zfill(4) + '.png'
-    plt.savefig(outname)
-    os.system('convert -trim %s %s'%(outname, outname))
+    if savefig:
+        basefig = '/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/ghrsst_v_ecom/'
+        outname = basefig + str(i).zfill(4) + '.png'
+        plt.savefig(outname)
+        os.system('convert -trim %s %s'%(outname, outname))
+    else:
+        plt.show()
 
 
 ##############################################################################
@@ -317,11 +320,11 @@ lat_mod[lat_mod == 0] = np.nan
 
 ########### PLOTTING last timestep only to visualize how the figure will be
 
-for i in np.arange(1,31):
+for i in np.arange(1,30):
     print('plotting %i'%(i))
-    plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod)
+    plot_animation(i,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=True)
 
-# plot_animation(-1,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod)
+# plot_animation(-1,lon_sat,lat_sat,sst_sat,lon_mod,lat_mod,sst_mod,savefig=False)
 
 ################### testing temperature calibration
 ncin = xr.open_dataset(fname)
