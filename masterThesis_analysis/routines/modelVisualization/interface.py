@@ -26,29 +26,32 @@ import masterThesisPack as oceano
 
 # importing package
 from modelVisualization.animation import Animation
+from modelVisualization.places import mapa
 
 ##############################################################################
 #                          [GEN] CLASSES                                     #
 ##############################################################################
 
-class Experiment(Animation):
+class Experiment(Animation,mapa):
 
-    def __init__(self,fname,timeStart,timeEnd):
+    def __init__(self,fname,timeStart,timeEnd,region='pcse'):
         """
         Parameters
         ----------
         fname : string
             Full path to the file.
-        timeStart : integer
+        timeStart : string
             Index to begin the cut in the time axis of the data.
-        timeEnd : type
+        timeEnd : string
             Index to end the cut in the time axis of the data.
         """
         self.fname = fname
         self.ncin  = xr.open_dataset(fname)
-        self.timeStart = timeStart
-        self.timeEnd   = timeEnd
+        self.region = region
+        self.timeStart = self.findIndex_datetime(timeStart).values
+        self.timeEnd   = self.findIndex_datetime(timeEnd).values
         self.extractVariables()
+        self.definingRegionParameters()
 
     def extractVariables(self):
         # importing latitude and longitude, masking zero values with NaN
@@ -60,6 +63,17 @@ class Experiment(Animation):
         self.lon = lon
         self.lat = lat
 
+    def definingRegionParameters(self):
+        # baseado na regiao instanciada, chama a funcao adequada em places.py
+        # para setar os parametros para o basemap, em caso de plotagem de mapas
+        placesAvailable = {
+            'pcse': self.pcse,
+            'sbc': self.Canal_ssb
+        }
+
+        placesAvailable[self.region]()
+
+
     def view_grid(self,figsize):
         fig,ax = plt.subplots(figsize=figsize)
         m = oceano.make_map(ax)
@@ -68,8 +82,38 @@ class Experiment(Animation):
         m.plot(x.T,y.T,'k',alpha=.3)
         plt.show()
 
-    def anim(self,var='elev'):
-        Animation.__init__(self,var=var)
+    def findIndex_datetime(self,date):
+        """Find index of a reference date in an array of datetimes from the model.
+
+        Parameters
+        ----------
+        date : string
+            Reference datetime to find, such as 2010-02-15.
+
+        Returns
+        -------
+        d    : pandas.core.series.Series
+            Closest date found, where d.name represent a timestamp instance
+        and d.values are the index to be used.
+        """
+        try:
+            from dateutil import parser
+        except:
+            print("Please install python-dateutils package to use this function")
+            pass
+
+        refDate = parser.parse(str(date)) # converting string into datetime instance
+        # converting array of datetimes, from the model, into dataframe
+        times = self.ncin.time.values
+        df = pd.DataFrame(np.arange(0,len(times)),index=times)
+
+        # performing search
+        d = df.iloc[df.index.get_loc(refDate,method='nearest')]
+
+        return d
+
+    def anim(self,var='elev',sigma=0):
+        Animation.__init__(self,var=var,sigma=sigma)
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -79,8 +123,10 @@ class Experiment(Animation):
 exp = 'control_2010'
 fname = '/media/danilo/Danilo/mestrado/ventopcse/output/%s.cdf'%(exp)
 
-control = Experiment(fname,timeStart=112,timeEnd=352)
-control.anim()
+control = Experiment(fname,timeStart='2010-01-15',timeEnd='2010-02-14',region='pcse')
+control.anim(var='temp',sigma=0)
 
-d = {'cmap':'RdBu_r','latlon':True}
+d = {'cmap':cmo.cm.thermal,'latlon':True}
+
+# d = {'cmap':'RdBu_r','latlon':True}
 control.field(**d)
