@@ -103,28 +103,28 @@ class mapa(object):
 class location(object):
     # this class define coordinates location to plot graphics in
     # many places over the PCSE model_grid
-    
+
     def __init__(self):
         self.ilon = None
         self.ilat = None
 
     def SBC(self):
         # sao sebastiao channel
-        self.jsbc = 55
-        self.isbc = 7
+        self.ilat = 55
+        self.ilon = 7
 
     def cananeia(self):
-        self.jcan = 19
-        self.ican = 70
+        self.ilat = 19
+        self.ilon = 70
 
     def santos(self):
-        self.jsan = 28
-        self.isan = 70
+        self.ilat = 28
+        self.ilon = 70
 
     def ubatuba(self):
-        self.juba = 99
-        self.iuba = 70
+        self.ilat = 99
+        self.ilon = 70
 
     def cabofrio(self):
-        self.jcab = 126
-        self.icab = 70
+        self.ilat = 126
+        self.ilon = 70

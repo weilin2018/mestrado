@@ -1,7 +1,3 @@
-# colocar o código principal aqui: instanciar classe com Experiment(), gerar ncin, importar variaveis
-
-# add some description here
-
 import glob
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,6 +11,7 @@ from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import dates
 import datetime
+import cmocean as cmo
 
 import matplotlib
 matplotlib.style.use('ggplot')
@@ -25,14 +22,14 @@ sys.path.append('masterThesisPack/')
 import masterThesisPack as oceano
 
 # importing package
-from modelVisualization.animation import Animation
-from modelVisualization.places import mapa
+from modelVisualization.animation import Animation,Visualization
+from modelVisualization.places import mapa,location
 
 ##############################################################################
 #                          [GEN] CLASSES                                     #
 ##############################################################################
 
-class Experiment(Animation,mapa):
+class Experiment(Animation,Visualization,mapa,location):
 
     def __init__(self,fname,timeStart,timeEnd,region='pcse'):
         """
@@ -44,6 +41,8 @@ class Experiment(Animation,mapa):
             Index to begin the cut in the time axis of the data.
         timeEnd : string
             Index to end the cut in the time axis of the data.
+        region  : string
+            Select the region to be plotted in a case of field maps.
         """
         self.fname = fname
         self.ncin  = xr.open_dataset(fname)
@@ -64,6 +63,8 @@ class Experiment(Animation,mapa):
         self.lat = lat
 
     def definingRegionParameters(self):
+        """ Define parameters based on the region given by the user.
+        """
         # baseado na regiao instanciada, chama a funcao adequada em places.py
         # para setar os parametros para o basemap, em caso de plotagem de mapas
         placesAvailable = {
@@ -112,21 +113,26 @@ class Experiment(Animation,mapa):
 
         return d
 
-    def anim(self,var='elev',sigma=0):
+    def plotAnim(self,var='elev',sigma=0):
+        """Instanciate Animation class, for plotting maps field.
+
+        Parameters
+        ----------
+        var : string
+            Which variable to extract.
+        sigma : integer
+            Which sigma level to extract data
+        """
         Animation.__init__(self,var=var,sigma=sigma)
 
-##############################################################################
-#                               MAIN CODE                                    #
-##############################################################################
-# beginnig of the main code
-# Type the name of the gcmplt you want to analyze, without the ext (e.g., exp06)
-exp = 'control_2010'
-fname = '/media/danilo/Danilo/mestrado/ventopcse/output/%s.cdf'%(exp)
+    def plotGraph(self,var='elev',sigma=0):
+        """Instanciate Visualization class, for plotting graphs
 
-control = Experiment(fname,timeStart='2010-01-15',timeEnd='2010-02-14',region='pcse')
-control.anim(var='temp',sigma=0)
-
-d = {'cmap':cmo.cm.thermal,'latlon':True}
-
-# d = {'cmap':'RdBu_r','latlon':True}
-control.field(**d)
+        Parameters
+        ----------
+        var : string
+            Which variable to extract.
+        sigma : integer
+            Which sigma level to extract data
+        """
+        Visualization.__init__(self,var=var,sigma=sigma)
