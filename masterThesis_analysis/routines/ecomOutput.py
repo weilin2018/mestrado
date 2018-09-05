@@ -36,11 +36,13 @@ fname = '/media/danilo/Danilo/mestrado/ventopcse/output/%s.cdf'%(exp)
 control = Experiment(fname,timeStart='2010-01-15',timeEnd='2010-02-14',region='pcse')
 
 # run graph
+plt.ion()
+
 control.SBC()
 control.plotGraph(var='temp')
-control.graph()
+control.graph(title='Sea Surface Temperature Timeseries in the Sao Sebastiao Channel')
 
 # run field animation
-control.plotAnim(var='temp',sigma=0)
+control.plotAnim(var='temp',sigma=-1)
 d = {'cmap':cmo.cm.thermal,'latlon':True}
-# control.field(**d)
+control.field(title='Bottom Temperature',**d)
