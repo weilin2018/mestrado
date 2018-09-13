@@ -80,6 +80,7 @@ class HeatFlux_data_input(object):
         self.x     = var(x)-offset
         self.y     = var(y)
         self.hflx     = var(hflx)
+        self.hflx  = self.f_wind[hflx].values
         self.t     = var(t)
         self.xm,self.ym = np.meshgrid(self.x,self.y)
 
@@ -99,7 +100,25 @@ class HeatFlux_data_input(object):
             ocean, so you will need to change the sign too.
 
         """
-        self.hflx *= -1
+        # self.hflx *= -1
+
+    def calc_Qnet(self,nc,x='x',y='y',t='t',hflx='hflx',offset=0):
+        """
+            read files with all terms from the heat flux equations
+        """
+        self.f_wind = xr.open_dataset(nc)
+        self.x      = self.f_wind[x].values
+        self.y      = self.f_wind[y].values
+        self.t      = self.f_wind[t].values
+        self.xm,self.ym = np.meshgrid(self.x,self.y)
+
+        qsw = self.f_wind['DSWRF_L1'].values
+        qlw = self.f_wind['DLWRF_L1'].values
+        lat = self.f_wind['LHTFL_L1'].values
+        sen = self.f_wind['SHTFL_L1'].values
+
+        # net heat flux is a sum of the 4 terms from the heat balance equations
+        self.hflx  = qsw + qlw + lat + sen
 
 class Wind_data_input(object):
     # def __init__(self):
@@ -204,7 +223,7 @@ class Interpolation(object):
         u[np.isnan(u)]= -999
         v[np.isnan(v)]= -999
 
-        fill_gaps_reshape = lambda x,y : np.reshape(interp.fill_gaps_secom_grid(x,y),(size))
+        fill_gaps_reshape = lambda x,y : np.reshape(self.fill_gaps_secom_grid(x,y),(size))
         for i in xrange(t):
             intp_flag = interp.interpolate_flag(u[i]).ravel()
             u[i]      = fill_gaps_reshape(u[i],intp_flag)
@@ -228,9 +247,9 @@ class Interpolation(object):
         hf = np.array(hf)
         hf[np.isnan(hf)] = -999.
 
-        fill_gaps_reshape = lambda x,y : np.reshape(interp.fill_gaps_secom_grid(x,y),(size))
+        fill_gaps_reshape = lambda x,y : np.reshape(self.fill_gaps_secom_grid(x,y),(size))
         for i in xrange(t):
-            intp_flag = interp.interpolate_flag(hf[i]).ravel()
+            intp_flag = self.interpolate_flag(hf[i]).ravel()
             hf[i]      = fill_gaps_reshape(hf[i],intp_flag)
 
         HF = interp.completa(hf)
@@ -272,6 +291,13 @@ if __name__=='__main__':
                     vento.write("%5d%5d%10.3f%10.3f%10.3f" % (j+1,i+1,U[t,i,j],V[t,i,j],P[t,i,j]))
                     vento.write("\n")
 
+        vento.write("%10f"%(9999))
+        vento.write("\n")
+        for i in range(U.shape[1]):
+            for j in range(U.shape[2]):
+                vento.write("%5d%5d%10.3f%10.3f%10.3f" % (j+1,i+1,U[t,i,j],V[t,i,j],P[t,i,j]))
+                vento.write("\n")
+
         vento.close()
 
     def hflx_to_ascii(file_name,HF,ano,mes,dt=3,t0=0,formato="w+"):
@@ -288,18 +314,18 @@ if __name__=='__main__':
         for t in range(HF.shape[0]):
             fluxo.write("%10f" % (t*dt+t0))
             fluxo.write("\n")
-            for i in range(U.shape[1]):
-                for j in range(U.shape[2]):
+            for i in range(HF.shape[1]):
+                for j in range(HF.shape[2]):
                     fluxo.write("%5d%5d%10.3f" % (j+1,i+1,HF[t,i,j]))
                     fluxo.write("\n")
 
         # Danilo: repetir os ultimos dados de vento para um tempo 9999.00
- #       vento.write("%10f"%(9999))
- #       vento.write("\n")
- #       for i in range(U.shape[1]):
- #           for j in range(U.shape[2]):
- #               vento.write("%5d%5d%10.3f%10.3f%10.3f" % (j+1,i+1,U[t,i,j],V[t,i,j],P[t,i,j]))
- #               vento.write("\n")
+        fluxo.write("%10f"%(9999))
+        fluxo.write("\n")
+        for i in range(HF.shape[1]):
+            for j in range(HF.shape[2]):
+                fluxo.write("%5d%5d%10.3f" % (j+1,i+1,HF[t,i,j]))
+                fluxo.write("\n")
 
 
         fluxo.close()
@@ -307,6 +333,10 @@ if __name__=='__main__':
 
     import matplotlib.pyplot as plt
     import glob
+
+    import os
+
+    os.system('clear')
 
     #essa primeira parte e de leitura de dados
     arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/JF2014/tuv/' #onde esta o dado de vento .nc
@@ -317,7 +347,9 @@ if __name__=='__main__':
     ncfiles_wind = glob.glob(arquivo+nc)
     ncfiles_wind.sort()
 
-    arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/JF2014/hflx/' #onde esta o dado de vento .nc
+    # arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/JF2014/hflx/' #onde esta o dado de vento .nc
+    arquivo  = '/media/danilo/Danilo/mestrado/ventopcse/Qnet/'
+
     ncfiles_hflx = glob.glob(arquivo+nc)
     ncfiles_hflx.sort()
 
@@ -333,6 +365,8 @@ if __name__=='__main__':
         nc_hflx = ncfiles_hflx[file_i]
         nc_wind = ncfiles_wind[file_i]
 
+        print(nc_hflx+'\n')
+
         if file_i == 0:
             write_format    = "w+"
         else:
@@ -347,7 +381,8 @@ if __name__=='__main__':
 
         # read heat flux file
         hflxnc = HeatFlux_data_input()
-        hflxnc.hflx_nc(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
+        hflxnc.hflx_nc(nc_hflx,t='time',x='lon',y='lat',hflx='DSWRF_L1',offset=360)
+        # hflxnc.calc_Qnet(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
 
         # interpolate reanalysis data into model_grid
         interp = Interpolation()

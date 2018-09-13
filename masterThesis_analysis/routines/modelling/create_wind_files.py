@@ -11,7 +11,7 @@ import os
 
 i = 110
 j = 137
-t = 253 # numero de timesteps do seu arquivo wind.f!!!(ju.py eh o --> t0/6)
+t = 255 # numero de timesteps do seu arquivo wind.f!!!(ju.py eh o --> t0/6)
 
 g ="""
 ! original script adapted from test case by Rafaela F. Nascimento (LHiCo-IOUSP june/2015) and Carine G. R. Costa (LHiCo-IOUSP july/2015)
