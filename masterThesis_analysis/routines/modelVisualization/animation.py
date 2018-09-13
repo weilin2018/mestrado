@@ -61,9 +61,10 @@ class Animation:
             # if self.var is a 2D array, plot a static map
             plt.ion()
 
-            fig,ax = plt.subplots()
-            self.Mapa(ax)
-            self.mapa.contourf(self.lon,self.lat,self.var,**kwargs)
+            fig,self.ax = plt.subplots()
+            self.Mapa(self.ax)
+            self.csf = self.mapa.contourf(self.lon,self.lat,self.var,**kwargs)
+            plt.colorbar(self.csf)
             plt.title(title,fontsize=12)
 
 

@@ -44,6 +44,9 @@ class Experiment(Animation,Visualization,mapa,location):
         region  : string
             Select the region to be plotted in a case of field maps.
         """
+        if fname == '':
+            fname = input('Type the filename you want to plot: ')
+
         self.fname = fname
         self.ncin  = xr.open_dataset(fname)
         self.region = region
