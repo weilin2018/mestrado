@@ -12,7 +12,7 @@ by forcing the simulation with:
 	cloud cover fraction
 	extinction coefficient
 	amount of precipitation in m/year
-	amount of evaporation in m/year 
+	amount of evaporation in m/year
 		but both are converted to mm/sec in the code
 
 """
@@ -103,6 +103,16 @@ class Secom_model_grid2(object):
 
 class MeteorData_input(object):
 
+	def wind_nc(self,nc,x='x',y='y',t='t',u='u',v='v',kind=None,offset=0):
+		self.f_wnd = xr.open_dataset(nc)
+		var        = lambda x : self.f_wnd[x].data
+		self.x     = var(x) - offset
+		self.y     = var(y)
+		self.u     = var(u)
+		self.v     = var(v)
+		self.t     = var(t)
+		self.xm,self.ym = np.meshgrid(self.x,self.y)
+
 	def data_nc(self,nc,x='x',y='y',t='t',data='u',v='v',kind=None,offset=0):
 		self.ncin = xr.open_dataset(nc)
 		var            = lambda x : self.ncin[x].data
@@ -115,9 +125,6 @@ class MeteorData_input(object):
 		self.t     = var(t)
 		self.xm,self.ym = np.meshgrid(self.x,self.y)
 
-
-
-
 class Interpolation(object):
     """
     """
@@ -129,7 +136,6 @@ class Interpolation(object):
 
     def instancia_modelgrid(self,model_grid):
         self.mg     = model_grid
-
 
     def interpolate_flag(self,var,flag=-999):
         """
@@ -178,7 +184,7 @@ class Interpolation(object):
         return fill_gaps
 
 
-    def to_secom(self,t, intp_flag, xwind_multiplier=1, ywind_multiplier=1,flag=-999):
+    def wind_to_secom(self,t, intp_flag, xwind_multiplier=1, ywind_multiplier=1,flag=-999):
         """
         t: numero de time steps do modelo utilizado
         wind_multiplier : multiplica o vento por um valor arbitrário
@@ -189,32 +195,33 @@ class Interpolation(object):
         size = (self.mg.nj-2, self.mg.ni-2)
         coarser2finer_reshape = lambda x : np.reshape(interp.coarser2finer_ww3_to_secom(x,intp_flag),(size))
         for i in xrange(t):
-            u.append(coarser2finer_reshape(self.dados.data[i]))
+            u.append(coarser2finer_reshape(self.dados.u[i]))
             v.append(coarser2finer_reshape(self.dados.v[i]))
         p = np.full_like(u,1024) # pressure: pressao atmosferica igual a 1024 milibares, para alta pressao, comum na regiao.
 
         u=np.array(u)*xwind_multiplier
         v=np.array(v)*ywind_multiplier
 
-        # convert u and v to wd and ws
-        ws,wd = convert_uv2intdir(u,v)
-
         #os passos a seguir atribuem o valor -999 como flag e os usbstituem pelo valor mais proximo
-        wd[np.isnan(wd)]= -999
-        ws[np.isnan(ws)]= -999
+        u[np.isnan(u)]= -999
+        v[np.isnan(v)]= -999
 
-        fill_gaps_reshape = lambda x,y : np.reshape(interp.fill_gaps_secom_grid(x,y),(size))
+        fill_gaps_reshape = lambda x,y : np.reshape(self.fill_gaps_secom_grid(x,y),(size))
         for i in xrange(t):
-            intp_flag = interp.interpolate_flag(wd[i]).ravel()
-            wd[i]      = fill_gaps_reshape(wd[i],intp_flag)
-            intp_flag = interp.interpolate_flag(ws[i]).ravel()
-            ws[i]      = fill_gaps_reshape(ws[i],intp_flag)
+            intp_flag = interp.interpolate_flag(u[i]).ravel()
+            u[i]      = fill_gaps_reshape(u[i],intp_flag)
+            intp_flag = interp.interpolate_flag(v[i]).ravel()
+            v[i]      = fill_gaps_reshape(v[i],intp_flag)
 
-        WDD = self.completa(wd)
-        WDS = self.completa(ws)
+        U = self.completa(u)
+        V = self.completa(v)
         P = self.completa(p)
 
-        return WDD,WDS,P
+        return U,V,P
+
+    def meteo_to_secom(self,t,intp_flag,flag=-999):
+
+        pass
 
     def to_secom_data(self,t,intp_flag,flag=-999):
 
@@ -247,18 +254,7 @@ class Interpolation(object):
         matriz = np.insert(matriz,matriz.shape[2],matriz[:,:,-1],2)
         return matriz
 
-
 def data_to_ascii(file_name,U,V,SW,AT,RH,BP,CC,QP,QE,ano,mes,dt=6,t0=0,formato='w+'):
-    """
-    Funcao que salva as matrizes U,V e P no formato ascii
-    com intervalo de tempo dt (tempo em horas entre dois passos).
-    Os valores de ano e mes sao para nomear o arquivo.
-    INPUT:
-    U - velocidade zonal do vento (m/s)
-    V - velocidade meridional do vento (m/s)
-    P - Pressao atmosferica (mBar)
-
-    """
     metdata = open(file_name, formato)
 
     for t in range(U.shape[0]):
@@ -266,14 +262,22 @@ def data_to_ascii(file_name,U,V,SW,AT,RH,BP,CC,QP,QE,ano,mes,dt=6,t0=0,formato='
         metdata.write("\n")
         for i in range(U.shape[1]):
             for j in range(U.shape[2]):
-                metdata.write("%5d%5d%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f" % (j+1,i+1,U[t,i,j],V[t,i,j],SW[t,i,j],AT[t,i,j],RH[t,i,j],BP[t,i,j],CC[t,i,j],0.0,QP[t,i,j],QE[t,i,j]))
-                metdata.write("\n")
+                # metdata.write("%5d%5d%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f" % (j+1,i+1,U[t,i,j],V[t,i,j],SW[t,i,j],AT[t,i,j],RH[t,i,j],BP[t,i,j],CC[t,i,j],0.000,QP[t,i,j],QE[t,i,j]))
+				metdata.write("%5d%5d%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f%10.3f" % (j+1,i+1,U[t,i,j],V[t,i,j],SW[t,i,j],AT[t,i,j]-273.15,RH[t,i,j],BP[t,i,j],CC[t,i,j],0.042))
+				# using Extinction Coefficient = 0.042, like Optical Type Water described by Jerlov (1976)
+				metdata.write("\n")
 
     metdata.close()
 
-BASE_DIR = '/home/tparente/Dropbox/mestrado/data/data2model/JF2014/'
+import matplotlib.pyplot as plt
+import glob
+import os
 
-f_mg  = '/home/tparente/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
+os.system('clear')
+
+BASE_DIR = '/home/danilo/Dropbox/mestrado/data/data2model/JF2014/'
+
+f_mg  = '/home/danilo/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
 
 # define path and read files for each parameter
 nfiles_wind = glob.glob(BASE_DIR + 'tuv/*.nc')  # wind files
@@ -299,9 +303,9 @@ t0              = 0 # não começa em zero pq estou rodando hot start
 ano             = 2014
 mes             = 01
 wind_multiplier = 1.6 # atualizar ali embaixo na formula!
-file_name_data  = 'metData'
+file_name_data  = 'metData_2DMETLNP'
 
-for file_i in np.arange(0,64,1):
+for file_i in np.arange(0,63,1):
 
 	# check for create ou just open metData
 	if file_i == 0:
@@ -314,17 +318,17 @@ for file_i in np.arange(0,64,1):
 
 	#-------------------- wind
 	data = MeteorData_input()
-	data.data_nc(nfiles_wind[file_i],t='time',x='lon',y='lat',data='U_GRD_L103',v='V_GRD_L103',kind='wind',offset=360)
+	data.wind_nc(nfiles_wind[file_i],t='time',x='lon',y='lat',u='U_GRD_L103',v='V_GRD_L103',kind='wind',offset=360)
 
 	# interpolate reanalysis data into model_grid
 
 	interp = Interpolation()
 	interp.instancia_dados(data)
 	interp.instancia_modelgrid(smgrd)
-	intp_flag = interp.interpolate_flag(data.data[0]).ravel()
-	t = data.data.shape[0]
+	intp_flag = interp.interpolate_flag(data.u[0]).ravel()
+	t = data.u.shape[0]
 	# ao interpolar para a grade refinada do modelo, ja convertemos de componentes para direcao e magnitude
-	WDD,WDS,P = interp.to_secom(t,intp_flag,xwind_multiplier=1.6,ywind_multiplier=1.6)
+	U,V,P = interp.wind_to_secom(t,intp_flag,xwind_multiplier=1.6,ywind_multiplier=1.6)
 
 	#-------------------- SW radiation
 	data = MeteorData_input()
@@ -399,7 +403,7 @@ for file_i in np.arange(0,64,1):
 	QE = BP* 0. # interp.to_secom_data(t,intp_flag) * 0.
 	# precisar converter de W/m² para m/year
 
-	data_to_ascii(file_name_data,WDD,WDS,SW,AT,RH,P,CC,QP,QE,ano,mes,dt=6,t0=t0,formato=write_format)
+	data_to_ascii(file_name_data,U,V,SW,AT,RH,P,CC,QP,QE,ano,mes,dt=6,t0=t0,formato=write_format)
 
 	# informations for the next routine
 	t0 = timestep*t+t0

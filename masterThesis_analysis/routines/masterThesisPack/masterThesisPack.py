@@ -897,3 +897,18 @@ def create_newDepth(lon,depth,sigma,ind,kind='coord'):
     sig  = prof*s
 
     return x,prof,sig
+
+def load_ghrsst(fname):
+
+    ncin = xr.open_dataset(fname)
+
+    lon = ncin.lon.values
+    lat = ncin.lat.values
+    lon[lon == 0] = np.nan
+    lat[lat == 0] = np.nan
+    lon,lat = np.meshgrid(ncin.lon.values,ncin.lat.values)
+
+    sst  = ncin['analysed_sst'].values - 273.15
+    time = ncin.time.values
+
+    return sst,time,lon,lat

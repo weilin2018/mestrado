@@ -25,7 +25,7 @@
             t0 = 0
             t = t0/frequencia dos dados (vento = 6 horas)
     """
-    t = 253 # numero de timesteps do seu arquivo wind.f!!!
+    t = 245 # numero de timesteps do seu arquivo wind.f!!!
 
     g ="""
     ! original script adapted from test case by Rafaela F. Nascimento (LHiCo-IOUSP june/2015) and Carine G. R. Costa (LHiCo-IOUSP july/2015)

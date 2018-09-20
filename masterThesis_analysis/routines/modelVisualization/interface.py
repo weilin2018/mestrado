@@ -86,7 +86,7 @@ class Experiment(Animation,Visualization,mapa,location):
         m.plot(x.T,y.T,'k',alpha=.3)
         plt.show()
 
-    def findIndex_datetime(self,date):
+    def findIndex_datetime(self,date,times=[]):
         """Find index of a reference date in an array of datetimes from the model.
 
         Parameters
@@ -108,7 +108,9 @@ class Experiment(Animation,Visualization,mapa,location):
 
         refDate = parser.parse(str(date)) # converting string into datetime instance
         # converting array of datetimes, from the model, into dataframe
-        times = self.ncin.time.values
+        if len(times) == 0:
+            times = self.ncin.time.values
+
         df = pd.DataFrame(np.arange(0,len(times)),index=times)
 
         # performing search
@@ -139,3 +141,10 @@ class Experiment(Animation,Visualization,mapa,location):
             Which sigma level to extract data
         """
         Visualization.__init__(self,var=var,sigma=sigma)
+
+
+
+
+"""
+. Criar novas funcoes para comparar dados com outros dados 2D (satelite ou modelo)
+"""

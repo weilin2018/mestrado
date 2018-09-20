@@ -4,6 +4,11 @@ TODO:: adaptar codigo para pegar um ponto de interesse
 na grade do GHRSST e extrair os dados neste ponto e realizar
 os calculos.
 
+TODO:: eu mexi no formato dos arquivos do NCEP, preciso readaptar o código.
+Os arquivos estão todos juntos, separados em 3 arquivos apenas, para periíodos
+diferentes.
+Novo diretório: /media/danilo/Danilo/mestrado/WesternAtlantic_MHWs/data/NCEP/
+
 Objetivo:
 
     . usando dados do GHRSST em um único ponto na porcao Sul da South Brazil Bight,
@@ -91,7 +96,7 @@ def deseason_harmonic(dat, K, L):
     return dat_ds, season, beta
 
 # visualizing
-def visualizing_MHW(mhws,clim,ev=ev):
+def visualizing_MHW(mhws,clim,ev):
     plt.figure(figsize=(14,10))
     plt.subplot(2,1,1)
     # Plot SST, seasonal cycle, and threshold
@@ -145,7 +150,7 @@ def load_sst(dataset,path):
         var = 'POT_L160_Avg_1'
 
         #################### data from CFSR
-        data_dir = '/media/danilo/Danilo/mestrado/ventopcse/HeatBudget/data/'
+        data_dir = '/media/danilo/Danilo/mestrado/ventopcse/southwesternMHW/data/'
         nfiles = glob.glob(data_dir+"*.nc")
         nfiles.sort()
 

@@ -1,4 +1,11 @@
-# add some description here
+"""
+TO DO:
+
+Baixar dados de Jan, 01 até Mar, 01, pra pegar um maior período.
+
+    Dados armazenados em:
+        /media/danilo/Danilo/mestrado/ventopcse/data/HeatBudget/
+"""
 
 import glob
 import matplotlib.pyplot as plt
@@ -32,7 +39,7 @@ def domain_area(xe,xw,yn,ys,R):
 
     return A
 
-def load_Surface_HeatFlux(nfile):
+def load_Surface_HeatFlux(nfile,R,lat):
     cdf_hf = xr.open_dataset(nfile)
     sfc_hflux = cdf_hf['THFLX_L1_Avg_1'].values
     x_hf = cdf_hf['lon'].values - 360
@@ -70,13 +77,12 @@ def set_timeIndexes(times,startDate,finalDate):
 
     return startIndex,finalIndex
 
-
-def temperatureBudget(year,DATA_DIR,MERCATOR):
+def temperatureBudget(year,DATA_DIR,MERCATOR,HEATFLUX):
 
     # defining some constants
     R = 6371*1000  # earth's radius
-    izh = 25       # represeting z = -120m as my mixed layer depth
-    h = 100        # mixed layer depth
+    izh = 17       # represeting z = -120m as my mixed layer depth
+    h = 47.22        # mixed layer depth
     cp      = 3990 # J degC^-1 kg^-1: specific heat at constant pressure
     rho_ref = 1035 # kg m^-3, reference density
 
@@ -131,7 +137,8 @@ def temperatureBudget(year,DATA_DIR,MERCATOR):
     int_dx_s = np.nansum(nx*dx_s)
 
     #### LOADING HEAT FLUX DATA
-    sfc_hflux, dA_hf, mask_hf = load_Surface_HeatFlux('/home/danilo/Dropbox/mestrado/data/data2model/JF2014/hflx/heatflux_JF2014.nc')
+    ncfile = DATA_DIR+HEATFLUX%(str(year))
+    sfc_hflux, dA_hf, mask_hf = load_Surface_HeatFlux(ncfile,R,lat)
     mask_hf[np.isnan(np.squeeze(np.mean(sfc_hflux,axis=0)))] = 0
 
     ##################################################################
@@ -173,7 +180,6 @@ def temperatureBudget(year,DATA_DIR,MERCATOR):
         int_horizontally = np.nansum(data*widthFace,axis=1)
 
         return int_horizontally
-
 
     # integrating over z
     int_utw_d = integrate_z(uw,tw,nt,DZ)
@@ -244,29 +250,29 @@ def temperatureBudget(year,DATA_DIR,MERCATOR):
     # plotting
     df = pd.DataFrame(f,index=f['time'])
 
-    df['dTdt'].plot(color='k',label=r'Total (T$_{v}$)')
-    df['Th'].plot(color='b',label=r'Advection (T$_{h}$)')
-    df['Tq'].plot(color='r',label=r'Surface Heat Flux (T$_{q}$)')
-    df['Residual'].plot(color='g',label=r'Residual')
+    # df['dTdt'].plot(color='k',label=r'Total (T$_{v}$)')
+    # df['Th'].plot(color='b',label=r'Advection (T$_{h}$)')
+    # df['Tq'].plot(color='r',label=r'Surface Heat Flux (T$_{q}$)')
+    # df['Residual'].plot(color='g',label=r'Residual')
 
     return df
-
 
 
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
 # beginnig of the main code
-DATA_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/mercator/'
-MERCATOR = 'data.nc'
+DATA_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/HeatBudget/'
+MERCATOR = 'mercator_data.nc'
+HEATFLUX = 'heatflux_%s.nc'
 
-# define which year to plot
-year = 2014
+# calculating temperature budget for each year
+df_2010 = temperatureBudget(2010,DATA_DIR,MERCATOR,HEATFLUX) # control experiment
+df_2014 = temperatureBudget(2014,DATA_DIR,MERCATOR,HEATFLUX) # anomalous experiment
 
+# visualizing
+plt.ion()
 
-df_2010 = temperatureBudget(2010,DATA_DIR,MERCATOR)
-df_2014 = temperatureBudget(2014,DATA_DIR,MERCATOR)
-#################
 fig,ax = plt.subplots(nrows=2)
 
 df_2010['dTdt'].plot(ax=ax[0],color='k',label=r'Total (T$_{v}$)')
@@ -279,5 +285,11 @@ df_2014['Th'].plot(ax=ax[1],color='b',label=r'Advection (T$_{h}$)')
 df_2014['Tq'].plot(ax=ax[1],color='r',label=r'Surface Heat Flux (T$_{q}$)')
 df_2014['Residual'].plot(ax=ax[1],color='g',label=r'Residual')
 
+ax[0].margins(0)
+ax[1].margins(0)
+
+ax[0].set_ylim([-2.5,4])
+ax[1].set_ylim([-2.5,4])
+
 ax[1].legend()
-ax[0].set_title('Temperature Budget Analysis over South Brazil Bight for 2010 (above) and 2014 (below)',fontsize=25)
+ax[0].set_title('Heat Budget Analysis over South Brazil \nBight [50m Depth] for 2010 (above) and 2014 (below)',fontsize=25)

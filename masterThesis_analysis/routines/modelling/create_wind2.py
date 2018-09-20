@@ -107,13 +107,18 @@ class HeatFlux_data_input(object):
             read files with all terms from the heat flux equations
         """
         self.f_wind = xr.open_dataset(nc)
-        self.x      = self.f_wind[x].values
+        self.x      = self.f_wind[x].values - offset
         self.y      = self.f_wind[y].values
         self.t      = self.f_wind[t].values
         self.xm,self.ym = np.meshgrid(self.x,self.y)
 
-        qsw = self.f_wind['DSWRF_L1'].values
-        qlw = self.f_wind['DLWRF_L1'].values
+        DSWRF = self.f_wind['DSWRF_L1'].values
+        DLWRF = self.f_wind['DLWRF_L1'].values
+        USWRF = self.f_wind['USWRF_L1'].values
+        ULWRF = self.f_wind['ULWRF_L1'].values
+
+        qsw = DSWRF - USWRF
+        qlw = DLWRF - ULWRF
         lat = self.f_wind['LHTFL_L1'].values
         sen = self.f_wind['SHTFL_L1'].values
 
@@ -291,12 +296,12 @@ if __name__=='__main__':
                     vento.write("%5d%5d%10.3f%10.3f%10.3f" % (j+1,i+1,U[t,i,j],V[t,i,j],P[t,i,j]))
                     vento.write("\n")
 
-        vento.write("%10f"%(9999))
-        vento.write("\n")
-        for i in range(U.shape[1]):
-            for j in range(U.shape[2]):
-                vento.write("%5d%5d%10.3f%10.3f%10.3f" % (j+1,i+1,U[t,i,j],V[t,i,j],P[t,i,j]))
-                vento.write("\n")
+        # vento.write("%10f"%(9999))
+        # vento.write("\n")
+        # for i in range(U.shape[1]):
+        #     for j in range(U.shape[2]):
+        #         vento.write("%5d%5d%10.3f%10.3f%10.3f" % (j+1,i+1,U[t,i,j],V[t,i,j],P[t,i,j]))
+        #         vento.write("\n")
 
         vento.close()
 
@@ -319,13 +324,13 @@ if __name__=='__main__':
                     fluxo.write("%5d%5d%10.3f" % (j+1,i+1,HF[t,i,j]))
                     fluxo.write("\n")
 
-        # Danilo: repetir os ultimos dados de vento para um tempo 9999.00
-        fluxo.write("%10f"%(9999))
-        fluxo.write("\n")
-        for i in range(HF.shape[1]):
-            for j in range(HF.shape[2]):
-                fluxo.write("%5d%5d%10.3f" % (j+1,i+1,HF[t,i,j]))
-                fluxo.write("\n")
+        # # Danilo: repetir os ultimos dados de vento para um tempo 9999.00
+        # fluxo.write("%10f"%(9999))
+        # fluxo.write("\n")
+        # for i in range(HF.shape[1]):
+        #     for j in range(HF.shape[2]):
+        #         fluxo.write("%5d%5d%10.3f" % (j+1,i+1,HF[t,i,j]))
+        #         fluxo.write("\n")
 
 
         fluxo.close()
@@ -359,7 +364,7 @@ if __name__=='__main__':
     mes             = 01
     wind_multiplier = 1.6 # atualizar ali embaixo na formula!
     file_name_wind       = 'vento'#+str(ano)+str(mes)
-    file_name_fluxo      = 'calor'
+    file_name_fluxo      = 'calor_v2'
 
     for file_i in np.arange(0,len(ncfiles_hflx),1):
         nc_hflx = ncfiles_hflx[file_i]
@@ -381,8 +386,8 @@ if __name__=='__main__':
 
         # read heat flux file
         hflxnc = HeatFlux_data_input()
-        hflxnc.hflx_nc(nc_hflx,t='time',x='lon',y='lat',hflx='DSWRF_L1',offset=360)
-        # hflxnc.calc_Qnet(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
+        # hflxnc.hflx_nc(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
+        hflxnc.calc_Qnet(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
 
         # interpolate reanalysis data into model_grid
         interp = Interpolation()

@@ -39,15 +39,15 @@ def load_exp(fname,year='2010'):
 ##############################################################################
 # beginnig of the main code
 # Type the name of the gcmplt you want to analyze, without the ext (e.g., exp06)
-exp = 'control_2010'
+exp = 'exp11'
 fname = '/media/danilo/Danilo/mestrado/ventopcse/output/%s.cdf'%(exp)
 
-control = Experiment(fname,timeStart='2010-01-15',timeEnd='2010-02-27',region='pcse')
+control = Experiment(fname,timeStart='2014-01-15',timeEnd='2014-02-27',region='pcse')
 
 # run graph
 plt.ion()
 
-control.SBC()
+control.SBC() # define a location for timeseries
 control.plotGraph(var='temp',sigma=-1)
 control.graph(title='Sea Surface Temperature Timeseries in the Sao Sebastiao Channel')
 

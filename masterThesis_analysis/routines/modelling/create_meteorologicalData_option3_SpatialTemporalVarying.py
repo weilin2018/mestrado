@@ -11,7 +11,7 @@ import os
 
 i = 110
 j = 137
-t = 253 # numero de timesteps do seu arquivo wind.f!!!(ju.py eh o --> t0/6)
+t = 245 # numero de timesteps do seu arquivo wind.f!!!(ju.py eh o --> t0/6)
 
 g ="""
        INTEGER K, KI, KJ, NI, NJ, NT
@@ -25,7 +25,7 @@ g ="""
        NT = %d
 
        open(20,file='synop_met',form='unformatted')
-       open(50,file='metData')
+       open(50,file='metData_2DMETLNP')
 
        do 175 K=1,NT
          read(50,*)TIME(K)
