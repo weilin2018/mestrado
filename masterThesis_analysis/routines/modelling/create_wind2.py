@@ -274,7 +274,6 @@ class Interpolation(object):
 
 if __name__=='__main__':
 
-
     def wind_to_ascii(file_name,U,V,P,ano,mes,dt=3,t0=0,formato="w+"):
         """
         Funcao que salva as matrizes U,V e P no formato ascii
@@ -343,34 +342,60 @@ if __name__=='__main__':
 
     os.system('clear')
 
-    #essa primeira parte e de leitura de dados
-    arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/JF2014/tuv/' #onde esta o dado de vento .nc
-    nc    = '*.nc'
-    f_mg  = '/home/danilo/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
-                                             # só funcina com esse model grid, mas pra rodar o modelo é sem os pontos em terra depois
+    typeOfrun = input('Hot [1] or Coldstart [2]? ')
+    yearOfrun = str(input('Which year create input data?: '))
 
-    ncfiles_wind = glob.glob(arquivo+nc)
+    if typeOfrun == 1:
+        run = 'hotstart'
+    else:
+        run = 'coldstart'
+
+    # reading files
+    wind = '/home/danilo/Dropbox/mestrado/data/data2model/%s/%s/wind/*.nc'%(yearOfrun,run)
+    ncfiles_wind = glob.glob(wnd_hot)
     ncfiles_wind.sort()
 
-    # arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/JF2014/hflx/' #onde esta o dado de vento .nc
-    arquivo  = '/media/danilo/Danilo/mestrado/ventopcse/Qnet/'
-
-    ncfiles_hflx = glob.glob(arquivo+nc)
+    hflx = '/home/danilo/Dropbox/mestrado/data/data2model/%s/%s/hflx/*.nc'%(yearOfrun,run)
+    ncfiles_hflx = glob.glob(hflx_hot)
     ncfiles_hflx.sort()
+    #
+    # if typeOfrun == 1: # hotstart
+    #     run = 'hotstart'
+    #     wnd_hot = '/home/danilo/Dropbox/mestrado/data/data2model/%s/hotstart/wind/*.nc'%(yearOfrun)
+    #     ncfiles_wind = glob.glob(wnd_hot)
+    #     ncfiles_wind.sort()
+    #
+    #     hflx_hot = '/home/danilo/Dropbox/mestrado/data/data2model/%s/hotstart/hflx/*.nc'%(yearOfrun)
+    #     ncfiles_hflx = glob.glob(hflx_hot)
+    #     ncfiles_hflx.sort()
+    # else: # coldstart
+    #     run = 'coldstart'
+    #     #essa primeira parte e de leitura de dados
+    #     arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/%s/run/wind/'%(yearOfrun) #onde esta o dado de vento .nc
+    #     nc    = '*.nc'
+    #     f_mg  = '/home/danilo/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
+    #                                              # só funcina com esse model grid, mas pra rodar o modelo é sem os pontos em terra depois
+    #     ncfiles_wind = glob.glob(arquivo+nc)
+    #     ncfiles_wind.sort()
+    #
+    #     arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/%s/run/hflx/'%(yearOfrun)
+    #
+    #     ncfiles_hflx = glob.glob(arquivo+nc)
+    #     ncfiles_hflx.sort()
 
     timestep        = 6 #horas (dado original)
     t0              = 0 # não começa em zero pq estou rodando hot start
     ano             = 2014
     mes             = 01
     wind_multiplier = 1.6 # atualizar ali embaixo na formula!
-    file_name_wind       = 'vento'#+str(ano)+str(mes)
-    file_name_fluxo      = 'calor_v2'
+    file_name_wind       = 'vento_%s_%s'%(run,yearOfrun)#+str(ano)+str(mes)
+    file_name_fluxo      = 'calor_%s_%s'%(run,yearOfrun)
 
-    for file_i in np.arange(0,len(ncfiles_hflx),1):
-        nc_hflx = ncfiles_hflx[file_i]
+    print('Processing wind files')
+    for file_i in np.arange(0,len(ncfiles_wind),1):
+        print("Processing %i of %i \n"%(file_i,len(ncfiles_wind)))
+
         nc_wind = ncfiles_wind[file_i]
-
-        print(nc_hflx+'\n')
 
         if file_i == 0:
             write_format    = "w+"
@@ -384,11 +409,6 @@ if __name__=='__main__':
         wndnc = Wind_data_input()
         wndnc.wind_nc(nc_wind,t='time',x='lon',y='lat',u='U_GRD_L103',v='V_GRD_L103',offset=360)
 
-        # read heat flux file
-        hflxnc = HeatFlux_data_input()
-        # hflxnc.hflx_nc(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
-        hflxnc.calc_Qnet(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
-
         # interpolate reanalysis data into model_grid
         interp = Interpolation()
         interp.instancia_dados(wndnc)
@@ -399,6 +419,27 @@ if __name__=='__main__':
 
         # write interpolated wind data
         wind_to_ascii(file_name_wind,U,V,P,ano,mes,dt=6,t0=t0,formato=write_format)
+
+    print("###############################")
+    print('Processing wind files')
+
+    for file_i in np.arange(0,len(ncfiles_hflx),1):
+        nc_hflx = ncfiles_hflx[file_i]
+
+        print("Processing %i of %i \n"%(file_i,len(ncfiles_hflx)))
+
+        if file_i == 0:
+            write_format    = "w+"
+        else:
+            write_format    = "a"
+
+        # load model_grid with land cells
+        smgrd = Secom_model_grid2(f_mg)
+
+        # read heat flux file
+        hflxnc = HeatFlux_data_input()
+        # hflxnc.hflx_nc(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
+        hflxnc.calc_Qnet(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
 
         # interpolate heat flux data
         interp = Interpolation()

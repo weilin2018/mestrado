@@ -25,7 +25,7 @@
             t0 = 0
             t = t0/frequencia dos dados (vento = 6 horas)
     """
-    t = 245 # numero de timesteps do seu arquivo wind.f!!!
+    t = 49 # numero de timesteps do seu arquivo wind.f!!!
 
     g ="""
     ! original script adapted from test case by Rafaela F. Nascimento (LHiCo-IOUSP june/2015) and Carine G. R. Costa (LHiCo-IOUSP july/2015)
@@ -44,8 +44,8 @@
 
           open(20,file='synop_wind',form='unformatted')
           open(30,file='synop_hflx',form='unformatted')
-          open(50,file='vento')
-          open(60,file='calor')
+          open(50,file='vento_hotstart_2006')
+          open(60,file='calor_hotstart_2006')
 
           do 175 K=1,NT
 

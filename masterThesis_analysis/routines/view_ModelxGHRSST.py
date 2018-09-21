@@ -14,6 +14,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import dates
 import datetime
 import cmocean as cmo
+from scipy import interpolate
 
 import matplotlib
 matplotlib.style.use('ggplot')
@@ -25,12 +26,20 @@ import masterThesisPack as oceano
 
 from modelVisualization.interface import Experiment
 
-def interp_ghrsst_to_ecom(x,y,data,xi,yi,method='linear'):
+def interp_ghrsst_to_ecom(x,y,data,xi,yi,cut=True,method='linear'):
     """
         x,y = grade original
         data= dado a ser interpolado
         xi,yi = grade para interpolar
     """
+
+    # selecting some values inside a box to speed up interpolation
+    if cut:
+        ind = (x > -48.8) & (y < -21.663) & (y > -29.669)
+        x = x[ind]
+        y = y[ind]
+        data = data[ind]
+
     x = x.ravel()
     y = y.ravel()
 
@@ -115,10 +124,9 @@ exp11 = Experiment(fname_exp11,timeStart='2014-01-15',timeEnd='2014-02-15',regio
 exp05.sst = exp05.ncin['temp'][exp05.timeStart.item():exp05.timeEnd.item(),0,:,:]
 exp11.sst = exp11.ncin['temp'][exp11.timeStart.item():exp11.timeEnd.item(),0,:,:]
 time_model= exp05.ncin.time[exp11.timeStart.item():exp11.timeEnd.item()].values
+exp05.extractVariables()
 lon_mod = exp05.lon
 lat_mod = exp05.lat
-lon_mod[lon_mod == 0] = np.nan
-lat_mod[lat_mod == 0] = np.nan
 
 # selecting time indexes to plot
 time_sat_begin = 2  # 2014-01-14
@@ -145,6 +153,7 @@ plotData(sat1,exp05.sst[time_mod_begin,:,:],exp11.sst[time_mod_begin,:,:],lon_mo
 plotData(sat2,exp05.sst[time_mod_middle,:,:],exp11.sst[time_mod_middle,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_middle]).strftime('%Y-%m-%d'))
 plotData(sat3,exp05.sst[time_mod_final,:,:],exp11.sst[time_mod_final,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_final]).strftime('%Y-%m-%d'))
 
+# plotData(sat1-sst_t0,exp05.sst[time_mod_begin,:,:]-sst_t0,exp11.sst[time_mod_begin,:,:]-sst_t0,lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_begin]).strftime('%Y-%m-%d'))
 
 ##############################################################################
 #                            PLOTTING PCI/PCM                                #
@@ -161,12 +170,28 @@ mod1 = masking_array(depth,exp05.sst[time_mod_begin,:,:])
 mod2 = masking_array(depth,exp11.sst[time_mod_begin,:,:])
 plotData(sate,mod1,mod2,lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_begin]).strftime('%Y-%m-%d'))
 
-sate = masking_array(depth,sat1)
+sate = masking_array(depth,sat2)
 mod1 = masking_array(depth,exp05.sst[time_mod_middle,:,:])
 mod2 = masking_array(depth,exp11.sst[time_mod_middle,:,:])
 plotData(sate,mod1,mod2,lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_middle]).strftime('%Y-%m-%d'))
 
-sate = masking_array(depth,sat1)
+sate = masking_array(depth,sat3)
 mod1 = masking_array(depth,exp05.sst[time_mod_final,:,:])
 mod2 = masking_array(depth,exp11.sst[time_mod_final,:,:])
 plotData(sate,mod1,mod2,lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_final]).strftime('%Y-%m-%d'))
+
+##############################################################################
+#                            PLOTTING ANOMALY                                #
+##############################################################################
+# load seasonal climatology
+season_clim = pickle.load(open('/media/danilo/Danilo/mestrado/WesternAtlantic_MHWs/routines/season_climatology_1981-2018.pickle','r'))
+fp = '/media/danilo/Danilo/mestrado/WesternAtlantic_MHWs/data/OISST/OISSTv2.1981.2018.nc'
+lon_clim = xr.open_dataset(fp)['lon'].values
+lat_clim = xr.open_dataset(fp)['lat'].values
+lon_clim,lat_clim = np.meshgrid(lon_clim,lat_clim)
+# extract seasonal signal only for the period analysed
+seasonal_JF2014 = season_clim[11822:11855]
+# interpolate to the model grid
+# seasonal = interp_ghrsst_to_ecom()
+
+# deseason_sat =

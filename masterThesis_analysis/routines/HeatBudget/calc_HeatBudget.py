@@ -291,5 +291,9 @@ ax[1].margins(0)
 ax[0].set_ylim([-2.5,4])
 ax[1].set_ylim([-2.5,4])
 
-ax[1].legend()
+ax[0].legend()
 ax[0].set_title('Heat Budget Analysis over South Brazil \nBight [50m Depth] for 2010 (above) and 2014 (below)',fontsize=25)
+
+
+ax[0].set_ylabel(r'$^o$C',fontsize=18)
+ax[1].set_ylabel(r'$^o$C',fontsize=18)
