@@ -15,6 +15,7 @@ from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import os
 import pickle
+import math
 
 # gerar diretorio base
 def make_dir():
@@ -24,7 +25,7 @@ def make_dir():
 
     hostname = socket.gethostname()
 
-    if hostname == 'oceano': # estou no meu pc pessoal
+    if hostname == 'deep': # estou no meu pc pessoal
         BASE_DIR = '/media/danilo/Danilo/mestrado/github/'
 
         return BASE_DIR
@@ -110,6 +111,13 @@ def find_nearest(lon,lat,ilon,ilat):
         jss.append(int(j))
 
     return iss,jss
+
+def find_nearest_1D(array,value):
+    idx = np.searchsorted(array, value, side="left")
+    if idx > 0 and (idx == len(array) or math.fabs(value - array[idx-1]) < math.fabs(value - array[idx])):
+        return array[idx-1]
+    else:
+        return array[idx]
 
 # baixar dados do Climate Forecast System Version 2
 def downloadCFSv2(year,month):
@@ -340,7 +348,7 @@ def extrair_grades(coarsedFile, refinedFile):
 
     return coarsedGrid, refinedGrid
 
-def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-40,resolution='l'):
+def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-40,resolution='l',nmeridians=3,nparallels=2):
 
     m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
 
@@ -354,8 +362,8 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-40,resolution='l'):
     m.drawmapboundary()
 
 	# definir meridianos e paralelos para plotar no mapa
-    meridians=np.arange(llon,ulon,3)
-    parallels=np.arange(llat,ulat,2)
+    meridians=np.arange(llon,ulon,nmeridians)
+    parallels=np.arange(llat,ulat,nparallels)
 	# desenhar meridianos e paralelos conforme definido acima
     m.drawparallels(parallels,labels=[True,False,False,True],fontsize=13,fontweight='bold',color='gray')
     m.drawmeridians(meridians,labels=[True,False,False,True],fontsize=13,fontweight='bold',color='gray')
@@ -637,23 +645,23 @@ def uv2intdir(u,v):
     wd = np.asarray(wd)
 
     return ws,wd
-
-def uv2dirmag(u,v):
-    """ Transforma componente U (leste-oeste) e V (norte-sul) em
-    magnitude e direcao em relacao AO NORTE!!!.
-    CUIDADO: Para o vento, a direcao que esta funcao retorna é pra onde ELE SOPRA e nao da direcao da onde ele vem !!!
-    Exemplo: U = +1 e V = +1 -> gera direcao = 45 graus!!!
-    Paula Birocchi
-    magnitude - corrente resultante
-    direcaorad - direcao em radianos
-    direcaol - direcao em graus em relacao a direcao oeste-leste (0 graus em leste)
-    direcaon - direcao em graus em relacao a direcao norte (0 graus em norte)! --> DIRECAO FINAL!!!!
-    """
-    magnitude     = np.sqrt(u**2+v**2)
-    direcaorad = np.arctan2(v,u)
-    direcaon = direcaorad/np.pi*180 # direcao em relacao a direcao
-    direcaon = np.mod(90 - direcaon,360) #esta linha está na rotina do Bob, e só deve ser usada no caso dos dados do canal de São Sebastião e nos dados do NCEP!.
-    return magnitude, direcaon
+#
+# def uv2dirmag(u,v):
+#     """ Transforma componente U (leste-oeste) e V (norte-sul) em
+#     magnitude e direcao em relacao AO NORTE!!!.
+#     CUIDADO: Para o vento, a direcao que esta funcao retorna é pra onde ELE SOPRA e nao da direcao da onde ele vem !!!
+#     Exemplo: U = +1 e V = +1 -> gera direcao = 45 graus!!!
+#     Paula Birocchi
+#     magnitude - corrente resultante
+#     direcaorad - direcao em radianos
+#     direcaol - direcao em graus em relacao a direcao oeste-leste (0 graus em leste)
+#     direcaon - direcao em graus em relacao a direcao norte (0 graus em norte)! --> DIRECAO FINAL!!!!
+#     """
+#     magnitude     = np.sqrt(u**2+v**2)
+#     direcaorad = np.arctan2(v,u)
+#     direcaon = direcaorad/np.pi*180 # direcao em relacao a direcao
+#     direcaon = np.mod(90 - direcaon,360) #esta linha está na rotina do Bob, e só deve ser usada no caso dos dados do canal de São Sebastião e nos dados do NCEP!.
+#     return magnitude, direcaon
 
 #### plotting directional histrogram
 def polarPlot(ws,wd,title):

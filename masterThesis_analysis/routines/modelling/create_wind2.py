@@ -18,8 +18,6 @@ import numpy as np
 import xarray as xr
 from scipy import interpolate
 
-
-
 class Secom_model_grid2(object):
     #primeira linha reservada para o autor do model grid
     #segunda linha descreve os sigma levels
@@ -79,7 +77,7 @@ class HeatFlux_data_input(object):
         var         = lambda x : self.f_wind[x].data
         self.x     = var(x)-offset
         self.y     = var(y)
-        self.hflx     = var(hflx)
+        # self.hflx     = var(hflx)
         self.hflx  = self.f_wind[hflx].values
         self.t     = var(t)
         self.xm,self.ym = np.meshgrid(self.x,self.y)
@@ -342,55 +340,49 @@ if __name__=='__main__':
 
     os.system('clear')
 
-    typeOfrun = input('Hot [1] or Coldstart [2]? ')
+    typeOfrun = input('Hot [1] or Experiment [2]? ')
     yearOfrun = str(input('Which year create input data?: '))
+    typeOfHeat = str(input('Type 1 for Total Downward HF or 2 to compute Heat Balance: '))
 
+    # defining some variables based on the informatino given by the user
+    # name of files and directories
+    if typeOfHeat == '1':
+        HeatString = 'THFLX'
+        dirHeatData= 'thflx'
+    else:
+        HeatString = 'Qnet'
+        dirHeatData= 'hflx'
+
+    # type of run [hot start or the experiment itself]
     if typeOfrun == 1:
         run = 'hotstart'
     else:
-        run = 'coldstart'
+        run = 'run'
 
     # reading files
     wind = '/home/danilo/Dropbox/mestrado/data/data2model/%s/%s/wind/*.nc'%(yearOfrun,run)
-    ncfiles_wind = glob.glob(wnd_hot)
+    ncfiles_wind = glob.glob(wind)
     ncfiles_wind.sort()
 
-    hflx = '/home/danilo/Dropbox/mestrado/data/data2model/%s/%s/hflx/*.nc'%(yearOfrun,run)
-    ncfiles_hflx = glob.glob(hflx_hot)
+    hflx = '/home/danilo/Dropbox/mestrado/data/data2model/%s/%s/%s/*.nc'%(yearOfrun,run,dirHeatData)
+    ncfiles_hflx = glob.glob(hflx)
     ncfiles_hflx.sort()
-    #
-    # if typeOfrun == 1: # hotstart
-    #     run = 'hotstart'
-    #     wnd_hot = '/home/danilo/Dropbox/mestrado/data/data2model/%s/hotstart/wind/*.nc'%(yearOfrun)
-    #     ncfiles_wind = glob.glob(wnd_hot)
-    #     ncfiles_wind.sort()
-    #
-    #     hflx_hot = '/home/danilo/Dropbox/mestrado/data/data2model/%s/hotstart/hflx/*.nc'%(yearOfrun)
-    #     ncfiles_hflx = glob.glob(hflx_hot)
-    #     ncfiles_hflx.sort()
-    # else: # coldstart
-    #     run = 'coldstart'
-    #     #essa primeira parte e de leitura de dados
-    #     arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/%s/run/wind/'%(yearOfrun) #onde esta o dado de vento .nc
-    #     nc    = '*.nc'
-    #     f_mg  = '/home/danilo/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
-    #                                              # só funcina com esse model grid, mas pra rodar o modelo é sem os pontos em terra depois
-    #     ncfiles_wind = glob.glob(arquivo+nc)
-    #     ncfiles_wind.sort()
-    #
-    #     arquivo  = '/home/danilo/Dropbox/mestrado/data/data2model/%s/run/hflx/'%(yearOfrun)
-    #
-    #     ncfiles_hflx = glob.glob(arquivo+nc)
-    #     ncfiles_hflx.sort()
+
+    f_mg  = '/home/danilo/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
+                                             # só funcina com esse model grid, mas pra rodar o modelo é sem os pontos em terra depois
 
     timestep        = 6 #horas (dado original)
     t0              = 0 # não começa em zero pq estou rodando hot start
-    ano             = 2014
-    mes             = 01
+    ano             = yearOfrun
+    if run == 'hotstart':
+        mes = 12
+    else:
+        mes = 01
     wind_multiplier = 1.6 # atualizar ali embaixo na formula!
-    file_name_wind       = 'vento_%s_%s'%(run,yearOfrun)#+str(ano)+str(mes)
-    file_name_fluxo      = 'calor_%s_%s'%(run,yearOfrun)
+    file_name_wind       = 'vento_%s_%s_%s'%(run,yearOfrun,HeatString)#+str(ano)+str(mes)
+    file_name_fluxo      = 'calor_%s_%s_%s'%(run,yearOfrun,HeatString)
 
+    os.system('clear')
     print('Processing wind files')
     for file_i in np.arange(0,len(ncfiles_wind),1):
         print("Processing %i of %i \n"%(file_i,len(ncfiles_wind)))
@@ -419,9 +411,14 @@ if __name__=='__main__':
 
         # write interpolated wind data
         wind_to_ascii(file_name_wind,U,V,P,ano,mes,dt=6,t0=t0,formato=write_format)
+        # informations for the next routine
+        t0 = timestep*t+t0
+        number_time_steps = t0/6 # numero de timesteps usado no write_wind.py
 
+    print("t0 = %s \n nstep = %s"%(str(t0),str(number_time_steps)))
+    t0 = 0
     print("###############################")
-    print('Processing wind files')
+    print('Processing heatflux files')
 
     for file_i in np.arange(0,len(ncfiles_hflx),1):
         nc_hflx = ncfiles_hflx[file_i]
@@ -438,8 +435,10 @@ if __name__=='__main__':
 
         # read heat flux file
         hflxnc = HeatFlux_data_input()
-        # hflxnc.hflx_nc(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
-        hflxnc.calc_Qnet(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
+        if typeOfHeat == '1':
+            hflxnc.hflx_nc(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
+        elif typeOfHeat == '2':
+            hflxnc.calc_Qnet(nc_hflx,t='time',x='lon',y='lat',hflx='THFLX_L1_Avg_1',offset=360)
 
         # interpolate heat flux data
         interp = Interpolation()
@@ -455,3 +454,5 @@ if __name__=='__main__':
         # informations for the next routine
         t0 = timestep*t+t0
         number_time_steps = t0/6 # numero de timesteps usado no write_wind.py
+
+    print("t0 = %s \n nstep = %s"%(str(t0),str(number_time_steps)))

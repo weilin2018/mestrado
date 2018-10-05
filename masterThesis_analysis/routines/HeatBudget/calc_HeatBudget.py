@@ -77,12 +77,13 @@ def set_timeIndexes(times,startDate,finalDate):
 
     return startIndex,finalIndex
 
-def temperatureBudget(year,DATA_DIR,MERCATOR,HEATFLUX):
+def temperatureBudget(year,h,DATA_DIR,MERCATOR,HEATFLUX):
 
     # defining some constants
     R = 6371*1000  # earth's radius
-    izh = 17       # represeting z = -120m as my mixed layer depth
-    h = 47.22        # mixed layer depth
+    # izh = 17       # represeting z = -120m as my mixed layer depth
+
+    # h = 47.22        # mixed layer depth
     cp      = 3990 # J degC^-1 kg^-1: specific heat at constant pressure
     rho_ref = 1035 # kg m^-3, reference density
 
@@ -96,6 +97,10 @@ def temperatureBudget(year,DATA_DIR,MERCATOR,HEATFLUX):
     x    = ncin.longitude.values
     y    = ncin.latitude.values
     z    = ncin.depth.values
+
+    # find index for Mixed Layer Depth
+    izh = np.where(z == oceano.find_nearest_1D(z,h))[0].item()
+
     time = ncin.time[startIndex:finalIndex].values
     temp = ncin.temperature[startIndex:finalIndex,:izh,:,:].values
 
@@ -257,7 +262,6 @@ def temperatureBudget(year,DATA_DIR,MERCATOR,HEATFLUX):
 
     return df
 
-
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -266,34 +270,58 @@ DATA_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/HeatBudget/'
 MERCATOR = 'mercator_data.nc'
 HEATFLUX = 'heatflux_%s.nc'
 
+# select a mixed layer depth to run the calculations
+h = 100.
+
 # calculating temperature budget for each year
-df_2010 = temperatureBudget(2010,DATA_DIR,MERCATOR,HEATFLUX) # control experiment
-df_2014 = temperatureBudget(2014,DATA_DIR,MERCATOR,HEATFLUX) # anomalous experiment
+df_2006 = temperatureBudget(2006,h,DATA_DIR,MERCATOR.replace('data','2006'),HEATFLUX)
+df_2010 = temperatureBudget(2010,h,DATA_DIR,MERCATOR,HEATFLUX) # control experiment
+df_2014 = temperatureBudget(2014,h,DATA_DIR,MERCATOR,HEATFLUX) # anomalous experiment
 
 # visualizing
 plt.ion()
 
-fig,ax = plt.subplots(nrows=2)
+# setting some configurations based on Mixed Layer Depth
+if h == 50:
+    ylimits = [-2.5,4]
+else:
+    ylimits = [-2.,2.]
 
-df_2010['dTdt'].plot(ax=ax[0],color='k',label=r'Total (T$_{v}$)')
-df_2010['Th'].plot(ax=ax[0],color='b',label=r'Advection (T$_{h}$)')
-df_2010['Tq'].plot(ax=ax[0],color='r',label=r'Surface Heat Flux (T$_{q}$)')
-df_2010['Residual'].plot(ax=ax[0],color='g',label=r'Residual')
+fig,ax = plt.subplots(nrows=3)
 
-df_2014['dTdt'].plot(ax=ax[1],color='k',label=r'Total (T$_{v}$)')
-df_2014['Th'].plot(ax=ax[1],color='b',label=r'Advection (T$_{h}$)')
-df_2014['Tq'].plot(ax=ax[1],color='r',label=r'Surface Heat Flux (T$_{q}$)')
-df_2014['Residual'].plot(ax=ax[1],color='g',label=r'Residual')
+df_2006['dTdt'].plot(ax=ax[0],color='k',label=r'Total (T$_{v}$)')
+df_2006['Th'].plot(ax=ax[0],color='b',label=r'Advection (T$_{h}$)')
+df_2006['Tq'].plot(ax=ax[0],color='r',label=r'Surface Heat Flux (T$_{q}$)')
+df_2006['Residual'].plot(ax=ax[0],color='g',label=r'Residual')
+
+df_2010['dTdt'].plot(ax=ax[1],color='k',label=r'Total (T$_{v}$)')
+df_2010['Th'].plot(ax=ax[1],color='b',label=r'Advection (T$_{h}$)')
+df_2010['Tq'].plot(ax=ax[1],color='r',label=r'Surface Heat Flux (T$_{q}$)')
+df_2010['Residual'].plot(ax=ax[1],color='g',label=r'Residual')
+
+df_2014['dTdt'].plot(ax=ax[2],color='k',label=r'Total (T$_{v}$)')
+df_2014['Th'].plot(ax=ax[2],color='b',label=r'Advection (T$_{h}$)')
+df_2014['Tq'].plot(ax=ax[2],color='r',label=r'Surface Heat Flux (T$_{q}$)')
+df_2014['Residual'].plot(ax=ax[2],color='g',label=r'Residual')
 
 ax[0].margins(0)
 ax[1].margins(0)
+ax[2].margins(0)
 
-ax[0].set_ylim([-2.5,4])
-ax[1].set_ylim([-2.5,4])
+ax[0].set_ylim(ylimits)
+ax[1].set_ylim(ylimits)
+ax[2].set_ylim(ylimits)
 
-ax[0].legend()
-ax[0].set_title('Heat Budget Analysis over South Brazil \nBight [50m Depth] for 2010 (above) and 2014 (below)',fontsize=25)
+ax[0].legend(loc='upper left')
+ax[0].set_title('Heat Budget Analysis over South Brazil \nBight [%sm Depth] for 2006, 2010 and 2014'%(str(int(h))),fontsize=25)
 
 
 ax[0].set_ylabel(r'$^o$C',fontsize=18)
 ax[1].set_ylabel(r'$^o$C',fontsize=18)
+ax[2].set_ylabel(r'$^o$C',fontsize=18)
+
+dfmt0 = dates.DateFormatter('')
+dfmt1 = dates.DateFormatter('%b %d')
+ax[0].xaxis.set_major_formatter(dfmt0)
+ax[1].xaxis.set_major_formatter(dfmt0)
+ax[2].xaxis.set_major_formatter(dfmt1)

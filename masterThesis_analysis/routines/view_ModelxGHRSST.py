@@ -111,8 +111,8 @@ else:
 FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/ghrsst_v_ecom/'
 
 fname_ghrsst = GHRSST_DIR + 'ghrsst_JF2014.nc'
-fname_exp05  = DATA_DIR + 'exp05.cdf'
-fname_exp11  = DATA_DIR + 'exp11.cdf'
+fname_exp05  = DATA_DIR + 'exp12_old.cdf'
+fname_exp11  = DATA_DIR + 'exp12.cdf'
 
 # extracting data from GHRSST
 sst_sat,time_sat,lon_sat,lat_sat = oceano.load_ghrsst(fname_ghrsst)
