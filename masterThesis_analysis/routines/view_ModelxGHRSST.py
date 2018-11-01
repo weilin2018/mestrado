@@ -70,27 +70,52 @@ def createPlot_structure(nrows=1,ncols=3,figsize=(None,None)):
     return fig,axes,m_axes,cbaxes
 
 def plotData(sat,mod1,mod2,lon,lat,depth,date):
-    fig,axes,m_axes,cbaxes = createPlot_structure(nrows=1,ncols=3,figsize=(15,15))
+    fig,axes,m_axes,cbaxes = createPlot_structure(nrows=1,ncols=3,figsize=(15,10))
 
     cf1 = m_axes[0].contourf(lon,lat,sat,np.arange(19.,33.,1.),latlon=True,cmap=cmo.cm.thermal)
     cb1 = plt.colorbar(cf1,cax=cbaxes[0],orientation='horizontal')
     cr1 = m_axes[0].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
     plt.clabel(cr1,fontsize=9,inline=1,fmt='%i')
 
-    cf2 = m_axes[1].contourf(lon,lat,mod1,np.arange(14.,33.,1.),latlon=True,cmap=cmo.cm.thermal)
+    cf2 = m_axes[1].contourf(lon,lat,mod1,np.arange(15.,33.,1.),latlon=True,cmap=cmo.cm.thermal)
     cb2 = plt.colorbar(cf2,cax=cbaxes[1],orientation='horizontal')
     cr2 = m_axes[1].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
     plt.clabel(cr2,fontsize=9,inline=1,fmt='%i')
 
-    cf3 = m_axes[2].contourf(lon,lat,mod2,np.arange(14.,33.,1.),latlon=True,cmap=cmo.cm.thermal)
+    cf3 = m_axes[2].contourf(lon,lat,mod2,np.arange(15.,33.,1.),latlon=True,cmap=cmo.cm.thermal)
     cb3 = plt.colorbar(cf3,cax=cbaxes[2],orientation='horizontal')
     cr3 = m_axes[2].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
     plt.clabel(cr3,fontsize=9,inline=1,fmt='%i')
 
 
     m_axes[0].ax.set_title('GHRSST')
-    m_axes[1].ax.set_title('ECOM - Exp05')
-    m_axes[2].ax.set_title('ECOM - Exp11')
+    m_axes[1].ax.set_title('EA1')
+    m_axes[2].ax.set_title('EA2')
+
+    plt.suptitle('Sea Surface Temperature [%s]'%(date),y=0.78,fontsize=25)
+
+def plotData_anomalia(sat,mod1,anom,lon,lat,depth,date):
+    fig,axes,m_axes,cbaxes = createPlot_structure(nrows=1,ncols=3,figsize=(15,10))
+
+    cf1 = m_axes[0].contourf(lon,lat,sat,np.arange(19.,33.,1.),latlon=True,cmap=cmo.cm.thermal)
+    cb1 = plt.colorbar(cf1,cax=cbaxes[0],orientation='horizontal')
+    cr1 = m_axes[0].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
+    plt.clabel(cr1,fontsize=9,inline=1,fmt='%i')
+
+    cf2 = m_axes[1].contourf(lon,lat,mod1,np.arange(15.,33.,1.),latlon=True,cmap=cmo.cm.thermal)
+    cb2 = plt.colorbar(cf2,cax=cbaxes[1],orientation='horizontal')
+    cr2 = m_axes[1].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
+    plt.clabel(cr2,fontsize=9,inline=1,fmt='%i')
+
+    cf3 = m_axes[2].contourf(lon,lat,anom,np.arange(-5.,5.,.1),latlon=True,cmap='seismic')
+    cb3 = plt.colorbar(cf3,cax=cbaxes[2],orientation='horizontal')
+    cr3 = m_axes[2].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
+    plt.clabel(cr3,fontsize=9,inline=1,fmt='%i')
+
+
+    m_axes[0].ax.set_title('GHRSST')
+    m_axes[1].ax.set_title('EA1')
+    m_axes[2].ax.set_title('Anomally')
 
     plt.suptitle('Sea Surface Temperature [%s]'%(date),y=0.78,fontsize=25)
 
@@ -111,8 +136,8 @@ else:
 FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/ghrsst_v_ecom/'
 
 fname_ghrsst = GHRSST_DIR + 'ghrsst_JF2014.nc'
-fname_exp05  = DATA_DIR + 'exp12_old.cdf'
-fname_exp11  = DATA_DIR + 'exp12.cdf'
+fname_exp05  = DATA_DIR + 'EA1.cdf'
+fname_exp11  = DATA_DIR + 'EA2.cdf'
 
 # extracting data from GHRSST
 sst_sat,time_sat,lon_sat,lat_sat = oceano.load_ghrsst(fname_ghrsst)
@@ -153,6 +178,7 @@ plotData(sat1,exp05.sst[time_mod_begin,:,:],exp11.sst[time_mod_begin,:,:],lon_mo
 plotData(sat2,exp05.sst[time_mod_middle,:,:],exp11.sst[time_mod_middle,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_middle]).strftime('%Y-%m-%d'))
 plotData(sat3,exp05.sst[time_mod_final,:,:],exp11.sst[time_mod_final,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_final]).strftime('%Y-%m-%d'))
 
+
 # plotData(sat1-sst_t0,exp05.sst[time_mod_begin,:,:]-sst_t0,exp11.sst[time_mod_begin,:,:]-sst_t0,lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_begin]).strftime('%Y-%m-%d'))
 
 ##############################################################################
@@ -184,14 +210,28 @@ plotData(sate,mod1,mod2,lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_f
 #                            PLOTTING ANOMALY                                #
 ##############################################################################
 # load seasonal climatology
-season_clim = pickle.load(open('/media/danilo/Danilo/mestrado/WesternAtlantic_MHWs/routines/season_climatology_1981-2018.pickle','r'))
-fp = '/media/danilo/Danilo/mestrado/WesternAtlantic_MHWs/data/OISST/OISSTv2.1981.2018.nc'
-lon_clim = xr.open_dataset(fp)['lon'].values
-lat_clim = xr.open_dataset(fp)['lat'].values
-lon_clim,lat_clim = np.meshgrid(lon_clim,lat_clim)
-# extract seasonal signal only for the period analysed
-seasonal_JF2014 = season_clim[11822:11855]
-# interpolate to the model grid
-# seasonal = interp_ghrsst_to_ecom()
+ncin = xr.open_dataset('/media/danilo/Danilo/mestrado/ventopcse/output/warmupControle.cdf')
+clim = ncin.temp[-1,0,:,:].values
 
-# deseason_sat =
+anomI = sat3 - clim
+anomII= exp05.sst[time_mod_middle,:,:] - clim
+
+lon,lat = lon_mod,lat_mod
+fig,axes,m_axes,cbaxes = createPlot_structure(nrows=1,ncols=3,figsize=(15,10))
+
+cf1 = m_axes[0].contourf(lon,lat,anomI,np.arange(-6.,6.,.1),latlon=True,cmap='seismic')
+cb1 = plt.colorbar(cf1,cax=cbaxes[0],orientation='horizontal')
+cr1 = m_axes[0].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
+plt.clabel(cr1,fontsize=9,inline=1,fmt='%i')
+
+cf2 = m_axes[1].contourf(lon,lat,anomII,np.arange(-6.,6.,.1),latlon=True,cmap='seismic')
+cb2 = plt.colorbar(cf2,cax=cbaxes[1],orientation='horizontal')
+cr2 = m_axes[1].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
+plt.clabel(cr2,fontsize=9,inline=1,fmt='%i')
+
+m_axes[0].ax.set_title('GHRSST - CLIM')
+m_axes[1].ax.set_title('PRODUCT - CLIM')
+
+
+
+plotData_anomalia(sat3,exp05.sst[time_mod_final,:,:],anom,lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_final]).strftime('%Y-%m-%d'))

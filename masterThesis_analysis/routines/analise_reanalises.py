@@ -14,6 +14,31 @@ Arquivo para carregar, tratar e plotar os dados de vento de:
     #
     # laje_statisticalAnaysis(laje_filtered,ncep_filtered,'Filtrado, Hamming/30h')
 
+
+
+Informações sobre os dados obtidos do CFSv2
+
+
+######### PONTO DA LAJE DE SANTOS #########
+
+
+
+######## PONTO DO PNBOIA/SANTOS ###########
+Subset details:
+  Date range: 201101010000 to 201810030300
+  Parameter(s):
+     u-component of wind
+     v-component of wind
+  Level(s):
+     Specified height above ground: 10 m
+  Product(s):
+    1-hour Forecast
+  Grid: 0.205-deg x ~0.204-deg from 0E to 359.795E and 89.844N to 89.844S (1760 x 880 Longitude/Gaussian Latitude)
+  Output format conversion: netCDF
+  Spatial subsetting (single gridpoint):
+    Latitude: -25.24699974
+    Longitude: -45
+
 '''
 
 import glob
@@ -150,6 +175,18 @@ def calculateCorr(x,y):
 
     return stats.pearsonr(x,y)
 
+def distances(lats=[-24.225,-24.32,-25.247,-25.28],lons=[-46.227,-46.18,-45.,-44.925]):
+
+    # lats = [ncep_laje,laje,ncep_boia,boia]
+    # lons = [ncep_laje,laje,ncep_boia,boia]
+
+    import gsw
+
+    laje = gsw.distance(lons[:2],lats[:2])
+    boia = gsw.distance(lons[2:],lats[2:])
+
+    return laje,boia
+
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -165,7 +202,7 @@ laje = laje.to_dataframe()       # convertendo para pd.DataFrame
 laje.columns = ['wu','wv']
 
 # carregando dados do CFSv2, do ponto de grade mais próximo da Laje de Santos
-NCEP_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/timeseries_cfsv2_lajedesantos_2015.nc'
+NCEP_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/timeseries_cfsv2_lajedesantos_2015_6hourly.nc'
 ncep = xr.open_dataset(NCEP_DIR) # carregando netcdf
 dct = {
     'wu': np.squeeze(ncep['U_GRD_L103'].values),
@@ -217,7 +254,7 @@ boia = xr.open_dataset(PNBOIA_DIR)
 boia = boia.to_dataframe()
 
 # carregando dados do CFSv2, do ponto de grade mais próximo da Boia Santos
-NCEP_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/timeseries_cfsv2_pnboia.nc'
+NCEP_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/timeseries_cfsv2_pnboia_1hourly.nc'
 ncep = xr.open_dataset(NCEP_DIR) # carregando netcdf
 dct = {
     'wu': np.squeeze(ncep['U_GRD_L103'].values),

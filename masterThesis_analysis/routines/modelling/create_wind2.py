@@ -372,7 +372,7 @@ if __name__=='__main__':
                                              # só funcina com esse model grid, mas pra rodar o modelo é sem os pontos em terra depois
 
     timestep        = 6 #horas (dado original)
-    t0              = 0 # não começa em zero pq estou rodando hot start
+    t0              = 192 # não começa em zero pq estou rodando hot start
     ano             = yearOfrun
     if run == 'hotstart':
         mes = 12
@@ -416,7 +416,9 @@ if __name__=='__main__':
         number_time_steps = t0/6 # numero de timesteps usado no write_wind.py
 
     print("t0 = %s \n nstep = %s"%(str(t0),str(number_time_steps)))
-    t0 = 0
+    t0 = 192
+
+    os.system('clear')
     print("###############################")
     print('Processing heatflux files')
 

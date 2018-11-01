@@ -48,14 +48,14 @@ def crossSection(fname,DATA_DIR,region='pcse',savefig=None):
 
     ncdata = xr.open_dataset(fname)
 
-    startTime=112
-    endTime=352
+    startTime=46
+    endTime=304
 
     # extract variables
     lon,lat = ncdata['lon'].values, ncdata['lat'].values
     lon[lon == 0.] = np.nan
     lat[lat == 0.] = np.nan
-    time = ncdata['time'].values[startTime:endTime]
+    # time = ncdata['time'].values#[startTime:endTime]
     depth = ncdata['depth'].values
     sigma = ncdata['sigma'].values
 
@@ -87,7 +87,7 @@ def crossSection(fname,DATA_DIR,region='pcse',savefig=None):
         inor = 80
 
     # for t in range(len(time)):
-    for t in range(5):
+    for t in np.arange(startTime,endTime,1):
         print('Timestep: %i'%(t))
         temp = ncdata.temp[t]           # import data
         # plot data
@@ -100,7 +100,8 @@ def crossSection(fname,DATA_DIR,region='pcse',savefig=None):
         centralMap_axis.clear()
         northMap_axis.clear()
         # updating time
-        plt.suptitle(time[t],fontsize=24)
+        tempo = pd.to_datetime(str(ncdata['time'][t].values))
+        plt.suptitle(tempo.strftime('%Y.%m.%d %H:%M'),fontsize=24)
 
         # plotting data for each location
         msouth = oceano.make_map(southMap_axis,resolution='i')
@@ -119,6 +120,7 @@ def crossSection(fname,DATA_DIR,region='pcse',savefig=None):
         ################### ubatuba
         northsec_axis = plotCrossSection(northsec_axis,lon,lat,depth,sigma,inor,temp[:,:,:],limits=[5,83])
         northsec_axis.text(-44.8,-100,u'Ubatuba',horizontalalignment='center')
+        northsec_axis.set_xlim([-45.,-44.4])
         mnorth.plot(lon[inor,5:83],lat[inor,5:83],'r',latlon=True)
 
         # control time to the next plot
@@ -126,6 +128,7 @@ def crossSection(fname,DATA_DIR,region='pcse',savefig=None):
             outname = savefig+str(t).zfill(4)+'.png'
             plt.savefig(outname)
             os.system('convert -trim %s %s'%(outname,outname))
+            # plt.close()
 
         plt.pause(0.1)
 
@@ -156,7 +159,7 @@ def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits):
     """
 
     # create contour levels
-    contour_levels = np.arange(10,27,20/200.)
+    contour_levels = np.arange(10,35,20/200.)
     ################### cananeia
     eixoX_m = gsw.distance(lon[ind,:],lat[ind,:])
 
@@ -165,8 +168,8 @@ def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits):
     conc = temp[:,ind,:]            # extract cross section data
     liminf,limsup = limits[0],limits[1]               # limits with non-nan values
 
-    cfs = ax.contourf(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],contour_levels,cmap=cmo.cm.thermal)
-    cs  = ax.contour(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],levels=[18.],colors=('k'),linestyles=('--'))
+    # cfs = ax.contourf(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],contour_levels,cmap=cmo.cm.thermal)
+    cs  = ax.contour(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],levels=[18.],colors=('r'),linestyles=('--'))
     ax.plot(lon[ind,liminf:limsup],-depth[ind,liminf:limsup],'k')
     ax.fill_between(lon[ind,liminf:limsup], -200, -depth[ind,liminf:limsup],color='#c0c0c0')
     ax.set_ylim([-200,1])
@@ -192,14 +195,14 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'control_2010'
-SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/pcse/'%(exp)
+exp = 'EA1.cdf'
+SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA1/'
 
 for f in fname:
     if exp in f:
         experiment = f
 
-crossSection(experiment,DATA_DIR,region='pcse')#,savefig=SAVE_FIG)
+crossSection(experiment,DATA_DIR,region='pcse',savefig=SAVE_FIG)
 
 # --------------------------------------------------------------------
 """ Plotando seção vertical a norte do CAnal de São Sebastião
@@ -217,7 +220,7 @@ icss = 85
 ibig = 110
 
 # for t in range(ncin.time[300:352].shape[0]):
-for t in np.arange(112,353,1):
+for t in np.arange(46,304,1):
     fig, ax = plt.subplots(ncols=2,figsize=(15,10))
     # apenas para facilitar
     css_ax = ax[0]

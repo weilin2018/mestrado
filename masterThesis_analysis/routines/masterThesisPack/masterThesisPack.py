@@ -348,7 +348,7 @@ def extrair_grades(coarsedFile, refinedFile):
 
     return coarsedGrid, refinedGrid
 
-def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-40,resolution='l',nmeridians=3,nparallels=2):
+def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,nparallels=2):
 
     m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
 
@@ -890,17 +890,17 @@ def create_newDepth(lon,depth,sigma,ind,kind='coord'):
     # creating depth related to sigma levels
     if kind == 'km':
         dist = np.insert(lon,lon.shape[-1],lon[0,-1])
-        x    = np.tile(dist,(37,1))
+        x    = np.tile(dist,(21,1))
         # converting from meters to kilometers
         x = x/1000.
         # we have to add 1 in the shape, because when we calculate
         # distance between each coordinate, we reduce the shape in 1 unit
         s    = np.tile(sigma,(lon.shape[1]+1,1))
     else:
-        x    = np.tile(lon[ind,:],(37,1))
+        x    = np.tile(lon[ind,:],(21,1))
         s    = np.tile(sigma,(lon.shape[1],1))
 
-    prof = np.tile(depth[ind,:],(37,1))
+    prof = np.tile(depth[ind,:],(21,1))
     s    = np.transpose(s)
     sig  = prof*s
 
@@ -920,3 +920,90 @@ def load_ghrsst(fname):
     time = ncin.time.values
 
     return sst,time,lon,lat
+
+def rot(u,v,theta):
+    import math
+    import numpy as np
+
+    costheta = math.cos((theta*180)/np.pi)
+    sintheta = math.sin((theta*180)/np.pi)
+
+    ur = u*costheta-v*sintheta
+    vr = u*sintheta+v*costheta
+
+    return ur,vr
+
+
+####
+def createPlot_structure_horizontal(nrows=1,ncols=3,figsize=(None,None)):
+    fig,axes = plt.subplots(ncols=ncols,nrows=nrows,figsize=figsize)
+
+    # creating basemap instances
+    m_axes = []
+    cbaxes = []
+    if ncols == 3:
+        axes_pos = [
+            [0.12,0.25,0.23,0.02],
+            [0.40,0.25,0.23,0.02],
+            [0.67,0.25,0.23,0.02]
+        ]
+    elif ncols == 2:
+        axes_pos = [
+            [0.125,0.14,0.355,0.02],
+            [0.545,0.14,0.355,0.02],
+        ]
+    for i in np.arange(0,ncols):
+        m = make_map(axes[i])
+        cax = fig.add_axes(axes_pos[i])
+        cbaxes.append(cax)
+        m_axes.append(m)
+
+    m_axes = np.asarray(m_axes)
+    cbaxes = np.asarray(cbaxes)
+
+    return fig,axes,m_axes,cbaxes
+
+
+def load(grid, nrows):
+    """Load information from model_grid.
+
+    Function created by Msc. Carine C. Godoi
+
+    Parameters
+    ----------
+    grid : str
+        Full path for the model_grid file
+    nrows : int
+        Number of rows for skiprows argument.
+
+    """
+    os.system('clear')
+    print(' loading model_grid file')
+
+    model_grid = np.loadtxt(grid, skiprows=nrows)
+    line = open(grid, 'r').readlines()[nrows-1]
+
+    # get data
+    II = int(line[0:5])
+    JJ = int(line[6:10])
+
+    # initialize variables to NAN
+    H1 = np.zeros((JJ-2, II-2))*np.NAN
+    H2 = np.zeros((JJ-2, II-2))*np.NAN
+    depgrid = np.zeros((JJ-2, II-2))*np.NAN
+    ANG = np.zeros((JJ-2, II-2))*np.NAN
+    Ygrid = np.zeros((JJ-2, II-2))*np.NAN
+    Xgrid = np.zeros((JJ-2, II-2))*np.NAN
+
+	# keep loop in case some grid points are not in the model_grid file (corners, for instance)
+    for n in np.arange(0, len(model_grid)):
+        I = int(model_grid[n, 0])
+        J = int(model_grid[n, 1])
+        H1[J-2, I-2] = model_grid[n, 2]
+        H2[J-2, I-2] = model_grid[n, 3]
+        depgrid[J-2, I-2] = model_grid[n, 4]
+        ANG[J-2, I-2] = model_grid[n, 5]
+        Ygrid[J-2, I-2] = model_grid[n, 6]
+        Xgrid[J-2, I-2] = model_grid[n, 7]
+
+    return II,JJ,H1,H2,depgrid,ANG,Xgrid,Ygrid

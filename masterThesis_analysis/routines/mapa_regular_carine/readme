@@ -1,0 +1,12 @@
+-> elev_curr_wind_map.py
+plota mapa de elevacao, correntes superficiais e vento interpolados numa grade regular
+utiliza as seguintes funcoes:
+
+-> get_latlonIsobathContour.py
+encontra as coordenadas lat e lon de uma dada isobata
+
+-> fnearest.py
+econtra o indice e a distancia do ponto de uma matriz de lon e lat mais proximo a uma dada coordenada
+
+-> plot_basicMap.py
+templates para mapas

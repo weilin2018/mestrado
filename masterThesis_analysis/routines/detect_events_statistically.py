@@ -30,13 +30,19 @@ import masterThesisPack as oceano
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
 # insert functions here
-def testDirection(x):
+def testDirection_ASAS(x):
     if (x >= 180.) and (x <= 270.):
         return True
     else:
         return False
 
-def detect_atmosphericBlocking(df,convert_uv2intdir=False,minDuration=10,maxGaps=2,mergeEvents=False):
+def testDirection_CF(x):
+    if (x >= 0.) and (x <= 90.):
+        return True
+    else:
+        return False
+
+def detect_atmosphericBlocking(df,convert_uv2intdir=False,minDuration=10,maxGaps=2,mergeEvents=False,southwest=False):
     """Detect presence of winds from the 1st quarter, during 10+ days.
 
     Parameters
@@ -91,7 +97,10 @@ def detect_atmosphericBlocking(df,convert_uv2intdir=False,minDuration=10,maxGaps
     t = np.arange(d.index[0].toordinal(),d.index[-1].toordinal()+1)
 
     # boolean time series of 'True' and 'False'
-    exceed_bool = d['direction'].apply(testDirection)
+    if southwest:
+        exceed_bool = d['direction'].apply(testDirection_CF)
+    else:
+        exceed_bool = d['direction'].apply(testDirection_ASAS)
     # Find contiguous regions of exceed_bool = True
     events, n_events = ndimage.label(exceed_bool)
 
@@ -146,7 +155,7 @@ def plot_bars(df):
 
     return fig,ax
 
-def plot_data(df,data):
+def plot_data(df,data,title='Event Duration: %s'):
 
     from datetime import timedelta,datetime
 
@@ -156,7 +165,7 @@ def plot_data(df,data):
     startOriginal = df.date_start - timedelta(days=10)
     finalOriginal = df.date_end + timedelta(days=10)
 
-    fig,ax = plt.subplots(nrows=2)
+    fig,ax = plt.subplots(nrows=2,figsize=(10,10))
     data[startOriginal:finalOriginal].wu.plot(ax=ax[0],label='Alongshore')
     data[df.date_start:df.date_end].wu.plot(ax=ax[0],color='k',label='Detected Event')
     ax[0].legend()
@@ -165,7 +174,7 @@ def plot_data(df,data):
     data[df.date_start:df.date_end].wv.plot(ax=ax[1],color='k',label='Detected Event')
     ax[1].legend()
 
-    plt.suptitle('Event duration: %s'%(df.duration),fontsize=24)
+    plt.suptitle(title%(df.duration),fontsize=24)
 
     return fig,ax
 
@@ -194,18 +203,18 @@ def analise(df):
     indAcumulada = np.argmax(freqs.Acumulada)
     indMedia     = np.argmax(freqs.Media)
 
-    fig,ax = plt.subplots(ncols=2)
+    fig,ax = plt.subplots(ncols=2,figsize=(10,5))
 
     ax[0].bar(freqs.index,freqs.Acumulada,width=.6,color=(.7,.7,.7))
     ax[0].bar(indAcumulada,freqs.max().Acumulada,width=.6,color=(1.,.5,.5))
     ax[0].set_title(u'Frequência Acumulada [dias]',fontsize=20)
-    ax[0].set_ylabel(u'Dias acumulados')
+    ax[0].set_ylabel(u'Dias acumulados (dias/anos)')
     ax[0].set_xlabel(u'Anos')
 
     ax[1].bar(freqs.index,freqs.Media,width=.6,color=(.7,.7,.7))
     ax[1].bar(indMedia,freqs.max().Media,width=.6,color=(1.,.5,.5))
     ax[1].set_title(u'Frequência Média [dias]',fontsize=20)
-    ax[1].set_ylabel(u'Dias em média')
+    ax[1].set_ylabel(u'Dias em média (dias/anos)')
     ax[1].set_xlabel(u'Anos')
 
     return freqs
@@ -217,7 +226,7 @@ def analise(df):
 os.system('clear')
 BASE_DIR = oceano.make_dir()
 
-NCEP_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/timeseries_cfsv2_pnboia.nc'
+NCEP_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/timeseries_cfsv2_pnboia_6hourly.nc'
 cfsv2 = xr.open_dataset(NCEP_DIR) # carregando netcdf
 dct = {
     'wu': np.squeeze(cfsv2['U_GRD_L103'].values),
@@ -227,22 +236,25 @@ cfsv2 = pd.DataFrame(dct,index=cfsv2.time.values)       # convertendo para pd.Da
 
 intensity,direction = decomp.uv2intdir(cfsv2.wu.values,cfsv2.wv.values,0,0)
 
-df = pd.DataFrame({'intensity':intensity,'direction':direction},index=cfsv2.index)
+df_cfsv2 = pd.DataFrame({'intensity':intensity,'direction':direction},index=cfsv2.index)
 
-events = detect_atmosphericBlocking(df,minDuration=10)
+events = detect_atmosphericBlocking(df_cfsv2,minDuration=10)
 
 # converting evets into a dataframe
-evs = pd.DataFrame(events)
+evs_cfsv2 = pd.DataFrame(events)
 
 # plotting the most durable events
-evMax = np.argmax(evs.duration)
-plot_data(evs.iloc[evMax,:],cfsv2)
+evMax = np.argmax(evs_cfsv2.duration)
+plot_data(evs_cfsv2.iloc[evMax,:],cfsv2,title='The Longest Event Found [%s days]')
+
+# event analysis
+freq_cfsv2 = analise(evs_cfsv2)
 
 # plotting bars with all event's duration
 # plot_bars(evs)
 
 # plotting the 5 most durable events
-selected = evs.nlargest(5,columns=['duration'])
+selected = evs_cfsv2.nlargest(5,columns=['duration'])
 selected.index = range(5)
 
 fig,ax = plt.subplots(nrows=5)
@@ -254,7 +266,7 @@ for i,row in selected.iterrows():
 # checando a direção dos dados
 import windrose
 
-windrose.plot_windrose_df(df,var_name='intensity')
+windrose.plot_windrose_df(df_cfsv2,var_name='intensity')
 plt.title('Para onde o vento vai ...',fontsize=24)
 
 
@@ -269,18 +281,93 @@ plt.title('Para onde o vento vai ...',fontsize=24)
 ##############################################################################
 
 NCEP_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/timeseries_cfsr_lajedesantos_1979_2011.nc'
-cfsv2 = xr.open_dataset(NCEP_DIR) # carregando netcdf
+cfsr = xr.open_dataset(NCEP_DIR) # carregando netcdf
 dct = {
-    'wu': np.squeeze(cfsv2['U_GRD_L103'].values),
-    'wv': np.squeeze(cfsv2['V_GRD_L103'].values),
+    'wu': np.squeeze(cfsr['U_GRD_L103'].values),
+    'wv': np.squeeze(cfsr['V_GRD_L103'].values),
 }
-cfsv2 = pd.DataFrame(dct,index=cfsv2.time.values)       # convertendo para pd.DataFrame
+cfsr = pd.DataFrame(dct,index=cfsr.time.values)       # convertendo para pd.DataFrame
 
-intensity,direction = decomp.uv2intdir(cfsv2.wu.values,cfsv2.wv.values,0,0)
+intensity,direction = decomp.uv2intdir(cfsr.wu.values,cfsr.wv.values,0,0)
 
-df = pd.DataFrame({'intensity':intensity,'direction':direction},index=cfsv2.index)
+df_cfsr = pd.DataFrame({'intensity':intensity,'direction':direction},index=cfsr.index)
 
-events = detect_atmosphericBlocking(df,minDuration=10)
+events = detect_atmosphericBlocking(df_cfsr,minDuration=10)
 
 # converting evets into a dataframe
-evs = pd.DataFrame(events)
+evs_cfsr = pd.DataFrame(events)
+
+# plotting the most durable events
+evMax = np.argmax(evs_cfsr.duration)
+plot_data(evs_cfsr.iloc[evMax,:],cfsr,title='The Longest Event Found [%s days]')
+
+# event analysis
+freq_cfsr = analise(evs_cfsr)
+
+
+##############################################################################
+#                             HISTORICO                                      #
+##############################################################################
+data = pd.concat([cfsr,cfsv2])
+data1= pd.concat([df_cfsr,df_cfsv2])
+data['intensity'] = data1.intensity.values
+data['direction'] = data1.direction.values
+
+del data1
+
+evs  = pd.concat([evs_cfsr,evs_cfsv2])
+
+# plotting the 5 most durable events
+selected = evs.nlargest(3,columns=['duration'])
+selected.index = range(3)
+
+selected.drop(['index_end','index_start','n_events','time_end','time_start'],axis=1,inplace=True)
+
+# def plot_sticks(data,selected):
+#
+#     import matplotlib.gridspec as gridspec
+#     import windrose
+#
+#     gs = gridspec.GridSpec(3,3)
+#
+#     for i,row in selected.iterrows():
+#         ax_stick = plt.subplot(gs[i,:2])
+#         ax_windr = plt.subplot(gs[i,2])
+#
+#         oceano.stickplot(data[row[1]:row[0]],ax_stick)
+#         ax_stick.legend(str(row[2]))
+#
+#         windrose.plot_windrose_df(data[row[1]:row[0]],var_name='intensity',ax=ax_windr)
+
+fig,ax = plt.subplots(nrows=3,figsize=(15,20))
+
+for i,row in selected.iterrows():
+    oceano.stickplot(data[row[1]:row[0]],ax[i])
+    ax[i].legend([str(row[2])])
+
+freqs = analise(evs)
+
+# creating graphic of frequency by month
+freqMonth = evs.duration.groupby(by=[evs.index.month]).sum()
+# converting Series into DataFrame, where index is each month
+monthly   = pd.DataFrame({'AccumulatedDays':freqMonth.values},index=np.arange(1,13))
+monthly['Percentage'] = monthly.AccumulatedDays / monthly.AccumulatedDays.sum() * 100
+
+# find the maximum
+indMax = np.argmax(monthly.Percentage)
+ind = np.arange(1,13)
+meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
+
+fig,ax = plt.subplots()
+
+ax.bar(monthly.index,monthly.Percentage,width=.6,color=(.7,.7,.7))
+ax.bar(indMax,monthly.Percentage.max(),width=.6,color=(1.,.5,.5))
+
+ax.set_ylabel(u'Frequência de Dias Detectados (%)',fontsize=18)
+plt.xticks(ind,meses)
+
+
+#### plotando quantidade de eventos x duração
+qtds = evs.duration.value_counts()
+qtds = pd.DataFrame({'qtds':qtds})
+print(qtds.transpose().to_latex())

@@ -239,9 +239,9 @@ if __name__=='__main__':
     import glob
 
     #essa primeira parte e de leitura de dados
-    arquivo  = '/home/tparente/Dropbox/mestrado/data/data2model/JF2014/tuv/' #onde esta o dado de vento .nc
+    arquivo  = '/media/danilo/Danilo/mestrado/dados_potranca/' #onde esta o dado de vento .nc
     nc    = '*.nc'
-    f_mg  = '/home/tparente/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
+    f_mg  = '/home/danilo/Dropbox/mestrado/grade/model_grid_com_pontos_em_terra' #model grid com pontos em Terra.
                                              # só funcina com esse model grid, mas pra rodar o modelo é sem os pontos em terra depois
 
     ncfiles = glob.glob(arquivo+nc)

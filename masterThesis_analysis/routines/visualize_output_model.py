@@ -238,7 +238,7 @@ def tempMeanField(fname,savefig=None):
     else:
         plt.show()
 
-def temperatureField(fname,isotherm=18.,savefig=None):
+def temperatureField(fname,isotherm=18.,startTime=46,endTime=304,savefig=None):
     """Function to plot ONLY the location of isotherm line of 18ºC, associated with
     ACAS.
 
@@ -254,15 +254,16 @@ def temperatureField(fname,isotherm=18.,savefig=None):
 
     # check if data is already loaded
     if not 'temp' in locals():
-        lon,lat,time,temp = load_data(fname,vars='temp',sigma=-1,startTime=112,endTime=352)
+        lon,lat,time,temp = load_data(fname,vars='temp',sigma=-1,startTime=startTime,endTime=endTime)
 
     # testing for shape
     if len(temp.shape) == 4:
         temp = temp[:,-1,:,:] # select last sigma level
 
     # creating a mask for values greater than 19. and lower than 18.
-    temp_masked = np.ma.masked_less(temp, 18.)
-    temp_masked = np.ma.masked_greater(temp_masked, 19.)
+    # temp_masked = np.ma.masked_less(temp, 18.)
+    # temp_masked = np.ma.masked_greater(temp_masked, 19.)
+    temp_masked = temp.copy()
 
     if not savefig:
         plt.ion()
@@ -272,13 +273,13 @@ def temperatureField(fname,isotherm=18.,savefig=None):
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("bottom", size="20%",pad=0.05)
         cax.set_xlim([0,240])
-        cax.set_ylim([22,25])
+        cax.set_ylim([15,32])
 
         for i in np.arange(0,temp.shape[0]):
             ax.clear()
             cax.clear()
-            cax.set_xlim([0,240])
-            cax.set_ylim([22,25])
+            cax.set_xlim([0,260])
+            cax.set_ylim([15,32])
             m = oceano.make_map(ax, resolution='i')
             csf = m.contourf(lon,lat,temp_masked[i,:,:],latlon=True,cmap=cmo.cm.thermal)
             cs  = m.contour(lon,lat,temp[i,:,:],latlon=True,levels=[18.],colors=('k'),linestyles=('--'))
@@ -303,8 +304,8 @@ def temperatureField(fname,isotherm=18.,savefig=None):
 
             divider = make_axes_locatable(ax)
             cax = divider.append_axes("bottom", size="20%",pad=0.05)
-            cax.set_xlim([0,240])
-            cax.set_ylim([15,26])
+            cax.set_xlim([0,260])
+            cax.set_ylim([15,32])
 
             m = oceano.make_map(ax, resolution='i')
             # csf = m.contourf(lon,lat,temp[i,:,:],latlon=True,cmap=cmo.cm.thermal)
@@ -322,6 +323,7 @@ def temperatureField(fname,isotherm=18.,savefig=None):
 
             outname = str(i).zfill(4)+'.png'
             plt.savefig(savefig+outname)
+            plt.close()
 
 def salinityField(fname,isohaline=36.5,savefig=None):
 
@@ -667,7 +669,7 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/elevati
 
 
 # select which experiment you want to plot:
-exp = 'control_2010'
+exp = 'EA1'
 SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_%s/'%(exp)
 
 for f in fname:
@@ -675,8 +677,7 @@ for f in fname:
         experiment = f
 
 
-temperatureField(experiment,savefig=FIGU_DIR.replace('elevation', 'temperature/isotherm18_control2010'))
-%reset -f
+# temperatureField(experiment,savefig=FIGU_DIR.replace('elevation', 'temperature/isotherm18_control2010'))
 
 # - ----------------------------------------------
 
@@ -692,9 +693,9 @@ if var == 1:
         elevationField(experiment,savefig=FIGU_DIR)
 elif var == 2:
     if sav == 0:
-        temperatureField(experiment)
+        temperatureField(experiment,startTime=46,endTime=304)
     else:
-        temperatureField(experiment,savefig=FIGU_DIR.replace('elevation', 'temperature/isotherm18_exp06'))
+        temperatureField(experiment,savefig=FIGU_DIR.replace('elevation', 'temperature/isotherm18_EA1'))
 elif var == 3:
     if sav == 0:
         salinityField(experiment)
