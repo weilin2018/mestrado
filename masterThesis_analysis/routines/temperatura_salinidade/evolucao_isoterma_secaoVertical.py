@@ -84,16 +84,29 @@ def create_Structure(ncin,indexes):
         axes[axesInd,1].margins(0)
         # axes[axesInd,1].set_ylabel(u'Profundidade [m]',fontsize=18)
 
-
-
     return fig,axes
+
+def calcDistance(x,sig,xx=110):
+
+    inds = np.where(np.isnan(x[0,:])) # aonde e nan
+    lats = np.ones([xx])*11
+
+    # removendo nan's
+    x =  np.delete(x[0,:],inds)
+    lats=np.delete(lats,inds)
+
+    dist2 = np.cumsum(np.append(0,sw.dist(lats,x)[0]))
+    dist = np.tile(dist2,(len(sig),1))
+
+    return dist,inds
+
 
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
-plt.ion()
+#plt.ion()
 
 # configurações do plot
 figsize = (17.4/2.54, 10/2.54)
