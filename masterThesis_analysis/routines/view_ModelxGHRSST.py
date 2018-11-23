@@ -58,7 +58,7 @@ def createPlot_structure(nrows=1,ncols=3,figsize=(None,None)):
         [0.40,0.25,0.23,0.02],
         [0.67,0.25,0.23,0.02]
     ]
-    for i in np.arange(0,3):
+    for i in np.arange(0,ncols):
         m = oceano.make_map(axes[i])
         cax = fig.add_axes(axes_pos[i])
         cbaxes.append(cax)
@@ -93,6 +93,24 @@ def plotData(sat,mod1,mod2,lon,lat,depth,date):
     m_axes[2].ax.set_title('EA2')
 
     plt.suptitle('Sea Surface Temperature [%s]'%(date),y=0.78,fontsize=25)
+
+def plotData_2(sat,mod1,lon,lat,depth,date):
+    fig,axes,m_axes,cbaxes = createPlot_structure(nrows=1,ncols=2,figsize=(15/2.54,10/2.54))
+
+    cf1 = m_axes[0].contourf(lon,lat,sat,np.arange(19.,33.,1.),latlon=True,cmap=cmo.cm.thermal)
+    cb1 = plt.colorbar(cf1,cax=cbaxes[0],orientation='horizontal')
+    cr1 = m_axes[0].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
+    plt.clabel(cr1,fontsize=9,inline=1,fmt='%i')
+
+    cf2 = m_axes[1].contourf(lon,lat,mod1,np.arange(15.,33.,1.),latlon=True,cmap=cmo.cm.thermal)
+    cb2 = plt.colorbar(cf2,cax=cbaxes[1],orientation='horizontal')
+    cr2 = m_axes[1].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
+    plt.clabel(cr2,fontsize=9,inline=1,fmt='%i')
+
+    m_axes[0].ax.set_title('GHRSST')
+    m_axes[1].ax.set_title('EA1')
+
+    plt.suptitle(u'Temperatura da Superfície do Mar [%s]'%(date),y=0.78,fontsize=25)
 
 def plotData_anomalia(sat,mod1,anom,lon,lat,depth,date):
     fig,axes,m_axes,cbaxes = createPlot_structure(nrows=1,ncols=3,figsize=(15,10))
@@ -174,11 +192,13 @@ depth = exp05.ncin.depth.values
 ##############################################################################
 plt.ion()
 
-plotData(sat1,exp05.sst[time_mod_begin,:,:],exp11.sst[time_mod_begin,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_begin]).strftime('%Y-%m-%d'))
-plotData(sat2,exp05.sst[time_mod_middle,:,:],exp11.sst[time_mod_middle,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_middle]).strftime('%Y-%m-%d'))
-plotData(sat3,exp05.sst[time_mod_final,:,:],exp11.sst[time_mod_final,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_final]).strftime('%Y-%m-%d'))
+# plotData(sat1,exp05.sst[time_mod_begin,:,:],exp11.sst[time_mod_begin,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_begin]).strftime('%Y-%m-%d'))
+# plotData(sat2,exp05.sst[time_mod_middle,:,:],exp11.sst[time_mod_middle,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_middle]).strftime('%Y-%m-%d'))
+# plotData(sat3,exp05.sst[time_mod_final,:,:],exp11.sst[time_mod_final,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_final]).strftime('%Y-%m-%d'))
+#
 
-
+plotData_2(sat1,exp05.sst[time_mod_begin,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_begin]).strftime('%Y-%m-%d'))
+plotData_2(sat2,exp05.sst[time_mod_middle,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_middle]).strftime('%Y-%m-%d'))
 # plotData(sat1-sst_t0,exp05.sst[time_mod_begin,:,:]-sst_t0,exp11.sst[time_mod_begin,:,:]-sst_t0,lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_begin]).strftime('%Y-%m-%d'))
 
 ##############################################################################

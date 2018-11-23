@@ -168,8 +168,8 @@ def plotCrossSection(ax,lon,lat,depth,sigma,ind,temp,limits):
     conc = temp[:,ind,:]            # extract cross section data
     liminf,limsup = limits[0],limits[1]               # limits with non-nan values
 
-    # cfs = ax.contourf(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],contour_levels,cmap=cmo.cm.thermal)
-    cs  = ax.contour(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],levels=[18.],colors=('r'),linestyles=('--'))
+    cfs = ax.contourf(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],contour_levels,cmap=cmo.cm.thermal)
+    cs  = ax.contour(x[:,liminf:limsup],sig[:,liminf:limsup],conc[:,liminf:limsup],levels=[18.],colors=('k'),linestyles=('--'))
     ax.plot(lon[ind,liminf:limsup],-depth[ind,liminf:limsup],'k')
     ax.fill_between(lon[ind,liminf:limsup], -200, -depth[ind,liminf:limsup],color='#c0c0c0')
     ax.set_ylim([-200,1])
@@ -195,8 +195,8 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EA1.cdf'
-SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA1/'
+exp = 'EA5.cdf'
+SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA5/'
 
 for f in fname:
     if exp in f:
