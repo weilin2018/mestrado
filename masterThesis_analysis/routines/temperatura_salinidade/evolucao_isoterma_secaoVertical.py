@@ -16,7 +16,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import dates
 import datetime
 import cmocean as cmo
-import gsw
+import seawater as sw
 
 # pacotes para minimap
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
@@ -52,34 +52,35 @@ def create_Structure(ncin,indexes):
             axesInd = 1
         if ind == 19:
             axesInd = 2
-            axes[axesInd,0].set_xlabel(u'Longitude',fontsize=8)
-            axes[axesInd,1].set_xlabel(u'Longitude',fontsize=8)
+            axes[axesInd,0].set_xlabel(u'Distância [km]',fontsize=8)
+            axes[axesInd,1].set_xlabel(u'Distância [km]',fontsize=8)
 
-        # definindo algumas variaveis
-        eixoX_m = gsw.distance(lon[ind,:],lat[ind,:])
-        # eixoX_m = np.squeeze(eixoX_m)
-        # eixoX_m = np.append(eixoX_m,np.nan)
         x,prof,sig = oceano.create_newDepth(lon,depth,sigma,ind)      # create new depth
+        dist,inds = calcDistance(x,sigma)
         liminf,limsup = 5,83               # limits with non-nan values
 
-        axes[axesInd,0].plot(lon[ind,liminf:limsup],-depth[ind,liminf:limsup],'k')
-        axes[axesInd,0].fill_between(lon[ind,liminf:limsup], -200, -depth[ind,liminf:limsup],color='#c0c0c0')
+        d = np.delete(depth,inds,axis=1)
+
+        axes[axesInd,0].plot(dist[0,:],-d[ind,:],'k')
+        axes[axesInd,0].fill_between(dist[0,:], -200, -d[ind,:],color='#c0c0c0')
         axes[axesInd,0].set_ylim([-200,1])
-        if ind == 99:
-            # ubatuba
-            axes[axesInd,0].set_xlim([-45.,-44.4])
+        axes[axesInd,0].set_xlim([0,160])
+
+        # if ind == 99:
+        #     # ubatuba
+        #     axes[axesInd,0].set_xlim([-45.,-44.4])
 
         axes[axesInd,0].margins(0)
         axes[axesInd,0].set_ylabel(u'Profundidade [m]',fontsize=8)
 
-
-
-        axes[axesInd,1].plot(lon[ind,liminf:limsup],-depth[ind,liminf:limsup],'k')
-        axes[axesInd,1].fill_between(lon[ind,liminf:limsup], -200, -depth[ind,liminf:limsup],color='#c0c0c0')
+        axes[axesInd,1].plot(dist[0,:],-d[ind,:],'k')
+        axes[axesInd,1].fill_between(dist[0,:], -200, -d[ind,:],color='#c0c0c0')
         axes[axesInd,1].set_ylim([-200,1])
-        if ind == 99:
-            # ubatuba
-            axes[axesInd,1].set_xlim([-45.,-44.4])
+        axes[axesInd,1].set_xlim([0,160])
+
+        # if ind == 99:
+        #     # ubatuba
+        #     axes[axesInd,1].set_xlim([-45.,-44.4])
 
         axes[axesInd,1].margins(0)
         # axes[axesInd,1].set_ylabel(u'Profundidade [m]',fontsize=18)
@@ -155,16 +156,22 @@ for ind in indexes:
         axesInd = 2
 
     # definindo algumas variaveis
-    eixoX_m = gsw.distance(lon[ind,:],lat[ind,:])
-    # eixoX_m = np.squeeze(eixoX_m)
-    # eixoX_m = np.append(eixoX_m,np.nan)
     x,prof,sig = oceano.create_newDepth(lon,depth,sigma,ind)      # create new depth
     liminf,limsup = 5,83               # limits with non-nan values
+    dist,inds = calcDistance(x,sigma)
+
+    d       = np.delete(depth[ind,:],inds)
+    newSig  = np.delete(sig,inds,axis=1)
 
     temp = ncin.temp[tBegin,:,ind,:]
-    cs  = axes[axesInd,0].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('r'),linestyles=('--'))
+    # cs  = axes[axesInd,0].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('r'),linestyles=('--'))
+    t    = np.delete(temp,inds,axis=1)
+    cs   = axes[axesInd,0].contour(dist,newSig,t,levels=[18.],colors=('r'),linestyles=('--'))
     temp = ncin.temp[tFinal,:,ind,:]
-    cs  = axes[axesInd,0].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('g'),linestyles=('--'))
+    t    = np.delete(temp,inds,axis=1)
+    cs   = axes[axesInd,0].contour(dist,newSig,t,levels=[18.],colors=('g'),linestyles=('--'))
+    # cs  = axes[axesInd,0].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('g'),linestyles=('--'))
+
 
 ######## Experimento Anomalo!!!!
 ncin = xr.open_dataset(fname.replace('EC1','EA1'))
@@ -178,17 +185,22 @@ for ind in indexes:
         axesInd = 2
 
     # definindo algumas variaveis
-    eixoX_m = gsw.distance(lon[ind,:],lat[ind,:])
-    # eixoX_m = np.squeeze(eixoX_m)
-    # eixoX_m = np.append(eixoX_m,np.nan)
     x,prof,sig = oceano.create_newDepth(lon,depth,sigma,ind)      # create new depth
     liminf,limsup = 5,83               # limits with non-nan values
+    dist,inds = calcDistance(x,sigma)
 
+    d       = np.delete(depth[ind,:],inds)
+    newSig  = np.delete(sig,inds,axis=1)
 
     temp = ncin.temp[tBegin,:,ind,:]
-    cs  = axes[axesInd,1].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('r'),linestyles=('--'))
+    t    = np.delete(temp,inds,axis=1)
+    cs   = axes[axesInd,1].contour(dist,newSig,t,levels=[18.],colors=('r'),linestyles=('--'))
+    # cs   = axes[axesInd,1].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('r'),linestyles=('--'))
     temp = ncin.temp[tFinal,:,ind,:]
-    cs  = axes[axesInd,1].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('g'),linestyles=('--'))
+    t    = np.delete(temp,inds,axis=1)
+    cs   = axes[axesInd,1].contour(dist,newSig,t,levels=[18.],colors=('g'),linestyles=('--'))
+
+    # cs  = axes[axesInd,1].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('g'),linestyles=('--'))
 
 plt.subplots_adjust(top=0.925,bottom=0.06,left=0.115,right=0.95,hspace=0.2,wspace=0.28)
-plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/isothermPosition/Secao_All.pdf')
+# plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/isothermPosition/Secao_All.pdf')
