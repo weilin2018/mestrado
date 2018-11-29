@@ -72,7 +72,6 @@ def calcDistance(ncin,ind,lenght):
 
     return dist,inds
 
-
 def plot_nearBottomTemp(ncin,exp,SAVE_FIG,location,ilat=[99]):
 
     ###### near-bottom temperature
@@ -121,7 +120,7 @@ def plot_nearBottomTemp(ncin,exp,SAVE_FIG,location,ilat=[99]):
 
     plt.tight_layout()
     plt.subplots_adjust(top=0.894,bottom=0.1,left=0.093,right=0.958,hspace=0.16,wspace=0.2)
-    plt.savefig(SAVE_FIG+"%s_tempBottom.pdf"%(exp.replace('.cdf','')))
+    plt.savefig(SAVE_FIG+"posicao_%s_tempBottom.pdf"%(exp.replace('.cdf','')))
 
 def plot_surfaceSalt(ncin,exp,SAVE_FIG,location,ilat=[99]):
 
@@ -182,9 +181,9 @@ def plot_surfaceSalt(ncin,exp,SAVE_FIG,location,ilat=[99]):
 
     # ax[0].set_rasterized(True)
     # ax[1].set_rasterized(True)
-    plt.savefig(SAVE_FIG+"%s_saltSurf.pdf"%(exp.replace('.cdf','')))
+    plt.savefig(SAVE_FIG+"posicao_%s_saltSurf.pdf"%(exp.replace('.cdf','')))
 
-def isoterma(f1,f2):
+def isoterma(f1,f2,SAVE_FIG):
 
     exp1 = f1.split('/')[-1].replace('.cdf','')
     exp2 = f2.split('/')[-1].replace('.cdf','')
@@ -268,18 +267,117 @@ def isoterma(f1,f2):
     # plotar isotermas
     cs = ax[0,1].contour(dist,s,tBegin,levels=np.arange(12,30,2),colors=('k'),linestyles=('--'),linewidths=.3)
     cs = ax[0,1].contour(dist,s,tBegin,levels=[18],colors=('k'))
-    ax[0,1].clabel(cs, inline=1, fontsize=8)
+    # ax[0,1].clabel(cs, inline=1, fontsize=8)
 
 
     # plotar isotermas
     cs = ax[1,1].contour(dist,s,tFinal,levels=np.arange(12,30,2),colors=('k'),linestyles=('--'),linewidths=.3)
     cs = ax[1,1].contour(dist,s,tFinal,levels=[18],colors=('k'))
+    # ax[1,1].clabel(cs, inline=1, fontsize=8)
+
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.894,bottom=0.082,left=0.106,right=0.962,hspace=0.167,wspace=0.169)
+
+    comparacao = '%sv%s'%(f1.split('/')[-1].replace('.cdf',''),f2.split('/')[-1].replace('.cdf',''))
+    plt.savefig(SAVE_FIG+'secao_%s_temp.pdf'%(comparacao))
+
+def isohalina(f1,f2,SAVE_FIG):
+
+    exp1 = f1.split('/')[-1].replace('.cdf','')
+    exp2 = f2.split('/')[-1].replace('.cdf','')
+
+    fig,ax = plt.subplots(nrows=2,ncols=2,figsize=(17./2.54,12./2.54))
+    fig.suptitle(u'Seção Vertical de Salinidade ao Largo de Ubatuba',fontsize=10)
+
+    ax[0,0].set_title('%s - 14/01/2014'%(exp1),fontsize=8)
+    ax[0,1].set_title('%s - 14/01/2014'%(exp2),fontsize=8)
+
+    ax[1,0].set_title('%s - 15/02/2014'%(exp1),fontsize=8)
+    ax[1,1].set_title('%s - 15/02/2014'%(exp2),fontsize=8)
+
+    ax[0,0].set_ylabel('Profundidade [m]',fontsize=8)
+    ax[1,0].set_ylabel('Profundidade [m]',fontsize=8)
+    ax[1,0].set_xlabel(u'Distância da Costa [km]',fontsize=8)
+    ax[1,1].set_xlabel(u'Distância da Costa [km]',fontsize=8)
+
+    ax[0,0].tick_params(axis='both', which='major', labelsize=8) # fontsize ticklabels
+    ax[1,0].tick_params(axis='both', which='major', labelsize=8) # fontsize ticklabels
+    ax[0,1].tick_params(axis='both', which='major', labelsize=8) # fontsize ticklabels
+    ax[1,1].tick_params(axis='both', which='major', labelsize=8) # fontsize ticklabels
+    ax[0,0].tick_params(axis='x',labelbottom='off') # remove ticklabels
+    ax[0,1].tick_params(axis='x',labelbottom='off') # remove ticklabels
+
+    ncin = xr.open_dataset(f1)
+
+    saltBegin = ncin.salt[46,:,99,:]
+    saltFinal = ncin.salt[303,:,99,:]
+    sigma = ncin.sigma.values
+    depth = ncin.depth.values
+
+    # create new arrays
+    x,prof,sig = oceano.create_newDepth(ncin.lon.values,depth,sigma,99)
+    dist,inds = calcDistance(ncin,99,21)
+
+    # removendo nan values
+    tBegin = np.delete(saltBegin,inds,axis=1)
+    tFinal = np.delete(saltFinal,inds,axis=1)
+    d      = np.delete(depth,inds,axis=1)
+    s      = np.delete(sig,inds,axis=1)
+
+    ax[0,0].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
+    ax[0,0].set_xlim([0,150])
+    ax[0,0].set_ylim([-400,0])
+    ax[1,0].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
+    ax[1,0].set_xlim([0,150])
+    ax[1,0].set_ylim([-400,0])
+
+    ax[0,1].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
+    ax[0,1].set_xlim([0,150])
+    ax[0,1].set_ylim([-400,0])
+    ax[1,1].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
+    ax[1,1].set_xlim([0,150])
+    ax[1,1].set_ylim([-400,0])
+
+    # plotar isotermas
+    cs = ax[0,0].contour(dist,s,tBegin,levels=np.arange(35.0,36.8,.2),colors=('k'),linestyles=('--'),linewidths=.3)
+    cs = ax[0,0].contour(dist,s,tBegin,levels=[36],colors=('k'))
+    ax[0,0].clabel(cs, inline=1, fontsize=8)
+
+
+    # plotar isotermas
+    cs = ax[1,0].contour(dist,s,tFinal,levels=np.arange(35.0,36.8,.2),colors=('k'),linestyles=('--'),linewidths=.3)
+    cs = ax[1,0].contour(dist,s,tFinal,levels=[36],colors=('k'))
+    ax[1,0].clabel(cs, inline=1, fontsize=8)
+
+    ###
+
+    ncin = xr.open_dataset(f2)
+
+    saltBegin = ncin.salt[46,:,99,:]
+    saltFinal = ncin.salt[303,:,99,:]
+
+    # removendo nan values
+    tBegin = np.delete(saltBegin,inds,axis=1)
+    tFinal = np.delete(saltFinal,inds,axis=1)
+    d      = np.delete(depth,inds,axis=1)
+    s      = np.delete(sig,inds,axis=1)
+
+    # plotar isotermas
+    cs = ax[0,1].contour(dist,s,tBegin,levels=np.arange(35.0,36.8,.2),colors=('k'),linestyles=('--'),linewidths=.3)
+    cs = ax[0,1].contour(dist,s,tBegin,levels=[36],colors=('k'))
+    ax[0,1].clabel(cs, inline=1, fontsize=8)
+
+
+    # plotar isotermas
+    cs = ax[1,1].contour(dist,s,tFinal,levels=np.arange(35.0,36.8,.2),colors=('k'),linestyles=('--'),linewidths=.3)
+    cs = ax[1,1].contour(dist,s,tFinal,levels=[36],colors=('k'))
     ax[1,1].clabel(cs, inline=1, fontsize=8)
 
     plt.tight_layout()
     plt.subplots_adjust(top=0.894,bottom=0.082,left=0.106,right=0.962,hspace=0.167,wspace=0.169)
 
-
+    comparacao = '%sv%s'%(f1.split('/')[-1].replace('.cdf',''),f2.split('/')[-1].replace('.cdf',''))
+    plt.savefig(SAVE_FIG+'secao_%s_salt.pdf'%(comparacao))
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -317,6 +415,10 @@ ncin = xr.open_dataset(experiment.replace('EA1','EA5'))
 location = [68.12, 107.73]
 plot_surfaceSalt(ncin,exp.replace('EA1','EA5'),SAVE_FIG,location)
 
+# plotando contour secao vertical para comparar com Figura 5 de Castro (2014)
+isoterma(experiment,experiment.replace('EA1','EA5'),SAVE_FIG)
+isohalina(experiment,experiment.replace('EA1','EA5'),SAVE_FIG)
 
-# plotando contour secao vertical para comparar com Figura 5
-isoterma(experiment,experiment.replace('EA1','EA5'))
+# plotando contour secao vertical comparando controle e anomalo para o mestrado
+isoterma(experiment.replace('EA1','EC1'),experiment,SAVE_FIG)
+isohalina(experiment.replace('EA1','EC1'),experiment,SAVE_FIG)
