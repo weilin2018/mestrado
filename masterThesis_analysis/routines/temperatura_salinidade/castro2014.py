@@ -389,7 +389,7 @@ SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/castro2
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EA1.cdf'
+exp = 'EC1.cdf'
 
 for f in fname:
     if exp in f:
@@ -416,9 +416,9 @@ location = [68.12, 107.73]
 plot_surfaceSalt(ncin,exp.replace('EA1','EA5'),SAVE_FIG,location)
 
 # plotando contour secao vertical para comparar com Figura 5 de Castro (2014)
-isoterma(experiment,experiment.replace('EA1','EA5'),SAVE_FIG)
-isohalina(experiment,experiment.replace('EA1','EA5'),SAVE_FIG)
+isoterma(experiment,experiment.replace('EA2','EA5'),SAVE_FIG)
+isohalina(experiment,experiment.replace('EA2','EA5'),SAVE_FIG)
 
 # plotando contour secao vertical comparando controle e anomalo para o mestrado
-isoterma(experiment.replace('EA1','EC1'),experiment,SAVE_FIG)
-isohalina(experiment.replace('EA1','EC1'),experiment,SAVE_FIG)
+isoterma(experiment.replace('EA2','EC2'),experiment,SAVE_FIG)
+isohalina(experiment.replace('EA2','EC2'),experiment,SAVE_FIG)
