@@ -88,7 +88,8 @@ def create_Structure(fname,timestep=0,savefig=False):
     for key,k in zip(col1,sigmaLevels):
         a = m[key]
         cf = a.contourf(lon,lat,temp[k,:,:],contours,latlon=True,cmap=cmo.cm.thermal)
-        cs = a.contour(lon,lat,temp[k,:,:],levels=[18.],latlon=True,colors=('white'),linewidths=(.5))
+        if k == 20:
+            cs = a.contour(lon,lat,temp[k,:,:],levels=[18.],latlon=True,colors=('white'),linewidths=(.5))
 
     # plotting anomalous experiment at the final
     ncin = xr.open_dataset(fname.replace('EC1','EA1'))
@@ -99,7 +100,8 @@ def create_Structure(fname,timestep=0,savefig=False):
     for key,k in zip(col1,sigmaLevels):
         a = m[key]
         cf = a.contourf(lon,lat,temp[k,:,:],contours,latlon=True,cmap=cmo.cm.thermal)
-        cs = a.contour(lon,lat,temp[k,:,:],levels=[18.],latlon=True,colors=('white'),linewidths=(.5))
+        if k == 20:
+            cs = a.contour(lon,lat,temp[k,:,:],levels=[18.],latlon=True,colors=('white'),linewidths=(.5))
 
     axes[0,0].set_title('Experimento Controle',fontsize=8)
     axes[0,1].set_title(u'Experimento Anômalo',fontsize=8)
