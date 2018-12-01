@@ -147,4 +147,4 @@ fname = experiment
 
 timestep = input('Type which timestep to plot: ')
 
-fig,axes = create_Structure(fname,timestep=int(timestep),savefig=False)
+fig,axes = create_Structure(fname,timestep=int(timestep),savefig=True)
