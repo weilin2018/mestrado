@@ -88,6 +88,7 @@ def create_Structure(fname,timestep=0,savefig=False):
     for key,k in zip(col1,sigmaLevels):
         a = m[key]
         cf = a.contourf(lon,lat,temp[k,:,:],contours,latlon=True,cmap=cmo.cm.thermal)
+        cs = a.contour(lon,lat,temp[k,:,:],levels=[18.],latlon=True,colors=('white'),linewidths=(.5))
 
     # plotting anomalous experiment at the final
     ncin = xr.open_dataset(fname.replace('EC1','EA1'))
@@ -98,6 +99,7 @@ def create_Structure(fname,timestep=0,savefig=False):
     for key,k in zip(col1,sigmaLevels):
         a = m[key]
         cf = a.contourf(lon,lat,temp[k,:,:],contours,latlon=True,cmap=cmo.cm.thermal)
+        cs = a.contour(lon,lat,temp[k,:,:],levels=[18.],latlon=True,colors=('white'),linewidths=(.5))
 
     axes[0,0].set_title('Experimento Controle',fontsize=8)
     axes[0,1].set_title(u'Experimento Anômalo',fontsize=8)
@@ -134,8 +136,8 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EA5.cdf'
-SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA5/'
+exp = 'EC1.cdf'
+# SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA5/'
 
 for f in fname:
     if exp in f:
@@ -145,4 +147,4 @@ fname = experiment
 
 timestep = input('Type which timestep to plot: ')
 
-fig,axes = create_Structure(fname,timestep=int(timestep),savefig=True)
+fig,axes = create_Structure(fname,timestep=int(timestep),savefig=False)
