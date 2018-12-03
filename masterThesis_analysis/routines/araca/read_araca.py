@@ -102,6 +102,6 @@ df_2014['tempBott'].plot(ax=ax[1])
 ax[1].legend(['Surface','Bottom'],loc='best')
 
 savefig_dir = oceano.make_dir()
-plt.savefig(savefig_dir + 'masterThesis_analysis/figures/dados_observados/araca_TempSalt.png',dpi=300)
+#plt.savefig(savefig_dir + 'masterThesis_analysis/figures/dados_observados/araca_TempSalt.png',dpi=300)
 
 plt.show()
