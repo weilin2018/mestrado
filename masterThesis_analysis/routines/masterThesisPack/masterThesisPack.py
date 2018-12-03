@@ -1036,3 +1036,30 @@ def procurar_pontos_grade(x,y,xm,ym,n=1):
         resultado[i,1] = res[i]%np.size(dist,1)
 
     return resultado
+
+def calcDistance(ncin,ind,lenght):
+
+    lon,lat = ncin['lon'].values, ncin['lat'].values
+    lon[lon == 0.] = np.nan
+    lat[lat == 0.] = np.nan
+    depth = ncin['depth'].values
+    sigma = ncin['sigma'].values
+
+    xx = lon.shape[1]
+
+    x,prof,sig = oceano.create_newDepth(lon,depth,sigma,ind)
+
+    inds = np.where(np.isnan(x[0,:])) # aonde e nan
+    lats = np.ones([xx])*11
+
+    # removendo nan's
+    x =  np.delete(x[0,:],inds)
+    lats=np.delete(lats,inds)
+
+    dist2 = np.cumsum(np.append(0,sw.dist(lats,x)[0]))
+    if lenght != 0:
+        dist = np.tile(dist2,(lenght,1))
+    else:
+        dist = dist2
+
+    return dist,inds
