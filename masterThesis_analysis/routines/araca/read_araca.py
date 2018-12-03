@@ -15,7 +15,6 @@ from matplotlib import dates
 import datetime
 import seawater as sw
 
-
 import matplotlib
 # matplotlib.style.use('ggplot')
 
@@ -23,6 +22,19 @@ import sys
 sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
+
+def create_dates(ncin):
+
+    dates = []
+    years = ncin[:,0]
+    month = ncin[:,1]
+    days  = ncin[:,2]
+    hours = ncin[:,3]
+
+    for y,m,d,h in zip(years,month,days,hours):
+        dates.append(datetime.datetime(int(y),int(m),int(d),int(h)))
+
+    return np.asarray(dates)
 
 ##
 BASE_DIR = oceano.make_dir()

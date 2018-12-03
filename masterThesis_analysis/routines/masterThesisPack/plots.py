@@ -17,21 +17,25 @@ import pickle
 import math
 import cmocean as cmo
 
+# importing root functions
+import masterThesisPack
+
 def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,nparallels=2,labels=[True,False,False,True]):
 
     m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
 
     m.ax = ax
 
-    m.drawcoastlines(linewidth=.1)
+    m.drawcoastlines(linewidth=.01,color='#c0c0c0')
     m.drawmapboundary()
     m.fillcontinents(color='#c0c0c0')
+    m.drawstates(linewidth=.01,color='gray')
 	# definir meridianos e paralelos para plotar no mapa
     meridians=np.arange(llon,ulon,nmeridians)
     parallels=np.arange(llat,ulat,nparallels)
 	# desenhar meridianos e paralelos conforme definido acima
-    m.drawparallels(parallels,labels=labels,fontsize=8,color='gray',linewidth=.2)
-    m.drawmeridians(meridians,labels=labels,fontsize=8,color='gray',linewidth=.2)
+    m.drawparallels(parallels,labels=labels,fontsize=8,color='gray',linewidth=.02)
+    m.drawmeridians(meridians,labels=labels,fontsize=8,color='gray',linewidth=.02)
 
     return m
 
@@ -93,7 +97,11 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
     for j in range(3):
         for i in range(2):
             key = "%s%s"%(i,j)
-            m[key] = make_map(axes[i,j],labels=labels_dict[key])
+            m[key] = make_map(axes[i,j],labels=labels_dict[key],ulat=-21,llat=-29,ulon=-40)
+            axes[i,j].spines['left'].set_linewidth(0.5)
+            axes[i,j].spines['right'].set_linewidth(0.5)
+            axes[i,j].spines['bottom'].set_linewidth(0.5)
+            axes[i,j].spines['top'].set_linewidth(0.5)
 
     # plotting climatologic data: t = 0, k = 0
     ncin = xr.open_dataset(fname)
@@ -147,10 +155,11 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
     plt.subplots_adjust(top=0.886,bottom=0.119,left=0.039,right=1.0,hspace=0.115,wspace=0.0)
 
     if savefig:
+        savefig_dir = masterThesisPack.make_dir()
         # plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/temperatura_superf_meio_fundo_timestep_%s.png'%(str(timestep)),dpi=300)
         if property == 'temp':
-          plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/temperatura_superf_meio_fundo_timestep_%s.eps'%(str(timestep)))
+          plt.savefig(savefig_dir+'masterThesis_analysis/figures/experiments_outputs/temperature/temperatura_superf_meio_fundo_timestep_%s.eps'%(str(timestep)))
         if property == 'salt':
-          plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/salinity/salinidade_superf_meio_fundo_timestep_%s.eps'%(str(timestep)))
+          plt.savefig(savefig_dir+'masterThesis_analysis/figures/experiments_outputs/salinity/salinidade_superf_meio_fundo_timestep_%s.eps'%(str(timestep)))
 
     return fig,axes

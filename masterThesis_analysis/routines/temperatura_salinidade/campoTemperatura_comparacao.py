@@ -132,7 +132,7 @@ def create_Structure(fname,timestep=0,savefig=False):
 ##############################################################################
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
-plt.ion()
+#plt.ion()
 
 # configurações do plot
 figsize = (17.4/2.54, 10/2.54)
