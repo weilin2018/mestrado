@@ -98,10 +98,10 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
         for i in range(2):
             key = "%s%s"%(i,j)
             m[key] = make_map(axes[i,j],labels=labels_dict[key],ulat=-21,llat=-29,ulon=-40)
-            axes[i,j].spines['left'].set_linewidth(0.5)
-            axes[i,j].spines['right'].set_linewidth(0.5)
-            axes[i,j].spines['bottom'].set_linewidth(0.5)
-            axes[i,j].spines['top'].set_linewidth(0.5)
+            axes[i,j].spines['left'].set_linewidth(0.2)
+            axes[i,j].spines['right'].set_linewidth(0.2)
+            axes[i,j].spines['bottom'].set_linewidth(0.2)
+            axes[i,j].spines['top'].set_linewidth(0.2)
 
     # plotting climatologic data: t = 0, k = 0
     ncin = xr.open_dataset(fname)
