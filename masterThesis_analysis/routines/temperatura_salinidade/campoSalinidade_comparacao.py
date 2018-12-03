@@ -30,11 +30,13 @@ sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
 
+import plots as plotDanilo
+
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
 # insert functions here
-def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,nparallels=2):
+def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,nparallels=2,labels=[True,False,False,True]):
 
     m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
 
@@ -47,8 +49,8 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
     meridians=np.arange(llon,ulon,nmeridians)
     parallels=np.arange(llat,ulat,nparallels)
 	# desenhar meridianos e paralelos conforme definido acima
-    m.drawparallels(parallels,labels=[True,False,False,True],fontsize=8,color='gray',linewidth=.4)
-    m.drawmeridians(meridians,labels=[True,False,False,True],fontsize=8,color='gray',linewidth=.4)
+    m.drawparallels(parallels,labels=labels,fontsize=8,color='gray',linewidth=.2)
+    m.drawmeridians(meridians,labels=labels,fontsize=8,color='gray',linewidth=.2)
 
     return m
 
@@ -146,6 +148,16 @@ for f in fname:
 
 fname = experiment
 
+# salinidade
+contours = np.arange(34,36.1,0.01)
+
 timestep = input('Type which timestep to plot: ')
 
-fig,axes = create_Structure(fname,timestep=int(timestep),savefig=False)
+if timestep == 999.:
+    timestep = [0,46,303]
+
+    for nstep in timestep:
+        fig,axes = plotDanilo.create_Structure_horizontal(fname,contours,property='salt',timestep=int(nstep),savefig=True)
+    plt.close()
+else:
+    fig,axes = plotDanilo.create_Structure_horizontal(fname,contours,property='salt',timestep=int(timestep),savefig=True)

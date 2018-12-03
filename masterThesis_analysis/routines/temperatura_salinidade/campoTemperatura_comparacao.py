@@ -30,6 +30,8 @@ sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
 
+import plots as plotDanilo
+
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
@@ -47,8 +49,8 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
     meridians=np.arange(llon,ulon,nmeridians)
     parallels=np.arange(llat,ulat,nparallels)
 	# desenhar meridianos e paralelos conforme definido acima
-    m.drawparallels(parallels,labels=labels,fontsize=8,color='gray',linewidth=.4)
-    m.drawmeridians(meridians,labels=labels,fontsize=8,color='gray',linewidth=.4)
+    m.drawparallels(parallels,labels=labels,fontsize=8,color='gray',linewidth=.2)
+    m.drawmeridians(meridians,labels=labels,fontsize=8,color='gray',linewidth=.2)
 
     return m
 
@@ -125,91 +127,6 @@ def create_Structure(fname,timestep=0,savefig=False):
     return fig,axes
 
 
-def create_Structure_horizontal(fname,timestep=0,savefig=False):
-
-    sigmaLevels = [0,10,20]
-
-    fig,axes = plt.subplots(nrows=2,ncols=3,figsize=(16/2.54, 13/2.54))
-    cax = fig.add_axes([0.2,0.05,0.61,0.02])
-
-    # dictionary containing labels for subplots
-    labels_dict = {
-        '00': [True,False,False,False],
-        '01': [False,False,False,False],
-        '02': [False,False,False,False],
-        '10': [True,False,False,True],
-        '11': [False,False,False,True],
-        '12': [False,False,False,True],
-    }
-
-    m = {}
-
-    for j in range(3):
-        for i in range(2):
-            key = "%s%s"%(i,j)
-            m[key] = make_map(axes[i,j],labels=labels_dict[key])
-
-    contours = np.arange(14,36,0.1)
-
-    # plotting climatologic data: t = 0, k = 0
-    ncin = xr.open_dataset(fname)
-
-    lon,lat = ncin.lon.values, ncin.lat.values
-    depth = ncin.depth.values
-    sigma = ncin.sigma.values
-    lon[lon == 0.] = np.nan
-    lat[lat == 0.] = np.nan
-    depth = ncin.depth.values
-
-    # extracting temperature data, in a specific timestep
-    temp = ncin.temp[timestep,:,:,:]
-    temp = np.where(depth < 100, temp,np.nan)
-
-    # key for axes in m
-    col1 = ['00','01','02']
-
-
-    for key,k in zip(col1,sigmaLevels):
-        a = m[key]
-        cf = a.contourf(lon,lat,temp[k,:,:],contours,latlon=True,cmap=cmo.cm.thermal)
-        if k == 20:
-            cs = a.contour(lon,lat,temp[k,:,:],levels=[18.],latlon=True,colors=('white'),linewidths=(.5))
-
-    # plotting anomalous experiment at the final
-    ncin = xr.open_dataset(fname.replace('EC1','EA1'))
-    temp = ncin.temp[timestep,:,:,:]
-    temp = np.where(depth < 100, temp,np.nan)
-
-    col1 = ['10','11','12']
-    for key,k in zip(col1,sigmaLevels):
-        a = m[key]
-        cf = a.contourf(lon,lat,temp[k,:,:],contours,latlon=True,cmap=cmo.cm.thermal)
-        if k == 20:
-            cs = a.contour(lon,lat,temp[k,:,:],levels=[18.],latlon=True,colors=('white'),linewidths=(.5))
-
-    axes[0,1].set_title('Experimento Controle',fontsize=8)
-    axes[1,1].set_title(u'Experimento Anômalo',fontsize=8)
-
-
-    # setting colorbar configuration
-    cb = plt.colorbar(cf,orientation='horizontal',cax=cax,format='%i')
-    fig.text(0.4,0.075,r'Temperatura ($^o$C)',fontsize=8)
-
-    # title and some figure adjusts
-    d = pd.to_datetime(ncin.time[timestep].values)
-    plt.suptitle(u'Temperatura nas camadas de superfície, meio e fundo, no Experimento\n' \
-                  u'Controle (esquerda) e Anômalo (Direita) em ' \
-                  '%s de %s'%(d.strftime('%d'),d.strftime('%B')),fontsize=10)
-    rect = (0,0.08,1.,0.95)
-    plt.tight_layout(rect=rect) # box for tight_subplot_layout
-    plt.subplots_adjust(top=0.886,bottom=0.119,left=0.039,right=1.0,hspace=0.115,wspace=0.0)
-
-    if savefig:
-        # plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/temperatura_superf_meio_fundo_timestep_%s.png'%(str(timestep)),dpi=300)
-        plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/temperatura_superf_meio_fundo_timestep_%s.pdf'%(str(timestep)))
-
-    return fig,axes
-
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -233,6 +150,17 @@ for f in fname:
 
 fname = experiment
 
+# temperatura
+contours = np.arange(14,36,0.1)
+
+
 timestep = input('Type which timestep to plot: ')
 
-fig,axes = create_Structure_horizontal(fname,timestep=int(timestep),savefig=True)
+if timestep == 999.:
+    timestep = [0,46,303]
+
+    for nstep in timestep:
+        fig,axes = plotDanilo.create_Structure_horizontal(fname,contours,property='temp',timestep=int(nstep),savefig=True)
+    plt.close()
+else:
+    fig,axes = plotDanilo.create_Structure_horizontal(fname,contours,property='temp',timestep=int(timestep),savefig=True)
