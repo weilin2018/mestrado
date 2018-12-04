@@ -143,7 +143,7 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
 
     # setting colorbar configuration
     cb = plt.colorbar(cf,orientation='horizontal',cax=cax,format='%i')
-    fig.text(0.4,0.075,colorbarTitle[property],fontsize=8)
+    fig.text(0.45,0.075,colorbarTitle[property],fontsize=8)
 
     # title and some figure adjusts
     d = pd.to_datetime(ncin.time[timestep].values)
@@ -152,7 +152,7 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
                   '%s de %s'%(P[property],d.strftime('%d'),d.strftime('%B')),fontsize=10)
     rect = (0,0.08,1.,0.95)
     plt.tight_layout(rect=rect) # box for tight_subplot_layout
-    plt.subplots_adjust(top=0.886,bottom=0.119,left=0.039,right=1.0,hspace=0.115,wspace=0.0)
+    plt.subplots_adjust(top=0.886,bottom=0.109,left=0.054,right=0.995,hspace=0.0,wspace=0.045)
 
     if savefig:
         savefig_dir = masterThesisPack.make_dir()

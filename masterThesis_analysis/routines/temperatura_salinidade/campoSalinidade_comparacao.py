@@ -110,7 +110,7 @@ def create_Structure(fname,timestep=0,savefig=False):
 
     # setting colorbar configuration
     cb = plt.colorbar(cf,orientation='horizontal',ticks=[34,34.3,34.6,34.9,35.2,35.5,35.8,36.1],cax=cax,format='%2.1f')
-    fig.text(0.45,0.075,r'Salinidade',fontsize=8)
+    fig.text(0.55,0.075,r'Salinidade',fontsize=8)
 
     # title and some figure adjusts
     d = pd.to_datetime(ncin.time[timestep].values)

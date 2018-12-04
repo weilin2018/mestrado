@@ -136,7 +136,7 @@ sigma = ncin['sigma'].values
 indexes = [99,28,19]
 
 fig,axes = create_Structure(ncin,indexes)
-title = u'Posição inicial (vermelho) e final (verde) da isoterma de 18' + r'$^o$'
+title = u'Posição inicial (vermelho) e final (verde) da isoterma de 18' + r'$^o$C'
 # title = u'Posição inicial e final da isoterma de 18' + r'$^o$' + u'C no Experimento Controle (esquerda) \ne Experimento Anômalo (direita) -Seção %s'%loc
 plt.suptitle(title,fontsize=10)
 
