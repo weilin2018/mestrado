@@ -92,6 +92,9 @@ df['datetime'] = date
 # selecionando somente os perfis de Jan/2014 (designados pelo Cruise/index 201401)
 jan2014 = df.loc[201401]
 
+# definindo a localizacao media dos perfis
+meanLocation = [jan2014.Lat.mean(),jan2014.Lon.mean()]
+
 # Selecionando os dados pelo cruzeiro realizado em cada dia e hora
 # indexes = jan2014.datetime
 # indexes = indexes.drop_duplicates()
@@ -116,7 +119,7 @@ keys.sort()
 
 # plotando
 fig,ax = verticalProfile_structure(nrows=2,ncols=3,figsize=figsize,xlim=[23,30])
-plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR)',fontsize=10)
+plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR) - [%1.2f,%1.2f]'%(meanLocation[0],meanLocation[1]),fontsize=10)
 
 ax[0,0].plot(dct[keys[0]].Temperature.values,dct[keys[0]].index.values,label=keys[0])
 ax[0,0].text(25.,1.5,str(keys[0]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
@@ -137,7 +140,7 @@ plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/cebimar_tem
 
 # plotando
 fig,ax = verticalProfile_structure(nrows=2,ncols=3,figsize=figsize,xlim=[34,36])
-plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR)',fontsize=10)
+plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR) - [%1.2f,%1.2f]'%(meanLocation[0],meanLocation[1]),fontsize=10)
 
 ax[0,0].plot(dct[keys[0]].Salinity.values,dct[keys[0]].index.values,label=keys[0])
 ax[0,0].text(35.5,1.5,str(keys[0]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
