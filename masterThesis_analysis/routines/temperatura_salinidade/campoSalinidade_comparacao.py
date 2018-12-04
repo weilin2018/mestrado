@@ -59,6 +59,7 @@ def create_Structure(fname,timestep=0,savefig=False):
     sigmaLevels = [0,10,20] # which sigma levels to plot
 
     fig,axes = plt.subplots(nrows=3,ncols=2,figsize=(13/2.54, 16/2.54))
+    
     cax = fig.add_axes([0.2,0.05,0.61,0.02])
 
     m = {}

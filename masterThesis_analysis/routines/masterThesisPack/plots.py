@@ -79,7 +79,8 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
         'salt':cmo.cm.haline
     }
 
-    fig,axes = plt.subplots(nrows=2,ncols=3,figsize=(16/2.54, 13/2.54))
+    #fig,axes = plt.subplots(nrows=2,ncols=3,figsize=(16/2.54, 13/2.54))
+    fig,axes = plt.subplots(nrows=3,ncols=2,figsize=(11.69,8.27))
     cax = fig.add_axes([0.2,0.05,0.61,0.02])
 
     # dictionary containing labels for subplots
@@ -158,8 +159,8 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
         savefig_dir = masterThesisPack.make_dir()
         # plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/temperatura_superf_meio_fundo_timestep_%s.png'%(str(timestep)),dpi=300)
         if property == 'temp':
-          plt.savefig(savefig_dir+'masterThesis_analysis/figures/experiments_outputs/temperature/temperatura_superf_meio_fundo_timestep_%s.eps'%(str(timestep)))
+          plt.savefig(savefig_dir+'masterThesis_analysis/figures/experiments_outputs/temperature/temperatura_superf_meio_fundo_timestep_%s.eps'%(str(timestep)),orientation='landscape')
         if property == 'salt':
-          plt.savefig(savefig_dir+'masterThesis_analysis/figures/experiments_outputs/salinity/salinidade_superf_meio_fundo_timestep_%s.eps'%(str(timestep)))
+          plt.savefig(savefig_dir+'masterThesis_analysis/figures/experiments_outputs/salinity/salinidade_superf_meio_fundo_timestep_%s.eps'%(str(timestep)),orientation='landscape')
 
     return fig,axes

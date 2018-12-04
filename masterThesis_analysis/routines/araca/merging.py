@@ -96,4 +96,4 @@ plt.subplots_adjust(top=0.855,bottom=0.142,left=0.069,right=0.989,hspace=0.357,w
 
 plt.suptitle(u'Série temporal de Jan a Mar de 2014, na Baáa do Araçá',fontsize=10)
 
-plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/araca_2015.eps')
+plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/araca_2015.eps',orientation='landscape')

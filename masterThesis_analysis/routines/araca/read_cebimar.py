@@ -56,8 +56,14 @@ def verticalProfile_structure(nrows,ncols,figsize,xlim):
             axes[i,j].xaxis.tick_top()
             axes[i,j].set_xlim(xlim)
             axes[i,j].tick_params(axis='both',which='major',labelsize=8)
+            axes[i,j].tick_params(axis='x',which='major',pad=.3)
+            axes[i,j].margins(y=0)
 
             # axes[i,j].set_ylim([0,-15])
+    
+    axes[1,0].tick_params(axis='x',labeltop='off')
+    axes[1,1].tick_params(axis='x',labeltop='off')
+    axes[1,2].tick_params(axis='x',labeltop='off')
 
     return fig,axes
 
@@ -118,28 +124,31 @@ keys = dct.keys()
 keys.sort()
 
 # plotando
-fig,ax = verticalProfile_structure(nrows=2,ncols=3,figsize=figsize,xlim=[23,30])
+fig,ax = verticalProfile_structure(nrows=2,ncols=3,figsize=(15./2.54,12./2.54),xlim=[23,30])
 plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR) - [%1.2f,%1.2f]'%(meanLocation[0],meanLocation[1]),fontsize=10)
 
 ax[0,0].plot(dct[keys[0]].Temperature.values,dct[keys[0]].index.values,label=keys[0])
 ax[0,0].text(25.,1.5,str(keys[0]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+
 ax[0,1].plot(dct[keys[1]].Temperature.values,dct[keys[1]].index.values,label=keys[1])
 ax[0,1].text(25.,1.5,str(keys[1]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+
 ax[0,2].plot(dct[keys[2]].Temperature.values,dct[keys[2]].index.values,label=keys[2])
 ax[0,2].text(25.,1.5,str(keys[2]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+
 ax[1,0].plot(dct[keys[3]].Temperature.values,dct[keys[3]].index.values,label=keys[3])
 ax[1,0].text(25.,1.5,str(keys[3]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+
 ax[1,1].plot(dct[keys[4]].Temperature.values,dct[keys[4]].index.values,label=keys[4])
 ax[1,1].text(25.,1.5,str(keys[4]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+
 ax[1,2].plot(dct[keys[5]].Temperature.values,dct[keys[5]].index.values,label=keys[5])
 ax[1,2].text(25.,1.5,str(keys[5]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
 
-plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/cebimar_temperatura.eps')
-
-
+#plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/cebimar_temperatura.eps',orientation='landscape')
 
 # plotando
-fig,ax = verticalProfile_structure(nrows=2,ncols=3,figsize=figsize,xlim=[34,36])
+fig,ax = verticalProfile_structure(nrows=2,ncols=3,figsize=(15./2.54,12./2.54),xlim=[34,36])
 plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR) - [%1.2f,%1.2f]'%(meanLocation[0],meanLocation[1]),fontsize=10)
 
 ax[0,0].plot(dct[keys[0]].Salinity.values,dct[keys[0]].index.values,label=keys[0])
@@ -160,4 +169,4 @@ ax[1,1].text(35.5,1.5,str(keys[4]).replace(' ','\n'),horizontalalignment='center
 ax[1,2].plot(dct[keys[5]].Salinity.values,dct[keys[5]].index.values,label=keys[5])
 ax[1,2].text(35.5,1.5,str(keys[5]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
 
-plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/cebimar_salinidade.eps')
+#plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/cebimar_salinidade.eps',orientation='landscape')
