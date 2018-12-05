@@ -34,6 +34,65 @@ def createDates(dates,times):
 
     return date
 
+def teste(nrows=2,ncols=6,figsize=None):
+    fig,axes = plt.subplots(nrows=nrows,ncols=ncols,figsize=figsize,sharey=True)
+    # customizacoes para um perfil vertical em subplots
+    axes[0,0].set_ylabel('Profundidade [m]',fontsize=8)
+    axes[1,0].set_ylabel('Profundidade [m]',fontsize=8)
+    # set ylim do primeiro subplot
+    # axes[0,0].set_ylim([-15,0])
+    # axes[1,0].set_ylim([-15,0])
+    # removendo labelleft dos subplots
+    for i in np.arange(1,6,1):
+        axes[0,i].tick_params(axis='y',labelleft='off')
+        axes[1,i].tick_params(axis='y',labelleft='off')
+    # demais configuracoes dos graficos
+    for i in range(nrows):
+        for j in range(ncols):
+            axes[i,j].invert_yaxis()
+            axes[i,j].xaxis.tick_top()
+            axes[0,j].set_xlim([23,30]) # temperatura
+            axes[1,j].set_xlim([34,36]) # salinidade
+            axes[i,j].tick_params(axis='both',which='major',labelsize=8)
+            axes[i,j].tick_params(axis='x',which='major',pad=.3)
+            axes[i,j].margins(y=0)
+
+    return fig,axes
+
+def plot_2x6Figure(dct,keys,BASE_DIR,figsize=(20./2.54,12./2.54)):
+
+    fig,axes = teste(figsize=figsize)
+
+    # definindo titulos
+    for i in range(6):
+        # extraindo dados do dicionario
+        k = keys[i]
+        data = dct[k]
+        # plotando temperatura
+        axes[0,i].plot(data.Temperature.values,-data.index.values,'grey')
+        axes[0,i].text(25,-1.5,k.strftime('%H:%M').replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+        axes[1,i].plot(data.Salinity.values,-data.index.values,'k')
+        # axes[1,i].text(35.5,-1.5,k.strftime('%d/%m/%Y %H:%M').replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+
+    for i in np.arange(0,6,2):
+        k = keys[i]
+        axes[0,i].text(31,1.9,k.strftime('%d/%m/%Y').replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.868,bottom=0.012,left=0.094,right=0.972,hspace=0.123,wspace=0.319)
+
+    plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR) - [%1.2f,%1.2f]'%(meanLocation[0],meanLocation[1]),fontsize=10)
+
+    plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/cebimar_all.pdf',orientation='landscape')
+
+
+
+
+
+
+
+
+
 def verticalProfile_structure(nrows,ncols,figsize,xlim):
 
     # criando figura
@@ -60,7 +119,7 @@ def verticalProfile_structure(nrows,ncols,figsize,xlim):
             axes[i,j].margins(y=0)
 
             # axes[i,j].set_ylim([0,-15])
-    
+
     axes[1,0].tick_params(axis='x',labeltop='off')
     axes[1,1].tick_params(axis='x',labeltop='off')
     axes[1,2].tick_params(axis='x',labeltop='off')
@@ -123,6 +182,8 @@ for name,group in grouped:
 keys = dct.keys()
 keys.sort()
 
+
+
 # plotando
 fig,ax = verticalProfile_structure(nrows=2,ncols=3,figsize=(15./2.54,12./2.54),xlim=[23,30])
 plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR) - [%1.2f,%1.2f]'%(meanLocation[0],meanLocation[1]),fontsize=10)
@@ -144,6 +205,9 @@ ax[1,1].text(25.,1.5,str(keys[4]).replace(' ','\n'),horizontalalignment='center'
 
 ax[1,2].plot(dct[keys[5]].Temperature.values,dct[keys[5]].index.values,label=keys[5])
 ax[1,2].text(25.,1.5,str(keys[5]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+
+plt.tight_layout()
+plt.subplots_adjust(top=0.901,bottom=0.014,left=0.077,right=0.983,hspace=0.042,wspace=0.185)
 
 #plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/cebimar_temperatura.eps',orientation='landscape')
 
@@ -169,4 +233,6 @@ ax[1,1].text(35.5,1.5,str(keys[4]).replace(' ','\n'),horizontalalignment='center
 ax[1,2].plot(dct[keys[5]].Salinity.values,dct[keys[5]].index.values,label=keys[5])
 ax[1,2].text(35.5,1.5,str(keys[5]).replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
 
+plt.tight_layout()
+plt.subplots_adjust(top=0.901,bottom=0.014,left=0.077,right=0.983,hspace=0.042,wspace=0.185)
 #plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/cebimar_salinidade.eps',orientation='landscape')

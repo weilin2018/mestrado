@@ -23,6 +23,15 @@ sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
 
+def remove_2std(data):
+
+    limsuperior = data.mean() + 2*data.std()
+    liminferior = data.mean() - 2*data.std()
+    data[data < liminferior] = np.nan
+    data[data > limsuperior] = np.nan
+
+    return data
+
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github','ventopcse/data/Araca/Dottori_etal_2015')
 
@@ -46,23 +55,31 @@ df_3 = ncin.to_dataframe()
 
 df = pd.concat([df_1,df_2,df_3],axis=0)
 
+# controle de qualidade, principalmente para salinidade que esta com valores
+# absurdos
+df.saltBott['2014-01-20 22:30':'2014-02-05'] = np.nan
+df.saltSurf['2014-01-20 22:30':'2014-02-05'] = np.nan
+
+df.saltBott = remove_2std(df.saltBott)
+df.saltSurf = remove_2std(df.saltSurf)
+
 
 # visualizando os dados
 fig,ax = plt.subplots(nrows=2,figsize=(20./2.54,10./2.54))
 
 # primeiro salinidade
-ax[0].set_title('Salinidade',fontsize=8)
+# ax[0].set_title('Salinidade',fontsize=8)
 df.saltSurf.plot(ax=ax[0],color='gray',label=u'Superfície',linewidth=.6)
 df.saltBott.plot(ax=ax[0],color='black',label='Fundo',linewidth=.6)
 
 # segundo temperatura
-ax[1].set_title('Temperatura',fontsize=8)
+# ax[1].set_title('Temperatura',fontsize=8)
 df.tempSurf.plot(ax=ax[1],color='gray',label=u'Superfície',linewidth=.6)
 df.tempBott.plot(ax=ax[1],color='black',label='Fundo',linewidth=.6)
 
 # legendas
-ax[0].legend(loc='best')
-ax[1].legend(loc='best')
+ax[0].legend(loc='best',fontsize=8)
+ax[1].legend(loc='best',fontsize=8)
 
 
 # colocando duas linhas verticais indicando o comeco e final do evento
@@ -94,6 +111,6 @@ plt.xticks(fontsize=8)
 plt.tight_layout()
 plt.subplots_adjust(top=0.855,bottom=0.142,left=0.069,right=0.989,hspace=0.357,wspace=0.2)
 
-plt.suptitle(u'Série temporal de Jan a Mar de 2014, na Baáa do Araçá',fontsize=10)
+plt.suptitle(u'Série temporal de Janeiro à Março de 2014\nCEBIMAR - Baia do Araçá',fontsize=10)
 
 plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/araca_2015.eps',orientation='landscape')
