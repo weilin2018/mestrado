@@ -13,6 +13,7 @@ from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import dates
 import datetime
+import cmocean as cmo
 
 from dateutil import parser
 
@@ -40,11 +41,60 @@ def find_timestep(ncin,timestep):
 
 def extrair_dados(ncin,i,j,t):
 
-	temp = ncin.temp[t.values,:,i,j]
-	salt = ncin.salt[t.values,:,i,j]
+	temp = ncin.temp[t,:,i,j]
+	salt = ncin.salt[t,:,i,j]
 
 	return temp,salt
 
+def struct2x6(nrows=2,ncols=6,figsize=None):
+    fig,axes = plt.subplots(nrows=nrows,ncols=ncols,figsize=figsize,sharey=True)
+    # customizacoes para um perfil vertical em subplots
+    axes[0,0].set_ylabel('Profundidade [m]',fontsize=8)
+    axes[1,0].set_ylabel('Profundidade [m]',fontsize=8)
+    # set ylim do primeiro subplot
+    # axes[0,0].set_ylim([-15,0])
+    # axes[1,0].set_ylim([-15,0])
+    # removendo labelleft dos subplots
+    for i in np.arange(1,6,1):
+        axes[0,i].tick_params(axis='y',labelleft='off')
+        axes[1,i].tick_params(axis='y',labelleft='off')
+    # demais configuracoes dos graficos
+    for i in range(nrows):
+        for j in range(ncols):
+            axes[i,j].invert_yaxis()
+            axes[i,j].xaxis.tick_top()
+            axes[0,j].set_xlim([23,30]) # temperatura
+            axes[1,j].set_xlim([34,36]) # salinidade
+            axes[i,j].tick_params(axis='both',which='major',labelsize=8)
+            axes[i,j].tick_params(axis='x',which='major',pad=.3)
+            axes[i,j].margins(y=0)
+
+    return fig,axes
+
+def plot_2x6Figure(dct,keys,BASE_DIR,figsize=(20./2.54,12./2.54)):
+
+    fig,axes = struct2x6(figsize=figsize)
+
+    # definindo titulos
+    for i in range(6):
+        # extraindo dados do dicionario
+        k = keys[i]
+        data = dct[k]
+        k = parser.parse(keys[i])
+        # plotando temperatura
+        axes[0,i].plot(data.Temperature.values,data.index.values,'grey')
+        axes[0,i].text(25,-1.5,k.strftime('%H:%M').replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+        axes[1,i].plot(data.Salinity.values,data.index.values,'k')
+        # axes[1,i].text(35.5,-1.5,k.strftime('%d/%m/%Y %H:%M').replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+
+    for i in np.arange(0,6,2):
+        k = parser.parse(keys[i])
+        axes[0,i].text(31,1.9,k.strftime('%d/%m/%Y').replace(' ','\n'),horizontalalignment='center',verticalalignment='center',fontsize=8)
+
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.868,bottom=0.012,left=0.094,right=0.972,hspace=0.123,wspace=0.319)
+
+    #plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR) - [%1.2f,%1.2f]'%(meanLocation[0],meanLocation[1]),fontsize=10)
 
 def verticalProfile_structure(nrows,ncols,figsize,xlim):
 
@@ -79,6 +129,22 @@ def verticalProfile_structure(nrows,ncols,figsize,xlim):
 
     return fig,axes
 
+def plotMapa(i,j):
+    # plotando mapa para visualizar a localizacao e comparacao da profundidade do modelo com a
+    # profundidade do ponto observado
+    fig,ax = plt.subplots()
+    m = oceano.make_map(ax,resolution='f')
+    m.plot(lon,lat,'k',alpha=.3,latlon=True);
+    m.plot(lon.T,lat.T,'k',alpha=.3,latlon=True);
+    cf = m.contourf(lon,lat,ncin.depth.values,np.arange(1,30,0.1),latlon=True,cmap=cmo.cm.deep);
+    plt.colorbar(cf)
+
+    m.scatter(lon[i,j],lat[i,j],s=30,c='r',latlon=True)
+
+    m.scatter(-45.40085130,-23.81778822,s=30,c='g',latlon=True)
+
+    plt.show()
+
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -103,26 +169,30 @@ ponto = oceano.procurar_pontos_grade(-45.40085130,-23.81778822,lon,lat,n=1)
 i     = int(ponto[0][0])
 j     = int(ponto[0][1])
 
+j     = 7
+
 # localizando instantes de tempos correspondentes aos dados obtidos pelo CEBIMAR
-instantesCEBIMAR = ['2014-01-14 13:18','2014-01-14 17:15']
+instantesCEBIMAR = ['2014-01-14 13:18','2014-01-14 17:15','2014-01-15 12:39','2014-01-15 16:46','2014-01-16 11:09','2014-01-16 16:13']
 
-d = find_timestep(ncin,'2014-01-16 16:13')
+nstep = []
 
-# extraindo dados termohalinos
-temp,salt    = extrair_dados(ncin,i,j,d)
-profundidade = dep[i,j]*sig
+for instante in instantesCEBIMAR:
+    d = find_timestep(ncin,instante)
+    nstep.append(d[0])
 
-fig,ax = plt.subplots(ncols=2,figsize=(6,8),sharey=True)
+nstep = np.asarray(nstep)
 
-ax[0].plot(np.squeeze(temp),profundidade)
-ax[0].set_xlim([23,30])
-ax[0].xaxis.tick_top()
+# extraindo dados termohalinos e armazenando em um dicionario
+dct = {}
 
-ax[1].plot(np.squeeze(salt),profundidade)
-ax[1].set_xlim([34,36])
-ax[1].xaxis.tick_top()
+for d,tempo in zip(nstep,instantesCEBIMAR):
+    t,s = extrair_dados(ncin,i,j,d)
+    df = pd.DataFrame({'Temperature':t.values,'Salinity':s.values},index=profundidade)
+    dct[tempo] = df
 
-plt.show()
+
+
+plot_2x6Figure(dct,instantesCEBIMAR,BASE_DIR)
 
 ###################### SERIE TEMPORAL ##########################################
 

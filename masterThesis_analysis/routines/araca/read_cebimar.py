@@ -34,7 +34,7 @@ def createDates(dates,times):
 
     return date
 
-def teste(nrows=2,ncols=6,figsize=None):
+def struct2x6(nrows=2,ncols=6,figsize=None):
     fig,axes = plt.subplots(nrows=nrows,ncols=ncols,figsize=figsize,sharey=True)
     # customizacoes para um perfil vertical em subplots
     axes[0,0].set_ylabel('Profundidade [m]',fontsize=8)
@@ -61,7 +61,7 @@ def teste(nrows=2,ncols=6,figsize=None):
 
 def plot_2x6Figure(dct,keys,BASE_DIR,figsize=(20./2.54,12./2.54)):
 
-    fig,axes = teste(figsize=figsize)
+    fig,axes = struct2x6(figsize=figsize)
 
     # definindo titulos
     for i in range(6):
