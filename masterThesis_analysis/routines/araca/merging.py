@@ -116,5 +116,6 @@ plt.tight_layout()
 plt.subplots_adjust(top=0.855,bottom=0.142,left=0.069,right=0.989,hspace=0.357,wspace=0.2)
 
 plt.suptitle(u'Série temporal de Janeiro à Março de 2014\nCEBIMAR - Baia do Araçá',fontsize=10)
+plt.show()
 
-plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/araca_2015.eps')
+#plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/araca_2015.eps')
