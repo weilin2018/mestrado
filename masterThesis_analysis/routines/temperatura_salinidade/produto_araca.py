@@ -52,8 +52,8 @@ def struct2x6(nrows=2,ncols=6,figsize=None):
     axes[0,0].set_ylabel('Profundidade [m]',fontsize=8)
     axes[1,0].set_ylabel('Profundidade [m]',fontsize=8)
     # set ylim do primeiro subplot
-    # axes[0,0].set_ylim([-15,0])
-    # axes[1,0].set_ylim([-15,0])
+    axes[0,0].set_ylim([-15,0])
+    axes[1,0].set_ylim([-15,0])
     # removendo labelleft dos subplots
     for i in np.arange(1,6,1):
         axes[0,i].tick_params(axis='y',labelleft='off')
@@ -95,6 +95,9 @@ def plot_2x6Figure(dct,keys,BASE_DIR,figsize=(20./2.54,12./2.54)):
     plt.subplots_adjust(top=0.868,bottom=0.012,left=0.094,right=0.972,hspace=0.123,wspace=0.319)
 
     #plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR) - [%1.2f,%1.2f]'%(meanLocation[0],meanLocation[1]),fontsize=10)
+    plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (Modelo)',fontsize=10)
+
+    plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA1_cebimar_all.pdf',orientation='landscape')
 
 def verticalProfile_structure(nrows,ncols,figsize,xlim):
 
@@ -122,7 +125,7 @@ def verticalProfile_structure(nrows,ncols,figsize,xlim):
             axes[i,j].margins(y=0)
 
             # axes[i,j].set_ylim([0,-15])
-    
+
     axes[1,0].tick_params(axis='x',labeltop='off')
     axes[1,1].tick_params(axis='x',labeltop='off')
     axes[1,2].tick_params(axis='x',labeltop='off')
@@ -171,6 +174,8 @@ j     = int(ponto[0][1])
 
 j     = 7
 
+profundidade = dep[i,j]*sig
+
 # localizando instantes de tempos correspondentes aos dados obtidos pelo CEBIMAR
 instantesCEBIMAR = ['2014-01-14 13:18','2014-01-14 17:15','2014-01-15 12:39','2014-01-15 16:46','2014-01-16 11:09','2014-01-16 16:13']
 
@@ -184,15 +189,17 @@ nstep = np.asarray(nstep)
 
 # extraindo dados termohalinos e armazenando em um dicionario
 dct = {}
+ins = []
 
-for d,tempo in zip(nstep,instantesCEBIMAR):
+for d in nstep:
+    tempo = pd.to_datetime(ncin.time[d].values)
+    tempo = tempo.strftime('%Y-%m-%d %H:%M')
+    ins.append(tempo)
     t,s = extrair_dados(ncin,i,j,d)
     df = pd.DataFrame({'Temperature':t.values,'Salinity':s.values},index=profundidade)
     dct[tempo] = df
 
-
-
-plot_2x6Figure(dct,instantesCEBIMAR,BASE_DIR)
+# plot_2x6Figure(dct,ins,BASE_DIR)
 
 ###################### SERIE TEMPORAL ##########################################
 
@@ -214,22 +221,33 @@ sBott = ncin.salt[:,-1,i,j]
 temp = pd.DataFrame({'Surface':tSurf,'Bottom':tBott},index=pd.DatetimeIndex(time))
 salt = pd.DataFrame({'Surface':sSurf,'Bottom':sBott},index=pd.DatetimeIndex(time))
 
-fig,ax = plt.subplots(nrows=2)
+fig,ax = plt.subplots(nrows=2,figsize=(20./2.54,10./2.54))
 #ax[0].plot(salt.Surface,'#c0c0c0',label='Surface Salinity')
-ax[0].plot(salt.Surface,'#c0c0c0',label='Surface Salinity')
-ax[0].plot(salt.Bottom,'k',label='Bottom Salinity')
+ax[0].plot(salt.Surface,'#c0c0c0',label=u'Superfície')
+ax[0].plot(salt.Bottom,'k',label='Fundo')
 
 ax[0].legend(loc='best')
-ax[0].set_ylabel('Salinity',fontsize=8)
-ax[0].set_ylim([30.5, 35.5])
-ax[0].set_xlabel('Time',fontsize=8)
+ax[0].set_ylabel('Salinidade',fontsize=8)
+ax[0].set_ylim([33.35, 35.55])
+ax[0].tick_params(axis='x',which='major',labelbottom='off')
 
-ax[1].plot(temp.Surface,'#c0c0c0',label='Surface Temperature')
-ax[1].plot(temp.Bottom,'#000000',label='Bottom Temperature')
+ax[1].plot(temp.Surface,'#c0c0c0',label=u'Superfície')
+ax[1].plot(temp.Bottom,'#000000',label=u'Fundo')
 
 ax[1].legend(loc='best')
-ax[1].set_ylabel('Temperature',fontsize=8)
-
+ax[1].set_ylabel('Temperatura',fontsize=8)
+ax[1].set_ylim([15.4, 31.1])
 ax[1].set_xlabel('Time',fontsize=8)
+ax[1].tick_params(axis='x',which='major',rotation=15.)
 
-plt.show()
+# colocando duas linhas verticais indicando o comeco e final do evento
+ax[0].axvline('2014-01-15',color='black',alpha=.3,linestyle='dashed')
+ax[1].axvline('2014-01-15',color='black',alpha=.3,linestyle='dashed')
+ax[0].axvline('2014-02-14',color='black',alpha=.3,linestyle='dashed')
+ax[1].axvline('2014-02-14',color='black',alpha=.3,linestyle='dashed')
+
+plt.suptitle(u'Série Temporal de Janeiro à Março de 2014\nProduto EA1',fontsize=10)
+plt.tight_layout()
+plt.subplots_adjust(top=0.885,bottom=0.162,left=0.069,right=0.989,hspace=0.127,wspace=0.2)
+
+plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA1_araca_2015.pdf')

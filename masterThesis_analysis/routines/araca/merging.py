@@ -77,6 +77,10 @@ df.saltBott.plot(ax=ax[0],color='black',label='Fundo',linewidth=.6)
 df.tempSurf.plot(ax=ax[1],color='gray',label=u'Superfície',linewidth=.6)
 df.tempBott.plot(ax=ax[1],color='black',label='Fundo',linewidth=.6)
 
+# set limites
+ax[0].set_ylim([df.saltSurf.min(),df.saltBott.max()])
+ax[1].set_ylim([df.tempBott.min(),df.tempSurf.max()])
+
 # legendas
 ax[0].legend(loc='best',fontsize=8)
 ax[1].legend(loc='best',fontsize=8)
@@ -113,4 +117,4 @@ plt.subplots_adjust(top=0.855,bottom=0.142,left=0.069,right=0.989,hspace=0.357,w
 
 plt.suptitle(u'Série temporal de Janeiro à Março de 2014\nCEBIMAR - Baia do Araçá',fontsize=10)
 
-plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/araca_2015.eps',orientation='landscape')
+plt.savefig(BASE_DIR+'masterThesis_analysis/figures/dados_observados/araca_2015.eps')
