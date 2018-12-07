@@ -1,4 +1,5 @@
-# reading data from Araca Bay, sended by Marcelo Dottori
+# juncao dos dados enviados por Dottori, da Baia do Araca, compilados em uma unica
+# imagem araca_2015.eps
 
 import glob
 import matplotlib.pyplot as plt

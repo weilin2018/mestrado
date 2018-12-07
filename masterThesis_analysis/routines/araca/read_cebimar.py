@@ -1,4 +1,4 @@
-# add some description here
+# leitura dos dados enviados pelo CEBIMAR e geracao da figura cebimar_all.pdf
 
 import glob
 import matplotlib.pyplot as plt

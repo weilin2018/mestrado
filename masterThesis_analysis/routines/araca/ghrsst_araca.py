@@ -1,4 +1,4 @@
-# add some description here
+# extracao de dados do ghrsst proximo ao ponto da baia do araca
 
 import glob
 import matplotlib.pyplot as plt
