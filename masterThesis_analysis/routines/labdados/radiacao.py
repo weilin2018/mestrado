@@ -61,3 +61,5 @@ ncin.radiacao = ncin.radiacao.apply(lambda x : str(x).replace(',','.'))
 
 # converting radiacao data from object to float
 ncin.radiacao = ncin.radiacao.apply(float)
+
+ncin.plot(title='Radiacao em Ubatuba - Verao 2014 [W/m2]')
