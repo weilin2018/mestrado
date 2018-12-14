@@ -97,7 +97,7 @@ def plot_2x6Figure(dct,keys,BASE_DIR,figsize=(20./2.54,12./2.54)):
     #plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR) - [%1.2f,%1.2f]'%(meanLocation[0],meanLocation[1]),fontsize=10)
     plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (Modelo)',fontsize=10)
 
-    plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA1_cebimar_all.pdf',orientation='landscape')
+    plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA5_cebimar_all.pdf',orientation='landscape')
 
 def verticalProfile_structure(nrows,ncols,figsize,xlim):
 
@@ -155,7 +155,7 @@ def plotMapa(i,j):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github','ventopcse/output')
 
-fname = DATA_DIR + 'EA1.cdf'
+fname = DATA_DIR + 'EA5.cdf'
 ncin  = xr.open_dataset(fname)
 
 # localizando ponto de grade mais proximo do Araca
@@ -199,7 +199,7 @@ for d in nstep:
     df = pd.DataFrame({'Temperature':t.values,'Salinity':s.values},index=profundidade)
     dct[tempo] = df
 
-# plot_2x6Figure(dct,ins,BASE_DIR)
+plot_2x6Figure(dct,ins,BASE_DIR)
 
 ###################### SERIE TEMPORAL ##########################################
 
@@ -246,8 +246,8 @@ ax[1].axvline('2014-01-15',color='black',alpha=.3,linestyle='dashed')
 ax[0].axvline('2014-02-14',color='black',alpha=.3,linestyle='dashed')
 ax[1].axvline('2014-02-14',color='black',alpha=.3,linestyle='dashed')
 
-plt.suptitle(u'Série Temporal de Janeiro à Março de 2014\nProduto EA1',fontsize=10)
+plt.suptitle(u'Série Temporal de Janeiro à Março de 2014\nProduto %s'%(fname.split('/')[-1].split('.')[0]),fontsize=10)
 plt.tight_layout()
 plt.subplots_adjust(top=0.885,bottom=0.162,left=0.069,right=0.989,hspace=0.127,wspace=0.2)
 
-plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA1_araca_2015.pdf')
+plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA5_araca_2015.pdf')
