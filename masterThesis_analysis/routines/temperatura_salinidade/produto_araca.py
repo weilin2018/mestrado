@@ -251,3 +251,33 @@ plt.tight_layout()
 plt.subplots_adjust(top=0.885,bottom=0.162,left=0.069,right=0.989,hspace=0.127,wspace=0.2)
 
 plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA5_araca_2015.pdf')
+
+
+################ NOVOS PERFIS VERTICAIS EM OUTRAS LOCALIZACOES DO CANAL #########
+temp_nor = ncin.temp[:,:,66,14]
+prof_nor = ncin.sigma * ncin.depth[66,14]
+
+temp_cen = ncin.temp[:,:,59,19]
+prof_cen = ncin.sigma * ncin.depth[59,19]
+
+temp_sul = ncin.temp[:,:,51,15]
+prof_sul = ncin.sigma * ncin.depth[51,15]
+
+timestep = 256 # 14/Jan
+
+fig,ax = plt.subplots(ncols=3)
+
+ax[0].plot(temp_nor[timestep,:],prof_nor)
+ax[0].set_title('Norte [66,14]')
+ax[0].set_xlim([22.5,25])
+
+ax[1].plot(temp_cen[timestep,:],prof_cen)
+ax[1].set_title('Centro [59,19]')
+ax[1].set_xlim([22.5,25])
+
+ax[2].plot(temp_sul[timestep,:],prof_sul)
+ax[2].set_title('Sul [51,15]')
+ax[2].set_xlim([22.5,25])
+
+plt.tight_layout()
+plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/perfis_CSS.pdf')

@@ -34,6 +34,28 @@ import masterThesisPack as oceano
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
 # insert functions here
+
+def interp_ghrsst_to_ecom(x,y,data,xi,yi,cut=True,method='linear'):
+    """
+        x,y = grade original
+        data= dado a ser interpolado
+        xi,yi = grade para interpolar
+    """
+
+    # selecting some values inside a box to speed up interpolation
+    if cut:
+        ind = (x > -48.8) & (y < -21.663) & (y > -29.669)
+        x = x[ind]
+        y = y[ind]
+        data = data[ind]
+
+    x = x.ravel()
+    y = y.ravel()
+
+    interp = griddata((x,y),data.ravel(),(xi,yi),method=method)
+
+    return interp
+
 def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,nparallels=2):
 
     m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
@@ -79,13 +101,13 @@ def plotData_2(sat,mod1,lon,lat,depth,date):
     cf1 = m_axes[0].contourf(lon,lat,sat,np.arange(19.,33.,.8),latlon=True,cmap=cmo.cm.thermal)
     cb1 = plt.colorbar(cf1,cax=cbaxes[0],orientation='horizontal',ticks=np.arange(19,33,2))
     cr1 = m_axes[0].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
-    plt.clabel(cr1,fontsize=9,inline=1,fmt='%i')
+    # plt.clabel(cr1,fontsize=9,inline=1,fmt='%i')
     fig.text(0.23,0.11,r'Temperatura ($^o$C)',fontsize=8)
 
     cf2 = m_axes[1].contourf(lon,lat,mod1,np.arange(15.,34.,.8),latlon=True,cmap=cmo.cm.thermal)
     cb2 = plt.colorbar(cf2,cax=cbaxes[1],orientation='horizontal',ticks=np.arange(15,34,3))
     cr2 = m_axes[1].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4,.4],levels=[100,200,1000])
-    plt.clabel(cr2,fontsize=8,inline=1,fmt='%i')
+    # plt.clabel(cr2,fontsize=8,inline=1,fmt='%i')
     fig.text(0.65,0.11,r'Temperatura ($^o$C)',fontsize=8)
 
     m_axes[0].ax.set_title('GHRSST',fontsize=8)
@@ -117,7 +139,7 @@ FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/ghrsst_
 
 fname_ghrsst = GHRSST_DIR + 'ghrsst_JF2014.nc'
 fname_EA1  = DATA_DIR + 'EA1.cdf'
-fname_exp11  = DATA_DIR + 'EA2.cdf'
+fname_EA2  = DATA_DIR + 'EA2.cdf'
 
 # extracting data from GHRSST
 sst_sat,time_sat,lon_sat,lat_sat = oceano.load_ghrsst(fname_ghrsst)
@@ -126,7 +148,7 @@ sst_sat,time_sat,lon_sat,lat_sat = oceano.load_ghrsst(fname_ghrsst)
 expEA = xr.open_dataset(fname_EA1)
 # extract sst data
 sst = expEA.temp[:,0,:,:]
-time=expEA.time
+time= expEA.time
 
 lon,lat = expEA.lon.values, expEA.lat.values
 depth = expEA.depth.values
@@ -146,12 +168,10 @@ time_mod_middle= 191#exp05.findIndex_datetime(pd.to_datetime(time_sat[time_sat_m
 time_mod_final = 295#exp05.findIndex_datetime(pd.to_datetime(time_sat[time_sat_final]).strftime('%Y-%m-%d %H:%M'),time_model)[0]
 
 # interpolating satellite data to model grid
-# sat1 = interp_ghrsst_to_ecom(lon_sat,lat_sat,sst_sat[time_sat_begin],lon_mod,lat_mod)
-# sat2 = interp_ghrsst_to_ecom(lon_sat,lat_sat,sst_sat[time_sat_middle],lon_mod,lat_mod)
-# sat3 = interp_ghrsst_to_ecom(lon_sat,lat_sat,sst_sat[time_sat_final],lon_mod,lat_mod)
+sat1 = interp_ghrsst_to_ecom(lon_sat,lat_sat,sst_sat[time_sat_begin],lon_mod,lat_mod)
+sat2 = interp_ghrsst_to_ecom(lon_sat,lat_sat,sst_sat[time_sat_middle],lon_mod,lat_mod)
+sat3 = interp_ghrsst_to_ecom(lon_sat,lat_sat,sst_sat[time_sat_final],lon_mod,lat_mod)
 
-# import depth data to contour some isobathymetric lines
-depth = exp05.ncin.depth.values
 
 ##############################################################################
 #                            PLOTTING PCSE                                   #
@@ -161,3 +181,17 @@ plt.ion()
 plotData_2(sat1,sst[time_mod_begin,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_begin]).strftime('%d/%m/%Y'))
 plotData_2(sat2,sst[time_mod_middle,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_middle]).strftime('%d/%m/%Y'))
 plotData_2(sat3,sst[time_mod_final,:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[time_sat_final]).strftime('%d/%m/%Y'))
+
+##############################################################################
+#                            PLOTTING MEAN                                   #
+##############################################################################
+plt.ion()
+
+mean_sat = sst_sat.mean(axis=0)
+mean_mod = sst[46:295,:,:].mean(axis=0)
+
+# interpolando dados de satelite
+mean_sat_interpolado = interp_ghrsst_to_ecom(lon_sat,lat_sat,mean_sat,lon_mod,lat_mod)
+
+# visualizar
+plotData_2(mean_sat_interpolado,mean_mod,lon_mod,lat_mod,depth,'mean')
