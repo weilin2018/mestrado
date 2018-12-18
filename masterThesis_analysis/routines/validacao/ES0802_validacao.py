@@ -109,7 +109,7 @@ mooring = input('Digite qual estacao plotar [0 - Santos, 1 - Peruibe e 2 - Monte
 observacao,i,j,k = set_informations(mooring)
 
 # nome dos arquivos para analisar
-simulacao  = 'EC1.cdf'
+simulacao  = 'EC7.cdf'
 # observacao = 'ecosan_ES0802_56m.nc' # Monte Trigo, prof 3m (-23.845, -45.66)
 
 # fundeios localicazao ordenados por:
@@ -157,15 +157,16 @@ u = modelado.u[:,k,i,j].values
 v = modelado.v[:,k,i,j].values
 alpha = np.deg2rad(0+angleRot)
 ur,vr = rotaciona(u,v,alpha) # rotating vectors
-df_mod = pd.DataFrame({'along':vr,'cross':ur,'u':u,'v':v},index=pd.DatetimeIndex(modelado.time.values))
+df_mod = pd.DataFrame({'along':vr,'cross':ur,'u':u,'v':v},index=pd.date_range(start='2006-01-09 01:30',end='2006-03-01 22:30',freq='3H'))
 
 # filtering using rolling_mean, from pandas
-df_filt_obs = df_obs.copy()
-df_filt_obs = rolling_mean(df_filt_obs, window=40, center=True,freq='3H')
+# df_filt_obs = df_obs.copy()
+# df_filt_obs = rolling_mean(df_filt_obs, window=40, center=True,freq='3H')
+df_filt_obs = df_obs.resample('3H').mean()
 
-df_filt_mod = df_mod.copy()
+# df_filt_mod = df_mod.copy()
 # df_filt_mod = rolling_mean(df_filt_mod, window=40, center=True,freq='3H')
-df_filt_mod = df_filt_mod.resample('3H').mean()
+df_filt_mod = df_mod.resample('3H').mean()
 
 
 # cutting, by time, to match both dataframes
@@ -194,7 +195,7 @@ skill_cross = oceano.skill_willmott(df_filt_obs.cross.values,df_filt_mod.cross.v
 
 
 
-fig,ax = plt.subplots(nrows=2,figsize=(15,8),sharex=True)
+fig,ax = plt.subplots(nrows=2,figsize=(15,8))
 
 df_obs.along.plot(ax=ax[0],label='ECOSAN')
 df_mod.along.plot(ax=ax[0],label='Modelo')

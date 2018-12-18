@@ -1063,3 +1063,16 @@ def calcDistance(ncin,ind,lenght):
         dist = dist2
 
     return dist,inds
+
+
+def formatGrid_plot(grid,fname):
+    import numpy as np
+    ij=np.load(fname)
+    # for a 2D array (lon,lat)
+    if len(grid.shape)==2:
+        grid=grid[ij[1], :]
+        grid=grid[:, ij[0]]
+    # if grid is a 3D array (temp,salt,speed)
+    if len(grid.shape)==3:
+        grid=grid[:,ij[1], ij[0]]
+    return grid

@@ -11,6 +11,8 @@ import masterThesisPack as oceano
 class Animation:
 
     def __init__(self,var='elev',sigma=0):
+        plt.ion()
+
         self.varname = var
 
         if len(self.ncin[var].shape) == 4:
@@ -29,6 +31,39 @@ class Animation:
             cmap = cmo.cm.haline
 
         return cmap
+
+    def velocidade(self,index_file,intervalo=.2,sigma=0):
+
+        # checar se existe u e v no objeto
+        if ~hasattr(self,'s'):
+            self.u = self.ncin['u'][self.timeStart.item():self.timeEnd.item(),sigma,:,:]
+            self.v = self.ncin['v'][self.timeStart.item():self.timeEnd.item(),sigma,:,:]
+            self.s = np.sqrt(self.u**2 + self.v**2)
+
+        # normalizando as componentes
+        un = self.u / self.s
+        vn = self.v / self.s
+
+        # preparar as variaveis para plot
+        xplot = oceano.formatGrid_plot(self.lon,index_file)
+        yplot = oceano.formatGrid_plot(self.lat,index_file)
+        contour_levels = np.arange(np.nanmin(self.s),np.nanmax(self.s),0.2)
+
+        # animacao
+        fig,ax = plt.subplots()
+        for t in np.arange(self.timeStart.item(),self.timeEnd.item(),1):
+            ax.clear()
+            m = oceano.make_map(ax)
+            plt.suptitle('Velocity at: '+ str(self.ncin.time[t].values))
+
+            uplot = oceano.formatGrid_plot(un[t,:,:],index_file)
+            vplot = oceano.formatGrid_plot(vn[t,:,:],index_file)
+
+            m.contourf(self.lon,self.lat,self.s[t,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
+            m.quiver(xplot,yplot,uplot,vplot,scale=80,width=0.001,headwidth=4,
+                            headlength=4,alpha=0.6,latlon=True,pivot='middle')
+
+            plt.pause(intervalo)
 
     def field(self,title='',**kwargs):
 

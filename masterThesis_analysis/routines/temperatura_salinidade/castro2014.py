@@ -420,5 +420,5 @@ isoterma(experiment,experiment.replace('EA2','EA5'),SAVE_FIG)
 isohalina(experiment,experiment.replace('EA2','EA5'),SAVE_FIG)
 
 # plotando contour secao vertical comparando controle e anomalo para o mestrado
-isoterma(experiment.replace('EA2','EC2'),experiment,SAVE_FIG)
-isohalina(experiment.replace('EA2','EC2'),experiment,SAVE_FIG)
+isoterma(experiment.replace('EC1','EC5'),experiment,SAVE_FIG)
+isohalina(experiment.replace('EC1','EC5'),experiment,SAVE_FIG)
