@@ -69,10 +69,23 @@ class Inmet(object):
 
         return np.asarray(data)
 
-    def save2netcdf(self,outFile):
+    def convert_units(self,unit='kJ'):
+
+        # convert from kJ to W
+        if unit == 'kJ':
+            self.solarrad['radiation_W'] = self.solarrad.radiation / 3.6
+
+        # convert from W to kJ
+        if unit == 'W':
+            self.solarrad['radiation_kJ'] = self.solarrad.radiation * 3.6
+
+
+    def save2netcdf(self,outFile,attrs=None):
         final_df = pd.DataFrame({'wInt':self.intensity,'wDir':self.direction,'rad': self.radiation},index=self.dtRange)
 
         final_df = final_df.to_xarray()
+        final_df.attrs = attrs
+
         final_df.to_netcdf(outFile)
 
 
@@ -85,23 +98,102 @@ DATA_DIR = BASE_DIR.replace('github','ventopcse/data/INMET')
 
 nfiles = glob.glob(DATA_DIR+'*.xls')
 
+
+#############################################################################
+################### leitura do 1o arquivo: de 2006 a 2014
+#############################################################################
+fname = nfiles[0]
+
 intCols = np.arange(1,25)
 dirCols = np.arange(25,49)
 radCols = np.arange(49,73)
 
-newp = Inmet(nfiles[0],11) # create object with two property: filename and skiprows
-newp.read_file()          # read spreadsheet, creating sheet method as DataFrame
-newp.extract_data(intCols,dirCols,radCols)
+paraty_file1 = Inmet(nfiles[0],11) # create object with two property: filename and skiprows
+paraty_file1.read_file()          # read spreadsheet, creating sheet method as DataFrame
+paraty_file1.extract_data(intCols,dirCols,radCols)
 
-newp.create_wind_dataframe(begin='2006-11-19 00:00',final='2014-12-31 23',freq='1H')
-newp.create_radiation_dataframe(begin='2006-11-19 00:00',final='2014-12-31 23',freq='1H')
+paraty_file1.create_wind_dataframe(begin='2006-11-19 00:00',final='2014-12-31 23',freq='1H')
+paraty_file1.create_radiation_dataframe(begin='2006-11-19 00:00',final='2014-12-31 23',freq='1H')
 
 # save data in netcdf format
-newp.save2netcdf('/media/danilo/Danilo/mestrado/ventopcse/data/INMET/netcdf/2006_2014.nc')
+attrs = {
+    'Period': '2006-11-19 to 2014-12-31',
+    'Database': 'INMET/CPTEC',
+    'Location': 'Paraty/RJ',
+    'lat': '23°13\'S',
+    'lon': '44°43\'W',
+    'Convention': 'Meteorological Coordinate System',
+
+}
+
+paraty_file1.save2netcdf('/media/danilo/Danilo/mestrado/ventopcse/data/INMET/netcdf/Paraty_2006_2014.nc',attrs)
 
 #############################################################################
 ######################## read file for 2015 data
 #############################################################################
+"""
+Neste arquivo, a ordem das variaveis esta trocada, logo:
+"""
+fname = nfiles[1]
+intCols = np.arange(1,25)
+dirCols = np.arange(49,73)
+radCols = np.arange(25,49)
+
+
+paraty_file2 = Inmet(fname,11)
+paraty_file2.read_file()
+paraty_file2.extract_data(intCols,dirCols,radCols)
+
+paraty_file2.create_wind_dataframe(begin='2015-01-01 00:00',final='2017-12-31 23',freq='1H')
+paraty_file2.create_radiation_dataframe(begin='2015-01-01 00:00',final='2017-12-31 23',freq='1H')
+
+# save data in netcdf format
+attrs = {
+    'Period': '2015-01-01 to 2017-12-31',
+    'Database': 'INMET/CPTEC',
+    'Location': 'Paraty/RJ',
+    'lat': '23°13\'S',
+    'lon': '44°43\'W',
+    'Convention': 'Meteorological Coordinate System',
+
+}
+
+paraty_file2.save2netcdf('/media/danilo/Danilo/mestrado/ventopcse/data/INMET/netcdf/Paraty_2015_2017.nc',attrs)
+
+#############################################################################
+######################## MERGING DATAFRAMES
+#############################################################################
+df_tmp = paraty_file1.wind.copy()
+df_tmp['radiation'] = paraty_file1.solarrad.values
+
+df_tmp2 = paraty_file2.wind.copy()
+df_tmp2['radiation'] = paraty_file2.solarrad.values
+
+data = pd.concat([df_tmp,df_tmp2])
+
+df = data.to_xarray()
+df.attrs = attrs
+
+df.direction.attrs = {
+    'long_name': 'wind_direction',
+    'unit':      'degrees',
+    'convention': 'meteorological',
+}
+
+df.intensity.attrs = {
+    'long_name': 'wind_intensity',
+    'unit':      'm s-2',
+}
+
+df.radiation.attrs = {
+    'long_name': 'incident_solar_radiation',
+    'unit':      'kJ m-2',
+}
+
+df.to_netcdf('/media/danilo/Danilo/mestrado/ventopcse/data/INMET/netcdf/inmet_paraty_2006-2017.nc')
+
+del df,df_tmp,df_tmp2
+################################################################################
 
 # visualizando dados para o verao de 2014
 # calculando a media sem os pontos zeros

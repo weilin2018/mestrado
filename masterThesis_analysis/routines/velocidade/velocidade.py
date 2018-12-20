@@ -22,6 +22,7 @@ import sys
 sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
+import decomp
 
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
@@ -40,6 +41,18 @@ def formatGrid_plot(grid,fname):
     return grid
 
 
+def rotate_velocityField(u,v,ang):
+    UR = np.zeros(u.shape)*np.nan
+    VR = np.zeros(u.shape)*np.nan
+
+    for j in range(u.shape[1]):
+        for i in range(u.shape[2]):
+            int,dir = decomp.uv2intdir(u[:,j,i],v[:,j,i],0,ang[j,i])
+            ur,vr =   decomp.intdir2uv(int,dir,0,ang[j,i])
+            UR[:,j,i] = ur
+            VR[:,j,i] = vr
+        
+
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -53,8 +66,9 @@ fname = DATA_DIR + experimento
 
 ncin = xr.open_dataset(fname)
 # extraindo grid
-lon = ncin.lon.values
-lat = ncin.lat.values
+lon = ncin.lon.values.copy()
+lat = ncin.lat.values.copy()
+ang = ncin.ang.values.copy()
 lon[lon == 0.] = np.nan
 lat[lat == 0.] = np.nan
 
@@ -62,6 +76,9 @@ lat[lat == 0.] = np.nan
 u = ncin.u[:,0,:,:]
 v = ncin.v[:,0,:,:]
 s = np.sqrt(u**2 + v**2)
+
+# rotacionar vetores de acordo com o proprio angulo da celula
+ur,vr =
 
 wu = ncin.wu[:,:,:]
 wv = ncin.wv[:,:,:]
