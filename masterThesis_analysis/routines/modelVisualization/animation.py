@@ -1,12 +1,41 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import cmocean as cmo
+import decomp
 
 import sys
 sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
 
+
+def rotate_velocityField(u,v,ang):
+
+    ur = np.zeros(u.shape)*np.nan
+    vr = np.zeros(v.shape)*np.nan
+
+    for j in range(u.shape[0]):
+        U,V = u[j,:].values,v[j,:].values
+        angle = ang[j,:]
+
+        INT,DIR = decomp.uv2intdir(U,V,0,angle)
+        uro,vro = decomp.intdir2uv(INT,DIR,0,angle)
+        ur[j,:] = uro
+        vr[j,:] = vro
+
+    return ur,vr
+
+def formatGrid_plot(grid,fname):
+    import numpy as np
+    ij=np.load(fname)
+    # for a 2D array (lon,lat)
+    if len(grid.shape)==2:
+        grid=grid[ij[1], :]
+        grid=grid[:, ij[0]]
+    # if grid is a 3D array (temp,salt,speed)
+    if len(grid.shape)==3:
+        grid=grid[:,ij[1], ij[0]]
+    return grid
 
 class Animation:
 
@@ -35,33 +64,38 @@ class Animation:
     def velocidade(self,index_file,intervalo=.2,sigma=0):
 
         # checar se existe u e v no objeto
-        if ~hasattr(self,'s'):
+        if ~hasattr(self,'u'):
             self.u = self.ncin['u'][self.timeStart.item():self.timeEnd.item(),sigma,:,:]
             self.v = self.ncin['v'][self.timeStart.item():self.timeEnd.item(),sigma,:,:]
-            self.s = np.sqrt(self.u**2 + self.v**2)
-
-        # normalizando as componentes
-        un = self.u / self.s
-        vn = self.v / self.s
 
         # preparar as variaveis para plot
         xplot = oceano.formatGrid_plot(self.lon,index_file)
         yplot = oceano.formatGrid_plot(self.lat,index_file)
-        contour_levels = np.arange(np.nanmin(self.s),np.nanmax(self.s),0.2)
-
+        contour_levels = np.arange(0,2,0.2)
         # animacao
         fig,ax = plt.subplots()
-        for t in np.arange(self.timeStart.item(),self.timeEnd.item(),1):
+        for t in np.arange(self.timeStart.item(),self.timeEnd.item(),2):
             ax.clear()
             m = oceano.make_map(ax)
             plt.suptitle('Velocity at: '+ str(self.ncin.time[t].values))
 
-            uplot = oceano.formatGrid_plot(un[t,:,:],index_file)
-            vplot = oceano.formatGrid_plot(vn[t,:,:],index_file)
+            # rotate vectors based on cell's angle
+            ur,vr = rotate_velocityField(self.u[t,:,:],self.v[t,:,:],self.ncin.ang.values)
+            s = np.sqrt(ur**2 + vr**2)
 
-            m.contourf(self.lon,self.lat,self.s[t,:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
-            m.quiver(xplot,yplot,uplot,vplot,scale=80,width=0.001,headwidth=4,
-                            headlength=4,alpha=0.6,latlon=True,pivot='middle')
+            un = ur/s
+            vn = vr/s
+
+            uplot = oceano.formatGrid_plot(un[:,:],index_file)
+            vplot = oceano.formatGrid_plot(vn[:,:],index_file)
+            wuplot = formatGrid_plot(self.ncin.wu[t,:,:],index_file)
+            wvplot = formatGrid_plot(self.ncin.wv[t,:,:],index_file)
+
+            m.contourf(self.lon,self.lat,s[:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
+            m.quiver(xplot[:,::3],yplot[:,::3],uplot[:,::3],vplot[:,::3],scale=80,width=0.001,headwidth=4,
+                            headlength=4,latlon=True,pivot='middle')
+            m.quiver(xplot[::2,::4],yplot[::2,::4],wuplot[::2,::4],wvplot[::2,::4],latlon=True,color='k',alpha=.4,pivot='middle',
+                            headwidth=4,headlength=4,minshaft=2)
 
             plt.pause(intervalo)
 

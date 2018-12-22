@@ -42,16 +42,21 @@ def formatGrid_plot(grid,fname):
 
 
 def rotate_velocityField(u,v,ang):
-    UR = np.zeros(u.shape)*np.nan
-    VR = np.zeros(u.shape)*np.nan
 
-    for j in range(u.shape[1]):
-        for i in range(u.shape[2]):
-            int,dir = decomp.uv2intdir(u[:,j,i],v[:,j,i],0,ang[j,i])
-            ur,vr =   decomp.intdir2uv(int,dir,0,ang[j,i])
-            UR[:,j,i] = ur
-            VR[:,j,i] = vr
-        
+    ur = np.zeros(u.shape)*np.nan
+    vr = np.zeros(v.shape)*np.nan
+
+    for j in range(u.shape[0]):
+        U,V = u[j,:].values,v[j,:].values
+        angle = ang[j,:]
+
+        INT,DIR = decomp.uv2intdir(U,V,0,angle)
+        uro,vro = decomp.intdir2uv(INT,DIR,0,angle)
+        ur[j,:] = uro
+        vr[j,:] = vro
+
+    return ur,vr
+
 
 
 ##############################################################################
@@ -64,6 +69,9 @@ DATA_DIR = BASE_DIR.replace('github','ventopcse/output')
 experimento = 'EA1.cdf'
 fname = DATA_DIR + experimento
 
+# timestep
+t = -1
+
 ncin = xr.open_dataset(fname)
 # extraindo grid
 lon = ncin.lon.values.copy()
@@ -73,35 +81,33 @@ lon[lon == 0.] = np.nan
 lat[lat == 0.] = np.nan
 
 # extraindo velocidades na superficie
-u = ncin.u[:,0,:,:]
-v = ncin.v[:,0,:,:]
-s = np.sqrt(u**2 + v**2)
+u  = ncin.u[t,0,:,:].copy()
+v  = ncin.v[t,0,:,:].copy()
+wu = ncin.wu[t,:,:].copy()
+wv = ncin.wv[t,:,:].copy()
 
 # rotacionar vetores de acordo com o proprio angulo da celula
-ur,vr =
+ur,vr = rotate_velocityField(u[:,:],v[:,:],ang)
 
-wu = ncin.wu[:,:,:]
-wv = ncin.wv[:,:,:]
+s = np.sqrt(ur**2 + vr**2)
 
 # normalizando os vetores
-un = u/s
-vn = v/s
-
-# timestep
-t = -1
+un = ur/s
+vn = vr/s
 
 # criando variaveis para plot mais organizado
 xplot = formatGrid_plot(lon,'/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy')
 yplot = formatGrid_plot(lat,'/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy')
-uplot = formatGrid_plot(un[t,:,:],'/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy')
-vplot = formatGrid_plot(vn[t,:,:],'/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy')
+uplot = formatGrid_plot(un[:,:],'/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy')
+vplot = formatGrid_plot(vn[:,:],'/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy')
 
-wuplot = formatGrid_plot(wu[t,:,:],'/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy')
-wvplot = formatGrid_plot(wv[t,:,:],'/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy')
+wuplot = formatGrid_plot(wu[:,:],'/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy')
+wvplot = formatGrid_plot(wv[:,:],'/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy')
 
 fig,ax = plt.subplots()
 m = oceano.make_map(ax)
 
-m.contourf(lon,lat,s[t,:,:],latlon=True,cmap=cmo.cm.speed)
-m.quiver(xplot,yplot,uplot,vplot,scale=70,width=0.001,headwidth=8,headlength=8,alpha=0.6,latlon=True)
-m.quiver(xplot,yplot,wuplot,wvplot,latlon=True,color='k', alpha=0.3, scale=300, pivot='middle', headlength=3, headaxislength=2.8)
+m.contourf(lon,lat,s[:,:],latlon=True,cmap=cmo.cm.speed)
+m.quiver(xplot[:,::3],yplot[:,::3],uplot[:,::3],vplot[:,::3],scale=70,width=0.001,headwidth=4,headlength=4,latlon=True)
+# m.quiver(xplot[::2,::4],yplot[::2,::4],wuplot[::2,::4],wvplot[::2,::4],latlon=True,color='k', alpha=0.3, scale=150,width=0.005,pivot='middle')
+m.quiver(xplot[::2,::4],yplot[::2,::4],wuplot[::2,::4],wvplot[::2,::4],latlon=True,color='k',alpha=.4,pivot='middle',headwidth=4,headlength=4,minshaft=2)
