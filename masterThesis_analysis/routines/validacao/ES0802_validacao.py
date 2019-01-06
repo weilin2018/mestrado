@@ -109,7 +109,7 @@ mooring = input('Digite qual estacao plotar [0 - Santos, 1 - Peruibe e 2 - Monte
 observacao,i,j,k = set_informations(mooring)
 
 # nome dos arquivos para analisar
-simulacao  = 'EC7.cdf'
+simulacao  = 'EC1.cdf'
 # observacao = 'ecosan_ES0802_56m.nc' # Monte Trigo, prof 3m (-23.845, -45.66)
 
 # fundeios localicazao ordenados por:
@@ -198,13 +198,13 @@ skill_cross = oceano.skill_willmott(df_filt_obs.cross.values,df_filt_mod.cross.v
 fig,ax = plt.subplots(nrows=2,figsize=(15,8))
 
 df_obs.along.plot(ax=ax[0],label='ECOSAN')
-df_mod.along.plot(ax=ax[0],label='Modelo')
+df_mod.along.plot(ax=ax[0],label='Modelo EC1-30')
 # ax[0].legend(['','Skill: %1.3f'%(skill_along)])
 ax[0].set_title('Componente Paralela - Skill: %1.3f'%(skill_along))
 ax[0].legend()
 
 df_obs.cross.plot(ax=ax[1],label='ECOSAN')
-df_mod.cross.plot(ax=ax[1],label='Modelo')
+df_mod.cross.plot(ax=ax[1],label='Modelo EC1-30')
 # ax[1].legend(['','Skill: %1.3f'%(skill_cross)])
 ax[1].set_title('Componente Perpendicular - Skill: %1.3f'%(skill_cross))
 ax[1].legend()

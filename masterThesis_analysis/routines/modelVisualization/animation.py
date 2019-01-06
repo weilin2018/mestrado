@@ -61,7 +61,7 @@ class Animation:
 
         return cmap
 
-    def velocidade(self,index_file,intervalo=.2,sigma=0):
+    def velocidade(self,index_file,intervalo=.2,sigma=0,wind=True):
 
         # checar se existe u e v no objeto
         if ~hasattr(self,'u'):
@@ -91,11 +91,15 @@ class Animation:
             wuplot = formatGrid_plot(self.ncin.wu[t,:,:],index_file)
             wvplot = formatGrid_plot(self.ncin.wv[t,:,:],index_file)
 
-            m.contourf(self.lon,self.lat,s[:,:],contour_levels,latlon=True,cmap=cmo.cm.speed)
-            m.quiver(xplot[:,::3],yplot[:,::3],uplot[:,::3],vplot[:,::3],scale=80,width=0.001,headwidth=4,
-                            headlength=4,latlon=True,pivot='middle')
-            m.quiver(xplot[::2,::4],yplot[::2,::4],wuplot[::2,::4],wvplot[::2,::4],latlon=True,color='k',alpha=.4,pivot='middle',
-                            headwidth=4,headlength=4,minshaft=2)
+            m.contourf(self.lon,self.lat,s[:,:],contour_levels,latlon=True,
+                        cmap=cmo.cm.speed)
+            m.quiver(xplot[:,::3],yplot[:,::3],uplot[:,::3],vplot[:,::3],
+                     scale=80,width=0.001,headwidth=4,headlength=4,latlon=True,
+                     pivot='middle')
+            if wind:
+                m.quiver(xplot[::2,::4],yplot[::2,::4],wuplot[::2,::4],
+                         wvplot[::2,::4],latlon=True,color='k',alpha=.4,
+                         pivot='middle',headwidth=4,headlength=4,minshaft=2)
 
             plt.pause(intervalo)
 

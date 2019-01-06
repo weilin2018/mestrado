@@ -45,4 +45,5 @@ exp.pcse()
 
 # plotando animacao de velocidade
 exp.plotAnim()
-exp.velocidade(index_file='/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy',sigma=0)
+exp.velocidade(index_file='/media/danilo/Danilo/mestrado/github/masterThesis_analysis/routines/index_list.npy',
+               sigma=0,wind=True)
