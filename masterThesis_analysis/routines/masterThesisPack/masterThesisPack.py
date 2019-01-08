@@ -34,6 +34,11 @@ def make_dir():
 
         return BASE_DIR
 
+    if hostname == 'monterey':
+        BASE_DIR = '/home/danilo/mestrado/github/'
+
+        return BASE_DIR
+
 # funcao de Skill: validacao modelo
 def skill_willmott(re,m):
     """
