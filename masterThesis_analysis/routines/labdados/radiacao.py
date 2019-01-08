@@ -95,7 +95,7 @@ std   = newdf.std()
 # visualizando
 fig,ax = plt.subplots(figsize=(15,5))
 
-df.plot(ax=ax,title=u'Radiação Solar Registrada (W m-2), em vermelho, e Média Semanal, em azul,  entre 2013 e 2018 em Ubatuba.')
+df['2014':'2015'].plot(ax=ax,title=u'Radiação Solar Registrada (W m-2), em vermelho, e Média Semanal, em azul,  entre 2013 e 2018 em Ubatuba.')
 
 ax.axvline('2014-01-14 00:00',color='k')
 ax.axvline('2014-02-15 00:00',color='k')
@@ -106,7 +106,7 @@ ax.axvline('2014-03-01 00:00',color='k',linestyle='--')
 # ax.margins(0)
 
 # plotando um resample a cada 15 dias
-newdf.radiacao.resample('1W').mean().plot(ax=ax)
+newdf['2014':'2015'].radiacao.resample('1W').mean().plot(ax=ax,color='k')
 
 plt.margins(0)
 plt.tight_layout()
