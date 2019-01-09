@@ -16,7 +16,7 @@ import datetime
 import decomp
 import cmocean as cmo
 
-from pandas import rolling_mean
+# from pandas import rolling_mean
 
 import matplotlib
 matplotlib.style.use('ggplot')
@@ -97,8 +97,11 @@ def rotaciona(u,v,angulo):
 # beginnig of the main code
 
 #### DEFINING SOME VARIABLES
-ECOSAN_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/ECOSAN/'
-MODELO_DIR = '/media/danilo/Danilo/mestrado/ventopcse/output/'
+BASE_DIR   = oceano.make_dir()
+ECOSAN_DIR = BASE_DIR.replace('github','ventopcse/data/ECOSAN')
+MODELO_DIR = BASE_DIR.replace('github','ventopcse/output')
+# ECOSAN_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/ECOSAN/'
+# MODELO_DIR = '/media/danilo/Danilo/mestrado/ventopcse/output/'
 
 magnetic = 24.
 angleRot = 55.
@@ -198,13 +201,13 @@ skill_cross = oceano.skill_willmott(df_filt_obs.cross.values,df_filt_mod.cross.v
 fig,ax = plt.subplots(nrows=2,figsize=(15,8))
 
 df_obs.along.plot(ax=ax[0],label='ECOSAN')
-df_mod.along.plot(ax=ax[0],label='Modelo EC1-30')
+df_mod.along.plot(ax=ax[0],label='Modelo %s'%(simulacao.split('.')[0]))
 # ax[0].legend(['','Skill: %1.3f'%(skill_along)])
 ax[0].set_title('Componente Paralela - Skill: %1.3f'%(skill_along))
 ax[0].legend()
 
 df_obs.cross.plot(ax=ax[1],label='ECOSAN')
-df_mod.cross.plot(ax=ax[1],label='Modelo EC1-30')
+df_mod.cross.plot(ax=ax[1],label='Modelo %s'%(simulacao.split('.')[0]))
 # ax[1].legend(['','Skill: %1.3f'%(skill_cross)])
 ax[1].set_title('Componente Perpendicular - Skill: %1.3f'%(skill_cross))
 ax[1].legend()
