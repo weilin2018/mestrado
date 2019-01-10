@@ -75,7 +75,7 @@ def check_rotation(df):
 
     import mat4py
 
-    ped = pd.DataFrame(mat4py.loadmat('/media/danilo/Danilo/mestrado/ventopcse/data/ECOSAN/morais2016/exp_sECOM/u_v_ecosan_100.mat'))
+    ped = pd.DataFrame(mat4py.loadmat('/home/danilo/mestrado/ventopcse/data/ECOSAN/morais2016/exp_sECOM/u_v_ecosan_100.mat'))
 
     # set index as datetime
     ped.index = pd.date_range(start='2006-01-06',end='2006-02-05',freq='6H')[:-1]
@@ -146,9 +146,9 @@ def interpolating_model(df):
 #                               MAIN CODE                                    #
 ##############################################################################
 # beginnig of the main code
-
-DATA_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/ECOSAN/Dados_mexidos/ES0802.Dat'
-MODELO_DIR = '/media/danilo/Danilo/mestrado/ventopcse/output/'
+BASE_DIR = oceano.make_dir()
+DATA_DIR = BASE_DIR.replace('github/','ventopcse/data/ECOSAN/Dados_mexidos/ES0802.Dat')
+MODELO_DIR=BASE_DIR.replace('github','ventopcse/output/')
 simulacao  = 'EC1.cdf'
 
 # set observed alpha, for rotating: alpha = declinacao mag + rotacao

@@ -103,8 +103,8 @@ MODELO_DIR = BASE_DIR.replace('github','ventopcse/output')
 # ECOSAN_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/ECOSAN/'
 # MODELO_DIR = '/media/danilo/Danilo/mestrado/ventopcse/output/'
 
-magnetic = 24.
-angleRot = 55.
+magnetic = -24.
+angleRot = -55.
 
 # selecting which mooring to plot
 os.system('clear')
@@ -137,7 +137,7 @@ observado = xr.open_dataset(ECOSAN_DIR+observacao)
 u = observado.AVE.values
 v = observado.AVN.values
 alpha = np.deg2rad(magnetic+angleRot)
-ur,vr = rotaciona(u,v,alpha) # rotating vectors
+ur,vr = rotaciona(u,v,-alpha) # rotating vectors
 # creating dataframe
 df_obs = pd.DataFrame({'along':vr,'cross':ur,'u':u,'v':v},index=pd.DatetimeIndex(observado.index.values))
 # df_obs = df_obs['2006']
@@ -159,7 +159,7 @@ sigma = modelado.sigma.values
 u = modelado.u[:,k,i,j].values
 v = modelado.v[:,k,i,j].values
 alpha = np.deg2rad(0+angleRot)
-ur,vr = rotaciona(u,v,alpha) # rotating vectors
+ur,vr = rotaciona(u,v,-alpha) # rotating vectors
 df_mod = pd.DataFrame({'along':vr,'cross':ur,'u':u,'v':v},index=pd.date_range(start='2006-01-09 01:30',end='2006-03-01 22:30',freq='3H'))
 
 # filtering using rolling_mean, from pandas
