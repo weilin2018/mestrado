@@ -97,7 +97,7 @@ def plot_2x6Figure(dct,keys,BASE_DIR,figsize=(20./2.54,12./2.54)):
     #plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (CEBIMAR) - [%1.2f,%1.2f]'%(meanLocation[0],meanLocation[1]),fontsize=10)
     plt.suptitle(u'Perfis Verticais no Canal de São Sebastião (Modelo)',fontsize=10)
 
-    plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA5_cebimar_all.pdf',orientation='landscape')
+    # plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA5_cebimar_all.pdf',orientation='landscape')
 
 def verticalProfile_structure(nrows,ncols,figsize,xlim):
 
@@ -250,7 +250,7 @@ plt.suptitle(u'Série Temporal de Janeiro à Março de 2014\nProduto %s'%(fname.
 plt.tight_layout()
 plt.subplots_adjust(top=0.885,bottom=0.162,left=0.069,right=0.989,hspace=0.127,wspace=0.2)
 
-plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA5_araca_2015.pdf')
+# plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/EA5_araca_2015.pdf')
 
 
 ################ NOVOS PERFIS VERTICAIS EM OUTRAS LOCALIZACOES DO CANAL #########
@@ -280,4 +280,4 @@ ax[2].set_title('Sul [51,15]')
 ax[2].set_xlim([22.5,25])
 
 plt.tight_layout()
-plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/perfis_CSS.pdf')
+# plt.savefig(BASE_DIR+'masterThesis_analysis/figures/experiments_outputs/araca/perfis_CSS.pdf')

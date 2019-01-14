@@ -389,13 +389,14 @@ SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/castro2
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EA7.cdf'
+exp = 'EC1.cdf'
 
 for f in fname:
     if exp in f:
         experiment = f
 
-# plotando near bottom temperaturencin = xr.open_dataset(experiment)
+# plotando near bottom temperature
+ncin = xr.open_dataset(experiment)
 location = [68.12, 139.03]
 plot_surfaceSalt(ncin,exp,SAVE_FIG,location)
 
@@ -403,9 +404,9 @@ ncin = xr.open_dataset(experiment)
 location = [7.6, 23.85]
 plot_nearBottomTemp(ncin,exp,SAVE_FIG,location)
 
-ncin = xr.open_dataset(experiment.replace('EA7','EA1'))
+ncin = xr.open_dataset(experiment.replace('EC1','EA1'))
 location = [7.6, 19.22]
-plot_nearBottomTemp(ncin,exp.replace('EA7','EA1'),SAVE_FIG,location)
+plot_nearBottomTemp(ncin,exp.replace('EC1','EA1'),SAVE_FIG,location)
 
 
 # plotando surface salinity

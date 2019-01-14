@@ -98,7 +98,7 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EC1.cdf'
+exp = 'EC1_10DTI.cdf'
 SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA1/'
 
 for f in fname:

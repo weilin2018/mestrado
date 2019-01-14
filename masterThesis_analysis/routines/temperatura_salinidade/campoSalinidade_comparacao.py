@@ -126,7 +126,6 @@ def create_Structure(fname,timestep=0,savefig=False):
         plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/salinity/salinidade_superf_meio_fundo_timestep_%s.png'%(str(timestep)),dpi=300)
 
     return fig,axes
-
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -141,7 +140,8 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EC1.cdf'
+exp = 'EC1_10DTI.cdf'
+savefig = True
 
 for f in fname:
     if exp in f:
@@ -158,7 +158,7 @@ if timestep == 999.:
     timestep = [0,46,303]
 
     for nstep in timestep:
-        fig,axes = plotDanilo.create_Structure_horizontal(fname,contours,property='salt',timestep=int(nstep),savefig=True)
-    plt.close()
+        fig,axes = plotDanilo.create_Structure_horizontal(fname,contours,property='salt',timestep=int(nstep),savefig=savefig)
+    # plt.close()
 else:
-    fig,axes = plotDanilo.create_Structure_horizontal(fname,contours,property='salt',timestep=int(timestep),savefig=True)
+    fig,axes = plotDanilo.create_Structure_horizontal(fname,contours,property='salt',timestep=int(timestep),savefig=savefig)

@@ -116,7 +116,7 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EC1.cdf'
+exp = 'EC1_10DTI.cdf'
 SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA1/'
 
 for f in fname:
@@ -203,4 +203,4 @@ for ind in indexes:
     # cs  = axes[axesInd,1].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('g'),linestyles=('--'))
 
 plt.subplots_adjust(top=0.925,bottom=0.06,left=0.115,right=0.95,hspace=0.2,wspace=0.28)
-# plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/isothermPosition/Secao_All.pdf')
+plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/isothermPosition/Secao_All.pdf')
