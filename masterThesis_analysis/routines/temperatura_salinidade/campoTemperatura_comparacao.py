@@ -36,23 +36,23 @@ import plots as plotDanilo
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
 # insert functions here
-def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,nparallels=2,labels=[True,False,False,True]):
-
-    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
-
-    m.ax = ax
-
-    m.drawcoastlines(linewidth=.1)
-    m.drawmapboundary()
-    m.fillcontinents(color='#c0c0c0')
-	# definir meridianos e paralelos para plotar no mapa
-    meridians=np.arange(llon,ulon,nmeridians)
-    parallels=np.arange(llat,ulat,nparallels)
-	# desenhar meridianos e paralelos conforme definido acima
-    m.drawparallels(parallels,labels=labels,fontsize=8,color='gray',linewidth=.2)
-    m.drawmeridians(meridians,labels=labels,fontsize=8,color='gray',linewidth=.2)
-
-    return m
+# def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,nparallels=2,labels=[True,False,False,True]):
+#
+#     m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
+#
+#     m.ax = ax
+#
+#     m.drawcoastlines(linewidth=.1)
+#     m.drawmapboundary()
+#     m.fillcontinents(color='#c0c0c0')
+# 	# definir meridianos e paralelos para plotar no mapa
+#     meridians=np.arange(llon,ulon,nmeridians)
+#     parallels=np.arange(llat,ulat,nparallels)
+# 	# desenhar meridianos e paralelos conforme definido acima
+#     m.drawparallels(parallels,labels=labels,fontsize=8,color='gray',linewidth=.2)
+#     m.drawmeridians(meridians,labels=labels,fontsize=8,color='gray',linewidth=.2)
+#
+#     return m
 #
 # def create_Structure(fname,timestep=0,savefig=False):
 #
