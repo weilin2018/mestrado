@@ -80,7 +80,7 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
     }
 
     #fig,axes = plt.subplots(nrows=2,ncols=3,figsize=(16/2.54, 13/2.54))
-    fig,axes = plt.subplots(nrows=3,ncols=2,figsize=(11.69,8.27))
+    fig,axes = plt.subplots(nrows=2,ncols=3,figsize=(11.69,8.27))
     cax = fig.add_axes([0.2,0.05,0.61,0.02])
 
     # dictionary containing labels for subplots
@@ -153,7 +153,8 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
                   '%s de %s'%(P[property],d.strftime('%d'),d.strftime('%B')),fontsize=10)
     rect = (0,0.08,1.,0.95)
     plt.tight_layout(rect=rect) # box for tight_subplot_layout
-    plt.subplots_adjust(top=0.886,bottom=0.109,left=0.054,right=0.995,hspace=0.0,wspace=0.045)
+    # plt.subplots_adjust(top=0.886,bottom=0.109,left=0.054,right=0.995,hspace=0.0,wspace=0.045)
+    plt.subplots_adjust(top=0.915,bottom=0.11,left=0.036,right=0.999,hspace=0.082,wspace=0.061)
 
     if savefig:
         savefig_dir = masterThesisPack.make_dir()
