@@ -48,7 +48,7 @@ def calcTrend(df):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github','ventopcse/output')
 
-experiment = 'EA2.cdf'
+experiment = 'EA1.cdf'
 ncin = xr.open_dataset(DATA_DIR + experiment)
 
 
@@ -129,4 +129,3 @@ X = tempDaily.Surface.values
 for i in range(1,len(X)):
 	value = X[i] - X[i-1]
 	diff.append(value)
-
