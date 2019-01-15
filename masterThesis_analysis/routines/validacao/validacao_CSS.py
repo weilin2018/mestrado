@@ -132,3 +132,41 @@ plt.tight_layout()
 plt.subplots_adjust(top=0.945,bottom=0.11,left=0.126,right=0.976,hspace=0.587,wspace=0.2)
 
 plt.savefig(FIG_DIR + 'css_validacao_2014.pdf')
+
+
+########### temperatura
+T5m_Corr = np.corrcoef(dfObse.T5m.values,dfModel.T5m.values)[0,1]
+T15m_Corr = np.corrcoef(dfObse.T15m.values,dfModel.T15m.values)[0,1]
+
+# configuration settings
+bbox = (0.,0.,.65,.5) # for legend
+
+fig,axes = plt.subplots(nrows=2,sharex=True,figsize=(8/2.54,10/2.54))
+
+axes[0].set_title('Temperatura - Prof. de 5m (Corr. %0.2f)'%(T5m_Corr),fontsize=8)
+axes[0].plot(dfObse.index.values,dfObse.T5m.values)
+axes[0].plot(dfModel.index.values,dfModel.T5m.values)
+axes[0].set_ylabel('T ['+r'$^o$'+'C]',fontsize=8,labelpad=-1)
+axes[0].legend(['Observado','Modelado'],fontsize=6,bbox_to_anchor=bbox,mode='expand',ncol=2)
+
+axes[1].set_title('Temperatura - Prof. de 5m (Corr. %0.2f)'%(T15m_Corr),fontsize=8)
+axes[1].plot(dfObse.index.values,dfObse.T15m.values)
+axes[1].plot(dfModel.index.values,dfModel.T15m.values)
+axes[1].set_ylabel('T ['+r'$^o$'+'C]',fontsize=8,labelpad=-1)
+axes[1].legend(['Observado','Modelado'],fontsize=6,bbox_to_anchor=bbox,mode='expand',ncol=2)
+
+
+for ax in axes:
+    ax.axes.tick_params(axis='both',which='both',labelsize=8)
+    ax.margins(xmargin=0)
+
+# automatic formatting, for xdate
+fig.autofmt_xdate()
+
+axes[-1].xaxis.set_major_locator(mdates.WeekdayLocator())
+axes[-1].xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
+
+plt.tight_layout()
+plt.subplots_adjust(top=0.925,bottom=0.114,left=0.14,right=0.941,hspace=0.218,wspace=0.2)
+
+plt.savefig(FIG_DIR + 'css_validacao_2014_temperatura.pdf')
