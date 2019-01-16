@@ -40,6 +40,12 @@ ncin  = xr.open_dataset(fname)
 # converting Dataset into Dataframe
 df = ncin.to_dataframe()
 
+# for some unknown reason, the index is not a datetimeindex object. So we have to force ...
+ts = []
+for t in df.index.values:
+    ts.append(t[0])
+df.index = ts
+
 # converting from kJ to W:
 df['radiacao'] = df.radiation / 3.6
 
@@ -67,4 +73,4 @@ newdf.radiacao.resample('1W').mean().plot(ax=ax)
 plt.margins(0)
 plt.tight_layout()
 
-plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/dados_observados/INMET/radiacao_paraty.pdf')
+# plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/dados_observados/INMET/radiacao_paraty.pdf')
