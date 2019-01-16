@@ -32,7 +32,7 @@ SAVE_DIR = '/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/m
 FIGNAME  = 'localizacao_pontos.png'
 
 # load bathymetry
-ncin = xr.open_dataset('/media/danilo/Danilo/mestrado/ventopcse/output/exp12.cdf')
+ncin = xr.open_dataset('/media/danilo/Danilo/mestrado/ventopcse/output/EA1.cdf')
 depth= ncin.depth.values
 lon  = ncin.lon.values
 lat  = ncin.lat.values
