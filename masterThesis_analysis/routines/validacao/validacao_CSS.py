@@ -74,11 +74,6 @@ dct = {
 
 dfModel = pd.DataFrame(dct,index=pd.date_range(start='2014-01-09 01:30:00',end='2014-03-01 22:30:00',freq='3h'))
 
-# corrigindo a data do modelo, que está em GMT
-time_data    = dfModel.index
-time_product = time_data - pd.Timedelta(hours=3)
-
-dfModel.index = time_product
 
 # calculating skill coefficient
 skillu5m  = oceano.skill_willmott(dfObse.u5m.values,dfModel.u5m.values)
