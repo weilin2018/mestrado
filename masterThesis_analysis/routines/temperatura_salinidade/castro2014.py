@@ -18,6 +18,7 @@ import seawater as sw
 
 import matplotlib
 # matplotlib.style.use('ggplot')
+matplotlib.use('PS')
 
 import sys
 sys.path.append('masterThesisPack/')
@@ -397,22 +398,30 @@ for f in fname:
 
 # plotando near bottom temperature
 ncin = xr.open_dataset(experiment)
-location = [7.6, 23.85]
+location = [2.85, 20.58]
 plot_nearBottomTemp(ncin,exp,SAVE_FIG,location)
 
 ncin = xr.open_dataset(experiment.replace('EC1','EA1'))
-location = [7.6, 19.22]
+location = [9.3, 25.89]
 plot_nearBottomTemp(ncin,exp.replace('EC1','EA1'),SAVE_FIG,location)
-
 
 # plotando surface salinity
 ncin = xr.open_dataset(experiment)
-location = [68.12, 139.03]
+location = [87.97, 63.51]
 plot_surfaceSalt(ncin,exp,SAVE_FIG,location)
 
 ncin = xr.open_dataset(experiment.replace('EC1','EA1'))
-location = [68.12, 107.73]
+location = [77.35, 89.02]
 plot_surfaceSalt(ncin,exp.replace('EC1','EA1'),SAVE_FIG,location)
+
+#####################################################################
+#                   COMPARACAO COM FIG 5 (CASTRO, 2014)             #
+#####################################################################
+
+# comparando EC1 e EA1 (temp e salt)
+isoterma(experiment,experiment.replace('EC1','EA1'),SAVE_FIG)
+isohalina(experiment,experiment.replace('EC1','EA1'),SAVE_FIG)
+
 
 # plotando contour secao vertical para comparar com Figura 5 de Castro (2014)
 isoterma(experiment,experiment.replace('EA7','EA1'),SAVE_FIG)

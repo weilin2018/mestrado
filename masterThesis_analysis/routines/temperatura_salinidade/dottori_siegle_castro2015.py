@@ -17,13 +17,15 @@ from matplotlib import dates
 import datetime
 import cmocean as cmo
 import seawater as sw
+import matplotlib.dates as mdates
 
 # pacotes para minimap
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 
 import matplotlib
-matplotlib.style.use('ggplot')
+# matplotlib.style.use('ggplot')
+matplotlib.use('PS')
 
 import sys
 sys.path.append('masterThesisPack/')
@@ -47,6 +49,7 @@ def calcTrend(df):
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github','ventopcse/output')
+SAVE_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/dottori_etal2015/'
 
 experiment = 'EA1.cdf'
 ncin = xr.open_dataset(DATA_DIR + experiment)
@@ -93,39 +96,49 @@ salt = pd.DataFrame({'Surface':sSurf,'Bottom':sBott},index=pd.DatetimeIndex(time
 tempDaily = temp.resample('D').mean()
 saltDaily = salt.resample('D').mean()
 
-fig,ax = plt.subplots(nrows=2)
-#ax[0].plot(salt.Surface,'#c0c0c0',label='Surface Salinity')
-ax[0].plot(saltDaily.Surface,'#c0c0c0',label='Surface Salinity')
-ax[0].plot(saltDaily.Bottom,'k',label='Bottom Salinity')
+fig,ax = plt.subplots(nrows=2,sharex=True,figsize=(10/2.54,13/2.54))
 
-ax[0].legend(loc='best')
-ax[0].set_ylabel('Salinity',fontsize=8)
-ax[0].set_ylim([30.5, 35.5])
+ax[0].set_title(u'Série temporal de Salinidade e \nTemperatura na entrada do Araçá')
+
+ax[0].plot(saltDaily.Surface,'#c0c0c0',label=u'Salinidade Superfíce')
+ax[0].plot(saltDaily.Bottom,'k',label='Salinidade Fundo')
+
+ax[0].legend(loc='best',fontsize=8)
+ax[0].set_ylabel('Salinidade',fontsize=8)
+ax[0].set_ylim([34.5, 35.9])
 ax[0].set_xlabel('Time',fontsize=8)
 
-ax[1].plot(tempDaily.Surface,'#c0c0c0',label='Surface Temperature')
-ax[1].plot(tempDaily.Bottom,'#000000',label='Bottom Temperature')
+ax[1].plot(tempDaily.Surface,'#c0c0c0',label=u'Temperatura Superfíce')
+ax[1].plot(tempDaily.Bottom,'#000000',label='Temperatura Fundo')
 
-ax[1].legend(loc='best')
-ax[1].set_ylabel('Temperature',fontsize=8)
+ax[1].legend(loc=3,fontsize=8)
+ax[1].set_ylabel('Temperatura',fontsize=8)
 
-ax[1].set_xlabel('Time',fontsize=8)
+ax[1].set_xlabel('Tempo',fontsize=8)
 
-plt.show()
+fig.autofmt_xdate()
 
-# removendo a tendencia das series temporais
+ax[-1].xaxis.set_major_locator(mdates.WeekdayLocator())
+ax[-1].xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
 
-# calculating trend for each timeseries
-tSurf_coefs = calcTrend(tempDaily.Surface)
-tBott_coefs = calcTrend(tempDaily.Bottom)
+plt.tight_layout()
+plt.subplots_adjust(top=0.914,bottom=0.125,left=0.176,right=0.978,hspace=0.093,wspace=0.2)
 
-sSurf_coefs = calcTrend(saltDaily.Surface)
-sBott_coefs = calcTrend(saltDaily.Bottom)
-
-# como a tendencia é linear, podemos remove-la da serie usando uma diferenciacao:
-# based on: https://machinelearningmastery.com/time-series-trends-in-python/
-diff = list()
-X = tempDaily.Surface.values
-for i in range(1,len(X)):
-	value = X[i] - X[i-1]
-	diff.append(value)
+plt.savefig(SAVE_DIR + 'boca_araca.pdf')
+#
+# # removendo a tendencia das series temporais
+#
+# # calculating trend for each timeseries
+# tSurf_coefs = calcTrend(tempDaily.Surface)
+# tBott_coefs = calcTrend(tempDaily.Bottom)
+#
+# sSurf_coefs = calcTrend(saltDaily.Surface)
+# sBott_coefs = calcTrend(saltDaily.Bottom)
+#
+# # como a tendencia é linear, podemos remove-la da serie usando uma diferenciacao:
+# # based on: https://machinelearningmastery.com/time-series-trends-in-python/
+# diff = list()
+# X = tempDaily.Surface.values
+# for i in range(1,len(X)):
+# 	value = X[i] - X[i-1]
+# 	diff.append(value)
