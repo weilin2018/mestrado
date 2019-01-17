@@ -27,7 +27,16 @@ import masterThesisPack as oceano
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
 # insert functions here
+def fill_spaces(df,ref,key1,key2):
 
+    index = df.index.values
+    data1 = df[key1].values
+    data2 =ref[key2].values
+
+    nans = np.where(np.isnan(data1))
+    data1[nans] = data2[nans]
+
+    return pd.DataFrame({'full':data1},index=index)
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -56,11 +65,68 @@ reanalise = cfsv2['2013':'2017'].copy()
 # reamostrando dados observados para bater com os dados de reanalise
 observado = df.resample('6H').mean()
 
+# investigando os outliers visualmente
+# import seaborn as sns
+# sns.boxplot(observado.PARATY_rad)
+
+# removendo dados 3 desvios padrões acima, classificados como espúrios
+stdv_ubatuba = observado.UBATUBA_rad.std()
+stdv_paraty  = observado.PARATY_rad.std()
+# observado.UBATUBA_rad[observado.UBATUBA_rad > 2*stdv_ubatuba] = np.nan
+observado.PARATY_rad[observado.PARATY_rad > 2*stdv_paraty] = np.nan
+
 # plotando dados para cada localizacao, mas passando um filtro quinzenal pra facilitar
-fig,ax = plt.subplots(nrows=2)
+fig,ax = plt.subplots(nrows=2,figsize=(15/2.54,10/2.54))
 
-reanalise.UBATUBA_reanalise.resample('D').mean().plot(ax=ax[0])
-observado.UBATUBA_rad.resample('D').mean().plot(ax=ax[0])
+ax[0].set_title(u'Radiação (W m' +r'${^2}$'+ u') em Ubatuba (azul) e CFSv2 (vermelho)',fontsize=8)
 
-reanalise.PARATY_reanalise.resample('D').mean().plot(ax=ax[1])
-observado.PARATY_rad.resample('D').mean().plot(ax=ax[1])
+reanalise.UBATUBA_reanalise.resample('D').mean().plot(ax=ax[0],label='CFSv2')
+observado.UBATUBA_rad.resample('D').mean().plot(ax=ax[0],label='Observado')
+observado.UBATUBA_rad.resample('1W').mean().plot(ax=ax[0],color='k',label='Weekly Mean')
+reanalise.UBATUBA_reanalise.resample('1W').mean().plot(ax=ax[0],label='CFSv2 Weekly')
+
+ax[0].legend(fontsize=8)
+ax[0].set_ylim([0,1000])
+
+reanalise.PARATY_reanalise.resample('D').mean().plot(ax=ax[1],label='CFSv2')
+observado.PARATY_rad.resample('D').mean().plot(ax=ax[1],label='Observado')
+observado.PARATY_rad.resample('1W').mean().plot(ax=ax[1],color='k',label='Weekly Mean')
+ax[1].legend(fontsize=8,loc='upper left')
+ax[1].set_ylim([0,1000])
+
+# preenchendo lacunas nos dados observado em Ubatuba
+uba = fill_spaces(observado,reanalise,'UBATUBA_rad','UBATUBA_reanalise')
+uba.columns = ['Ubatuba']
+
+# plotando dados para cada localizacao, mas passando um filtro quinzenal pra facilitar
+fig,ax = plt.subplots(figsize=(16/2.54,8/2.54))
+
+ax.set_title(u'Radiação (W m' +r'${^2}$'+ u') em Ubatuba (azul) e CFSv2 (vermelho)',fontsize=8)
+
+# reanalise.UBATUBA_reanalise.resample('D').mean().plot(ax=ax,label='CFSv2')
+uba.Ubatuba.resample('D').mean().plot(ax=ax,label='Observado')
+uba.Ubatuba.resample('1W').mean().plot(ax=ax,color='k',label='Weekly Mean')
+ax.legend(fontsize=8)
+ax.set_ylim([0,500])
+ax.axes.tick_params(axis='both',which='both',labelsize=8)
+
+
+# calculando a media no trimestre DJF de todos os anos
+def media_trimestre(df):
+
+    medias = pd.DataFrame()
+
+    for y in np.arange(df.index.year[0]+1,2018,1):
+        start = '%i-12-01'%(y-1)
+        final = '%i-03-01'%(y)
+
+        medias[y] = df[start:final].mean()
+
+    medias = medias.T
+
+    return medias
+
+#
+m = media_trimestre(uba)
+m.plot(kind='bar')
+plt.title('media trimestral DJF')
