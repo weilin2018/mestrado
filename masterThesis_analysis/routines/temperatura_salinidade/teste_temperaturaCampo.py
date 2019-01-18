@@ -17,7 +17,7 @@ import cmocean as cmo
 import matplotlib.gridspec as gridspec
 
 import matplotlib
-matplotlib.style.use('ggplot')
+# matplotlib.style.use('ggplot')
 
 import sys
 sys.path.append('masterThesisPack/')
@@ -33,7 +33,8 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
     # nao colocar meridianos e paralelos
     # nao colocar coordenadas no eixo (sumir com os eixos)
 
-    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
+    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution='h')
+    # m = pickle.load(open('pickles/basemap.p','r'))
     m.ax = ax
     m.drawcoastlines(linewidth=.2)
     m.fillcontinents(color='white',alpha=0)
@@ -69,8 +70,7 @@ def export_data(fname,timestep=0):
     temp = ncin.temp[timestep,:,:,:]
     temp = np.where(depth < 100, temp,np.nan)
 
-    return lon,lat,temp
-
+    return lon,lat,temp,depth
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -80,9 +80,9 @@ BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = DATA_DIR + 'EA1.cdf'
 
-lon,lat,temp = export_data(fname)
+lon,lat,temp,depth = export_data(fname)
 
-plt.figure(figsize=(12/2.54,12/2.54))
+fig = plt.figure(figsize=(12/2.54,12/2.54))
 gs = gridspec.GridSpec(3,3)
 
 # creating axis
@@ -97,20 +97,48 @@ m3,_,_ = make_map(ax3,ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanm
 
 # positiong each axes
 ax1.set_position([.03,.48,.6,.5])
-ax2.set_position([.22,.28,.6,.5])
-ax3.set_position([.41,.08,.6,.5])
+ax2.set_position([.1,.3,.6,.5])
+ax3.set_position([.17,.12,.6,.5])
 
 contours = np.arange(13,35,0.1)
 
-m1.contourf(lon,lat,temp[0,:,:],contours,cmap=cmo.cm.thermal,latlon=True)
-m2.contourf(lon,lat,temp[10,:,:],contours,cmap=cmo.cm.thermal,latlon=True)
-m3.contourf(lon,lat,temp[20,:,:],contours,cmap=cmo.cm.thermal,latlon=True)
+cf1 = m1.contourf(lon,lat,temp[0,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True)
+cf2 = m2.contourf(lon,lat,temp[10,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True)
+cf3 = m3.contourf(lon,lat,temp[20,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True)
 
-m1.drawmeridians(meridians,labels=[True,False,False,False],fontsize=8,color='gray',linewidth=.2)
-m1.drawparallels(parallels,labels=[True,False,False,False],fontsize=8,color='gray',linewidth=.2)
+# matplotib trick to remove white thin lines when saving contourf in pdf
+for c in cf1.collections:
+    c.set_edgecolor('face')
+    c.set_linewidth(0.00000000001)
 
-m2.drawmeridians(meridians,labels=[False,False,False,False],fontsize=8,color='gray',linewidth=.2)
-m2.drawparallels(parallels,labels=[False,False,False,False],fontsize=8,color='gray',linewidth=.2)
+for c in cf2.collections:
+    c.set_edgecolor('face')
+    c.set_linewidth(0.00000000001)
 
-m3.drawmeridians(meridians,labels=[False,False,False,False],fontsize=8,color='gray',linewidth=.2)
-m3.drawparallels(parallels,labels=[False,False,False,False],fontsize=8,color='gray',linewidth=.2)
+for c in cf3.collections:
+    c.set_edgecolor('face')
+    c.set_linewidth(0.00000000001)
+
+cax = fig.add_axes([.1,.1,.35,.02])
+cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%i')
+
+# setting colorbar tick labels
+from matplotlib import ticker
+tick_locator = ticker.MaxNLocator(nbins=6)
+cbar.locator = tick_locator
+cbar.update_ticks()
+
+cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
+cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
+
+"""
+Nota:
+
+    Apos salvar a figura em .pdf, e' necessario ir ao inkscape,
+    realizar o ungroup dos objetos de imagem e deletar algumas coisas como:
+
+    . cor cinza
+    . elementos dentro do continente
+    . mover colorbar pro local adequado
+    . nomear cada contourf
+"""
