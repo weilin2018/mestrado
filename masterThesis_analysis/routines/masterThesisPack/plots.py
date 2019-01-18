@@ -16,13 +16,16 @@ import os
 import pickle
 import math
 import cmocean as cmo
-
+import decomp
 # importing root functions
 import masterThesisPack
 
 def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,nparallels=2,labels=[True,False,False,True]):
 
-    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
+    if resolution == 'f':
+        m = pickle.load(open('pickles/basemap.p','r'))
+    else:
+        m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
 
     m.ax = ax
 
@@ -62,7 +65,7 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
 
     """
 
-    sigmaLevels = [0,10,20]
+    sigmaLevels = [0,10,19]
 
     P = {
       'temp': 'Temperatura',
@@ -102,7 +105,7 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
     for j in range(3):
         for i in range(2):
             key = "%s%s"%(i,j)
-            m[key] = make_map(axes[i,j],labels=labels_dict[key],ulat=-21,llat=-29,ulon=-40)
+            m[key] = make_map(axes[i,j],labels=labels_dict[key],ulat=-21,llat=-29,ulon=-40,resolution='f')
             axes[i,j].spines['left'].set_linewidth(0.2)
             axes[i,j].spines['right'].set_linewidth(0.2)
             axes[i,j].spines['bottom'].set_linewidth(0.2)
@@ -181,8 +184,45 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
 
     return fig,axes
 
+def formatGrid_plot(grid,fname):
+    import numpy as np
+    ij=np.load(fname)
+    # for a 2D array (lon,lat)
+    if len(grid.shape)==2:
+        grid=grid[ij[1], :]
+        grid=grid[:, ij[0]]
+    # if grid is a 3D array (temp,salt,speed)
+    if len(grid.shape)==3:
+        grid=grid[:,ij[1], ij[0]]
+    return grid
 
-def create_Structure_horizontal_Quiver(fname,contours,property='speed',timestep=0,savefig=False):
+def formatting_vectors(u,v,lon,lat,auxFile):
+    xplot = formatGrid_plot(lon,auxFile)
+    yplot = formatGrid_plot(lat,auxFile)
+    uplot = formatGrid_plot(u,auxFile)
+    vplot = formatGrid_plot(v,auxFile)
+
+    return xplot,yplot,uplot,vplot
+
+
+def rotate_velocityField(u,v,ang):
+
+    import decomp
+    ur = np.zeros(u.shape)*np.nan
+    vr = np.zeros(v.shape)*np.nan
+
+    for j in range(u.shape[0]):
+        U,V = u[j,:].values,v[j,:].values
+        angle = ang[j,:]
+
+        INT,DIR = decomp.uv2intdir(U,V,0,angle)
+        uro,vro = decomp.intdir2uv(INT,DIR,0,angle)
+        ur[j,:] = uro
+        vr[j,:] = vro
+
+    return ur,vr
+
+def create_Structure_horizontal_Quiver(fname,contours,FILE_DIR,property='speed',timestep=0,savefig=False):
     """Funcao para criar uma estrutura horizontal de subplots, com os campos de velocidade
     da saida do modelo.
 
@@ -206,14 +246,16 @@ def create_Structure_horizontal_Quiver(fname,contours,property='speed',timestep=
 
     """
 
-    sigmaLevels = [0,10,20]
+    import decomp as dp
+
+    sigmaLevels = [0,10,19]
 
     P = {
       'speed': 'Velocidade'
     }
 
     colorbarTitle = {
-      'speed': r'Velocidade (m s$^-1$)'
+      'speed': r'Velocidade (m s$^{-1}$)'
     }
 
     colormap = {
@@ -240,7 +282,7 @@ def create_Structure_horizontal_Quiver(fname,contours,property='speed',timestep=
     for j in range(3):
         for i in range(2):
             key = "%s%s"%(i,j)
-            m[key] = make_map(axes[i,j],labels=labels_dict[key],ulat=-21,llat=-29,ulon=-40)
+            m[key] = make_map(axes[i,j],labels=labels_dict[key],ulat=-21,llat=-29,ulon=-40,resolution='f')
             axes[i,j].spines['left'].set_linewidth(0.2)
             axes[i,j].spines['right'].set_linewidth(0.2)
             axes[i,j].spines['bottom'].set_linewidth(0.2)
@@ -249,30 +291,36 @@ def create_Structure_horizontal_Quiver(fname,contours,property='speed',timestep=
     # plotting climatologic data: t = 0, k = 0
     ncin = xr.open_dataset(fname)
 
-    lon,lat = ncin.lon.values, ncin.lat.values
-    depth = ncin.depth.values
-    sigma = ncin.sigma.values
+    lon,lat = ncin.lon.values.copy(), ncin.lat.values.copy()
+    depth = ncin.depth.values.copy()
+    sigma = ncin.sigma.values.copy()
+    angle = ncin.ang.values.copy()
     lon[lon == 0.] = np.nan
     lat[lat == 0.] = np.nan
-    depth = ncin.depth.values
 
     # extracting temperature data, in a specific timestep
-    speed = np.sqrt(ncin.u[timestep,:,:,:]**2 + ncin.v[timestep,:,:,:]**2)
-
-    u = ncin['u'][timestep,:,:,:]
-    v = ncin['v'][timestep,:,:,:]
-    speed = np.where(depth < 100, data,np.nan)
+    u = ncin['u'][timestep,:,:,:].copy()
+    v = ncin['v'][timestep,:,:,:].copy()
 
     # key for axes in m
     col1 = ['00','01','02']
 
     for key,k in zip(col1,sigmaLevels):
+        # rotate vectors and calculate speed
+        ur,vr = rotate_velocityField(u[k,:,:],v[k,:,:],angle)
+        speed = np.sqrt(ur**2 + vr**2)
+        speed = np.where(depth < 100, speed,np.nan)
+        un,vn = ur/speed,vr/speed
+
+        xplot,yplot,uplot,vplot = formatting_vectors(un,vn,lon,lat,FILE_DIR)
+
+
         a = m[key]
-        cf = a.contourf(lon,lat,speed[k,:,:],contours,latlon=True,cmap=colormap[property])
-        qv = a.quiver(lon,lat,u[k,:,:],v[k,:,:],latlon=True)
-        if k == 0:
-            cs = a.contour(lon,lat,speed[k,:,:],levels=[36.],latlon=True,colors=('black'),linewidths=(0.5))
-            qv = a.quiver(lon,lat,u[k,:,:],v[k,:,:],latlon=True)
+        cf = a.contourf(lon,lat,speed,contours,latlon=True,cmap=colormap[property])
+        qv = a.quiver(xplot,yplot,uplot,vplot,scale=70,width=0.001,headwidth=4,headlength=4,latlon=True)
+
+    # clearing space
+    del ncin,u,v,xplot,yplot,uplot,vplot
 
     # plotting anomalous experiment at the final
     ncin = xr.open_dataset(fname.replace('EC1','EA1'))
@@ -280,20 +328,28 @@ def create_Structure_horizontal_Quiver(fname,contours,property='speed',timestep=
 
     u = ncin['u'][timestep,:,:,:]
     v = ncin['v'][timestep,:,:,:]
-    speed = np.where(depth < 100, data,np.nan)
+    speed = np.where(depth < 100, speed,np.nan)
 
     col1 = ['10','11','12']
     for key,k in zip(col1,sigmaLevels):
+        # rotate vectors and calculate speed
+        ur,vr = rotate_velocityField(u[k,:,:],v[k,:,:],angle)
+        speed = np.sqrt(ur**2 + vr**2)
+        speed = np.where(depth < 100, speed,np.nan)
+        un,vn = ur/speed,vr/speed
+
+        xplot,yplot,uplot,vplot = formatting_vectors(un,vn,lon,lat,FILE_DIR)
+
+
         a = m[key]
-        cf = a.contourf(lon,lat,speed[k,:,:],contours,latlon=True,cmap=colormap[property])
-        if k == 0:
-            cs = a.contour(lon,lat,speed[k,:,:],levels=[36.],latlon=True,colors=('black'),linewidths=(0.5))
+        cf = a.contourf(lon,lat,speed,contours,latlon=True,cmap=colormap[property])
+        qv = a.quiver(xplot,yplot,uplot,vplot,scale=70,width=0.001,headwidth=4,headlength=4,latlon=True)
 
     axes[0,1].set_title('Experimento Controle',fontsize=8)
     axes[1,1].set_title(u'Experimento Anomalo',fontsize=8)
 
     # setting colorbar configuration
-    cb = plt.colorbar(cf,orientation='horizontal',cax=cax,format='%i')
+    cb = plt.colorbar(cf,orientation='horizontal',cax=cax,format='%0.2f')
     fig.text(0.45,0.075,colorbarTitle[property],fontsize=8)
 
     # title and some figure adjusts
@@ -308,6 +364,6 @@ def create_Structure_horizontal_Quiver(fname,contours,property='speed',timestep=
 
     if savefig:
         savefig_dir = masterThesisPack.make_dir()
-        plt.savefig(savefig_dir+'masterThesis_analysis/figures/experiments_outputs/velocity/valocity_superf_meio_fundo_timestep_%s.eps'%(str(timestep)),orientation='landscape')
+        plt.savefig(savefig_dir+'masterThesis_analysis/figures/experiments_outputs/velocity/velocity_superf_meio_fundo_timestep_%s.eps'%(str(timestep)),orientation='landscape')
 
     return fig,axes
