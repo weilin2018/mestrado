@@ -31,7 +31,7 @@ sys.path.append('masterThesisPack/')
 import masterThesisPack as oceano
 
 import plots as plotDanilo
-# 
+#
 # ##############################################################################
 # #                          [GEN] FUNCTIONS                                   #
 # ##############################################################################
@@ -140,7 +140,7 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EC1_10DTI.cdf'
+exp = 'EC1.cdf'
 savefig = True
 
 for f in fname:
