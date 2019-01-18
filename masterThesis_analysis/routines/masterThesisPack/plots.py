@@ -131,8 +131,11 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
     for key,k in zip(col1,sigmaLevels):
         a = m[key]
         cf = a.contourf(lon,lat,data[k,:,:],contours,latlon=True,cmap=colormap[property])
-        if k == 0:
+
+        if (property == 'salt') and (k == 0):
             cs = a.contour(lon,lat,data[k,:,:],levels=[36.],latlon=True,colors=('black'),linewidths=(0.5))
+        if (property == 'temp') and (k == 20):
+            cs = a.contour(lon,lat,data[k,:,:],levels=[18.],latlon=True,colors=('black'),linewidths=(0.5))
 
     # plotting anomalous experiment at the final
     ncin = xr.open_dataset(fname.replace('EC1','EA1'))
@@ -179,7 +182,7 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
     return fig,axes
 
 
-def create_Structure_horizontal(fname,contours,property='speed',timestep=0,savefig=False):
+def create_Structure_horizontal_Quiver(fname,contours,property='speed',timestep=0,savefig=False):
     """Funcao para criar uma estrutura horizontal de subplots, com os campos de velocidade
     da saida do modelo.
 
