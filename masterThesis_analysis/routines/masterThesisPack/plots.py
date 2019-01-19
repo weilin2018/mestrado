@@ -204,7 +204,6 @@ def formatting_vectors(u,v,lon,lat,auxFile):
 
     return xplot,yplot,uplot,vplot
 
-
 def rotate_velocityField(u,v,ang):
 
     import decomp
