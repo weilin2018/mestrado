@@ -56,11 +56,11 @@ def export_data(fname,timestep=0):
     lat[lat == 0.] = np.nan
     depth = ncin.depth.values
 
-    # extracting temperature data, in a specific timestep
-    temp = ncin.temp[timestep,:,:,:]
-    temp = np.where(depth < 100, temp,np.nan)
+    # extracting salinity data, in a specific timestep
+    salt = ncin.salt[timestep,:,:,:]
+    salt = np.where(depth < 100, salt,np.nan)
 
-    return lon,lat,temp,depth
+    return lon,lat,salt,depth
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -68,7 +68,7 @@ def export_data(fname,timestep=0):
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
-fname = DATA_DIR + 'EA1.cdf'
+fname = DATA_DIR + 'EC1.cdf'
 
 timestep = [46,303]
 
@@ -94,11 +94,11 @@ for nstep in timestep:
     ax2.set_position([.1,.28,.6,.5])
     ax3.set_position([.17,.1,.6,.5])
 
-    contours = np.arange(13,35,0.1)
+    contours = np.arange(34,36.1,0.01)
 
-    cf1 = m1.contourf(lon,lat,temp[0,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
-    cf2 = m2.contourf(lon,lat,temp[10,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
-    cf3 = m3.contourf(lon,lat,temp[20,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
+    cf1 = m1.contourf(lon,lat,temp[0,:,:],contours,cmap=cmo.cm.haline,latlon=True,rasterized=True,extend='max')
+    cf2 = m2.contourf(lon,lat,temp[10,:,:],contours,cmap=cmo.cm.haline,latlon=True,rasterized=True,extend='max')
+    cf3 = m3.contourf(lon,lat,temp[20,:,:],contours,cmap=cmo.cm.haline,latlon=True,rasterized=True,extend='max')
 
     # matplotib trick to remove white thin lines when saving contourf in pdf
     for c in cf1.collections:
@@ -127,10 +127,10 @@ for nstep in timestep:
     cbar.update_ticks()
 
     cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
-    cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
+    cbar.ax.set_title('Salinidade',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(nstep))
-    plt.savefig('/home/danilo/Pictures/teste_composicao/temp/originais/%s.pdf'%(output_fname))
+    plt.savefig('/home/danilo/Pictures/teste_composicao/salt/originais/%s.pdf'%(output_fname))
 
 """
 Nota:
