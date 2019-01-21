@@ -107,7 +107,7 @@ def check_rotation(df):
 
 def filtering(d):
 
-    from oceans import lanc
+    from oceans.filters import lanc
 
     freq = 1./40  # Hours
     window_size = 96+1+96
