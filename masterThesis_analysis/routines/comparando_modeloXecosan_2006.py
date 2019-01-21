@@ -59,15 +59,13 @@ def qualityControl_insitu(df):
     limsup = df.UVE.mean() + 3*df.UVE.std()
     liminf = df.UVE.mean() - 3*df.UVE.std()
 
-def
-
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
 # beginnig of the main code
-
-ECOSAN_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/ECOSAN/'
-MODELO_DIR = '/media/danilo/Danilo/mestrado/ventopcse/output/'
+BASE_DIR   = oceano.make_dir()
+ECOSAN_DIR = BASE_DIR.replace('github','ventopcse/data/ECOSAN') #'/media/danilo/Danilo/mestrado/ventopcse/data/ECOSAN/'
+MODELO_DIR = BASE_DIR.replace('github','ventopcse/output') #'/media/danilo/Danilo/mestrado/ventopcse/output/'
 
 magnetic = 24.
 angleRot = 55.
