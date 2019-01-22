@@ -48,7 +48,7 @@ loc_ncep_laje   = [-24.22487, -46.228, 'NCEP/CFSv2']
 loc_ncep_pnboia = [-25.24701, -45.000, 'CFSv2 - PNBOIA']
 
 # importar batimetria de produto de modelo qualquer
-ncin = xr.open_dataset('/media/danilo/Danilo/mestrado/ventopcse/output/control2006_Qnet.cdf')
+ncin = xr.open_dataset(DATA_DIR + 'EC1.cdf')
 depth = ncin.depth.values
 lon   = ncin.lon.values
 lat   = ncin.lat.values
