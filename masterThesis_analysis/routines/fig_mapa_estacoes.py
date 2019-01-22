@@ -76,4 +76,4 @@ m.scatter(loc_ncep_pnboia[1],loc_ncep_pnboia[0],s=30,c='r',marker='^',latlon=Tru
 plt.legend(loc='best')
 plt.subplots_adjust(top=0.962,bottom=0.038,left=0.156,right=0.995,hspace=0.2,wspace=0.2)
 
-plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/mapas/localizacao_pontos.png',dpi=300)
+# plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/mapas/localizacao_pontos.png',dpi=300)
