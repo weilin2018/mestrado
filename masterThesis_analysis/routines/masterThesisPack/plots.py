@@ -141,7 +141,7 @@ def create_Structure_horizontal(fname,contours,property='temp',timestep=0,savefi
             cs = a.contour(lon,lat,data[k,:,:],levels=[18.],latlon=True,colors=('black'),linewidths=(0.5))
 
     # plotting anomalous experiment at the final
-    ncin = xr.open_dataset(fname.replace('EC1','EA1'))
+    ncin = xr.open_dataset(fname.replace('EC','EA'))
     if property == 'speed':
         ncin['speed'] = np.sqrt(ncin.u**2 + ncin.v**2)
 
@@ -322,7 +322,7 @@ def create_Structure_horizontal_Quiver(fname,contours,FILE_DIR,property='speed',
     del ncin,u,v,xplot,yplot,uplot,vplot
 
     # plotting anomalous experiment at the final
-    ncin = xr.open_dataset(fname.replace('EC1','EA1'))
+    ncin = xr.open_dataset(fname.replace('EC','EA'))
     speed = np.sqrt(ncin.u[timestep,:,:,:]**2 + ncin.v[timestep,:,:,:]**2)
 
     u = ncin['u'][timestep,:,:,:]
