@@ -34,6 +34,8 @@ plt.ion()
 #                               MAIN CODE                                    #
 ##############################################################################
 # beginnig of the main code
+BASE_DIR = oceano.make_dir()
+DATA_DIR = BASE_DIR.replace('github','ventopcse/output')
 
 ### FIGURE CONFIGURATION
 figsize      = (8.4/2.54, 10./2.54)
