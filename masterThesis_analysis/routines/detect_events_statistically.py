@@ -142,7 +142,6 @@ def detect_atmosphericBlocking(df,convert_uv2intdir=False,minDuration=10,maxGaps
 
     return detected_events
 
-
 def plot_bars(df):
     fig,ax = plt.subplots()
     evMax = np.argmax(evs.duration)
@@ -188,7 +187,6 @@ def plot_frequencia(df):
 
     d.plot.bar()
 
-
 def analise(df):
     # transform column date_start in DatetimeIndex
     df.index = pd.DatetimeIndex(df.date_start)
@@ -226,7 +224,7 @@ def analise(df):
 os.system('clear')
 BASE_DIR = oceano.make_dir()
 
-NCEP_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/timeseries_cfsv2_pnboia_6hourly.nc'
+NCEP_DIR = BASE_DIR.replace('github/','ventopcse/data/timeseries_cfsv2_pnboia_6hourly.nc')
 cfsv2 = xr.open_dataset(NCEP_DIR) # carregando netcdf
 dct = {
     'wu': np.squeeze(cfsv2['U_GRD_L103'].values),
@@ -234,7 +232,7 @@ dct = {
 }
 cfsv2 = pd.DataFrame(dct,index=cfsv2.time.values)       # convertendo para pd.DataFrame
 
-intensity,direction = decomp.uv2intdir(cfsv2.wu.values,cfsv2.wv.values,0,0)
+intensity,direction = decomp.uv2intdir(cfsv2.wu.values,cfsv2.wv.values,0,36)
 
 df_cfsv2 = pd.DataFrame({'intensity':intensity,'direction':direction},index=cfsv2.index)
 
@@ -242,13 +240,13 @@ events = detect_atmosphericBlocking(df_cfsv2,minDuration=10)
 
 # converting evets into a dataframe
 evs_cfsv2 = pd.DataFrame(events)
-
-# plotting the most durable events
-evMax = np.argmax(evs_cfsv2.duration)
-plot_data(evs_cfsv2.iloc[evMax,:],cfsv2,title='The Longest Event Found [%s days]')
+#
+# # plotting the most durable events
+# evMax = np.argmax(evs_cfsv2.duration)
+# plot_data(evs_cfsv2.iloc[evMax,:],cfsv2,title='The Longest Event Found [%s days]')
 
 # event analysis
-freq_cfsv2 = analise(evs_cfsv2)
+# freq_cfsv2 = analise(evs_cfsv2)
 
 # plotting bars with all event's duration
 # plot_bars(evs)
@@ -269,18 +267,10 @@ import windrose
 windrose.plot_windrose_df(df_cfsv2,var_name='intensity')
 plt.title('Para onde o vento vai ...',fontsize=24)
 
-
-
-
-
-############ teste zone
-
-
 ##############################################################################
 #                                  CFSR                                      #
 ##############################################################################
-
-NCEP_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/timeseries_cfsr_lajedesantos_1979_2011.nc'
+NCEP_DIR = BASE_DIR.replace('github/','ventopcse/data/timeseries_cfsr_lajedesantos_1979_2011.nc')
 cfsr = xr.open_dataset(NCEP_DIR) # carregando netcdf
 dct = {
     'wu': np.squeeze(cfsr['U_GRD_L103'].values),
@@ -288,7 +278,7 @@ dct = {
 }
 cfsr = pd.DataFrame(dct,index=cfsr.time.values)       # convertendo para pd.DataFrame
 
-intensity,direction = decomp.uv2intdir(cfsr.wu.values,cfsr.wv.values,0,0)
+intensity,direction = decomp.uv2intdir(cfsr.wu.values,cfsr.wv.values,0,36)
 
 df_cfsr = pd.DataFrame({'intensity':intensity,'direction':direction},index=cfsr.index)
 
