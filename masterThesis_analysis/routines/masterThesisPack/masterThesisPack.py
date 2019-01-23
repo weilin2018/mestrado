@@ -1084,7 +1084,7 @@ def formatGrid_plot(grid,fname):
 
 def getStatisticalAnalysis(re,mo):
 
-    skill = skill_willmott(re,mo)
-    corr  = np.corrcoef(re,mo)[1][0]
+    skill = skill_willmott(re.values,mo.values)
+    corr  = np.corrcoef(re.interpolate().values,mo.interpolate().values)[1][0]
 
     return skill,corr
