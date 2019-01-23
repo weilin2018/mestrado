@@ -39,4 +39,5 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/data/')
 # reading netcdf files already treated
 lajeObs = xr.open_dataset(DATA_DIR+'Est_lajeSantos/2015/atualizado/lajesantos.nc')
 boiaObs = xr.open_dataset(DATA_DIR+'pnboiaSantos.nc')
-lajeMod,boiaMod = 0,0
+lajeMod = xr.open_dataset(DATA_DIR+'serie_cfsv2/LajeDeSantos/2015/cfsv2_lajedesantos_2015.nc')
+boiaMod = xr.open_dataset()
