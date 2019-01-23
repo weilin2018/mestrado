@@ -116,8 +116,8 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EC1_10DTI.cdf'
-SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA1/'
+exp = 'EC2.cdf'
+SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EC2/'
 
 for f in fname:
     if exp in f:
@@ -139,8 +139,6 @@ fig,axes = create_Structure(ncin,indexes)
 title = u'Posição inicial (vermelho) e final (verde) da isoterma de 18' + r'$^o$C'
 # title = u'Posição inicial e final da isoterma de 18' + r'$^o$' + u'C no Experimento Controle (esquerda) \ne Experimento Anômalo (direita) -Seção %s'%loc
 plt.suptitle(title,fontsize=10)
-
-
 
 # defining the begin and the end to plot
 tBegin = 0 # climatologic position
@@ -174,7 +172,7 @@ for ind in indexes:
 
 
 ######## Experimento Anomalo!!!!
-ncin = xr.open_dataset(fname.replace('EC1','EA1'))
+ncin = xr.open_dataset(fname.replace('EC','EA'))
 
 for ind in indexes:
     if ind == 99:
@@ -203,4 +201,4 @@ for ind in indexes:
     # cs  = axes[axesInd,1].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('g'),linestyles=('--'))
 
 plt.subplots_adjust(top=0.925,bottom=0.06,left=0.115,right=0.95,hspace=0.2,wspace=0.28)
-plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/temperature/isothermPosition/Secao_All.pdf')
+plt.savefig(BASE_DIR+ 'masterThesis_analysis/figures/experiments_outputs/temperature/isothermPosition/Secao_All.pdf')

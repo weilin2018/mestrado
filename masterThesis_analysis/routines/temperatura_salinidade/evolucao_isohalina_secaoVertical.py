@@ -98,7 +98,7 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EC1_10DTI.cdf'
+exp = 'EC2.cdf'
 SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA1/'
 
 for f in fname:
@@ -124,7 +124,7 @@ plt.suptitle(title,fontsize=10)
 
 # defining the begin and the end to plot
 tBegin = 0 # climatologic position
-tFinal = 303 # final do evento em estudo
+tFinal = 350 # final do evento em estudo
 
 ######## Experimento Controle!!!!
 for ind in indexes:
@@ -148,7 +148,7 @@ for ind in indexes:
     cs  = axes[axesInd,0].contour(x[:,liminf:limsup],sig[:,liminf:limsup],salt[:,liminf:limsup],levels=[36.],colors=('g'),linestyles=('--'))
 
 ######## Experimento Anomalo!!!!
-ncin = xr.open_dataset(fname.replace('EC1','EA1'))
+ncin = xr.open_dataset(fname.replace('EC','EA'))
 
 for ind in indexes:
     if ind == 99:
@@ -172,4 +172,4 @@ for ind in indexes:
     cs  = axes[axesInd,1].contour(x[:,liminf:limsup],sig[:,liminf:limsup],salt[:,liminf:limsup],levels=[36.],colors=('g'),linestyles=('--'))
 
 plt.subplots_adjust(top=0.925,bottom=0.06,left=0.115,right=0.95,hspace=0.2,wspace=0.28)
-plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/salinity/isohalinaPosition/Secao_All.pdf')
+# plt.savefig(BASE_DIR+ 'masterThesis_analysis/figures/experiments_outputs/salinity/isohalinaPosition/Secao_All.pdf')

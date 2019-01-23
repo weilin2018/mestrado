@@ -47,8 +47,8 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
 
 def export_data(fname,timestep=0):
     # plotting climatologic data: t = 0, k = 0
+    
     ncin = xr.open_dataset(fname)
-
     lon,lat = ncin.lon.values, ncin.lat.values
     depth = ncin.depth.values
     sigma = ncin.sigma.values
@@ -68,7 +68,7 @@ def export_data(fname,timestep=0):
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
-fname = DATA_DIR + 'EC1.cdf'
+fname = DATA_DIR + 'EA2.cdf'
 
 timestep = [46,303]
 
@@ -130,7 +130,7 @@ for nstep in timestep:
     cbar.ax.set_title('Salinidade',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(nstep))
-    plt.savefig('/home/danilo/Pictures/teste_composicao/salt/originais/%s.pdf'%(output_fname))
+    plt.savefig('/home/danilo/Pictures/teste_composicao/Experimento2/salt/original/%s.pdf'%(output_fname))
 
 """
 Nota:
