@@ -98,7 +98,10 @@ rotAngle = -36
 
 # corrigindo declinacao e rotacionando o eixo cartesiano
 # para alinhamento com a maxima variavencia (Mazzini, 2009)
-wur,wvr = dp.intdir2uv(ints,dirs,magDecli,rotAngle)
+wu,wv   = dp.intdir2uv(ints,dirs,0,0)
+wv     *= -1
+int,dir = dp.uv2intdir(wu,wv,0,0)
+wur,wvr = dp.intdir2uv(int,dir,magDecli,-rotAngle)
 
 # criando dataframe
 dfLaje = pd.DataFrame({'wind_along':wvr,'wind_cross':wur},index=pd.DatetimeIndex(datas))

@@ -22,6 +22,7 @@ import sys
 sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
+import decomp as dp
 
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
@@ -57,7 +58,7 @@ def extractColumnsIndexByName(columns_names,filepath):
 def readPNBOIA(ARGO_DIR,region='Santos'):
 
     if region == 'Santos':
-        nfiles = ARGO_DIR + 'Bsantos_argos.csv'
+        nfiles = ARGO_DIR + 'santos.csv'
 
     # columns positions
     cols_name = ['Wspd', 'Wdir','Wspdflag']
@@ -96,6 +97,23 @@ def readPNBOIA(ARGO_DIR,region='Santos'):
 
     return data.index.values,Wspd,Wdir
 
+def replaceComma4dots(df):
+    ''' '''
+
+    values = []
+    for x in df.values:
+        x = str(x).replace(',','.')
+        values.append(float(x))
+
+    return np.asarray(values)
+
+# function to facilitate the creation of netcdf files
+def saveNetCDF(df,dir,attrs=None):
+    df = df.to_xarray()
+    if attrs:
+        df.attrs = attrs
+
+    df.to_netcdf(dir)
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -113,7 +131,11 @@ rotAngle = -36
 
 # corrigindo declinacao e rotacionando o eixo cartesiano
 # para alinhamento com a maxima variavencia (Mazzini, 2009)
-wur,wvr = dp.intdir2uv(ints,dirs,magDecli,rotAngle)
+wu,wv   = dp.intdir2uv(ints,dirs,0,0)
+wv     *= -1
+wu     *= -1
+int,dir = dp.uv2intdir(wu,wv,0,0)
+wur,wvr = dp.intdir2uv(int,dir,magDecli,-rotAngle)
 
 # criando dataframe
 dfPNBOIA = pd.DataFrame({'wind_along':wvr,'wind_cross':wur},index=pd.DatetimeIndex(datas))
