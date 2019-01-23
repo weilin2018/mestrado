@@ -1081,3 +1081,10 @@ def formatGrid_plot(grid,fname):
     if len(grid.shape)==3:
         grid=grid[:,ij[1], ij[0]]
     return grid
+
+def getStatisticalAnalysis(re,mo):
+
+    skill = skill_willmott(re,mo)
+    corr  = np.corrcoef(re,mo)[1][0]
+
+    return skill,corr
