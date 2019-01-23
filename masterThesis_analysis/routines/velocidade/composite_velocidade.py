@@ -80,7 +80,7 @@ def tratando_corrente(u,v,depth,angle):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FILE_DIR = BASE_DIR+'masterThesis_analysis/routines/index_list.npy'
-fname = DATA_DIR + 'EC1.cdf'
+fname = DATA_DIR + 'EA2.cdf'
 
 timestep = [46,303]
 
@@ -161,4 +161,4 @@ for nstep in timestep:
     cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(nstep))
-    plt.savefig('/home/danilo/Pictures/teste_composicao/speed/originais/%s.pdf'%(output_fname))
+    plt.savefig('/home/danilo/Pictures/teste_composicao/Experimento2/speed/original/%s.pdf'%(output_fname))
