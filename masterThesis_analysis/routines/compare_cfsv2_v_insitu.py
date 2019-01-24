@@ -936,7 +936,7 @@ ARGO_DIR = BASE_DIR.replace('github/', 'ventopcse/data/')
 
 os.system('clear')
 print('Plotting map with locations')
-plotGrid(points)
+# plotGrid(points)
 
 #-----------------------------------------------------------------------------#
 # -----------------------------LAJE DE SANTOS---------------------------------#

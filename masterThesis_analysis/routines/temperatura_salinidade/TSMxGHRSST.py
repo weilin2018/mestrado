@@ -120,7 +120,7 @@ def plotData_2(sat,mod1,lon,lat,depth,date):
     plt.tight_layout(rect=rect) # box for tight_subplot_layout
     plt.subplots_adjust(top=0.935,bottom=0.085,left=0.12,right=0.91,hspace=0.13,wspace=0.2)
 
-    plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/against_ghrsst/%s.png'%(date.replace('/','-')),dpi=300)
+    #plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/against_ghrsst/%s.png'%(date.replace('/','-')),dpi=300)
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -128,16 +128,12 @@ def plotData_2(sat,mod1,lon,lat,depth,date):
 
 # global variables
 BASE_DIR = oceano.make_dir()
-if BASE_DIR.split("/")[2] == 'tparente':
-    DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output_modelo/exp03_variables/')
-
-else:
-    DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
-    GHRSST_DIR = BASE_DIR.replace('github/','ventopcse/data/GHRSST/')
+DATA_DIR = BASE_DIR.replace('github','ventopcse/output')
+GHRSST_DIR = BASE_DIR.replace('github/','ventopcse/data/GHRSST/')
 
 FIGU_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/ghrsst_v_ecom/'
 
-fname_ghrsst = GHRSST_DIR + 'ghrsst_JF2014.nc'
+fname_ghrsst = GHRSST_DIR + 'ghrsst_summer2014.nc'
 fname_EA1  = DATA_DIR + 'EA1.cdf'
 fname_EA2  = DATA_DIR + 'EA2.cdf'
 
@@ -145,7 +141,7 @@ fname_EA2  = DATA_DIR + 'EA2.cdf'
 sst_sat,time_sat,lon_sat,lat_sat = oceano.load_ghrsst(fname_ghrsst)
 
 # extracting data from model's product
-expEA = xr.open_dataset(fname_EA1)
+expEA = xr.open_dataset(fname_EA2)
 # extract sst data
 sst = expEA.temp[:,0,:,:]
 time= expEA.time

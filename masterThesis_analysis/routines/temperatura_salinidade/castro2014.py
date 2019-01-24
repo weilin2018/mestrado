@@ -390,43 +390,49 @@ SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/castro2
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EC1.cdf'
+exp = 'EC2.cdf'
 
 for f in fname:
     if exp in f:
         experiment = f
 
 # plotando near bottom temperature
+os.system('clear')
+print('Plotting near bottom temperature graphic - Control')
 ncin = xr.open_dataset(experiment)
 location = [2.85, 20.58]
 plot_nearBottomTemp(ncin,exp,SAVE_FIG,location)
 
-ncin = xr.open_dataset(experiment.replace('EC1','EA1'))
+print('Plotting near bottom temperature graphic - Anomaly')
+ncin = xr.open_dataset(experiment.replace('EC','EA'))
 location = [9.3, 25.89]
-plot_nearBottomTemp(ncin,exp.replace('EC1','EA1'),SAVE_FIG,location)
+plot_nearBottomTemp(ncin,exp.replace('EC','EA'),SAVE_FIG,location)
 
 # plotando surface salinity
+os.system('clear')
+print('Plotting near surface salinity graphic - Control')
 ncin = xr.open_dataset(experiment)
-location = [87.97, 63.51]
+location = [87.97, 67.62]
 plot_surfaceSalt(ncin,exp,SAVE_FIG,location)
 
-ncin = xr.open_dataset(experiment.replace('EC1','EA1'))
+print('Plotting near surface salinity graphic - Anomaly')
+ncin = xr.open_dataset(experiment.replace('EC','EA'))
 location = [77.35, 89.02]
-plot_surfaceSalt(ncin,exp.replace('EC1','EA1'),SAVE_FIG,location)
+plot_surfaceSalt(ncin,exp.replace('EC','EA'),SAVE_FIG,location)
 
 #####################################################################
 #                   COMPARACAO COM FIG 5 (CASTRO, 2014)             #
 #####################################################################
 
 # comparando EC1 e EA1 (temp e salt)
-isoterma(experiment,experiment.replace('EC1','EA1'),SAVE_FIG)
-isohalina(experiment,experiment.replace('EC1','EA1'),SAVE_FIG)
+isoterma(experiment,experiment.replace('EC','EA'),SAVE_FIG)
+isohalina(experiment,experiment.replace('EC','EA'),SAVE_FIG)
 
-
-# plotando contour secao vertical para comparar com Figura 5 de Castro (2014)
-isoterma(experiment,experiment.replace('EA7','EA1'),SAVE_FIG)
-isohalina(experiment,experiment.replace('EA7','EA1'),SAVE_FIG)
-
-# plotando contour secao vertical comparando controle e anomalo para o mestrado
-isoterma(experiment.replace('EA7','EC7'),experiment,SAVE_FIG)
-isohalina(experiment.replace('EA7','EC7'),experiment,SAVE_FIG)
+#
+# # plotando contour secao vertical para comparar com Figura 5 de Castro (2014)
+# isoterma(experiment,experiment.replace('EA7','EA1'),SAVE_FIG)
+# isohalina(experiment,experiment.replace('EA7','EA1'),SAVE_FIG)
+#
+# # plotando contour secao vertical comparando controle e anomalo para o mestrado
+# isoterma(experiment.replace('EA7','EC7'),experiment,SAVE_FIG)
+# isohalina(experiment.replace('EA7','EC7'),experiment,SAVE_FIG)
