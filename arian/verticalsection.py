@@ -21,8 +21,6 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
     return m
 
 
-def transect(ilat,ilon,flat,flon,data):
-    d = 
 
 DATA_DIR = '/media/danilo/Danilo/mestrado/ventopcse/data/HeatBudget/'
 ncin = xr.open_dataset(DATA_DIR+'mercator_2006.nc')
@@ -49,11 +47,19 @@ newlo= x[flat:ilat,ilon:flon]
 newla= y[flat:ilat,ilon:flon]
 
 # visualizando o novo campo e aonde sera feito o transecto
-fig,ax = plt.subplots()
+fig,axes = plt.subplots(ncols=2)
+ax=axes[0]
+m = make_map(ax)
+m.contourf(x,y,temp[0,:,:],latlon=True)
+plt.title('Grade Completa')
+
+
+ax=axes[1]
 m = make_map(ax)
 m.contourf(x[flat:ilat,ilon:flon],y[flat:ilat,ilon:flon],temp[0,flat:ilat,ilon:flon],latlon=True)
 m.plot(x[flat:ilat,ilon:flon],y[flat:ilat,ilon:flon],'k',alpha=.3,latlon=True)
 m.plot(x[flat:ilat,ilon:flon].T,y[flat:ilat,ilon:flon].T,'k',alpha=.3,latlon=True)
+plt.title('Grade Subamostrada')
 
 jindexes = np.arange(9,-1,-1)
 iindexes = np.arange(0,10,1)
