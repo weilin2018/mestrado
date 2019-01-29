@@ -126,7 +126,7 @@ axes[4].plot(dfModel.index.values,dfModel.T5m.values)
 axes[4].set_ylabel('T ['+r'$^o$'+'C]',fontsize=8,labelpad=-1)
 axes[4].legend(['Observado','Modelado'],fontsize=6,bbox_to_anchor=(0.,-0.1,.4,.5),mode='expand',ncol=2)
 
-axes[5].set_title('Temperatura - Prof. de 5m (Corr. %0.2f)'%(T15m_Corr),fontsize=8)
+axes[5].set_title('Temperatura - Prof. de 15m (Corr. %0.2f)'%(T15m_Corr),fontsize=8)
 axes[5].plot(dfObse.index.values,dfObse.T15m.values)
 axes[5].plot(dfModel.index.values,dfModel.T15m.values)
 axes[5].set_ylabel('T ['+r'$^o$'+'C]',fontsize=8,labelpad=-1)
@@ -145,7 +145,7 @@ axes[-1].xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
 plt.tight_layout()
 plt.subplots_adjust(top=0.945,bottom=0.11,left=0.126,right=0.976,hspace=0.587,wspace=0.2)
 
-# plt.savefig(FIG_DIR + 'EA2xCSS_validacao.pdf')
+plt.savefig(FIG_DIR + 'EA2xCSS_validacao.pdf')
 
 
 # # configuration settings
