@@ -161,4 +161,4 @@ for nstep in timestep:
     cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(nstep))
-    plt.savefig('/home/danilo/Pictures/teste_composicao/Experimento2/speed/original/%s.pdf'%(output_fname))
+    # plt.savefig('/home/danilo/Pictures/teste_composicao/Experimento2/speed/original/%s.pdf'%(output_fname))
