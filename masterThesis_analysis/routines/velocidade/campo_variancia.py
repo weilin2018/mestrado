@@ -36,10 +36,10 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
     # nao colocar meridianos e paralelos
     # nao colocar coordenadas no eixo (sumir com os eixos)
 
-    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution='i')
+    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
     # m = pickle.load(open('pickles/basemap.p','r'))
     m.ax = ax
-    m.drawcoastlines(linewidth=.2)
+    m.drawcoastlines(linewidth=.1)
     m.fillcontinents(color='white',alpha=0)
 
     meridians=np.arange(llon,ulon,nmeridians)
@@ -126,25 +126,57 @@ maskCondition = np.greater(depth,100)
 masked_ur     = np.ma.masked_where(maskCondition,ur_var)
 masked_vr     = np.ma.masked_where(maskCondition,vr_var)
 
+# mascarando dados das 5 primeiras e ultimas linhas da grade
+masked_ur[:5,:] = np.nan
+masked_vr[:5,:] = np.nan
+masked_ur[-5:,:] = np.nan
+masked_vr[-5:,:] = np.nan
+
 # formatando os dados para um formato de visualizacao melhor e passando os vetores
 # normalizados pela velocidade
 # xplot,yplot,uplot,vplot = ocplt.formatting_vectors(ur_var,vr_var,lon,lat,FILE_DIR)
-
+plt.close('all')
 fig,ax = plt.subplots(ncols=2,figsize=(15./2.54,8./2.54))
-ax[0].set_title('cross shore variance',fontsize=8)
-ax[1].set_title('along shore variance',fontsize=8)
+ax[0].set_title('Perpendicular',fontsize=8)
+ax[1].set_title('Paralela',fontsize=8)
+plt.suptitle(u'Variância das componentes perpendicular e paralela integradas verticalmente',fontsize=10)
+
+contours = np.arange(0,.2,.001)
+
 contours_u = np.arange(0,0.09,0.001)
 contours_v = np.arange(0,0.1,0.01)
 
-m1,_,_ = make_map(ax[0])
+m1,_,_ = make_map(ax[0],ulon=-42,llon=-49,ulat=-22.3,llat=-29,resolution='i')
+cf1 = m1.contourf(lon,lat,masked_ur,contours,cmap='YlOrBr',latlon=True)
+cs1 = m1.contour(lon,lat,depth,levels=[80.],latlon=True,colors=('black'),linewidths=(0.2))
+plt.clabel(cs1,[80],fmt='%i',inline=1,fontsize=8,manual=True)
 
-cf1 = m1.contourf(lon,lat,masked_ur,contours_u,cmap='YlOrBr',latlon=True)
-cs1 = m1.contour(lon,lat,depth,levels=[80.,100.],latlon=True,colors=('black'),linewidths=(0.5))
+m2,_,_ = make_map(ax[1],ulon=-42,llon=-49,ulat=-22.3,llat=-29,resolution='i')
+cf2 = m2.contourf(lon,lat,masked_vr,contours,cmap='YlOrBr',latlon=True)
+cs2 = m2.contour(lon,lat,depth,levels=[80.],latlon=True,colors=('black'),linewidths=(0.2))
+plt.clabel(cs2,[80],fmt='%i',inline=1,fontsize=8,manual=True)
 
-m2,_,_ = make_map(ax[1])
-
-cf2 = m2.contourf(lon,lat,masked_vr,contours_v,cmap='YlOrBr',latlon=True)
-cs2 = m2.contour(lon,lat,depth,levels=[80.,100.],latlon=True,colors=('black'),linewidths=(0.5))
 plt.tight_layout()
+plt.subplots_adjust(top=0.86,bottom=0.018,left=0.021,right=0.969,hspace=0.0,wspace=0.0)
+
+# inserting colorbar
+caxes1 = fig.add_axes([.12,.1,.3,.03])
+caxes2 = fig.add_axes([.62,.1,.3,.03])
+
+cbar1 = plt.colorbar(cf1,cax=caxes1,orientation='horizontal')
+cbar2 = plt.colorbar(cf2,cax=caxes2,orientation='horizontal')
+
+# setting colorbar tick labels
+from matplotlib import ticker
+tick_locator = ticker.MaxNLocator(nbins=6)
+cbar1.locator = tick_locator
+cbar1.update_ticks()
+cbar2.locator = tick_locator
+cbar2.update_ticks()
+
+cbar1.ax.axes.tick_params(axis='both',which='both',labelsize=8)
+cbar1.ax.set_title(u'Variância ['+r'm$^{2}$.s$^{-2}$'+' ]',fontsize=8)
+cbar2.ax.axes.tick_params(axis='both',which='both',labelsize=8)
+cbar2.ax.set_title(u'Variância ['+r'm$^{2}$.s$^{-2}$'+' ]',fontsize=8)
 
 plt.savefig(SAVE_DIR + 'variancia.eps')
