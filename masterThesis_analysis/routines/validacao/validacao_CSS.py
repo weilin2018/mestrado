@@ -59,11 +59,11 @@ del dfTmp
 
 ##################### IMPORTING MODELED DATA
 # importing product data, alread rotated and saved in a netcdf file
-df5m = xr.open_dataset(SAVE_DIR + 'df5m.nc')
+df5m = xr.open_dataset(SAVE_DIR + 'df5m_EA2.nc')
 df5m = df5m.to_dataframe()
-df15m = xr.open_dataset(SAVE_DIR + 'df15m.nc')
+df15m = xr.open_dataset(SAVE_DIR + 'df15m_EA2.nc')
 df15m = df15m.to_dataframe()
-dfTemp = xr.open_dataset(SAVE_DIR + 'dfTemp.nc')
+dfTemp = xr.open_dataset(SAVE_DIR + 'dfTemp_EA2.nc')
 dfTemp = dfTemp.to_dataframe()
 
 # putting all data in the same dataframe
