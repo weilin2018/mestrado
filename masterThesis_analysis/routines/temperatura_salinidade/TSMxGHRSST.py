@@ -141,7 +141,7 @@ fname_EA2  = DATA_DIR + 'EA2.cdf'
 sst_sat,time_sat,lon_sat,lat_sat = oceano.load_ghrsst(fname_ghrsst)
 
 # extracting data from model's product
-expEA = xr.open_dataset(fname_EA2)
+expEA = xr.open_dataset(fname_EA1)
 # extract sst data
 sst = expEA.temp[:,0,:,:]
 time= expEA.time
