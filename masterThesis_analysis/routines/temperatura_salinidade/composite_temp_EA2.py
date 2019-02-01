@@ -101,8 +101,14 @@ for nstep in timestep:
     contours = np.arange(13,35,0.1)
 
     cf1 = m1.contourf(lon,lat,temp[0,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
+    cr1 = m1.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+    plt.clabel(cr1,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
     cf2 = m2.contourf(lon,lat,temp[10,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
+    cr2 = m2.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+    plt.clabel(cr2,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
     cf3 = m3.contourf(lon,lat,temp[20,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
+    cr3 = m3.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+    plt.clabel(cr3,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
 
     # matplotib trick to remove white thin lines when saving contourf in pdf
     for c in cf1.collections:
@@ -134,7 +140,7 @@ for nstep in timestep:
     cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(nstep))
-    plt.savefig('/home/danilo/Pictures/composicao/temp/EA2/%s.eps'%(output_fname))
+    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/temp/EA2/%s.eps'%(output_fname))
 
 """
 Nota:
