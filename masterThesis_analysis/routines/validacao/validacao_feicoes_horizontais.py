@@ -96,7 +96,7 @@ def createPlot_structure(nrows=1,ncols=3,figsize=(None,None)):
     return fig,axes,m_axes,cbaxes
 
 def plotData_2(sat,mod1,lon,lat,depth,date):
-    fig,axes,m_axes,cbaxes = createPlot_structure(nrows=1,ncols=2,figsize=(15/2.54,9/2.54))
+    fig,axes,m_axes,cbaxes = createPlot_structure(nrows=1,ncols=2,figsize=(15/2.54,8.5/2.54))
 
     cf1 = m_axes[0].contourf(lon,lat,sat,np.arange(19.,33.,.8),latlon=True,cmap=cmo.cm.thermal)
     cb1 = plt.colorbar(cf1,cax=cbaxes[0],orientation='horizontal',ticks=np.arange(19,33,2))
