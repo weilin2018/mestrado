@@ -95,8 +95,14 @@ def createPlot_structure(nrows=1,ncols=3,figsize=(None,None)):
 
     return fig,axes,m_axes,cbaxes
 
-def plotData_2(sat,mod1,lon,lat,depth,date):
+def plotData_2(sat,mod1,lon,lat,depth,date,colorbar='EA1'):
     fig,axes,m_axes,cbaxes = createPlot_structure(nrows=1,ncols=2,figsize=(15/2.54,8.5/2.54))
+
+    if colorbar == 'EA2':
+        contours = np.arange(15.,30.,.8)
+    else:
+        contours = np.arange(15.,34.,.8)
+
 
     cf1 = m_axes[0].contourf(lon,lat,sat,np.arange(19.,33.,.8),latlon=True,cmap=cmo.cm.thermal)
     cb1 = plt.colorbar(cf1,cax=cbaxes[0],orientation='horizontal',ticks=np.arange(19,33,2))
@@ -104,17 +110,17 @@ def plotData_2(sat,mod1,lon,lat,depth,date):
     # plt.clabel(cr1,fontsize=9,inline=1,fmt='%i')
     fig.text(0.23,0.11,r'Temperatura ($^o$C)',fontsize=8)
 
-    cf2 = m_axes[1].contourf(lon,lat,mod1,np.arange(15.,34.,.8),latlon=True,cmap=cmo.cm.thermal)
+    cf2 = m_axes[1].contourf(lon,lat,mod1,contours,latlon=True,cmap=cmo.cm.thermal)
     cb2 = plt.colorbar(cf2,cax=cbaxes[1],orientation='horizontal',ticks=np.arange(15,34,3))
     cr2 = m_axes[1].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4],levels=[100,200])
     # plt.clabel(cr2,fontsize=8,inline=1,fmt='%i')
     fig.text(0.65,0.11,r'Temperatura ($^o$C)',fontsize=8)
 
     m_axes[0].ax.set_title('GHRSST',fontsize=8)
-    m_axes[1].ax.set_title('EA1',fontsize=8)
+    m_axes[1].ax.set_title('%s'%(colorbar),fontsize=8)
 
     # plt.suptitle(u'Temperatura da Superfície do Mar em %s'%(date),fontsize=10)
-    plt.suptitle(u'Comparação da Temperatura da Superfície do Mar observada \n(GHRSST, à esquerda) com modelado (EA1, à direita), para o dia %s'%(date),fontsize=10)
+    plt.suptitle(u'Comparação da Temperatura da Superfície do Mar observada \n(GHRSST, à esquerda) com modelado (%s, à direita), para o dia %s'%(colorbar,date),fontsize=10)
 
     rect = (0,0.08,1.,0.95)
     plt.tight_layout(rect=rect) # box for tight_subplot_layout
@@ -141,7 +147,7 @@ fname_EA2  = DATA_DIR + 'EA2.cdf'
 sst_sat,time_sat,lon_sat,lat_sat = oceano.load_ghrsst(fname_ghrsst)
 
 # extracting data from model's product
-expEA = xr.open_dataset(fname_EA1)
+expEA = xr.open_dataset(fname_EA2)
 # extract sst data
 sst = expEA.temp[295,0,:,:]
 time= expEA.time
@@ -167,6 +173,6 @@ sst = np.ma.masked_where(maskCondition,sst)
 
 # plotando os conjuntos de dados
 plt.ion()
-plotData_2(sat,sst[:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[32]).strftime('%d/%m/%Y'))
+plotData_2(sat,sst[:,:],lon_mod,lat_mod,depth,pd.to_datetime(time_sat[32]).strftime('%d/%m/%Y'),colorbar='EA2')
 
-plt.savefig(FIGU_DIR + 'EA1_ghrsst.eps')
+# plt.savefig(FIGU_DIR + 'EA1_ghrsst.eps')
