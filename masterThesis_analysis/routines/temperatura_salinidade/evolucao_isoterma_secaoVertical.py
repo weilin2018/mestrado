@@ -23,7 +23,7 @@ from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 
 import matplotlib
-matplotlib.style.use('ggplot')
+# matplotlib.style.use('ggplot')
 
 import sys
 sys.path.append('masterThesisPack/')
@@ -116,8 +116,8 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EC2.cdf'
-SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EC2/'
+exp = 'EC1.cdf'
+# SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EC2/'
 
 for f in fname:
     if exp in f:
@@ -164,10 +164,10 @@ for ind in indexes:
     temp = ncin.temp[tBegin,:,ind,:]
     # cs  = axes[axesInd,0].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('r'),linestyles=('--'))
     t    = np.delete(temp,inds,axis=1)
-    cs   = axes[axesInd,0].contour(dist,newSig,t,levels=[18.],colors=('r'),linestyles=('--'))
+    cs   = axes[axesInd,0].contourf(dist,newSig,t,levels=[18.],colors=('r'),linestyles=('--'))
     temp = ncin.temp[tFinal,:,ind,:]
     t    = np.delete(temp,inds,axis=1)
-    cs   = axes[axesInd,0].contour(dist,newSig,t,levels=[18.],colors=('g'),linestyles=('--'))
+    cs   = axes[axesInd,0].contourf(dist,newSig,t,levels=[18.],colors=('g'),linestyles=('--'))
     # cs  = axes[axesInd,0].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('g'),linestyles=('--'))
 
 
@@ -201,4 +201,4 @@ for ind in indexes:
     # cs  = axes[axesInd,1].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('g'),linestyles=('--'))
 
 plt.subplots_adjust(top=0.925,bottom=0.06,left=0.115,right=0.95,hspace=0.2,wspace=0.28)
-plt.savefig(BASE_DIR+ 'masterThesis_analysis/figures/experiments_outputs/temperature/isothermPosition/Secao_All.pdf')
+# plt.savefig(BASE_DIR+ 'masterThesis_analysis/figures/experiments_outputs/temperature/isothermPosition/Secao_All.pdf')
