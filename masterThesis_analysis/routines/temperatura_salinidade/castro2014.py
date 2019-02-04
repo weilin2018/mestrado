@@ -84,7 +84,7 @@ def plot_nearBottomTemp(ncin,exp,SAVE_FIG,location,ilat=[99]):
     ax[0].set_ylabel(r'Temperatura [$^o$C]',fontsize=8)
     # ax[0].set_xlabel('Distance [km]',fontsize=8)
     ax[0].set_ylim([0,30])
-    ax[0].set_xlim([0,140])
+    ax[0].set_xlim([0,150])
 
     ax[0].tick_params(axis='x',labelbottom='off') # remove ticklabels
 
@@ -92,7 +92,7 @@ def plot_nearBottomTemp(ncin,exp,SAVE_FIG,location,ilat=[99]):
     ax[1].set_ylabel(r'Temperature [$^o$C]',fontsize=8)
     ax[1].set_xlabel(u'Distância da costa [km]',fontsize=8)
     ax[1].set_ylim([0,30])
-    ax[1].set_xlim([0,140])
+    ax[1].set_xlim([0,150])
 
     # inserting lines inside the graphic
     props = dict(boxstyle='round', facecolor='white', alpha=0.5)
@@ -228,17 +228,17 @@ def isoterma(f1,f2,SAVE_FIG):
     s      = np.delete(sig,inds,axis=1)
 
     ax[0,0].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
-    ax[0,0].set_xlim([0,150])
+    ax[0,0].set_xlim([0,100])
     ax[0,0].set_ylim([-400,0])
     ax[1,0].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
-    ax[1,0].set_xlim([0,150])
+    ax[1,0].set_xlim([0,100])
     ax[1,0].set_ylim([-400,0])
 
     ax[0,1].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
-    ax[0,1].set_xlim([0,150])
+    ax[0,1].set_xlim([0,100])
     ax[0,1].set_ylim([-400,0])
     ax[1,1].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
-    ax[1,1].set_xlim([0,150])
+    ax[1,1].set_xlim([0,100])
     ax[1,1].set_ylim([-400,0])
 
     # plotar isotermas
@@ -329,14 +329,14 @@ def isohalina(f1,f2,SAVE_FIG):
     ax[0,0].set_xlim([0,150])
     ax[0,0].set_ylim([-400,0])
     ax[1,0].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
-    ax[1,0].set_xlim([0,150])
+    ax[1,0].set_xlim([0,100])
     ax[1,0].set_ylim([-400,0])
 
     ax[0,1].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
-    ax[0,1].set_xlim([0,150])
+    ax[0,1].set_xlim([0,100])
     ax[0,1].set_ylim([-400,0])
     ax[1,1].fill_between(dist[0,:],-3000,-d[99,:],color='#c0c0c0')
-    ax[1,1].set_xlim([0,150])
+    ax[1,1].set_xlim([0,100])
     ax[1,1].set_ylim([-400,0])
 
     # plotar isotermas
@@ -400,24 +400,24 @@ for f in fname:
 os.system('clear')
 print('Plotting near bottom temperature graphic - Control')
 ncin = xr.open_dataset(experiment)
-location = [2.85, 20.58]
+location = [5.39, 18.37]
 plot_nearBottomTemp(ncin,exp,SAVE_FIG,location)
 
 print('Plotting near bottom temperature graphic - Anomaly')
 ncin = xr.open_dataset(experiment.replace('EC','EA'))
-location = [9.3, 25.89]
+location = [7.64, 21.03]
 plot_nearBottomTemp(ncin,exp.replace('EC','EA'),SAVE_FIG,location)
 
 # plotando surface salinity
 os.system('clear')
 print('Plotting near surface salinity graphic - Control')
 ncin = xr.open_dataset(experiment)
-location = [87.97, 67.62]
+location = [87.97, 64.1]
 plot_surfaceSalt(ncin,exp,SAVE_FIG,location)
 
 print('Plotting near surface salinity graphic - Anomaly')
 ncin = xr.open_dataset(experiment.replace('EC','EA'))
-location = [77.35, 89.02]
+location = [68.36, 89.02]
 plot_surfaceSalt(ncin,exp.replace('EC','EA'),SAVE_FIG,location)
 
 #####################################################################

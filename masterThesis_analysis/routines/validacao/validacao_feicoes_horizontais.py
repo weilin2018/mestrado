@@ -106,13 +106,13 @@ def plotData_2(sat,mod1,lon,lat,depth,date,colorbar='EA1'):
 
     cf1 = m_axes[0].contourf(lon,lat,sat,np.arange(19.,33.,.8),latlon=True,cmap=cmo.cm.thermal)
     cb1 = plt.colorbar(cf1,cax=cbaxes[0],orientation='horizontal',ticks=np.arange(19,33,2))
-    cr1 = m_axes[0].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4],levels=[100,200])
+    cr1 = m_axes[0].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4],levels=[40,90])
     # plt.clabel(cr1,fontsize=9,inline=1,fmt='%i')
     fig.text(0.23,0.11,r'Temperatura ($^o$C)',fontsize=8)
 
     cf2 = m_axes[1].contourf(lon,lat,mod1,contours,latlon=True,cmap=cmo.cm.thermal)
     cb2 = plt.colorbar(cf2,cax=cbaxes[1],orientation='horizontal',ticks=np.arange(15,34,3))
-    cr2 = m_axes[1].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4],levels=[100,200])
+    cr2 = m_axes[1].contour(lon,lat,depth,latlon=True,colors=('k'),linestyles=('--'),linewidths=[.4,.4],levels=[40,90])
     # plt.clabel(cr2,fontsize=8,inline=1,fmt='%i')
     fig.text(0.65,0.11,r'Temperatura ($^o$C)',fontsize=8)
 
@@ -167,7 +167,7 @@ if 'sat' not in locals():
     sat = interp_ghrsst_to_ecom(lon_sat,lat_sat,sst_sat[32],lon_mod,lat_mod)
 
 # masking data, where depth is higher than 1000m
-maskCondition = np.greater(depth,1000)
+maskCondition = np.greater(depth,100)
 sat = np.ma.masked_where(maskCondition,sat)
 sst = np.ma.masked_where(maskCondition,sst)
 
