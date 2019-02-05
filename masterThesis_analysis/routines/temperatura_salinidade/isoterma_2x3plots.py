@@ -40,6 +40,7 @@ def create_Structure(ncin,indexes):
     lat[lat == 0.] = np.nan
     depth = ncin['depth'].values
     sigma = ncin['sigma'].values
+    dx    = ncin['h1'].values
 
     fig,axes = plt.subplots(nrows=3,ncols=2,figsize=(17.4/2.54, 18/2.54))
 
@@ -56,7 +57,7 @@ def create_Structure(ncin,indexes):
             axes[axesInd,1].set_xlabel(u'Distância [km]',fontsize=8)
 
         x,prof,sig = oceano.create_newDepth(lon,depth,sigma,ind)      # create new depth
-        dist,inds = calcDistance(x,sigma)
+        dist,inds = calcDistance(x,sigma,dx[ind,:])
         liminf,limsup = 5,83               # limits with non-nan values
 
         d = np.delete(depth,inds,axis=1)
@@ -87,7 +88,7 @@ def create_Structure(ncin,indexes):
 
     return fig,axes
 
-def calcDistance(x,sig,xx=110):
+def calcDistance(x,sig,dx,xx=110):
 
     inds = np.where(np.isnan(x[0,:])) # aonde e nan
     lats = np.ones([xx])*11
@@ -96,8 +97,12 @@ def calcDistance(x,sig,xx=110):
     x =  np.delete(x[0,:],inds)
     lats=np.delete(lats,inds)
 
-    dist2 = np.cumsum(np.append(0,sw.dist(lats,x)[0]))
-    dist = np.tile(dist2,(len(sig),1))
+    # dist2 = np.cumsum(np.append(0,sw.dist(lats,x)[0]))
+    # dist = np.tile(dist2,(len(sig),1))
+
+    dist      = np.cumsum(dx)/1000
+    dist      = np.tile(dist,(len(sig),1))
+    dist      = np.delete(dist,inds,axis=1)
 
     return dist,inds
 
@@ -116,7 +121,7 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'EC1.cdf'
+exp = 'EA1.cdf'
 # SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EC2/'
 
 for f in fname:
@@ -131,18 +136,27 @@ lon[lon == 0.] = np.nan
 lat[lat == 0.] = np.nan
 depth = ncin['depth'].values
 sigma = ncin['sigma'].values
+dx    = ncin['h1'].values
 
 # index para as latitudes das seções
 indexes = [99,28,19]
 
 fig,axes = create_Structure(ncin,indexes)
+for i in range(2):
+    for j in range(3):
+        axes[j,i].set_xlim([0,150])
+        axes[j,i].set_ylim([-100,0])
+
+axes[0,0].set_title(u'Experimento EA1',fontsize=8)
+axes[0,1].set_title(u'Experimento EA2',fontsize=8)
+
 title = u'Posição inicial (vermelho) e final (verde) da isoterma de 18' + r'$^o$C'
 # title = u'Posição inicial e final da isoterma de 18' + r'$^o$' + u'C no Experimento Controle (esquerda) \ne Experimento Anômalo (direita) -Seção %s'%loc
 plt.suptitle(title,fontsize=10)
 
 # defining the begin and the end to plot
-tBegin = 0 # climatologic position
-tFinal = 303 # final do evento em estudo
+tBegin = 46 # climatologic position
+tFinal = 410 # final do evento em estudo
 
 ######## Experimento Controle!!!!
 for ind in indexes:
@@ -156,7 +170,7 @@ for ind in indexes:
     # definindo algumas variaveis
     x,prof,sig = oceano.create_newDepth(lon,depth,sigma,ind)      # create new depth
     liminf,limsup = 5,83               # limits with non-nan values
-    dist,inds = calcDistance(x,sigma)
+    dist,inds = calcDistance(x,sigma,dx[ind,:])
 
     d       = np.delete(depth[ind,:],inds)
     newSig  = np.delete(sig,inds,axis=1)
@@ -165,14 +179,16 @@ for ind in indexes:
     # cs  = axes[axesInd,0].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('r'),linestyles=('--'))
     t    = np.delete(temp,inds,axis=1)
     cs   = axes[axesInd,0].contour(dist,newSig,t,levels=[18.],colors=('r'),linestyles=('--'))
-    temp = ncin.temp[tFinal,:,ind,:]
+    # temp = ncin.temp[tFinal,:,ind,:]
+    temp = np.nanmean(ncin.temp[tFinal-6:tFinal+6,:,ind,:],axis=0)
     t    = np.delete(temp,inds,axis=1)
     cs   = axes[axesInd,0].contour(dist,newSig,t,levels=[18.],colors=('g'),linestyles=('--'))
+    cf1  = axes[axesInd,0].contourf(dist,newSig,t,np.arange(10,32,0.5),cmap=cmo.cm.thermal,extend='max')
     # cs  = axes[axesInd,0].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('g'),linestyles=('--'))
 
 
 ######## Experimento Anomalo!!!!
-ncin = xr.open_dataset(fname.replace('EC','EA'))
+ncin = xr.open_dataset(fname.replace('1','2'))
 
 for ind in indexes:
     if ind == 99:
@@ -185,7 +201,7 @@ for ind in indexes:
     # definindo algumas variaveis
     x,prof,sig = oceano.create_newDepth(lon,depth,sigma,ind)      # create new depth
     liminf,limsup = 5,83               # limits with non-nan values
-    dist,inds = calcDistance(x,sigma)
+    dist,inds = calcDistance(x,sigma,dx[ind,:])
 
     d       = np.delete(depth[ind,:],inds)
     newSig  = np.delete(sig,inds,axis=1)
@@ -194,9 +210,11 @@ for ind in indexes:
     t    = np.delete(temp,inds,axis=1)
     cs   = axes[axesInd,1].contour(dist,newSig,t,levels=[18.],colors=('r'),linestyles=('--'))
     # cs   = axes[axesInd,1].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('r'),linestyles=('--'))
-    temp = ncin.temp[tFinal,:,ind,:]
+    # temp = ncin.temp[tFinal,:,ind,:]
+    temp = np.nanmean(ncin.temp[tFinal-6:tFinal+6,:,ind,:],axis=0)
     t    = np.delete(temp,inds,axis=1)
     cs   = axes[axesInd,1].contour(dist,newSig,t,levels=[18.],colors=('g'),linestyles=('--'))
+    cf1  = axes[axesInd,1].contourf(dist,newSig,t,np.arange(10,32,0.5),cmap=cmo.cm.thermal,extend='max')
 
     # cs  = axes[axesInd,1].contour(x[:,liminf:limsup],sig[:,liminf:limsup],temp[:,liminf:limsup],levels=[18.],colors=('g'),linestyles=('--'))
 
