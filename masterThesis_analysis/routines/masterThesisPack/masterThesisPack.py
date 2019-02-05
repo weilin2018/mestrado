@@ -16,6 +16,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import os
 import pickle
 import math
+from scipy import interpolate
 
 # gerar diretorio base
 def make_dir():
@@ -1088,3 +1089,126 @@ def getStatisticalAnalysis(re,mo):
     corr  = np.corrcoef(re.interpolate().values,mo.interpolate().values)[1][0]
 
     return skill,corr
+
+
+################# carine rotina de interpolacao de sigma para standard level
+def sigma2stdl(variable,sigma,nstdl,depth,h1,lon,lat,name):
+    """Function to interpolate sigma vertical coordinate to standard levels
+    (given by user).
+
+    Parameters
+    ----------
+    variable : np.ndarray
+        4D matrix with data.
+    sigma : np.ndarray
+        1D vector containing sigma levels.
+    nstdl : int
+        Number of standard levels to be used.
+    depth : np.ndarray
+        2D array with depth.
+    h1 : np.ndarray
+        2D array with x distance between each grid cell.
+    lon : np.ndarray
+        2D array with longitude.
+    lat : np.ndarray
+        2D array with latitude.
+    name : string
+        Just a name to save or print on screen
+
+    Returns
+    -------
+    stdl: np.ndarray
+        1D vector with standard levels created.
+    variableI : np.ndarray
+        4D matrix with interpolated data into standard levels (vertically)
+
+    Author
+    ------
+        Routine created by Carine C. R. Godoi (lab technician on LHiCo).
+
+    """
+
+    os.system('clear')
+    print('\ninterpolating sigma to standard levels: ' + name)
+
+    # creating 4D matrix to store interpolated data
+    nsteps, sigmalevels, lines, columns = variable.shape
+    variableI = np.zeros((nsteps, nstdl, lines, columns))
+    variableI[:] = np.NAN
+
+    # creating standard level, based on the number given (nstdl)
+    if nstdl == 37:
+        stdl = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 800, 1000, 1200, 1500, 1800, 2000]
+    elif nstdl == 23:
+        stdl = [0, 10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 800, 1000, 1200, 1500, 1800, 2000]
+    elif nstdl == 100: # adapted for inner and middle shelf
+        # vertical resolution: 1m
+        stdl = np.linspace(0,100,100)
+
+    ### --- vectorize data to decrease number of for loops --- ###
+
+    vecvar = np.zeros((sigmalevels, nsteps*lines*columns))
+    vecvarI = np.zeros((nstdl, nsteps*lines*columns))
+    localdep = np.zeros((nsteps*lines*columns))
+    cont = 0
+
+    for n in np.arange(0, nsteps):
+    	# print('nstep ' + str(n) + ' of ' + str(nsteps-1))
+    	for l in np.arange(0, lines):
+    		for c in np.arange(0, columns):
+    			vecvar[:, cont] = variable[n, :, l, c]
+    			localdep[cont] = depth[l, c]
+    			cont += 1
+
+    ### --- interpolate sigma to standard levels --- ###
+    # plot counter
+    kplot = int(nsteps*lines*columns/10)
+    k = 0
+    for i in np.arange(0, nsteps*lines*columns):
+    	k += 1
+    	if k == kplot:
+    		print(str(np.round(i/(nsteps*lines*columns)*100)) + '%')
+    		k = 0
+
+    	if ~np.isnan(localdep[i]):
+    		# print('yes 1/2')
+
+    		# levels of data (m)
+    		depsigma = -localdep[i]*sigma
+
+    		# include surface with same value of first sigma level m to interpolate
+    		D = list(depsigma)
+    		D.insert(0, 0)
+
+    		# select profile and include surface
+    		profile = np.zeros(sigmalevels+1)
+    		profile[1:] = vecvar[:, i]
+    		profile[0] = profile[1]
+
+    		# watercolumn positions only
+    		watercolumn = stdl <= localdep[i]
+    		stdl2interp = np.array(stdl)[watercolumn]
+
+    		# interpolate to the same standard levels
+    		fsigma2stdl = interpolate.interp1d(D, profile)
+    		profileI = fsigma2stdl(stdl2interp)
+
+    		# stores at vectorized variable
+    		vecvarI[watercolumn, i] = profileI
+    		vecvarI[~watercolumn, i] = np.NAN
+
+    ### --- back to original shape --- ###
+
+    cont = 0
+
+    for n in np.arange(0, nsteps):
+    	for l in np.arange(0, lines):
+    		for c in np.arange(0, columns):
+    			variableI[n, :, l, c] = vecvarI[:, cont]
+    			cont += 1
+
+    # corners to NaN
+    variableI[:, :, 1, -2] = np.NAN
+    variableI[:, :, -2, -2] = np.NAN
+
+    return stdl,variableI
