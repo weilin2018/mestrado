@@ -246,7 +246,7 @@ def plotsection_climatology(fname,timestep=0):
     sigma = ncin['sigma'].values
 
     # setting latitude index for each section
-    indexes = [99,27,19]
+    indexes = [99,28,19]
 
     # extracting temperature
     temp = ncin.temp[timestep,:,:,:]
@@ -274,7 +274,7 @@ def plotsection_climatology(fname,timestep=0):
     for ind in indexes:
         if ind == 99:
             axesInd = 0
-        if ind == 27:
+        if ind == 28:
             axesInd = 1
         if ind == 19:
             axesInd = 2
@@ -300,7 +300,7 @@ def plotsection_climatology(fname,timestep=0):
     for ind in indexes:
         if ind == 99:
             axesInd = 0
-        if ind == 27:
+        if ind == 28:
             axesInd = 1
         if ind == 19:
             axesInd = 2
@@ -330,7 +330,7 @@ def plotsection_climatology(fname,timestep=0):
     for ind in indexes:
         if ind == 99:
             axesInd = 0
-        if ind == 27:
+        if ind == 28:
             axesInd = 1
         if ind == 19:
             axesInd = 2
@@ -366,6 +366,24 @@ def plotsection_climatology(fname,timestep=0):
         c.set_edgecolor('face')
         c.set_linewidth(0.00000000001)
 
+def cotoco(fname):
+
+    ncin = xr.open_dataset(fname)
+    ind  = 99 # ubatuba apenas por enquanto
+
+    dx   = ncin.h1.values
+    depth= ncin.depth.values
+    sigma= ncin.sigma
+
+    xe   = np.cumsum(dx[ind,:])/100
+    niv  = np.nanmax(depth[ind,:]) * sigma
+
+    temp = ncin.temp[0,:,ind,:]
+    XE,YE= np.meshgrid(xe,niv)
+
+    cf   = plt.contourf(XE,YE,temp,40,cmap=cmo.cm.thermal)
+    cbar = plt.colorbar(cf)
+
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -392,4 +410,4 @@ fname = experiment
 plotsection_climatology(fname)
 
 plt.subplots_adjust(top=0.915,bottom=0.05,left=0.09,right=0.98,hspace=0.09,wspace=0.13)
-plt.savefig(SAVE_DIR + 'temperatura_secao.eps')
+# plt.savefig(SAVE_DIR + 'temperatura_secao.eps')
