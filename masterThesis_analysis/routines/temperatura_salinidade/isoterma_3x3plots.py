@@ -272,4 +272,4 @@ for ind in indexes:
 plt.tight_layout()
 plt.subplots_adjust(top=0.905,bottom=0.059,left=0.068,right=0.987,hspace=0.11,wspace=0.068)
 
-plt.savefig(BASE_DIR+ 'masterThesis_analysis/figures/experiments_outputs/temperature/secao_3x3plots.eps')
+plt.savefig(BASE_DIR.replace('mestrado/github','Dropbox/mestrado/figuras')+ 'secao_3x3plots.eps')

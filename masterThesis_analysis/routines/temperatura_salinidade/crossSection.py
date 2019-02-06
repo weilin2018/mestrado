@@ -103,7 +103,7 @@ def plot2(fname,ind=99,cutLon=90):
 
     fig,ax = plt.subplots()
     ax.contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.thermal)
-    ax.fill_between(dist2[-1,:], -100, -depth[ind,:],color='#c0c0c0')
+    ax.fill_between(dist2[-1,:], -200, -depth[ind,:],color='#c0c0c0')
     ax.plot(dist2[-1,:],sig[-1,:],'k')
     ax.set_xlim([0,100])
     ax.set_ylim([-100,0])
