@@ -144,7 +144,7 @@ def sigma2stdl_teste(variable,sigma,nlines,depth,h1,lon,lat,name,cutLon):
         data2interp = sliced[inds]
 
         # create longitude/distance vector based on h1 (dx)
-        X = np.cumsum(h1[ind,:cutLon])
+        X = np.cumsum(h1[ind,:cutLon])/100
         axis2interp = X[inds]
 
         fInterp = interpolate.interp1d(axis2interp,data2interp)
