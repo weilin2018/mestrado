@@ -96,7 +96,7 @@ def crossSection(fname):
 
     return grid_x,grid_z,Tinterp,stdl,dist,dist2,sig
 
-def sigma2stdl_teste(variable,sigma,nlines,depth,h1,lon,lat,name):
+def sigma2stdl_teste(variable,sigma,nlines,depth,h1,lon,lat,name,cutLon):
 
     os.system('clear')
     print('\ninterpolating sigma to standard levels: ' + name)
@@ -132,16 +132,28 @@ def sigma2stdl_teste(variable,sigma,nlines,depth,h1,lon,lat,name):
     			locallon[cont] = lon[z, c]
     			cont += 1
 
-    for i in np.arange(0,nsteps*nstdl*columns):
-        if ~np.isnan(locallon[i]):
-            # print('yes 1/2')
-            X = list(locallon[i])
-            X.insert(0,0)
+    # simple case: just a section given by user and already gridded on vertical
+    v = variable[0,:,99,:] # ind = 99 for Ubatuba
+    vi= np.zeros((nstdl,nlines)) * np.nan # creating a new matrix to store interpolated data
 
-            # select each level
-            row = np.zeros(lines+1)
-            row[1:] = vecvar[:,i]
-            row[0]  = row[1]
+    for z  in range(v.shape[0]): # reading each z level
+        sliced = v[z,:] # line
+
+        # take only where is not NaN
+        inds = np.where(~np.isnan(sliced))
+        data2interp = sliced[inds]
+
+        # create longitude/distance vector based on h1 (dx)
+        X = np.cumsum(h1[ind,:cutLon])
+        axis2interp = X[inds]
+
+        fInterp = interpolate.interp1d(axis2interp,data2interp)
+        slicedInterp = fInterp(newline)
+
+
+
+
+
 
 
 
