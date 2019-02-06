@@ -129,11 +129,21 @@ def sigma2stdl_teste(variable,sigma,nlines,depth,h1,lon,lat,name):
     	for z in np.arange(0, nstdl):
     		for c in np.arange(0, columns):
     			vecvar[:, cont] = variable[n,z,:, c]
-    			locallon[cont] = lon[l, c]
+    			locallon[cont] = lon[z, c]
     			cont += 1
 
-    for i i nnp.arange(0,nsteps*nstdl*columns):
-        if ~np.isnan()
+    for i in np.arange(0,nsteps*nstdl*columns):
+        if ~np.isnan(locallon[i]):
+            # print('yes 1/2')
+            X = list(locallon[i])
+            X.insert(0,0)
+
+            # select each level
+            row = np.zeros(lines+1)
+            row[1:] = vecvar[:,i]
+            row[0]  = row[1]
+
+
 
 
 
