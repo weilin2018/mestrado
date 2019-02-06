@@ -83,7 +83,7 @@ def plot1(fname,ind=99):
     plt.tight_layout()
     plt.subplots_adjust(top=0.911,bottom=0.103,left=0.08,right=0.98,hspace=0.18,wspace=0.084)
 
-def plot2(fname,ind=99,cutLon=80):
+def plot2(fname,ind=99,cutLon=90):
     ncin = xr.open_dataset(fname)
 
     # extract grid and other general variables
