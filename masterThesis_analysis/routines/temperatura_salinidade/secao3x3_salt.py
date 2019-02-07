@@ -151,22 +151,23 @@ def create_Structure_3(ncin,indexes):
 ##############################################################################
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
-DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 plt.ion()
 
 # configurações do plot
 figsize = (17.4/2.54, 10/2.54)
-# index para as latitudes das seções
-indexes = [99,28,19]
-# configuracoes para as secoes verticais
-horizResolution = 10000
-vertResolution  = 100 # isso significa que teremos uma resolucao vertical de 1m
-depRef          = 200 # profundidade de referencia para interpolacao
 
-limiteEixoX = 300000 # limite, em metros, do eixo X para a secao vertical
-contours = np.arange(5,35,0.5)
+DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
+fname = glob.glob(DATA_DIR+"*.cdf")
 
-fname = DATA_DIR + "EA1.cdf"
+# select which experiment you want to plot:
+exp = 'EA1.cdf'
+# SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EC2/'
+
+for f in fname:
+    if exp in f:
+        experiment = f
+
+fname = experiment
 ncin = xr.open_dataset(fname)
 
 lon,lat = ncin['lon'].values, ncin['lat'].values
@@ -175,7 +176,17 @@ lat[lat == 0.] = np.nan
 depth = ncin['depth'].values
 sigma = ncin['sigma'].values
 h1    = ncin['h1'].values
-temp  = ncin.temp.values
+salt  = ncin.salt.values
+
+# index para as latitudes das seções
+indexes = [99,28,19]
+# configuracoes para as secoes verticais
+horizResolution = 10000
+vertResolution  = 100 # isso significa que teremos uma resolucao vertical de 1m
+depRef          = 200 # profundidade de referencia para interpolacao
+
+limiteEixoX = 300000 # limite, em metros, do eixo X para a secao vertical
+contours = np.arange(34,36,0.1)
 
 fig,axes = struc(indexes)
 for i in range(3):
@@ -187,8 +198,8 @@ axes[0,0].set_title(u'Climatologia',fontsize=8)
 axes[0,1].set_title(u'Experimento EA1',fontsize=8)
 axes[0,2].set_title(u'Experimento EA2',fontsize=8)
 
-title = u'Seção vertical de temperatura climatológica e nos experimentos anômalos,'\
-      + u'\n com destaque para a isoterma de 18' + r'$^o$C'
+title = u'Seção vertical de salinidade climatológica e nos experimentos anômalos,'\
+      + u'\n com destaque para a isohalina de 36'
 plt.suptitle(title,fontsize=10)
 
 # defining the begin and the end to plot
@@ -206,14 +217,14 @@ for ind in indexes:
     if ind == 19:
         axesInd = 2
 
-    T = np.nanmean(temp[:3,:,ind,:],axis=0)
+    S = np.nanmean(salt[:3,:,ind,:],axis=0)
 
-    Tplot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
+    Splot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,S,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
 
     xgrid,zgrid = np.meshgrid(ndist,ndepth)
 
-    cf1  = axes[axesInd,0].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.thermal,extend='both')
-    cs   = axes[axesInd,0].contour(xgrid,-zgrid,Tplot,levels=[18.],colors=('k'),linestyles=('--'))
+    cf1  = axes[axesInd,0].contourf(xgrid,-zgrid,Splot,contours,cmap=cmo.cm.haline,extend='both')
+    cs   = axes[axesInd,0].contour(xgrid,-zgrid,Splot,levels=[36.],colors=('k'),linestyles=('--'))
     axes[axesInd,0].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
     axes[axesInd,0].plot(dist2[-1,:],sig[-1,:],'k')
     axes[axesInd,0].set_xlim([0,limiteEixoX])
@@ -233,19 +244,19 @@ for ind in indexes:
     if ind == 19:
         axesInd = 2
 
-    T = np.nanmean(temp[tBegin-3:tBegin+3,:,ind,:],axis=0)
+    S = np.nanmean(salt[tBegin-10:tBegin+10,:,ind,:],axis=0)
 
-    Tplot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
+    Splot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,S,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
 
     xgrid,zgrid = np.meshgrid(ndist,ndepth)
 
     # begin: 18 isotherm position
-    cs   = axes[axesInd,1].contour(xgrid,-zgrid,Tplot,levels=[18.],colors=('k'),linestyles=('--'))
+    cs   = axes[axesInd,1].contour(xgrid,-zgrid,Splot,levels=[36.],colors=('k'),linestyles=('--'))
     # final position and vertical structure
-    T = np.nanmean(temp[tFinal-3:tFinal+3,:,ind,:],axis=0)
-    Tplot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
-    cs   = axes[axesInd,1].contour(xgrid,-zgrid,Tplot,levels=[18.],colors=('w'),linestyles=('--'))
-    cf2  = axes[axesInd,1].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.thermal,extend='both')
+    T = np.nanmean(salt[tFinal-3:tFinal+3,:,ind,:],axis=0)
+    Splot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
+    cs   = axes[axesInd,1].contour(xgrid,-zgrid,Splot,levels=[36.],colors=('w'),linestyles=('--'))
+    cf2  = axes[axesInd,1].contourf(xgrid,-zgrid,Splot,contours,cmap=cmo.cm.haline,extend='both')
     axes[axesInd,1].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
     axes[axesInd,1].plot(dist2[-1,:],sig[-1,:],'k')
     axes[axesInd,1].set_xlim([0,limiteEixoX])
@@ -258,7 +269,7 @@ for ind in indexes:
 
 print('# ----- PLOTTING ANOMALY 2 ----- #')
 ncin = xr.open_dataset(fname.replace('1','2'))
-temp  = ncin.temp.values
+salt  = ncin.salt.values
 
 for ind in indexes:
     if ind == 99:
@@ -268,19 +279,19 @@ for ind in indexes:
     if ind == 19:
         axesInd = 2
 
-    T = np.nanmean(temp[tBegin-3:tBegin+3,:,ind,:],axis=0)
+    S = np.nanmean(salt[tBegin-3:tBegin+3,:,ind,:],axis=0)
 
-    Tplot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
+    Splot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,S,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
 
     xgrid,zgrid = np.meshgrid(ndist,ndepth)
 
     # begin: 18 isotherm position
-    cs   = axes[axesInd,2].contour(xgrid,-zgrid,Tplot,levels=[18.],colors=('k'),linestyles=('--'))
+    cs   = axes[axesInd,2].contour(xgrid,-zgrid,Splot,levels=[36.],colors=('k'),linestyles=('--'))
     # final position and vertical structure
-    T = np.nanmean(temp[tFinal-3:tFinal+3,:,ind,:],axis=0)
-    Tplot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
-    cs   = axes[axesInd,2].contour(xgrid,-zgrid,Tplot,levels=[18.],colors=('w'),linestyles=('--'))
-    cf3  = axes[axesInd,2].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.thermal,extend='both')
+    T = np.nanmean(salt[tFinal-3:tFinal+3,:,ind,:],axis=0)
+    Splot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
+    cs   = axes[axesInd,2].contour(xgrid,-zgrid,Splot,levels=[36.],colors=('w'),linestyles=('--'))
+    cf3  = axes[axesInd,2].contourf(xgrid,-zgrid,Splot,contours,cmap=cmo.cm.haline,extend='both')
     axes[axesInd,2].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
     axes[axesInd,2].plot(dist2[-1,:],sig[-1,:],'k')
     axes[axesInd,2].set_xlim([0,limiteEixoX])
@@ -290,8 +301,6 @@ for ind in indexes:
         c.set_edgecolor('face')
         c.set_linewidth(0.00000000001)
 
-# ajusta a figura antes de se ajustar os labels do eixo x, pois aumenta-se a quantidade de
-# ticks no eixo quando dá tight_layout
 plt.tight_layout()
 plt.subplots_adjust(top=0.905,bottom=0.059,left=0.068,right=0.987,hspace=0.11,wspace=0.068)
 
@@ -306,6 +315,6 @@ axes[2,0].set_xticklabels(newlabels)
 axes[2,1].set_xticklabels(newlabels)
 axes[2,2].set_xticklabels(newlabels)
 
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secao3x3.eps')
+plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secao3x3_salt.eps')
 
-# plt.savefig(BASE_DIR+ 'masterThesis_analysis/figures/experiments_outputs/temperature/secao3x3.eps')
+# plt.savefig(BASE_DIR+ 'masterThesis_analysis/figures/experiments_outputs/temperature/secao3x3_salt.eps')
