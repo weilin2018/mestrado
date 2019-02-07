@@ -23,34 +23,9 @@ sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
 
-import scipy.ndimage
-
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
-# insert functions here
-def crossSection_optimized(lon,depth,sigma,h1,variable,cutLon,ind=99):
-    # setting the new grid
-    ndepth = np.linspace(0,100,100) # new vertical resolution
-    ndist  = np.linspace(0,100000,10000) # new horizontal resolution
-
-    # interpolating horizontal/distance
-    newDist,grid_x,grid_z,Tinterp = oceano.interpDistance(variable,h1,cutLon,ndepth)
-
-    # interpolatin depth, to have same len of ndist
-    ndep = oceano.interpDepth(depth,h1,ind,ndist,cutLon)
-
-    # interpolating vertically
-    stdl,Tplot = oceano.interpSigma(Tinterp,sigma,ndep,100)
-
-    # create grid to plot transect
-    xgrid,zgrid = np.meshgrid(ndist/1000,ndepth) # with distance in km
-
-    dist = np.cumsum(h1[ind,:])/1000
-    x,prof,sig = oceano.create_newDepth(lon,depth,sigma,ind)
-    dist2 = np.tile(dist,(21,1))
-
-    return Tplot,ndist/1000,ndepth,dist2,sig,depth
 
 def plot1(fname,ind=99):
     grid_x,grid_z,Tinterp,stdl,dist,dist2,sig,h1 = oceano.crossSection(fname,ind=ind)
@@ -83,7 +58,7 @@ def plot1(fname,ind=99):
     plt.tight_layout()
     plt.subplots_adjust(top=0.911,bottom=0.103,left=0.08,right=0.98,hspace=0.18,wspace=0.084)
 
-def plot2(fname,ind=99,cutLon=90):
+def plot2(ax,fname,horizResolution=10000,vertResolution=100,depRef=100,ind=99):
     ncin = xr.open_dataset(fname)
 
     # extract grid and other general variables
@@ -93,24 +68,28 @@ def plot2(fname,ind=99,cutLon=90):
     depth = ncin.depth.values
     sigma = ncin.sigma.values
     h1    = ncin['h1'].values
-    temp = ncin.temp[300:303,:,:,:]
-    T = np.nanmean(temp[:,:,ind,:cutLon],axis=0)
+    temp = ncin.temp[296:306,:,:,:]
+    T = np.nanmean(temp[:,:,ind,:],axis=0)
 
-    Tplot,ndist,ndepth,dist2,sig,depth = crossSection_optimized(lon,depth,sigma,h1,T,cutLon,ind=ind)
+    # Tplot,ndist,ndepth,dist2,sig,depth = crossSection_optimized(lon,depth,sigma,h1,T,cutLon,ind=ind)
+    Tplot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
 
     xgrid,zgrid = np.meshgrid(ndist,ndepth)
+
     contours = np.arange(14,35,0.5)
 
-    fig,ax = plt.subplots()
-    ax.contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.thermal)
-    ax.fill_between(dist2[-1,:], -200, -depth[ind,:],color='#c0c0c0')
+    ax.set_title('ind = %s'%(str(ind)))
+    ax.contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.thermal,extend='both')
+    ax.fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
     ax.plot(dist2[-1,:],sig[-1,:],'k')
-    ax.set_xlim([0,100])
-    ax.set_ylim([-100,0])
     ax.contour(xgrid,-zgrid,Tplot,levels=[18.],colors=('k'))
+    ax.set_xlim([0,150000])
+    ax.set_ylim([-depRef,0])
 
     plt.tight_layout()
     plt.subplots_adjust(top=0.911,bottom=0.103,left=0.08,right=0.98,hspace=0.18,wspace=0.084)
+
+    return ax
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -122,8 +101,16 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 plt.ion()
 
 # select which experiment you want to plot:
-fname = DATA_DIR + 'EA1.cdf'
+fname = DATA_DIR + 'EA2.cdf'
+
+# mantendo uma consistencia entre a profundidade maxima utilizada e a resolucao vertical
+# o resultado sera melhor.
+fig,ax = plt.subplots()
+ax = plot2(ax,fname,ind=99,depRef=800,vertResolution=800)
 
 
 
+labels = [item.get_text() for item in ax.get_xticklabels()]
+
+ax.set_xticklabels(labels)
 # plot1(fname,ind=18)

@@ -1215,7 +1215,7 @@ def sigma2stdl(variable,sigma,nstdl,depth,h1,lon,lat,name):
     return stdl,variableI
 
 ###### FUNCOES PARA SECAO VERTICAL #######
-def interpDistance(variable,h1,cutLon,ndepth,ind=99,nlines=10000,maxDist=100000):
+def interpDistance(variable,h1,ndepth,ind=99,nlines=10000):
     """Função para interpolar as colunas de uma matrix 2D, refinando a seção
     vertical.
 
@@ -1243,7 +1243,8 @@ def interpDistance(variable,h1,cutLon,ndepth,ind=99,nlines=10000,maxDist=100000)
 
     """
     # calculate distance
-    dist = np.cumsum(h1[ind,:cutLon])
+    dist = np.cumsum(h1[ind,:])
+    maxDist = int(round(np.nanmax(dist)))
 
     nstdl,columns = variable.shape
 
@@ -1270,7 +1271,7 @@ def interpDistance(variable,h1,cutLon,ndepth,ind=99,nlines=10000,maxDist=100000)
         axis2interp = np.array(newDist)[onlywater]
 
         # criando funcao de interpolacao 1D
-        finterp = interpolate.interp1d(dist[:cutLon], line)
+        finterp = interpolate.interp1d(dist[:], line,fill_value='extrapolate')
         lineI   = finterp(axis2interp)
 
 		# stores at vectorized variable
@@ -1281,7 +1282,7 @@ def interpDistance(variable,h1,cutLon,ndepth,ind=99,nlines=10000,maxDist=100000)
 
     return newDist,grid_x,grid_z,variableI
 
-def interpDepth(depth,h1,ind,ndist,cutLon):
+def interpDepth(depth,h1,ind,ndist):
     """Interpolate bathymetry to a new distance.
 
     Parameters
@@ -1303,22 +1304,21 @@ def interpDepth(depth,h1,ind,ndist,cutLon):
         New bathymetry interpolated to ndist lenght.
 
     """
-
-    dist = np.cumsum(h1[ind,:cutLon]) # in km
-    dep = depth[ind,:cutLon]
+    dist = np.cumsum(h1[ind,:]) # in km
+    dep = depth[ind,:]
 
     dist2interp = dist
     dep2interp  = dep
 
-    inds = ndist <= np.nanmax(dist)
-    axis2interp = np.array(ndist)[inds]
+    # inds = ndist <= np.nanmax(dist)
+    axis2interp = ndist# np.array(ndist)[inds]
 
     fDep = interpolate.interp1d(dist2interp,dep2interp,fill_value='extrapolate')
     nDep = fDep(axis2interp)
 
     return nDep
 
-def interpSigma(variable,sigma,localdep,nstdl):
+def interpSigma(variable,sigma,localdep,nstdl,depRef=100):
     """Function to interpolate from sigma vertical coordinates to
     z depth coordinates, based on standard levels given by user.
 
@@ -1340,7 +1340,7 @@ def interpSigma(variable,sigma,localdep,nstdl):
     variableI : np.ndarray
         2D array with interpolated data
     """
-    stdl = np.linspace(0,100,100)
+    stdl = np.linspace(0,depRef,nstdl)
 
     sigmalevels,columns = variable.shape
     variableI = np.zeros((nstdl,columns)) * np.nan
@@ -1368,97 +1368,29 @@ def interpSigma(variable,sigma,localdep,nstdl):
 
     return stdl,variableI
 
-def crossSection(fname,ind=99):
-
-    # ind = 99 # latitude for transect
-    ncin = xr.open_dataset(fname)
-
-    # extract grid and other general variables
-    # important: lat and lon already gridded
-    lon   = ncin.lon.values
-    lat   = ncin.lat.values
-    lon[lon == 0.] = np.nan
-    lat[lat == 0.] = np.nan
-    depth = ncin.depth.values
-    sigma = ncin.sigma.values
-    h1    = ncin['h1'].values
-    dx = h1[ind,:]
-    temp = ncin.temp[300:303,:,:,:]
-
-    # cutting variable data, to speed up interpolation
-    cutLon = 80
-    Tcutted = temp[:,:,:,:cutLon]
-
-    # computing distance based on h1
-    dist = np.cumsum(dx)/1000
-
-    # bathymetry
-    x,prof,sig = create_newDepth(lon,depth,sigma,ind)
-    dist2 = np.tile(dist,(21,1))
-
-    # interpolating sigma to standard level
-    nstdl = 100
-    stdl,Tinterp = sigma2stdl(Tcutted,sigma,nstdl,depth,h1,lon,lat,'Temperatura')
-
-    # creating vertical matrix, for visualization
-    grid_x,grid_z = np.meshgrid(dist[:cutLon],np.linspace(0,100,100))
-
-    var2plot = np.nanmean(Tinterp[:,:,ind,:],axis=0)
-
-    fig,ax = plt.subplots()
-    ax.contourf(grid_x,-grid_z,var2plot,cmap=cmo.cm.thermal)
-    ax.plot(grid_x,-grid_z,'k',alpha=.3);
-    ax.plot(grid_x.T,-grid_z.T,'k',alpha=.3);
-
-    ax.plot(dist2[-1,:],sig[-1,:],'k')
-
-    ax.set_xlim([0,100])
-    ax.set_ylim([-100,0])
-
-    return grid_x,grid_z,Tinterp,stdl,dist,dist2,sig,h1
-
-def crossSection_optimized(fname,ind=99):
-    # tentativa de arrumar o lance d ainterpolacao horizontal que tem ser feita 1o
-    # ind = 99 # latitude for transect
-    ncin = xr.open_dataset(fname)
-
-    # extract grid and other general variables
-    # important: lat and lon already gridded
-    lon   = ncin.lon.values
-    lat   = ncin.lat.values
-    lon[lon == 0.] = np.nan
-    lat[lat == 0.] = np.nan
-    depth = ncin.depth.values
-    sigma = ncin.sigma.values
-    h1    = ncin['h1'].values
-    dx = h1[ind,:]
-    temp = ncin.temp[300:303,:,:,:]
-
-    # cutting variable data, to speed up interpolation
-    cutLon = 80
-    T = np.nanmean(temp[:,:,ind,:cutLon],axis=0)
-
+def crossSection_optimized(lon,depth,sigma,h1,variable,horizResolution=10000,vertResolution=100,depRef=100,ind=99):
     # setting the new grid
-    ndepth = np.linspace(0,100,100) # new vertical resolution
-    ndist  = np.linspace(0,100000,10000) # new horizontal resolution
+    ndepth = np.linspace(0,depRef,vertResolution) # new vertical resolution
+    # ndist  = np.linspace(0,100000,horizResolution # new horizontal resolution
 
     # interpolating horizontal/distance
-    newDist,grid_x,grid_z,Tinterp = interpDistance(T,h1,80,ndepth)
+    ndist,grid_x,grid_z,Tinterp = interpDistance(variable,h1,ndepth,ind=ind,nlines=horizResolution)
 
-    # interpolatin depth, to have same len of ndist
-    ndep = interpDepth(depth,h1,ind,ndist,cutLon)
+    # interpolatin bathymetry, to have same len of ndist
+    ndep = interpDepth(depth,h1,ind,ndist)
 
     # interpolating vertically
-    stdl,Tplot = interpSigma(Tinterp,sigma,ndep,100)
+    stdl,Tplot = interpSigma(Tinterp,sigma,ndep,vertResolution,depRef)
 
     # create grid to plot transect
     xgrid,zgrid = np.meshgrid(ndist/1000,ndepth) # with distance in km
 
-    dist = np.cumsum(h1[ind,:])/1000
-    x,prof,sig = create_newDepth(lon,depth,sigma,ind)
-    dist2 = np.tile(dist,(21,1))
+    # creating grid for bathymetry
+    s = np.tile(sigma,(len(ndist),1))
+    s = np.transpose(s)
+    d = np.tile(ndep,(len(sigma),1))
+    sig = s*d
 
-    return Tplot,ndist/1000,ndepth,dist2,sig,depth
+    dist2 = np.tile(ndist,(21,1))
 
-
-#
+    return Tplot,ndist,ndepth,dist2,sig,depth
