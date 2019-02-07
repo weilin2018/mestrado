@@ -120,11 +120,61 @@ def find_nearest(lon,lat,ilon,ilat):
     return iss,jss
 
 def find_nearest_1D(array,value):
-    idx = np.searchsorted(array, value, side="left")
-    if idx > 0 and (idx == len(array) or math.fabs(value - array[idx-1]) < math.fabs(value - array[idx])):
-        return array[idx-1]
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return array[idx]
+
+def find_distance_of_a_value(ncin,ind,timesteps=[0],sigma=-1,var='temp',value=18.):
+    """Detect the distance from the coast, in which a given value is found
+    on a sigma level. Used to identify the distance in which SACW and TW
+    stand on the surface and near bottom layers.
+
+
+    Parameters
+    ----------
+    ncin : xarray.Dataset
+        Dataset containing data from model.
+    ind : int
+        Index for the latitude.
+    timesteps : np.ndarray
+        1D array with timesteps, used to extract data from Dataset. Could be
+        just one value or a sequence.
+    sigma : int
+        Which sigma layer.
+    var : string
+        Name of the variable to extract from Dataset. Must be the same name in
+        ncin.
+    value : float
+        Which value of reference to detect.
+
+    Returns
+    -------
+    dist : np.ndarray
+        1D array with the distance, in kilometers, found.
+
+    """
+
+    if len(timesteps) == 1:
+        data = ncin[var][timesteps,sigma,ind,:]
     else:
-        return array[idx]
+        data = np.nanmean(ncin[var][timesteps,sigma,ind,:],axis=0)
+
+    if var == 'temp':
+        value = 18.
+        sigma = -1
+    elif var == 'salt':
+        value = 36.
+        sigma = 0
+
+    dist = np.cumsum(ncin.h1[ind,:].values)
+    # replacing nan values for some totally out of temperature range
+    nvalue = -9999
+    inds = np.where(np.isnan(data))
+    data[inds] = nvalue
+
+    index = np.where(data == find_nearest_1D(data,value))
+
+    return dist[index]/1000
 
 # baixar dados do Climate Forecast System Version 2
 def downloadCFSv2(year,month):
