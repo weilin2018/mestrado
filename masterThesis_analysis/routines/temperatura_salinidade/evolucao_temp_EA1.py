@@ -92,6 +92,29 @@ def search_information(ncin,ind,nstepBegin,nstepFinal,loc,var):
     }
 
     return info
+
+def find_depth(arr,value):
+
+    index_found = [] # list with indexes found
+
+    for i in range(arr.shape[1]): # looking in each column
+        slice = arr[:,i]
+        inds = np.where(np.isnan(slice))
+        slice[inds] = -9999.0
+        closest = oceano.find_nearest_1D(slice,value)
+        # store information
+        if closest != -9999.0:
+            # column and vertical index
+            idz = np.where(slice == closest)[0][0]
+            index_found.append([i,idz])
+
+    index_found = np.asarray(index_found)
+
+    # looking for the first column with minimum difference between
+    # the value found and the one we want
+
+
+    return idx
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
