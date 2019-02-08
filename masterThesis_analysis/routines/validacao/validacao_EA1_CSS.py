@@ -1,4 +1,10 @@
-# add some description here
+"""
+IMPORTANTE:
+
+Para se rodar essa rotina, deve-se antes rodar a rotina produto_Tratamento.py,
+para que os arquivos .nc com os dados do modelo tratado seja criado.
+
+"""
 
 import glob
 import matplotlib.pyplot as plt
@@ -148,4 +154,4 @@ plt.tight_layout()
 # plt.subplots_adjust(top=0.945,bottom=0.11,left=0.126,right=0.976,hspace=0.587,wspace=0.2)
 plt.subplots_adjust(top=0.91,bottom=0.06,left=0.126,right=0.976,hspace=0.587,wspace=0.2)
 
-plt.savefig(FIG_DIR + 'EA1xCSS_validacao.pdf')
+# plt.savefig(FIG_DIR + 'EA1xCSS_validacao.pdf')

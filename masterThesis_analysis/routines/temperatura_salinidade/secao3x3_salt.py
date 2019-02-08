@@ -53,6 +53,9 @@ def struc(indexes):
             axes[axesInd,1].set_xlabel(u'Distância [km]',fontsize=8)
             axes[axesInd,2].set_xlabel(u'Distância [km]',fontsize=8)
 
+    axes[0,0].set_ylabel('Profundidade [m]')
+    axes[1,0].set_ylabel('Profundidade [m]')
+    axes[2,0].set_ylabel('Profundidade [m]')
 
     # hiding ticks labels
     axes[0,0].xaxis.set_major_formatter(plt.NullFormatter())
@@ -75,7 +78,6 @@ def struc(indexes):
     axes[2,2].yaxis.set_major_formatter(plt.NullFormatter())
 
     return fig,axes
-
 
 def create_Structure_3(ncin,indexes):
     lon,lat = ncin['lon'].values, ncin['lat'].values
@@ -146,6 +148,27 @@ def create_Structure_3(ncin,indexes):
 
     return fig,axes
 
+def search_information(ncin,ind,nstepBegin,nstepFinal,loc,var):
+    # based on an ind value, return a dictionary with informations for each
+    # cross section, such as location, variable position, etc.
+
+    # set some variables
+    if var == 'temp':
+        sigma = -1
+        value = 18.
+    if var == 'salt':
+        sigma = 0
+        value = 36.
+
+    # iniatilize dictionary
+    info = {
+        'location': loc,
+        'beginPos': oceano.find_distance_of_a_value(ncin,ind,nstepBegin,sigma,var,value)[0],
+        'finalPos': oceano.find_distance_of_a_value(ncin,ind,nstepFinal,sigma,var,value)[0]
+    }
+
+    return info
+
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -203,8 +226,8 @@ title = u'Seção vertical de salinidade climatológica e nos experimentos anôm
 plt.suptitle(title,fontsize=10)
 
 # defining the begin and the end to plot
-tBegin = 46 # climatologic position
-tFinal = 303 # final do evento em estudo
+nstepBegin = np.arange(40,52,1) # begin of anomalous period
+nstepFinal = np.arange(297,303,1) # final of anomalous period
 
 os.system('clear')
 print('# ----- PLOTTING CLIMATOLOGY ----- #')
@@ -212,10 +235,13 @@ print('# ----- PLOTTING CLIMATOLOGY ----- #')
 for ind in indexes:
     if ind == 99:
         axesInd = 0
+        location = 'Ubatuba'
     if ind == 28:
         axesInd = 1
+        location = 'Santos'
     if ind == 19:
         axesInd = 2
+        location = u'Cananéia'
 
     S = np.nanmean(salt[:3,:,ind,:],axis=0)
 
@@ -234,17 +260,26 @@ for ind in indexes:
         c.set_edgecolor('face')
         c.set_linewidth(0.00000000001)
 
+    # plot text box
+    props = dict(boxstyle='round', facecolor='white', alpha=0.5)
+    textstr = u'%s' % (location)
+    axes[axesInd,0].text(0.18, 0.28, textstr, transform=axes[axesInd,0].transAxes, fontsize=8,
+        va='top', ha='center',bbox=props)
+
 print('# ----- PLOTTING ANOMALY 1 ----- #')
 
 for ind in indexes:
     if ind == 99:
         axesInd = 0
+        infos = search_information(ncin,ind,nstepBegin,nstepFinal,'Santos','salt')
     if ind == 28:
         axesInd = 1
+        infos = search_information(ncin,ind,nstepBegin,nstepFinal,'Santos','salt')
     if ind == 19:
         axesInd = 2
+        infos = search_information(ncin,ind,nstepBegin,nstepFinal,u'Cananéia','salt')
 
-    S = np.nanmean(salt[tBegin-10:tBegin+10,:,ind,:],axis=0)
+    S = np.nanmean(salt[nstepBegin,:,ind,:],axis=0)
 
     Splot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,S,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
 
@@ -253,7 +288,7 @@ for ind in indexes:
     # begin: 18 isotherm position
     cs   = axes[axesInd,1].contour(xgrid,-zgrid,Splot,levels=[36.],colors=('k'),linestyles=('--'))
     # final position and vertical structure
-    T = np.nanmean(salt[tFinal-3:tFinal+3,:,ind,:],axis=0)
+    T = np.nanmean(salt[nstepFinal,:,ind,:],axis=0)
     Splot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
     cs   = axes[axesInd,1].contour(xgrid,-zgrid,Splot,levels=[36.],colors=('w'),linestyles=('--'))
     cf2  = axes[axesInd,1].contourf(xgrid,-zgrid,Splot,contours,cmap=cmo.cm.haline,extend='both')
@@ -262,10 +297,15 @@ for ind in indexes:
     axes[axesInd,1].set_xlim([0,limiteEixoX])
     axes[axesInd,1].set_ylim([-depRef,0])
 
+    # plot text box
+    props = dict(boxstyle='round', facecolor='white', alpha=0.5)
+    textstr = u'Inicio\n %.1f km \n Final\n %.1f km' % (infos['beginPos'],infos['finalPos'])
+    axes[axesInd,1].text(0.17, 0.32, textstr, transform=axes[axesInd,1].transAxes, fontsize=8,
+        va='top', ha='center',bbox=props)
+
     for c in cf2.collections:
         c.set_edgecolor('face')
         c.set_linewidth(0.00000000001)
-
 
 print('# ----- PLOTTING ANOMALY 2 ----- #')
 ncin = xr.open_dataset(fname.replace('1','2'))
@@ -274,12 +314,15 @@ salt  = ncin.salt.values
 for ind in indexes:
     if ind == 99:
         axesInd = 0
+        infos = search_information(ncin,ind,nstepBegin,nstepFinal,u'Santos','salt')
     if ind == 28:
         axesInd = 1
+        infos = search_information(ncin,ind,nstepBegin,nstepFinal,'Santos','salt')
     if ind == 19:
         axesInd = 2
+        infos = search_information(ncin,ind,nstepBegin,nstepFinal,u'Cananéia','salt')
 
-    S = np.nanmean(salt[tBegin-3:tBegin+3,:,ind,:],axis=0)
+    S = np.nanmean(salt[nstepBegin,:,ind,:],axis=0)
 
     Splot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,S,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
 
@@ -288,7 +331,7 @@ for ind in indexes:
     # begin: 18 isotherm position
     cs   = axes[axesInd,2].contour(xgrid,-zgrid,Splot,levels=[36.],colors=('k'),linestyles=('--'))
     # final position and vertical structure
-    T = np.nanmean(salt[tFinal-3:tFinal+3,:,ind,:],axis=0)
+    T = np.nanmean(salt[nstepFinal,:,ind,:],axis=0)
     Splot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
     cs   = axes[axesInd,2].contour(xgrid,-zgrid,Splot,levels=[36.],colors=('w'),linestyles=('--'))
     cf3  = axes[axesInd,2].contourf(xgrid,-zgrid,Splot,contours,cmap=cmo.cm.haline,extend='both')
@@ -297,12 +340,19 @@ for ind in indexes:
     axes[axesInd,2].set_xlim([0,limiteEixoX])
     axes[axesInd,2].set_ylim([-depRef,0])
 
+    # plot text box
+    props = dict(boxstyle='round', facecolor='white', alpha=0.5)
+    textstr = u'Inicio\n %.1f km \n Final\n %.1f km' % (infos['beginPos'],infos['finalPos'])
+    axes[axesInd,2].text(0.17, 0.32, textstr, transform=axes[axesInd,2].transAxes, fontsize=8,
+        va='top', ha='center',bbox=props)
+
     for c in cf3.collections:
         c.set_edgecolor('face')
         c.set_linewidth(0.00000000001)
 
+
 plt.tight_layout()
-plt.subplots_adjust(top=0.905,bottom=0.059,left=0.068,right=0.987,hspace=0.11,wspace=0.068)
+plt.subplots_adjust(top=0.905,bottom=0.059,left=0.073,right=0.987,hspace=0.11,wspace=0.068)
 
 # updating x tick labels
 labels = [item.get_text() for item in axes[2,0].get_xticklabels()]
@@ -316,5 +366,3 @@ axes[2,1].set_xticklabels(newlabels)
 axes[2,2].set_xticklabels(newlabels)
 
 plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secao3x3_salt.eps')
-
-# plt.savefig(BASE_DIR+ 'masterThesis_analysis/figures/experiments_outputs/temperature/secao3x3_salt.eps')

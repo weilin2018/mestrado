@@ -1,4 +1,11 @@
-# add some description here
+"""
+IMPORTANTE:
+
+Para se rodar essa rotina, deve-se antes rodar a rotina produto_Tratamento.py,
+para que os arquivos .nc com os dados do modelo tratado seja criado.
+
+"""
+
 
 import glob
 import matplotlib.pyplot as plt

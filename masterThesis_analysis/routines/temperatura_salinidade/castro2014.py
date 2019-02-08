@@ -428,11 +428,64 @@ plot_surfaceSalt(ncin,exp.replace('EC','EA'),SAVE_FIG,location)
 isoterma(experiment,experiment.replace('EC','EA'),SAVE_FIG)
 isohalina(experiment,experiment.replace('EC','EA'),SAVE_FIG)
 
-#
-# # plotando contour secao vertical para comparar com Figura 5 de Castro (2014)
-# isoterma(experiment,experiment.replace('EA7','EA1'),SAVE_FIG)
-# isohalina(experiment,experiment.replace('EA7','EA1'),SAVE_FIG)
-#
-# # plotando contour secao vertical comparando controle e anomalo para o mestrado
-# isoterma(experiment.replace('EA7','EC7'),experiment,SAVE_FIG)
-# isohalina(experiment.replace('EA7','EC7'),experiment,SAVE_FIG)
+
+###########
+def find_bottomTemp(ncin,ind,timesteps):
+    temp = np.nanmean(ncin.temp[timesteps,-1,ind,:],axis=0)
+    dist = np.cumsum(ncin.h1[ind,:].values)
+
+    # replacing nan values for some totally out of temperature range
+    nvalue = -9999
+    inds = np.where(np.isnan(temp))
+    temp[inds] = nvalue
+
+    # temp is a 1D array with temperature information on the last sigma level
+    # dist is a 1D array with sum of dx
+    index = np.where(temp == find_nearest(temp,18.))
+
+    return dist[index]/1000
+
+def bottomTemp(ncin,exp,SAVE_FIG,location,ilat=[99]):
+    ###### near-bottom temperature
+    fig,ax = plt.subplots(nrows=2,figsize=(17./2.54,12./2.54))
+
+    plt.suptitle(u'Temperatura próximo do fundo ao largo de Ubatuba',fontsize=10)
+
+    ax[0].set_title('%s - 14/01/2014'%(exp.replace('.cdf','')),fontsize=8)
+    ax[0].set_ylabel(r'Temperatura [$^o$C]',fontsize=8)
+    # ax[0].set_xlabel('Distance [km]',fontsize=8)
+    ax[0].set_ylim([0,30])
+    ax[0].set_xlim([0,150000])
+
+    ax[0].tick_params(axis='x',labelbottom='off') # remove ticklabels
+
+    ax[1].set_title('%s - 15/02/2014'%(exp.replace('.cdf','')),fontsize=8)
+    ax[1].set_ylabel(r'Temperature [$^o$C]',fontsize=8)
+    ax[1].set_xlabel(u'Distância da costa [km]',fontsize=8)
+    ax[1].set_ylim([0,30])
+    ax[1].set_xlim([0,150000])
+
+    # inserting lines inside the graphic
+    props = dict(boxstyle='round', facecolor='white', alpha=0.5)
+    ax[0].axvline(x=location[0],color='k',ls='--')
+    ax[0].text(location[0]+.2, 3., '%s'%(location[0]),fontsize=10,verticalalignment='top', bbox=props)
+    ax[0].axhline(y=18,color='k',ls='--')
+    ax[1].axvline(x=location[1],color='k',ls='--')
+    ax[1].text(location[1]+.2, 3., '%s'%(location[1]),fontsize=10,verticalalignment='top', bbox=props)
+    ax[1].axhline(y=18,color='k',ls='--')
+
+    for ind in ilat:
+        temp = np.nanmean(ncin.temp[40:52,-1,ind,:],axis=0)
+        dist = np.cumsum(ncin.h1[ind,:].values)
+
+        ax[0].plot(dist,temp)
+
+        temp = np.nanmean(ncin.temp[297:306,-1,ind,:],axis=0)
+        ax[1].plot(dist,temp)
+
+    labels = [item.get_text() for item in ax[1].get_xticklabels()]
+    newlabels = []
+    for lab in labels:
+        newlabels.append(int(float(lab)/1000))
+
+    ax[1].set_xticklabels(newlabels)
