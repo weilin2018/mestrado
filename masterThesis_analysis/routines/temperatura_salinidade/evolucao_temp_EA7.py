@@ -72,6 +72,7 @@ def create_structure_2cols(indexes,exp):
 
     return fig,axes,cax
 
+
 def search_information(ncin,ind,nstepBegin,nstepFinal,loc,var):
     # based on an ind value, return a dictionary with informations for each
     # cross section, such as location, variable position, etc.
@@ -85,10 +86,15 @@ def search_information(ncin,ind,nstepBegin,nstepFinal,loc,var):
         value = 36.
 
     # iniatilize dictionary
+    idx_begin = oceano.find_distance_of_a_value(ncin,ind,nstepBegin,sigma,var,value)[1][0][0]
+    idx_final = oceano.find_distance_of_a_value(ncin,ind,nstepFinal,sigma,var,value)[1][0][0]
+
     info = {
         'location': loc,
-        'beginPos': oceano.find_distance_of_a_value(ncin,ind,nstepBegin,sigma,var,value)[0],
-        'finalPos': oceano.find_distance_of_a_value(ncin,ind,nstepFinal,sigma,var,value)[0]
+        'beginPos_X': oceano.find_distance_of_a_value(ncin,ind,nstepBegin,sigma,var,value)[0],
+        'finalPos_X': oceano.find_distance_of_a_value(ncin,ind,nstepFinal,sigma,var,value)[0],
+        'beginPos_Z': oceano.find_depth_of_a_value(ncin,ind,nstepBegin,idx_begin,sigma,var,value),
+        'finalPos_Z': oceano.find_depth_of_a_value(ncin,ind,nstepFinal,idx_final,sigma,var,value)
     }
 
     return info
@@ -169,7 +175,7 @@ for ind in indexes:
 
     # plot text box
     props = dict(boxstyle='round', facecolor='white', alpha=0.5)
-    textstr = u'%s \n X = %.1f km' % (infos['location'],infos['beginPos'])
+    textstr = u'%s' % (infos['location'])
     axes[axesInd,0].text(0.17, 0.32, textstr, transform=axes[axesInd,0].transAxes, fontsize=8,
         va='top', ha='center',bbox=props)
 
@@ -187,7 +193,7 @@ for ind in indexes:
 
     # plot text box
     props = dict(boxstyle='round', facecolor='white', alpha=0.5)
-    textstr = u'X = %.1f km' % (infos['finalPos'])
+    textstr = r'$\Delta$x = %.1f km' % (infos['finalPos']-infos['beginPos'])
     axes[axesInd,1].text(0.17, 0.32, textstr, transform=axes[axesInd,1].transAxes, fontsize=8,
         va='top', ha='center',bbox=props)
 

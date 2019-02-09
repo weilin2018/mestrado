@@ -174,7 +174,40 @@ def find_distance_of_a_value(ncin,ind,timesteps=[0],sigma=-1,var='temp',value=18
 
     index = np.where(data == find_nearest_1D(data,value))
 
-    return dist[index]/1000
+    return dist[index].item()/1000,index
+
+def find_depth_of_a_value(ncin,ind,timesteps,idx,sigma=-1,var='temp',value=18.):
+
+    if len(timesteps) == 1:
+        data = ncin[var][timesteps,sigma,ind,:]
+    else:
+        data = np.nanmean(ncin[var][timesteps,sigma,ind,:],axis=0)
+
+    if var == 'temp':
+        value = 18.
+        sigma = -1
+    elif var == 'salt':
+        value = 36.
+        sigma = 0
+
+    # find the exact value
+    exactValue = data[idx]
+
+    # extracting vertical profile on x position idx
+    if len(timesteps) == 1:
+        profile = ncin[var][timesteps,:,ind,idx]
+    else:
+        profile = np.nanmean(ncin[var][timesteps,:,ind,idx],axis=0)
+
+    localDepth = ncin.depth[ind,idx].values
+    levelsSig  = ncin.sigma.values
+    # compute the real lenght of each sigma level
+    realDepth = localDepth * levelsSig
+
+    idz = np.where(profile == exactValue)[0]
+    idz = np.max(idz) # make sure we'll get the maximum depth with the value
+
+    return realDepth[idz] # in meters
 
 # baixar dados do Climate Forecast System Version 2
 def downloadCFSv2(year,month):
