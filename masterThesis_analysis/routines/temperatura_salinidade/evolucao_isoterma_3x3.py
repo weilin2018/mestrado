@@ -233,7 +233,7 @@ for ind in indexes:
         infos = search_information(ncin,ind,nstepBegin,nstepFinal,u'Cananéia','temp')
 
     T = np.nanmean(temp[nstepFinal,:,ind,:],axis=0)
-    Tplot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
+    Tplot,ndist,ndepth,_,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,T,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
 
     # final 18 isotherm position
     cf3  = axes[axesInd,2].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.thermal,extend='max')
@@ -266,6 +266,10 @@ cbar.update_ticks()
 
 cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
 cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
+
+for c in cbar.ax.collections:
+    c.set_edgecolor('face')
+    c.set_linewidth(0.00000000001)
 
 
 # ajusta a figura antes de se ajustar os labels do eixo x, pois aumenta-se a quantidade de
