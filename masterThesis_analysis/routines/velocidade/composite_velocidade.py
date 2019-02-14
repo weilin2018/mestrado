@@ -80,12 +80,13 @@ def tratando_corrente(u,v,depth,angle):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FILE_DIR = BASE_DIR+'masterThesis_analysis/routines/index_list.npy'
-fname = DATA_DIR + 'EA2.cdf'
+experiment = 'EC2'
+fname = DATA_DIR + experiment +'.cdf'
 
 timestep = [46,303]
 
 for nstep in timestep:
-
+    plt.close()
     # working with the data
     lon,lat,u,v,depth,angles = export_data(fname,timestep=nstep)
 
@@ -126,9 +127,9 @@ for nstep in timestep:
     cf2 = m2.contourf(lon,lat,spd_meio,contours,cmap=cmo.cm.speed,latlon=True,rasterized=True,extend='max')
     cf3 = m3.contourf(lon,lat,spd_fund,contours,cmap=cmo.cm.speed,latlon=True,rasterized=True,extend='max')
     # plotando vetores
-    qv1 = m1.quiver(xplot,yplot,uplot_surf,vplot_surf,scale=70,width=0.001,headwidth=4,headlength=4,latlon=True)
-    qv2 = m2.quiver(xplot,yplot,uplot_meio,vplot_meio,scale=70,width=0.001,headwidth=4,headlength=4,latlon=True)
-    qv3 = m3.quiver(xplot,yplot,uplot_fund,vplot_fund,scale=70,width=0.001,headwidth=4,headlength=4,latlon=True)
+    qv1 = m1.quiver(xplot,yplot,uplot_surf,vplot_surf,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
+    qv2 = m2.quiver(xplot,yplot,uplot_meio,vplot_meio,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
+    qv3 = m3.quiver(xplot,yplot,uplot_fund,vplot_fund,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
 
 
     # matplotib trick to remove white thin lines when saving contourf in pdf
@@ -158,7 +159,7 @@ for nstep in timestep:
     cbar.update_ticks()
 
     cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
-    cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
+    cbar.ax.set_title(r'Velocidade (m s$^{-1}$)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(nstep))
-    # plt.savefig('/home/danilo/Pictures/teste_composicao/Experimento2/speed/original/%s.pdf'%(output_fname))
+    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/speed/%s/%s.eps'%(experiment,output_fname))

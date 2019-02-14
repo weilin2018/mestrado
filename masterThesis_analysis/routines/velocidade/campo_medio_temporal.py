@@ -14,10 +14,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import dates
 import datetime
 import cmocean as cmo
-import matplotlib.gridspec as gridspec
 
 import matplotlib
-# matplotlib.style.use('ggplot')
 matplotlib.use('PS')
 
 import sys
@@ -25,7 +23,6 @@ sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
 import masterThesisPack.plots as ocplt
-
 
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
@@ -36,10 +33,10 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
     # nao colocar meridianos e paralelos
     # nao colocar coordenadas no eixo (sumir com os eixos)
 
-    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
+    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution='h')
     # m = pickle.load(open('pickles/basemap.p','r'))
     m.ax = ax
-    m.drawcoastlines(linewidth=.1)
+    m.drawcoastlines(linewidth=.2)
     m.fillcontinents(color='white',alpha=0)
 
     meridians=np.arange(llon,ulon,nmeridians)
@@ -58,12 +55,7 @@ def export_data(fname,timestep=0):
     lon[lon == 0.] = np.nan
     lat[lat == 0.] = np.nan
 
-    # extracting temperature data, in a specific timestep
-    u,v = ncin.u[timestep,:,:,:],ncin.v[timestep,:,:,:]
-    # spd = np.sqrt(u**2 + v**2)
-    # spd = np.where(depth < 100, spd,np.nan)
-
-    return lon,lat,u,v,depth,angle
+    return lon,lat,depth,angle
 
 def rotate_velocityField(u,v,ang):
 
@@ -72,10 +64,10 @@ def rotate_velocityField(u,v,ang):
     vr = np.zeros(v.shape)*np.nan
 
     for j in range(u.shape[0]):
-        U,V = u[j,:].values,v[j,:].values
+        U,V = u[j,:],v[j,:]
         angle = ang[j,:]
 
-        INT,DIR = decomp.uv2intdir(U,V,0,0)
+        INT,DIR = decomp.uv2intdir(U,V,0,angle)
         uro,vro = decomp.intdir2uv(INT,DIR,0,angle)
         ur[j,:] = uro
         vr[j,:] = vro
@@ -90,6 +82,15 @@ def tratando_corrente(u,v,depth,angle):
 
     return ur,vr,spd
 
+def calculateMeanvelocity(u,v,depth,angles):
+    umean = np.nanmean(u,axis=0)
+    vmean = np.nanmean(v,axis=0)
+    umean,vmean,smean = tratando_corrente(umean,vmean,depth,angles)
+
+    smean = np.where(depth<100,smean,np.nan)
+
+    return umean,vmean,smean
+
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -97,30 +98,32 @@ def tratando_corrente(u,v,depth,angle):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FILE_DIR = BASE_DIR+'masterThesis_analysis/routines/index_list.npy'
-SAVE_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/velocity/'
-expermient = 'EA1'
+experiment = 'EC2'
 fname = DATA_DIR + experiment + '.cdf'
+plt.ion()
 
-nstep = 46
+# import global variables
+lon,lat,depth,angle = export_data(fname)
+ncin = xr.open_dataset(fname)
 
-# working with the data
-lon,lat,u,v,depth,angles = export_data(fname,timestep=nstep)
+# import velocity components
+umean,vmean = np.nanmean(ncin.u[:,:,:,:],axis=1),np.nanmean(ncin.v[:,:,:,:],axis=1)
 
 # rotating vectors
-ur = np.zeros(u.shape) * np.nan
-vr = np.zeros(u.shape) * np.nan
-spd= np.zeros(u.shape) * np.nan
+ur = np.zeros(umean.shape) * np.nan
+vr = np.zeros(umean.shape) * np.nan
+spd= np.zeros(umean.shape) * np.nan
 
-for sigma in range(u.shape[0]):
-    urot,vrot,spdrot = tratando_corrente(u[sigma,:,:],v[sigma,:,:],depth,(-1)*angles)
-    ur[sigma,:,:] = urot
-    vr[sigma,:,:] = vrot
-    spd[sigma,:,:]= spdrot
+for t in range(umean.shape[0]):
+    urot,vrot,spdrot = tratando_corrente(umean[t,:,:],vmean[t,:,:],depth,(-1)*angle)
+    ur[t,:,:] = urot
+    vr[t,:,:] = vrot
+    spd[t,:,:]= spdrot
 
-
-# calculando a variancia integrada na profundidade
+# calculando a variancia no temporal, da velocidade media
 ur_var = np.nanvar(ur,axis=0)
 vr_var = np.nanvar(vr,axis=0)
+
 
 # mascarando dados em profundidades maior que 100
 maskCondition = np.greater(depth,100)
@@ -137,7 +140,7 @@ masked_vr[-5:,:] = np.nan
 # normalizados pela velocidade
 # xplot,yplot,uplot,vplot = ocplt.formatting_vectors(ur_var,vr_var,lon,lat,FILE_DIR)
 plt.close('all')
-fig,ax = plt.subplots(ncols=2,figsize=(15./2.54,8./2.54))
+fig,ax = plt.subplots(ncols=2,nrows=2,figsize=(15./2.54,8./2.54))
 ax[0].set_title('Perpendicular',fontsize=8)
 ax[1].set_title('Paralela',fontsize=8)
 plt.suptitle(u'Variância das componentes perpendicular e paralela integradas verticalmente',fontsize=10)
