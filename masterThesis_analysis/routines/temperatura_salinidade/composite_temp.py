@@ -143,7 +143,7 @@ for nstep in timestep:
     cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
     cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
 
-    output_fname = fname.split('/')[-1].replace('.cdf','_'+str(nstep))
+    output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
     plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/temp/%s/%s.eps'%(exp,output_fname))
 
 """
