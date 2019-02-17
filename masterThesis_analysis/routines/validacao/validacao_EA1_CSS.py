@@ -50,10 +50,10 @@ FIG_DIR  = BASE_DIR + 'masterThesis_analysis/figures/validacao/'
 # reading file with CSS filtered data
 dfFilt = xr.open_dataset(SAVE_DIR + "CSS_filtered.nc")
 dfFilt = dfFilt.to_dataframe()
-ts = []
-for t in dfFilt.index.values:
-    ts.append(t[0])
-dfFilt.index = ts
+# ts = []
+# for t in dfFilt.index.values:
+#     ts.append(t[0])
+# dfFilt.index = ts
 # new datetimeIndex
 dtRange = pd.date_range(start='2013-12-02 21:00',end='2014-03-06 19:00',freq='30Min')
 dfFilt.index = dtRange
@@ -65,11 +65,11 @@ del dfTmp
 
 ##################### IMPORTING MODELED DATA
 # importing product data, alread rotated and saved in a netcdf file
-df5m = xr.open_dataset(SAVE_DIR + 'df5m.nc')
+df5m = xr.open_dataset(SAVE_DIR + 'df5m_EA1.nc')
 df5m = df5m.to_dataframe()
-df15m = xr.open_dataset(SAVE_DIR + 'df15m.nc')
+df15m = xr.open_dataset(SAVE_DIR + 'df15m_EA1.nc')
 df15m = df15m.to_dataframe()
-dfTemp = xr.open_dataset(SAVE_DIR + 'dfTemp.nc')
+dfTemp = xr.open_dataset(SAVE_DIR + 'dfTemp_EA1.nc')
 dfTemp = dfTemp.to_dataframe()
 
 # putting all data in the same dataframe
@@ -154,4 +154,4 @@ plt.tight_layout()
 # plt.subplots_adjust(top=0.945,bottom=0.11,left=0.126,right=0.976,hspace=0.587,wspace=0.2)
 plt.subplots_adjust(top=0.91,bottom=0.06,left=0.126,right=0.976,hspace=0.587,wspace=0.2)
 
-# plt.savefig(FIG_DIR + 'EA1xCSS_validacao.pdf')
+plt.savefig(FIG_DIR + 'EA1xCSS_validacao.pdf')

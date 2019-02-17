@@ -51,10 +51,10 @@ FIG_DIR  = BASE_DIR + 'masterThesis_analysis/figures/validacao/'
 # reading file with CSS filtered data
 dfFilt = xr.open_dataset(SAVE_DIR + "CSS_filtered.nc")
 dfFilt = dfFilt.to_dataframe()
-ts = []
-for t in dfFilt.index.values:
-    ts.append(t[0])
-dfFilt.index = ts
+# ts = []
+# for t in dfFilt.index.values:
+#     ts.append(t[0])
+# dfFilt.index = ts
 # new datetimeIndex
 dtRange = pd.date_range(start='2013-12-02 21:00',end='2014-03-06 19:00',freq='30Min')
 dfFilt.index = dtRange

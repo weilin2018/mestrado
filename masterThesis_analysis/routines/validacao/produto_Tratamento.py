@@ -38,7 +38,8 @@ import masterThesisPack as oceano
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github','ventopcse/output')
 SAVE_DIR = BASE_DIR.replace('github','ventopcse')
-experiment = 'EA2.cdf'
+exp = 'EA1'
+experiment = exp+'.cdf'
 ncin = xr.open_dataset(DATA_DIR + experiment)
 
 # extracting data
@@ -76,9 +77,9 @@ df15m = pd.DataFrame({'along 15m':vr,'cross 15m':ur},index=dfModel.index)
 
 # saving dataframes
 df5m = df5m.to_xarray()
-df5m.to_netcdf(SAVE_DIR + 'df5m.nc')
+df5m.to_netcdf(SAVE_DIR + 'df5m_%s.nc'%(exp))
 df15m = df15m.to_xarray()
-df15m.to_netcdf(SAVE_DIR + 'df15m.nc')
+df15m.to_netcdf(SAVE_DIR + 'df15m_%s.nc'%(exp))
 
 # for temperature
 T5 = ncin.temp[:,k5,56,16].values
@@ -87,4 +88,4 @@ T15= ncin.temp[:,k15,56,16].values
 
 dfTemp = pd.DataFrame({'T5':T5,'T15':T15},index=pd.DatetimeIndex(ncin.time.values))
 dfTemp = dfTemp.to_xarray()
-dfTemp.to_netcdf(SAVE_DIR + 'dfTemp.nc')
+dfTemp.to_netcdf(SAVE_DIR + 'dfTemp_%s.nc'%(exp))
