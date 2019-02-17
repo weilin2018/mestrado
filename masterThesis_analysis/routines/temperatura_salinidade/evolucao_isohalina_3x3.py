@@ -43,8 +43,8 @@ def create_Structure_3(ncin,indexes):
         if ind == 99:
             axesInd = 0
             axes[axesInd,0].set_title('Climatologia',fontsize=8)
-            axes[axesInd,1].set_title(u'EA1 - 15 de Fevereiro',fontsize=8)
-            axes[axesInd,2].set_title(u'EA2 - 15 de Fevereiro',fontsize=8)
+            axes[axesInd,1].set_title(u'EA1 - 13 de Fevereiro',fontsize=8)
+            axes[axesInd,2].set_title(u'EA2 - 13 de Fevereiro',fontsize=8)
         if ind == 28:
             axesInd = 1
         if ind == 19:
@@ -150,13 +150,13 @@ fig,axes,caxes = create_Structure_3(ncin,indexes)
 # axes[0,2].set_title(u'Experimento EA2',fontsize=8)
 
 title = u'Seção vertical de salinidade em Ubatuba (superior), Santos (meio) e Cananéia (inferior),\n'\
-      + u'com a estrutura climatológica à esquerda e a estrutura no dia 15 de Fevereiro em EA1 (meio) e EA2 (direita).\n'
+      + u'com a estrutura climatológica à esquerda e a estrutura média no dia 13 de Fevereiro em EA1 (meio) e EA2 (direita).\n'
 plt.suptitle(title,fontsize=10)
 
 # defining the begin and the end to plot
 nstepBegin = np.arange(0,4,1) # begin of anomalous period
 axes[0,0].set_title('Climatologia',fontsize=8)
-nstepFinal = np.arange(297,303,1) # final of anomalous period
+nstepFinal = np.arange(280,288,1) # final of anomalous period
 
 os.system('clear')
 for ind in indexes:
@@ -204,7 +204,7 @@ for ind in indexes:
     props = dict(boxstyle='round', facecolor='white', alpha=0.5)
     deltax = infos['finalPos_X']-infos['beginPos_X']
     deltaz = np.abs(infos['finalPos_Z']-infos['beginPos_Z'])
-    textstr = r'$\Delta$x = %.1f km'%(deltax)+ '\n'+ r'$\Delta$z = %.1f m' % (deltaz)
+    textstr = r'$\Delta$x = %.1f km'%(deltax)#+ '\n'+ r'$\Delta$z = %.1f m' % (deltaz)
     axes[axesInd,1].text(0.17, 0.32, textstr, transform=axes[axesInd,1].transAxes, fontsize=8,
         va='top', ha='center',bbox=props)
 
@@ -246,7 +246,7 @@ for ind in indexes:
     props = dict(boxstyle='round', facecolor='white', alpha=0.5)
     deltax = infos['finalPos_X']-infos['beginPos_X']
     deltaz = np.abs(infos['finalPos_Z']-infos['beginPos_Z'])
-    textstr = r'$\Delta$x = %.1f km'%(deltax)+ '\n'+ r'$\Delta$z = %.1f m' % (deltaz)
+    textstr = r'$\Delta$x = %.1f km'%(deltax)#+ '\n'+ r'$\Delta$z = %.1f m' % (deltaz)
     axes[axesInd,2].text(0.17, 0.32, textstr, transform=axes[axesInd,2].transAxes, fontsize=8,
         va='top', ha='center',bbox=props)
 
@@ -264,7 +264,7 @@ cbar.locator = tick_locator
 cbar.update_ticks()
 
 cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
-cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
+cbar.ax.set_title(r'Salinidade',fontsize=8)
 
 for c in cbar.ax.collections:
     c.set_edgecolor('face')
@@ -290,4 +290,7 @@ axes[2,1].set_xticklabels(newlabels)
 axes[2,2].set_xticklabels(newlabels)
 
 # plt.savefig(BASE_DIR.replace('mestrado/github','Dropbox/mestrado/figuras')+ 'secao_3x3plots.eps')
-# plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/evolucao_salt_3x3.pdf')
+plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/evolucao_salt_3x3.pdf')
+plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/evolucao_salt_3x3.png')
+plt.close()
+%reset -f

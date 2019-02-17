@@ -57,11 +57,11 @@ def export_data(fname,timestep=0):
     lat[lat == 0.] = np.nan
     depth = ncin.depth.values
 
-    # extracting temperature data, in a specific timestep
-    temp = np.nanmean(ncin.temp[timestep,:,:,:],axis=0)
-    temp = np.where(depth < 100, temp,np.nan)
+    # extracting salinity data, in a specific timestep
+    salt = np.nanmean(ncin.salt[timestep,:,:,:],axis=0)
+    salt = np.where(depth < 100, salt,np.nan)
 
-    return lon,lat,temp,depth
+    return lon,lat,salt,depth
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -69,7 +69,11 @@ def export_data(fname,timestep=0):
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
-fname = DATA_DIR + 'EA1.cdf'
+
+# clear screen before ask
+os.system('clear')
+exp = raw_input('Digite o experimento a ser plotado: ')
+fname = DATA_DIR + exp +'.cdf'
 
 plt.ion()
 
@@ -77,11 +81,11 @@ timestep = [np.arange(48,57,1),np.arange(380,389,1)]
 
 for nstep in timestep:
     plt.close()
-    lon,lat,temp,depth = export_data(fname,timestep=nstep)
+    lon,lat,salt,depth = export_data(fname,timestep=nstep)
 
     # mask first and last 5 rows
-    temp[:,:5,:] = np.nan
-    temp[:,-5:,:] = np.nan
+    salt[:,:5,:] = np.nan
+    salt[:,-5:,:] = np.nan
 
     fig = plt.figure(figsize=(12/2.54,12/2.54))
     gs = gridspec.GridSpec(3,3)
@@ -101,15 +105,15 @@ for nstep in timestep:
     ax2.set_position([.1,.28,.6,.5])
     ax3.set_position([.17,.1,.6,.5])
 
-    contours = np.arange(13,35,0.1)
+    contours = np.arange(34.5,36.01,0.01)
 
-    cf1 = m1.contourf(lon,lat,temp[0,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
+    cf1 = m1.contourf(lon,lat,salt[0,:,:],contours,cmap=cmo.cm.haline,latlon=True,rasterized=True,extend='max')
     cr1 = m1.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
     plt.clabel(cr1,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
-    cf2 = m2.contourf(lon,lat,temp[10,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
+    cf2 = m2.contourf(lon,lat,salt[10,:,:],contours,cmap=cmo.cm.haline,latlon=True,rasterized=True,extend='max')
     cr2 = m2.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
     plt.clabel(cr2,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
-    cf3 = m3.contourf(lon,lat,temp[20,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
+    cf3 = m3.contourf(lon,lat,salt[20,:,:],contours,cmap=cmo.cm.haline,latlon=True,rasterized=True,extend='max')
     cr3 = m3.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
     plt.clabel(cr3,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
 
@@ -128,22 +132,24 @@ for nstep in timestep:
 
     # colorbar
     cax = fig.add_axes([.1,.08,.35,.02])
-    cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%i')
-
+    cbar = plt.colorbar(cf1,ticks=[34.5,34.9,35.25,35.6,36.],orientation='horizontal',cax=cax,format='%.1f')
+    for c in cbar.ax.collections:
+        c.set_edgecolor('face')
+        c.set_linewidth(0.00000000001)
     # # figure's title
     # plt.suptitle(u'Temperatura nas camadas de superfície, meio e fundo no Experimento Controle (esquerda) e Anômalo (direita) em 14 de Janeiro')
-
-    # setting colorbar tick labels
-    from matplotlib import ticker
-    tick_locator = ticker.MaxNLocator(nbins=6)
-    cbar.locator = tick_locator
-    cbar.update_ticks()
+    #
+    # # setting colorbar tick labels
+    # from matplotlib import ticker
+    # tick_locator = ticker.MaxNLocator(nbins=5)
+    # cbar.locator = tick_locator
+    # cbar.update_ticks()
 
     cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
-    cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
+    cbar.ax.set_title(r'Salinidade',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(nstep))
-    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/temp/EA1/%s.eps'%(output_fname))
+    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/salt/%s/%s.eps'%(exp,output_fname))
 
 """
 Nota:

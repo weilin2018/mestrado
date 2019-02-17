@@ -69,7 +69,8 @@ def export_data(fname,timestep=0):
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
-fname = DATA_DIR + 'EA1.cdf'
+exp = raw_input('Digite o experimento a ser plotado: ')
+fname = DATA_DIR + exp +'.cdf'
 
 plt.ion()
 
@@ -143,7 +144,7 @@ for nstep in timestep:
     cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(nstep))
-    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/temp/EA1/%s.eps'%(output_fname))
+    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/temp/%s/%s.eps'%(exp,output_fname))
 
 """
 Nota:
