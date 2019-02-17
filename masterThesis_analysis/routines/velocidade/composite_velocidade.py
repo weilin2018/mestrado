@@ -59,15 +59,33 @@ def export_data(fname,timestep=0):
     lat[lat == 0.] = np.nan
 
     # extracting temperature data, in a specific timestep
-    u,v = ncin.u[timestep,:,:,:],ncin.v[timestep,:,:,:]
+    u,v = np.nanmean(ncin.u[timestep,:,:,:],axis=0),np.nanmean(ncin.v[timestep,:,:,:],axis=0)
     # spd = np.sqrt(u**2 + v**2)
     # spd = np.where(depth < 100, spd,np.nan)
 
     return lon,lat,u,v,depth,angle
 
+def rotate_velocityField(u,v,ang):
+
+    import decomp
+    ur = np.zeros(u.shape)*np.nan
+    vr = np.zeros(v.shape)*np.nan
+
+    for j in range(u.shape[0]):
+        U,V = u[j,:],v[j,:]
+        angle = ang[j,:]
+
+        INT,DIR = decomp.uv2intdir(U,V,0,angle)
+        uro,vro = decomp.intdir2uv(INT,DIR,0,angle)
+        ur[j,:] = uro
+        vr[j,:] = vro
+
+    return ur,vr
+
+
 def tratando_corrente(u,v,depth,angle):
 
-    ur,vr = ocplt.rotate_velocityField(u,v,angle)
+    ur,vr = rotate_velocityField(u,v,angle)
     spd = np.sqrt(ur**2+vr**2)
     spd = np.where(depth < 100, spd,np.nan)
 
@@ -80,10 +98,11 @@ def tratando_corrente(u,v,depth,angle):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FILE_DIR = BASE_DIR+'masterThesis_analysis/routines/index_list.npy'
-experiment = 'EC2'
+os.system('clear')
+experiment = raw_input('Digite o experimento a ser plotado: ')
 fname = DATA_DIR + experiment +'.cdf'
 
-timestep = [46,303]
+timestep = [np.arange(48,57,1),np.arange(280,289,1)]
 
 for nstep in timestep:
     plt.close()
@@ -147,7 +166,7 @@ for nstep in timestep:
 
     # colorbar
     cax = fig.add_axes([.1,.08,.35,.02])
-    cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%0.2f')
+    cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%0.1f')
 
     # # figure's title
     # plt.suptitle(u'Temperatura nas camadas de superfície, meio e fundo no Experimento Controle (esquerda) e Anômalo (direita) em 14 de Janeiro')
@@ -161,5 +180,5 @@ for nstep in timestep:
     cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
     cbar.ax.set_title(r'Velocidade (m s$^{-1}$)',fontsize=8)
 
-    output_fname = fname.split('/')[-1].replace('.cdf','_'+str(nstep))
+    output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
     plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/speed/%s/%s.eps'%(experiment,output_fname))
