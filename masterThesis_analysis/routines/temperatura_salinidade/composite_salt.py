@@ -77,7 +77,7 @@ fname = DATA_DIR + exp +'.cdf'
 
 plt.ion()
 
-timestep = [np.arange(48,57,1),np.arange(380,389,1)]
+timestep = [np.arange(48,57,1),np.arange(280,289,1)]
 
 for nstep in timestep:
     plt.close()
