@@ -127,13 +127,13 @@ os.system('clear')
 for ind in indexes:
     if ind == 99:
         axesInd = 0
-        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,'Ubatuba','temp')
+        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,'Ubatuba','temp',dz=True)
     if ind == 28:
         axesInd = 1
-        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,'Santos','temp')
+        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,'Santos','temp',dz=True)
     if ind == 19:
         axesInd = 2
-        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,u'Cananéia','temp')
+        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,u'Cananéia','temp',dz=True)
 
     print('# ----- PLOTTING [secao: %i] 14 JAN, 2014 ----- #'%(ind))
     T = np.nanmean(temp[nstepBegin,:,ind,:],axis=0)

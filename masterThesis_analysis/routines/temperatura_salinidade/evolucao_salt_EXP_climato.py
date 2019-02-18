@@ -80,6 +80,7 @@ def create_structure_2cols(indexes,exp):
 BASE_DIR = oceano.make_dir()
 plt.ion()
 
+os.system('clear')
 exp = raw_input('Digite o experimento a ser plotado: ')
 
 # configurações do plot
@@ -120,17 +121,16 @@ axes[0,0].set_title('Climatologia',fontsize=8)
 
 nstepFinal = np.arange(280,289,1) # final of anomalous period
 
-os.system('clear')
 for ind in indexes:
     if ind == 99:
         axesInd = 0
-        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,'Ubatuba','salt')
+        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,'Ubatuba','salt',dz=False)
     if ind == 28:
         axesInd = 1
-        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,'Santos','salt')
+        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,'Santos','salt',dz=False)
     if ind == 19:
         axesInd = 2
-        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,u'Cananéia','salt')
+        infos = ocplot.search_information(ncin,ind,nstepBegin,nstepFinal,u'Cananéia','salt',dz=False)
 
     print('# ----- PLOTTING [secao: %i] 14 JAN, 2014 ----- #'%(ind))
     S = np.nanmean(salt[nstepBegin,:,ind,:],axis=0)
@@ -167,8 +167,7 @@ for ind in indexes:
     # plot text box
     props = dict(boxstyle='round', facecolor='white', alpha=0.5)
     deltax = infos['finalPos_X']-infos['beginPos_X']
-    deltaz = np.abs(infos['finalPos_Z']-infos['beginPos_Z'])
-    textstr = r'$\Delta$x = %.1f km'%(deltax)+ '\n'+ r'$\Delta$z = %.1f m' % (deltaz)
+    textstr = r'$\Delta$x = %.1f km'%(deltax)
     axes[axesInd,1].text(0.17, 0.32, textstr, transform=axes[axesInd,1].transAxes, fontsize=8,
         va='top', ha='center',bbox=props)
 
