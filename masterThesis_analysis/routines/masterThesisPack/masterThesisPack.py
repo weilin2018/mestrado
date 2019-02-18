@@ -173,8 +173,10 @@ def find_distance_of_a_value(ncin,ind,timesteps=[0],sigma=-1,var='temp',value=18
     data[inds] = nvalue
 
     index = np.where(data == find_nearest_1D(data,value))
-
-    return dist[index].item()/1000,index
+    if len(index[0]) == 2:
+        return dist[index[0][-1]]/1000,index[0][-1]
+    else:
+        return dist[index].item()/1000,index
 
 def find_depth_of_a_value(ncin,ind,timesteps,idx,sigma=-1,var='temp',value=18.):
 

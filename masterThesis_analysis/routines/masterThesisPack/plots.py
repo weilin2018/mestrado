@@ -367,7 +367,7 @@ def create_Structure_horizontal_Quiver(fname,contours,FILE_DIR,property='speed',
 
     return fig,axes
 
-def search_information(ncin,ind,nstepBegin,nstepFinal,loc,var):
+def search_information(ncin,ind,nstepBegin,nstepFinal,loc,var,dz=False):
     # based on an ind value, return a dictionary with informations for each
     # cross section, such as location, variable position, etc.
 
@@ -380,15 +380,22 @@ def search_information(ncin,ind,nstepBegin,nstepFinal,loc,var):
         value = 36.
 
     # iniatilize dictionary
-    idx_begin = masterThesisPack.find_distance_of_a_value(ncin,ind,nstepBegin,sigma,var,value)[1][0][0]
-    idx_final = masterThesisPack.find_distance_of_a_value(ncin,ind,nstepFinal,sigma,var,value)[1][0][0]
+    if dz: # used basically to find where the 18 isoterm touchs the floor
+        idx_begin = masterThesisPack.find_distance_of_a_value(ncin,ind,nstepBegin,sigma,var,value)[1][0][0]
+        idx_final = masterThesisPack.find_distance_of_a_value(ncin,ind,nstepFinal,sigma,var,value)[1][0][0]
 
-    info = {
-        'location': loc,
-        'beginPos_X': masterThesisPack.find_distance_of_a_value(ncin,ind,nstepBegin,sigma,var,value)[0],
-        'finalPos_X': masterThesisPack.find_distance_of_a_value(ncin,ind,nstepFinal,sigma,var,value)[0],
-        'beginPos_Z': masterThesisPack.find_depth_of_a_value(ncin,ind,nstepBegin,idx_begin,sigma,var,value),
-        'finalPos_Z': masterThesisPack.find_depth_of_a_value(ncin,ind,nstepFinal,idx_final,sigma,var,value)
-    }
-
+        info = {
+            'location': loc,
+            'beginPos_X': masterThesisPack.find_distance_of_a_value(ncin,ind,nstepBegin,sigma,var,value)[0],
+            'finalPos_X': masterThesisPack.find_distance_of_a_value(ncin,ind,nstepFinal,sigma,var,value)[0],
+            'beginPos_Z': masterThesisPack.find_depth_of_a_value(ncin,ind,nstepBegin,idx_begin,sigma,var,value),
+            'finalPos_Z': masterThesisPack.find_depth_of_a_value(ncin,ind,nstepFinal,idx_final,sigma,var,value)
+        }
+    else:
+        info = {
+            'location': loc,
+            'beginPos_X': masterThesisPack.find_distance_of_a_value(ncin,ind,nstepBegin,sigma,var,value)[0],
+            'finalPos_X': masterThesisPack.find_distance_of_a_value(ncin,ind,nstepFinal,sigma,var,value)[0],
+        }
+        
     return info
