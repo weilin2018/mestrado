@@ -35,39 +35,54 @@ import masterThesisPack as oceano
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
 # insert functions here
-# insert functions here
-def create_structure_2x3(indexes,exp):
+def create_Structure_3(ncin,indexes):
 
-    fig,axes = plt.subplots(nrows=2,ncols=3,figsize=(20.4/2.54, 15/2.54))
+    fig,axes = plt.subplots(nrows=3,ncols=3,figsize=(25.4/2.54, 20/2.54))
 
-    axes[0,0].set_title(u'Seção Norte',fontsize=8)
-    axes[0,1].set_title(u'Seção Centro',fontsize=8)
-    axes[0,2].set_title(u'Seção Sul',fontsize=8)
+    for ind in indexes:
+        if ind == 99:
+            axesInd = 0
+            axes[axesInd,0].set_title(u'Temperatura',fontsize=8)
+            axes[axesInd,1].set_title(u'Salinidade',fontsize=8)
+            axes[axesInd,2].set_title(u'Velocidade',fontsize=8)
+        if ind == 28:
+            axesInd = 1
+        if ind == 19:
+            axesInd = 2
+            axes[axesInd,0].set_xlabel(u'Distância [km]',fontsize=8)
+            axes[axesInd,1].set_xlabel(u'Distância [km]',fontsize=8)
+            axes[axesInd,2].set_xlabel(u'Distância [km]',fontsize=8)
 
-    axes[1,0].set_xlabel(u'Distância [km]', fontsize=8)
-    axes[1,1].set_xlabel(u'Distância [km]', fontsize=8)
-    axes[1,2].set_xlabel(u'Distância [km]', fontsize=8)
-
-    axes[0,0].set_ylabel('Profundidade [m]',fontsize=8)
-    axes[1,0].set_ylabel('Profundidade [m]',fontsize=8)
+    axes[0,0].set_ylabel('Profundidade [m]')
+    axes[1,0].set_ylabel('Profundidade [m]')
+    axes[2,0].set_ylabel('Profundidade [m]')
 
     # hiding ticks labels
     axes[0,0].xaxis.set_major_formatter(plt.NullFormatter())
 
     axes[0,1].xaxis.set_major_formatter(plt.NullFormatter())
     axes[0,1].yaxis.set_major_formatter(plt.NullFormatter())
+
     axes[0,2].xaxis.set_major_formatter(plt.NullFormatter())
     axes[0,2].yaxis.set_major_formatter(plt.NullFormatter())
 
+    axes[1,0].xaxis.set_major_formatter(plt.NullFormatter())
+
+    axes[1,1].xaxis.set_major_formatter(plt.NullFormatter())
     axes[1,1].yaxis.set_major_formatter(plt.NullFormatter())
+
+    axes[1,2].xaxis.set_major_formatter(plt.NullFormatter())
     axes[1,2].yaxis.set_major_formatter(plt.NullFormatter())
 
+    axes[2,1].yaxis.set_major_formatter(plt.NullFormatter())
+    axes[2,2].yaxis.set_major_formatter(plt.NullFormatter())
+
     # adding colorbar axes (cbaxes)
-    caxTemp = fig.add_axes([.115,.04,.405,.02])
-    caxSalt = fig.add_axes([.565,.04,.405,.02])
+    caxTemp = fig.add_axes([.08,.04,.26,.02])
+    caxSalt = fig.add_axes([.4,.04,.26,.02])
+    caxVelo = fig.add_axes([.72,.04,.26,.02])
 
-    return fig,axes,caxTemp,caxSalt
-
+    return fig,axes,caxTemp,caxSalt,caxVelo
 
 ##############################################################################
 #                               MAIN CODE                                    #
@@ -108,10 +123,7 @@ h1    = ncin['h1'].values
 
 nstepBegin = np.arange(0,9,1) # climatolofic data
 
-# fig,axes,caxTemp,caxSalt,caxVelo = create_Structure_3(ncin,indexes)
-fig,axes,caxTemp,caxSalt = create_structure_2x3(ncin,indexes)
-title = u'Seção vertical de temperatura (superior) e salinidade (inferior) \nem Ubatuba (esquerda), Santos (meio) e Cananéia (direita)'
-plt.suptitle(title,fontsize=10)
+fig,axes,caxTemp,caxSalt,caxVelo = create_Structure_3(ncin,indexes)
 
 # plotando primeiro a temperatura
 os.system('clear')
@@ -129,12 +141,12 @@ for ind in indexes:
     xgrid,zgrid = np.meshgrid(ndist,ndepth)
 
     # begin: 18 isotherm position
-    cf1  = axes[0,axesInd].contourf(xgrid,-zgrid,Dplot,contours_temp,cmap=cmo.cm.thermal,extend='max')
-    cs   = axes[0,axesInd].contour(xgrid,-zgrid,Dplot,levels=[18.],colors=('k'),linestyles=('--'))
-    axes[0,axesInd].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
-    axes[0,axesInd].plot(dist2[-1,:],sig[-1,:],'k')
-    axes[0,axesInd].set_xlim([0,limiteEixoX])
-    axes[0,axesInd].set_ylim([-depRef,0])
+    cf1  = axes[axesInd,0].contourf(xgrid,-zgrid,Dplot,contours_temp,cmap=cmo.cm.thermal,extend='max')
+    cs   = axes[axesInd,0].contour(xgrid,-zgrid,Dplot,levels=[18.],colors=('k'),linestyles=('--'))
+    axes[axesInd,0].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
+    axes[axesInd,0].plot(dist2[-1,:],sig[-1,:],'k')
+    axes[axesInd,0].set_xlim([0,limiteEixoX])
+    axes[axesInd,0].set_ylim([-depRef,0])
 
     for c in cf1.collections:
         c.set_edgecolor('face')
@@ -167,12 +179,12 @@ for ind in indexes:
     xgrid,zgrid = np.meshgrid(ndist,ndepth)
 
     # begin: 18 isotherm position
-    cf1  = axes[1,axesInd].contourf(xgrid,-zgrid,Dplot,contours_salt,cmap=cmo.cm.haline,extend='max')
-    cs   = axes[1,axesInd].contour(xgrid,-zgrid,Dplot,levels=[36.],colors=('k'),linestyles=('--'))
-    axes[1,axesInd].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
-    axes[1,axesInd].plot(dist2[-1,:],sig[-1,:],'k')
-    axes[1,axesInd].set_xlim([0,limiteEixoX])
-    axes[1,axesInd].set_ylim([-depRef,0])
+    cf1  = axes[axesInd,1].contourf(xgrid,-zgrid,Dplot,contours_salt,cmap=cmo.cm.haline,extend='max')
+    cs   = axes[axesInd,1].contour(xgrid,-zgrid,Dplot,levels=[36.],colors=('k'),linestyles=('--'))
+    axes[axesInd,1].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
+    axes[axesInd,1].plot(dist2[-1,:],sig[-1,:],'k')
+    axes[axesInd,1].set_xlim([0,limiteEixoX])
+    axes[axesInd,1].set_ylim([-depRef,0])
 
     for c in cf1.collections:
         c.set_edgecolor('face')
@@ -190,20 +202,3 @@ cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
 cbar.ax.set_title('Salinidade',fontsize=8)
 
 plt.tight_layout()
-plt.subplots_adjust(top=0.886,bottom=0.165,left=0.085,right=0.985,hspace=0.072,wspace=0.072)
-
-# updating x tick labels
-labels = [item.get_text() for item in axes[1,2].get_xticklabels()]
-newlabels = []
-for lab in labels:
-    l = float(lab)/1000
-    newlabels.append(int(l))
-
-axes[1,0].set_xticklabels(newlabels)
-axes[1,1].set_xticklabels(newlabels)
-axes[1,2].set_xticklabels(newlabels)
-
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/secao_climatologia_TS.eps')
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_climatologia_TS.png')
-plt.close()
-%reset -f
