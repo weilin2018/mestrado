@@ -106,7 +106,7 @@ def calculateMeanvelocity(u,v,depth,angles):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FILE_DIR = BASE_DIR+'masterThesis_analysis/routines/index_list.npy'
-experiment = 'EC2'
+experiment = raw_input('Digite o experimento: ')
 fname = DATA_DIR + experiment + '.cdf'
 plt.ion()
 
@@ -134,7 +134,8 @@ m3,_,_ = make_map(axes[0,1],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=n
 m4,_,_ = make_map(axes[1,1],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
 
 # plotting EC1 - 14/Jan
-u,v = ncin.u[46,:,:,:].values,ncin.v[46,:,:,:].values
+u = np.nanmean( ncin.u[np.arange(48,57,1),:,:,:].values,axis=0)
+v = np.nanmean( ncin.v[np.arange(48,57,1),:,:,:].values,axis=0)
 umean,vmean,smean = calculateMeanvelocity(u,v,depth,angle)
 xplot,yplot,uplot,vplot = ocplt.formatting_vectors(umean/smean,vmean/smean,lon,lat,FILE_DIR)
 
@@ -142,7 +143,8 @@ cf1 = m1.contourf(lon,lat,smean,latlon=True,cmap=cmo.cm.speed,rasterized=True)
 qv1 = m1.quiver(xplot,yplot,uplot,vplot,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
 
 # plotting EC1 - 15/Fev
-u,v = ncin.u[303,:,:,:].values,ncin.v[303,:,:,:].values
+u = np.nanmean(ncin.u[np.arange(280,289,1),:,:,:].values,axis=0)
+v = np.nanmean(ncin.v[np.arange(280,289,1),:,:,:].values,axis=0)
 umean,vmean,smean = calculateMeanvelocity(u,v,depth,angle)
 xplot,yplot,uplot,vplot = ocplt.formatting_vectors(umean/smean,vmean/smean,lon,lat,FILE_DIR)
 
@@ -150,7 +152,8 @@ cf2 = m2.contourf(lon,lat,smean,latlon=True,cmap=cmo.cm.speed,rasterized=True)
 qv2 = m2.quiver(xplot,yplot,uplot,vplot,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
 
 # plotting EA1 - 14/Jan
-u,v = ncin2.u[46,:,:,:].values,ncin2.v[46,:,:,:].values
+u = np.nanmean(ncin2.u[np.arange(48,57,1),:,:,:].values,axis=0)
+v = np.nanmean(ncin2.v[np.arange(48,57,1),:,:,:].values,axis=0)
 umean,vmean,smean = calculateMeanvelocity(u,v,depth,angle)
 xplot,yplot,uplot,vplot = ocplt.formatting_vectors(umean/smean,vmean/smean,lon,lat,FILE_DIR)
 
@@ -158,7 +161,8 @@ cf3 = m3.contourf(lon,lat,smean,latlon=True,cmap=cmo.cm.speed,rasterized=True)
 qv3 = m3.quiver(xplot,yplot,uplot,vplot,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
 
 # plotting EA1 - 15/Fev
-u,v = ncin2.u[303,:,:,:].values,ncin2.v[303,:,:,:].values
+u = np.nanmean(ncin2.u[np.arange(280,289,1),:,:,:].values,axis=0)
+v = np.nanmean(ncin2.v[np.arange(280,289,1),:,:,:].values,axis=0)
 umean,vmean,smean = calculateMeanvelocity(u,v,depth,angle)
 xplot,yplot,uplot,vplot = ocplt.formatting_vectors(umean/smean,vmean/smean,lon,lat,FILE_DIR)
 
