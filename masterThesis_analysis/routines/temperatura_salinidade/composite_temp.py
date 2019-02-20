@@ -46,7 +46,7 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
 
     return m,meridians,parallels
 
-def export_data(fname,timestep=0):
+def export_data(fname,timestep=0,convertData=False,outputFile=None):
     # plotting climatologic data: t = 0, k = 0
     ncin = xr.open_dataset(fname)
 
@@ -57,18 +57,49 @@ def export_data(fname,timestep=0):
     lat[lat == 0.] = np.nan
     depth = ncin.depth.values
 
-    # extracting temperature data, in a specific timestep
-    temp = np.nanmean(ncin.temp[timestep,:,:,:],axis=0)
-    temp = np.where(depth < 100, temp,np.nan)
+    # transform data from sigma vertical coordinates to standard level
+    if convertData:
+        # interpolating data from sigma to standard level
+        temp = ncin.temp[timestep,:,:,:]
+        stdl,temp = oceano.sigma2stdl(temp,sigma,23,depth,ncin.h1,lon,lat,'temperature')
+        temp = np.nanmean(temp,axis=0) # media no tempo
 
-    return lon,lat,temp,depth
+        # saving
+        np.save(outputFile,temp)
+    else:
+        temp = np.load(outputFile)
+        stdl = [0, 10, 25, 40, 50, 60, 70, 80, 100, 150, 300, 350, 400, 450, 500, 600, 700, 800, 1000, 1200, 1500, 1800, 2000]
+
+    # remove data out of 200 m isobathymetric
+    temp = np.where(depth < 200, temp,np.nan)
+
+    return lon,lat,temp,depth,stdl
 
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
+
+"""
+    Importantissimo:
+
+    Na eventualidade de rodar as simulações novamente e na ocasião de ser com novas
+    configurações, é necessário converter os dados do modelo de coordenadas
+    sigmas para standard levels novamente, atualizando assim os arquivos utilizados
+    nesta rotina para plotagem.
+
+    Importante manter isso em mente, pois se não for feito isso, a rotina continuará
+    plotando os dados antigos.
+
+    Para que isso ocorra, ative a seguinte opção na linha 101:
+        convertData = True
+
+"""
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
+
+convertData = False
+
 exp = raw_input('Digite o experimento a ser plotado: ')
 fname = DATA_DIR + exp +'.cdf'
 
@@ -78,73 +109,81 @@ timestep = [np.arange(48,57,1),np.arange(280,289,1)]
 
 for nstep in timestep:
     plt.close()
-    lon,lat,temp,depth = export_data(fname,timestep=nstep)
+    outputFile = '/home/danilo/mestrado/ventopcse/output/dados_interpolados_stdl/dif_temp_%i_%s.npy'%(np.nanmean(nstep),exp)
+    lon,lat,temp,depth,stdl = export_data(fname,timestep=nstep,convertData=convertData,outputFile=outputFile)
 
-    # mask first and last 5 rows
-    temp[:,:5,:] = np.nan
-    temp[:,-5:,:] = np.nan
+    if convertData != True: # so realiza a plotagem se nao for necessario converter os dados. Pra facilitar
+        # mask first and last 5 rows
+        temp[:,:5,:] = np.nan
+        temp[:,-5:,:] = np.nan
 
-    fig = plt.figure(figsize=(12/2.54,12/2.54))
-    gs = gridspec.GridSpec(3,3)
+        fig = plt.figure(figsize=(12/2.54,12/2.54))
+        fig.patch.set_visible(False)
 
-    # creating axis
-    ax1 = plt.subplot(gs[0,0])
-    ax2 = plt.subplot(gs[1,1])
-    ax3 = plt.subplot(gs[2,2])
+        gs = gridspec.GridSpec(3,3)
 
-    # creating basemap instance
-    m1,meridians,parallels = make_map(ax1,ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
-    m2,_,_ = make_map(ax2,ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
-    m3,_,_ = make_map(ax3,ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
+        # creating axis
+        ax1 = plt.subplot(gs[0,0])
+        ax2 = plt.subplot(gs[1,1])
+        ax3 = plt.subplot(gs[2,2])
+        # removing outside border
+        ax1.axis('off')
+        ax2.axis('off')
+        ax3.axis('off')
 
-    # positiong each axes
-    ax1.set_position([.03,.46,.6,.5])
-    ax2.set_position([.1,.28,.6,.5])
-    ax3.set_position([.17,.1,.6,.5])
+        # creating basemap instance
+        m1,meridians,parallels = make_map(ax1,ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
+        m2,_,_ = make_map(ax2,ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
+        m3,_,_ = make_map(ax3,ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
 
-    contours = np.arange(13,35,0.1)
+        # positiong each axes
+        ax1.set_position([.03,.46,.6,.5])
+        ax2.set_position([.1,.28,.6,.5])
+        ax3.set_position([.17,.1,.6,.5])
 
-    cf1 = m1.contourf(lon,lat,temp[0,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
-    cr1 = m1.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
-    plt.clabel(cr1,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
-    cf2 = m2.contourf(lon,lat,temp[10,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
-    cr2 = m2.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
-    plt.clabel(cr2,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
-    cf3 = m3.contourf(lon,lat,temp[20,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='max')
-    cr3 = m3.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
-    plt.clabel(cr3,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
+        contours = np.arange(13,35,0.1)
 
-    # matplotib trick to remove white thin lines when saving contourf in pdf
-    for c in cf1.collections:
-        c.set_edgecolor('face')
-        c.set_linewidth(0.00000000001)
+        cf1 = m1.contourf(lon,lat,temp[0,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='both')
+        cr1 = m1.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+        plt.clabel(cr1,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
+        cf2 = m2.contourf(lon,lat,temp[3,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='both')
+        cr2 = m2.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+        plt.clabel(cr2,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
+        cf3 = m3.contourf(lon,lat,temp[7,:,:],contours,cmap=cmo.cm.thermal,latlon=True,rasterized=True,extend='both')
+        cr3 = m3.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+        plt.clabel(cr3,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
 
-    for c in cf2.collections:
-        c.set_edgecolor('face')
-        c.set_linewidth(0.00000000001)
+        # matplotib trick to remove white thin lines when saving contourf in pdf
+        for c in cf1.collections:
+            c.set_edgecolor('face')
+            c.set_linewidth(0.00000000001)
 
-    for c in cf3.collections:
-        c.set_edgecolor('face')
-        c.set_linewidth(0.00000000001)
+        for c in cf2.collections:
+            c.set_edgecolor('face')
+            c.set_linewidth(0.00000000001)
 
-    # colorbar
-    cax = fig.add_axes([.1,.08,.35,.02])
-    cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%i')
+        for c in cf3.collections:
+            c.set_edgecolor('face')
+            c.set_linewidth(0.00000000001)
 
-    # # figure's title
-    # plt.suptitle(u'Temperatura nas camadas de superfície, meio e fundo no Experimento Controle (esquerda) e Anômalo (direita) em 14 de Janeiro')
+        # colorbar
+        cax = fig.add_axes([.1,.08,.35,.02])
+        cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%i')
 
-    # setting colorbar tick labels
-    from matplotlib import ticker
-    tick_locator = ticker.MaxNLocator(nbins=6)
-    cbar.locator = tick_locator
-    cbar.update_ticks()
+        # # figure's title
+        # plt.suptitle(u'Temperatura nas camadas de superfície, meio e fundo no Experimento Controle (esquerda) e Anômalo (direita) em 14 de Janeiro')
 
-    cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
-    cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
+        # setting colorbar tick labels
+        from matplotlib import ticker
+        tick_locator = ticker.MaxNLocator(nbins=6)
+        cbar.locator = tick_locator
+        cbar.update_ticks()
 
-    output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
-    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/temp/%s/%s.eps'%(exp,output_fname))
+        cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
+        cbar.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
+
+        output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
+        plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/temp/%s/%s.eps'%(exp,output_fname))
 
 """
 Nota:
