@@ -153,6 +153,11 @@ for nstep in timestep:
         cr3 = m3.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
         plt.clabel(cr3,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
 
+        # inserting some texts
+        ax1.text(648156,895737,'00 m',fontsize=8,va='center',ha='center')
+        ax2.text(639807,895573,'40 m',fontsize=8,va='center',ha='center')
+        ax3.text(647828,887225,'80 m',fontsize=8,va='center',ha='center')
+
         # matplotib trick to remove white thin lines when saving contourf in pdf
         for c in cf1.collections:
             c.set_edgecolor('face')
@@ -167,7 +172,8 @@ for nstep in timestep:
             c.set_linewidth(0.00000000001)
 
         # colorbar
-        cax = fig.add_axes([.1,.08,.35,.02])
+        # cax = fig.add_axes([.1,.08,.35,.02])
+        cax = fig.add_axes([.32,.22,.35,.02])
         cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%i')
 
         # # figure's title
