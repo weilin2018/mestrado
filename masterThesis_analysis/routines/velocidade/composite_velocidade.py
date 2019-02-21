@@ -47,7 +47,7 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
 
     return m,meridians,parallels
 
-def export_data(fname,timestep=0):
+def export_data(fname,timestep=0,convertData=False,outputFile=None):
     # plotting climatologic data: t = 0, k = 0
     ncin = xr.open_dataset(fname)
 
@@ -58,12 +58,27 @@ def export_data(fname,timestep=0):
     lon[lon == 0.] = np.nan
     lat[lat == 0.] = np.nan
 
-    # extracting temperature data, in a specific timestep
-    u,v = np.nanmean(ncin.u[timestep,:,:,:],axis=0),np.nanmean(ncin.v[timestep,:,:,:],axis=0)
-    # spd = np.sqrt(u**2 + v**2)
-    # spd = np.where(depth < 100, spd,np.nan)
+    # transform data from sigma vertical coordinates to standard level
+    if convertData:
+	os.system('converting u and v for %s in timestep %i'%(exp,np.nanmean(timestep)))
+        # interpolating data from sigma to standard level
+        u,v = ncin.u[timestep,:,:,:],ncin.v[timestep,:,:,:]
+        stdl,newu = sigma2stdl(u,sigma,23,depth,ncin.h1,lon,lat,'u component')
+        umean = np.nanmean(newu,axis=0) # media no tempo
+        np.save(outputFile+'%s_umean_%i.npy'%(exp,np.nanmean(timestep)),umean)
 
-    return lon,lat,u,v,depth,angle
+        stdl,newv = sigma2stdl(v,sigma,23,depth,ncin.h1,lon,lat,'v component')
+        vmean = np.nanmean(newv,axis=0) # media no tempo
+        np.save(outputFile+'%s_vmean_%i.npy'%(exp,np.nanmean(timestep)),vmean)
+
+        u,v = umean,vmean
+    else:
+        u = np.load(outputFile+'%s_umean_%i.npy'%(exp,np.nanmean(timestep)))
+        v = np.load(outputFile+'%s_vmean_%i.npy'%(exp,np.nanmean(timestep)))
+
+        stdl = [0, 10, 25, 40, 50, 60, 70, 80, 100, 150, 300, 350, 400, 450, 500, 600, 700, 800, 1000, 1200, 1500, 1800, 2000]
+
+    return lon,lat,u,v,depth,angle,stdl
 
 def rotate_velocityField(u,v,ang):
 
@@ -87,32 +102,54 @@ def tratando_corrente(u,v,depth,angle):
 
     ur,vr = rotate_velocityField(u,v,angle)
     spd = np.sqrt(ur**2+vr**2)
-    spd = np.where(depth < 100, spd,np.nan)
+    spd = np.where(depth < 200, spd,np.nan)
 
     return ur,vr,spd
 
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
+"""
+    Importantissimo:
+
+    Na eventualidade de rodar as simulações novamente e na ocasião de ser com novas
+    configurações, é necessário converter os dados do modelo de coordenadas
+    sigmas para standard levels novamente, atualizando assim os arquivos utilizados
+    nesta rotina para plotagem.
+
+    Importante manter isso em mente, pois se não for feito isso, a rotina continuará
+    plotando os dados antigos.
+
+    Para que isso ocorra, ative a seguinte opção na linha 101:
+        convertData = True
+
+"""
+
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FILE_DIR = BASE_DIR+'masterThesis_analysis/routines/index_list.npy'
 os.system('clear')
-experiment = raw_input('Digite o experimento a ser plotado: ')
-fname = DATA_DIR + experiment +'.cdf'
+
+convertData = False
+
+exp = raw_input('Digite o experimento a ser plotado: ')
+fname = DATA_DIR + exp +'.cdf'
+
+plt.ion()
 
 timestep = [np.arange(48,57,1),np.arange(280,289,1)]
 
 for nstep in timestep:
     plt.close()
     # working with the data
-    lon,lat,u,v,depth,angles = export_data(fname,timestep=nstep)
+    outputFile = DATA_DIR + 'dados_interpolados_stdl/'
+    lon,lat,u,v,depth,angle,stdl = export_data(fname,timestep=nstep,convertData=convertData,outputFile=outputFile)
 
     # rotating vectors
-    ur_surf,vr_surf,spd_surf = tratando_corrente(u[0,:,:],v[0,:,:],depth,angles)
-    ur_meio,vr_meio,spd_meio = tratando_corrente(u[10,:,:],v[10,:,:],depth,angles)
-    ur_fund,vr_fund,spd_fund = tratando_corrente(u[19,:,:],v[19,:,:],depth,angles)
+    ur_surf,vr_surf,spd_surf = tratando_corrente(u[0,:,:],v[0,:,:],depth,angle)
+    ur_meio,vr_meio,spd_meio = tratando_corrente(u[3,:,:],v[3,:,:],depth,angle)
+    ur_fund,vr_fund,spd_fund = tratando_corrente(u[7,:,:],v[7,:,:],depth,angle)
 
     # formatando os dados para um formato de visualizacao melhor e passando os vetores
     # normalizados pela velocidade
@@ -122,12 +159,18 @@ for nstep in timestep:
 
     # plotando no grafico
     fig = plt.figure(figsize=(12/2.54,12/2.54))
+    fig.patch.set_visible(False)
+
     gs = gridspec.GridSpec(3,3)
 
     # creating axis
     ax1 = plt.subplot(gs[0,0])
     ax2 = plt.subplot(gs[1,1])
     ax3 = plt.subplot(gs[2,2])
+    # removing outside border
+    ax1.axis('off')
+    ax2.axis('off')
+    ax3.axis('off')
 
     # creating basemap instance
     m1,meridians,parallels = make_map(ax1,ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
@@ -165,7 +208,7 @@ for nstep in timestep:
         c.set_linewidth(0.00000000001)
 
     # colorbar
-    cax = fig.add_axes([.1,.08,.35,.02])
+    cax = fig.add_axes([.32,.22,.35,.02])
     cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%0.1f')
 
     # # figure's title
