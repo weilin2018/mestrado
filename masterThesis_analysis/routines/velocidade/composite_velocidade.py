@@ -224,4 +224,16 @@ for nstep in timestep:
     cbar.ax.set_title(r'Velocidade (m s$^{-1}$)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
-    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/speed/%s/%s.eps'%(experiment,output_fname))
+    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/speed/%s/%s.eps'%(exp,output_fname))
+
+"""
+Nota:
+
+    Apos salvar a figura em .pdf, e' necessario ir ao inkscape,
+    realizar o ungroup dos objetos de imagem e deletar algumas coisas como:
+
+    . cor cinza
+    . elementos dentro do continente
+    . mover colorbar pro local adequado
+    . nomear cada contourf
+"""
