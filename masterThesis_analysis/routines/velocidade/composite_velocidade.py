@@ -157,6 +157,20 @@ for nstep in timestep:
     xplot,yplot,uplot_meio,vplot_meio = ocplt.formatting_vectors(ur_meio/spd_meio,vr_meio/spd_meio,lon,lat,FILE_DIR)
     xplot,yplot,uplot_fund,vplot_fund = ocplt.formatting_vectors(ur_fund/spd_fund,vr_fund/spd_fund,lon,lat,FILE_DIR)
 
+    # mask first and last 5 rows
+    spd_surf[:5,:] = np.nan
+    spd_surf[-5:,:] = np.nan
+    spd_meio[:5,:] = np.nan
+    spd_meio[-5:,:] = np.nan
+    spd_fund[:5,:] = np.nan
+    spd_fund[-5:,:] = np.nan
+    uplot_surf[:3,:],vplot_surf[:3,:] = np.nan,np.nan
+    uplot_surf[-3:,:],vplot_surf[-3:,:] = np.nan,np.nan
+    uplot_meio[:3,:],vplot_meio[:3,:] = np.nan,np.nan
+    uplot_meio[-3:,:],vplot_meio[-3:,:] = np.nan,np.nan
+    uplot_fund[:3,:],vplot_fund[:3,:] = np.nan,np.nan
+    uplot_fund[-3:,:],vplot_fund[-3:,:] = np.nan,np.nan
+
     # plotando no grafico
     fig = plt.figure(figsize=(12/2.54,12/2.54))
     fig.patch.set_visible(False)
@@ -188,11 +202,19 @@ for nstep in timestep:
     cf1 = m1.contourf(lon,lat,spd_surf,contours,cmap=cmo.cm.speed,latlon=True,rasterized=True,extend='max')
     cf2 = m2.contourf(lon,lat,spd_meio,contours,cmap=cmo.cm.speed,latlon=True,rasterized=True,extend='max')
     cf3 = m3.contourf(lon,lat,spd_fund,contours,cmap=cmo.cm.speed,latlon=True,rasterized=True,extend='max')
+
+    # cr1 = m1.contour(lon,lat,depth,levels=[40,80],colors=('#c0c0c0'),linewidths=(0.1,0.1),latlon=True,alpha=.3)
+    # cr2 = m2.contour(lon,lat,depth,levels=[40,80],colors=('#c0c0c0'),linewidths=(0.1,0.1),latlon=True,alpha=.3)
+    # cr3 = m3.contour(lon,lat,depth,levels=[40,80],colors=('#c0c0c0'),linewidths=(0.1,0.1),latlon=True,alpha=.3)
     # plotando vetores
     qv1 = m1.quiver(xplot,yplot,uplot_surf,vplot_surf,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
     qv2 = m2.quiver(xplot,yplot,uplot_meio,vplot_meio,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
     qv3 = m3.quiver(xplot,yplot,uplot_fund,vplot_fund,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
 
+    # inserting some texts
+    ax1.text(648156,895737,'00 m',fontsize=8,va='center',ha='center')
+    ax2.text(639807,895573,'40 m',fontsize=8,va='center',ha='center')
+    ax3.text(647828,887225,'80 m',fontsize=8,va='center',ha='center')
 
     # matplotib trick to remove white thin lines when saving contourf in pdf
     for c in cf1.collections:

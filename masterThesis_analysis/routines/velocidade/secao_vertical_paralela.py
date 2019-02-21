@@ -39,8 +39,8 @@ def create_Structure(figsize):
 
     fig,axes = plt.subplots(nrows=3,ncols=2,figsize=figsize)
 
-    axes[0,0].set_title('Paralela',fontsize=8)
-    axes[0,1].set_title('Perpendicular',fontsize=8)
+    axes[0,0].set_title('Perpendicular',fontsize=8)
+    axes[0,1].set_title('Paralela',fontsize=8)
 
     axes[0,0].xaxis.set_major_formatter(plt.NullFormatter())
     axes[0,1].xaxis.set_major_formatter(plt.NullFormatter())
@@ -77,6 +77,14 @@ def rotate_velocityField(u,v,ang):
 
     return ur,vr
 
+def tratando_corrente(u,v,depth,angle):
+
+    ur,vr = rotate_velocityField(u,v,angle)
+    spd = np.sqrt(ur**2+vr**2)
+    spd = np.where(depth < 200, spd,np.nan)
+
+    return ur,vr,spd
+
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -99,7 +107,7 @@ sigma = ncin['sigma'].values
 h1    = ncin['h1'].values
 angle = ncin['ang'].values
 # configurações do plot
-figsize = (15.4/2.54, 15/2.54)
+figsize = (18.4/2.54, 15/2.54)
 # index para as latitudes das seções
 indexes = [99,28,19]
 # configuracoes para as secoes verticais
@@ -108,26 +116,54 @@ vertResolution  = 100 # isso significa que teremos uma resolucao vertical de 1m
 depRef          = 200 # profundidade de referencia para interpolacao
 
 limiteEixoX = 300000 # limite, em metros, do eixo X para a secao vertical
-contours = np.arange(34.1,37.1,0.1)
+contours = np.arange(-.4,.4,0.01)
 
-fig,axes,cax = create_Structure(figsize)
-title = u'Seção vertical de salinidade em Ubatuba (esquerda), Santos (meio) e Cananéia (direita),\n'\
-      + u'no dia 13 de Fevereiro em %s.\n'% (exp)
+fig,axes,caxes = create_Structure(figsize)
+title = u'Seção vertical de velocidade em Ubatuba (superior), Santos (meio) e Cananéia (inferior),\n'\
+      + u'no dia 15 de Janeiro em %s.\n'% (exp)
 plt.suptitle(title,fontsize=10)
 
-nstepBegin = np.arange(0,9,1) # climatolofic data
+# figure adjustments
+plt.tight_layout()
+plt.subplots_adjust(top=0.892,bottom=0.158,left=0.098,right=0.964,hspace=0.075,wspace=0.06)
+cax.set_title('Velocidade',fontsize=10)
+
+nstepBegin = np.arange(48,57,1)   # first day
 nstepFinal = np.arange(280,289,1) # final of anomalous period
 
 # rotating vectors
-u = np.nanmean(ncin.u[nstepFinal,:,indexes,:],axis=0)
-v = np.nanmean(ncin.v[nstepFinal,:,indexes,:],axis=0)
-ur,vr = rotate_velocityField(u,v,angle[indexes,:])
+u = np.nanmean(ncin.u[nstepBegin,:,:,:],axis=0)
+v = np.nanmean(ncin.v[nstepBegin,:,:,:],axis=0)
+ur,vr = np.zeros(u.shape)*np.nan,np.zeros(u.shape)*np.nan
 
-for t in range(umean.shape[0]):
-    urot,vrot,spdrot = tratando_corrente(umean[t,:,:],vmean[t,:,:],depth,(-1)*angle)
+for t in range(u.shape[0]):
+    urot,vrot,spdrot = tratando_corrente(u[t,:,:],v[t,:,:],depth,(-1)*angle)
     ur[t,:,:] = urot
     vr[t,:,:] = vrot
-    spd[t,:,:]= spdrot
+    # spd[t,:,:]= spdrot
+ur,vr = u,v
+for ind in indexes:
+    if ind == 99:
+        axesInd = 0
+    if ind == 28:
+        axesInd = 1
+    if ind == 19:
+        axesInd = 2
+
+    print('# ----- PLOTTING [secao: %i] 14 JAN, 2014 ----- #'%(ind))
+    U = ur[:,ind,:]
+    Tplot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,U,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
+    # gridding vertical section
+    xgrid,zgrid = np.meshgrid(ndist,ndepth)
+
+    # begin: 18 isotherm position
+    cf1  = axes[axesInd,0].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.delta,extend='both')
+    axes[axesInd,0].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
+    axes[axesInd,0].plot(dist2[-1,:],sig[-1,:],'k')
+    axes[axesInd,0].set_xlim([0,limiteEixoX
+    ])
+    axes[axesInd,0].set_ylim([-depRef,0])
+
 
 for ind in indexes:
     if ind == 99:
@@ -138,22 +174,31 @@ for ind in indexes:
         axesInd = 2
 
     print('# ----- PLOTTING [secao: %i] 14 JAN, 2014 ----- #'%(ind))
-    U = np.nanmean(ncin.u[nstepFinal,:,ind,:],axis=0)
+    U = vr[:,ind,:]
     Tplot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,U,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
     # gridding vertical section
     xgrid,zgrid = np.meshgrid(ndist,ndepth)
 
     # begin: 18 isotherm position
-    cf1  = axes[axesInd].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.haline,extend='max')
-    cs   = axes[axesInd].contour(xgrid,-zgrid,Tplot,levels=[36.],colors=('k'),linestyles=('--'))
-    axes[axesInd].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
-    axes[axesInd].plot(dist2[-1,:],sig[-1,:],'k')
-    axes[axesInd].set_xlim([0,limiteEixoX
+    cf1  = axes[axesInd,1].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.delta,extend='both')
+    axes[axesInd,1].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
+    axes[axesInd,1].plot(dist2[-1,:],sig[-1,:],'k')
+    axes[axesInd,1].set_xlim([0,limiteEixoX
     ])
-    axes[axesInd].set_ylim([-depRef,0])
-    # plot text box
-    props = dict(boxstyle='round', facecolor='white', alpha=0.5)
-    deltax = infos['finalPos_X']-infos['beginPos_X']
-    textstr = r'$\Delta$x = %.1f km'%(deltax)
-    axes[axesInd].text(0.18, 0.22, textstr, transform=axes[axesInd].transAxes, fontsize=8,
-        va='top', ha='center',bbox=props)
+    axes[axesInd,1].set_ylim([-depRef,0])
+
+
+# plotting colorbar
+cbar = plt.colorbar(cf1,orientation='horizontal',cax=caxes,format='%.2f')
+# setting colorbar tick labels
+from matplotlib import ticker
+tick_locator = ticker.MaxNLocator(nbins=6)
+cbar.locator = tick_locator
+cbar.update_ticks()
+
+cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
+cbar.ax.set_title(r'Salinidade',fontsize=8)
+
+for c in cbar.ax.collections:
+    c.set_edgecolor('face')
+    c.set_linewidth(0.00000000001)
