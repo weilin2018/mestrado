@@ -100,11 +100,11 @@ def rotate_velocityField(u,v,ang):
 
 def tratando_corrente(u,v,depth,angle):
 
-    ur,vr = rotate_velocityField(u,v,angle)
-    spd = np.sqrt(ur**2+vr**2)
+    # ur,vr = rotate_velocityField(u,v,angle)
+    spd = np.sqrt(u**2+v**2)
     spd = np.where(depth < 200, spd,np.nan)
 
-    return ur,vr,spd
+    return u,v,spd
 
 ##############################################################################
 #                               MAIN CODE                                    #

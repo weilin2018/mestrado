@@ -83,7 +83,7 @@ def tratando_corrente(u,v,depth,angle):
 
     ur,vr = rotate_velocityField(u,v,angle)
     spd = np.sqrt(ur**2+vr**2)
-    spd = np.where(depth < 100, spd,np.nan)
+    spd = np.where(depth < 300, spd,np.nan)
 
     return ur,vr,spd
 
@@ -92,7 +92,7 @@ def calculateMeanvelocity(u,v,depth,angles):
     vmean = np.nanmean(v,axis=0)
     umean,vmean,smean = tratando_corrente(umean,vmean,depth,angles)
 
-    smean = np.where(depth<100,smean,np.nan)
+    smean = np.where(depth<300,smean,np.nan)
 
     return umean,vmean,smean
 
@@ -168,3 +168,5 @@ xplot,yplot,uplot,vplot = ocplt.formatting_vectors(umean/smean,vmean/smean,lon,l
 
 cf4 = m4.contourf(lon,lat,smean,latlon=True,cmap=cmo.cm.speed,rasterized=True)
 qv4 = m4.quiver(xplot,yplot,uplot,vplot,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
+
+plt.tight_layout()

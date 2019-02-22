@@ -47,7 +47,7 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
 
     return m,meridians,parallels
 
-def export_data(fname,timestep=0):
+def export_data(fname,timestep):
     # plotting climatologic data: t = 0, k = 0
     ncin = xr.open_dataset(fname)
 
@@ -59,9 +59,8 @@ def export_data(fname,timestep=0):
     lat[lat == 0.] = np.nan
 
     # extracting temperature data, in a specific timestep
-    u,v = ncin.u[timestep,:,:,:],ncin.v[timestep,:,:,:]
-    # spd = np.sqrt(u**2 + v**2)
-    # spd = np.where(depth < 100, spd,np.nan)
+    u = np.nanmean(ncin.u[timestep,:,:,:],axis=1)
+    v = np.nanmean(ncin.v[timestep,:,:,:],axis=1)
 
     return lon,lat,u,v,depth,angle
 
@@ -90,6 +89,26 @@ def tratando_corrente(u,v,depth,angle):
 
     return ur,vr,spd
 
+def load_and_treat(ncin):
+    # working with the data
+    lon,lat,u,v,depth,angles = export_data(fname,timestep=np.arange(46,303,1))
+
+    # calculando a variancia integrada na profundidade
+    u_var = np.nanvar(u,axis=0)
+    v_var = np.nanvar(v,axis=0)
+
+    # mascarando dados em profundidades maior que 100
+    maskCondition = np.greater(depth,200)
+    masked_u      = np.ma.masked_where(maskCondition,u_var)
+    masked_v      = np.ma.masked_where(maskCondition,v_var)
+
+    # mascarando dados das 5 primeiras e ultimas linhas da grade
+    masked_u[:5,:] = np.nan
+    masked_v[:5,:] = np.nan
+    masked_u[-5:,:] = np.nan
+    masked_v[-5:,:] = np.nan
+
+    return lon,lat,depth,masked_u,masked_v
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -98,67 +117,50 @@ BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FILE_DIR = BASE_DIR+'masterThesis_analysis/routines/index_list.npy'
 SAVE_DIR = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/velocity/'
-expermient = 'EA1'
+
+experiment = raw_input('Digite o experimento: ')
 fname = DATA_DIR + experiment + '.cdf'
+plt.ion()
 
-nstep = 46
+# load control experiment
+lon,lat,depth,ucontrol_var,vcontrol_var = load_and_treat(xr.open_dataset(fname))
+# load anomalous experiment
+lon,lat,depth,uanomalo_var,vanomalo_var = load_and_treat(xr.open_dataset(fname.replace('C','A')))
 
-# working with the data
-lon,lat,u,v,depth,angles = export_data(fname,timestep=nstep)
+# generating figure's structure, with a 2x2 matrix of subplots
 
-# rotating vectors
-ur = np.zeros(u.shape) * np.nan
-vr = np.zeros(u.shape) * np.nan
-spd= np.zeros(u.shape) * np.nan
-
-for sigma in range(u.shape[0]):
-    urot,vrot,spdrot = tratando_corrente(u[sigma,:,:],v[sigma,:,:],depth,(-1)*angles)
-    ur[sigma,:,:] = urot
-    vr[sigma,:,:] = vrot
-    spd[sigma,:,:]= spdrot
-
-
-# calculando a variancia integrada na profundidade
-ur_var = np.nanvar(ur,axis=0)
-vr_var = np.nanvar(vr,axis=0)
-
-# mascarando dados em profundidades maior que 100
-maskCondition = np.greater(depth,100)
-masked_ur     = np.ma.masked_where(maskCondition,ur_var)
-masked_vr     = np.ma.masked_where(maskCondition,vr_var)
-
-# mascarando dados das 5 primeiras e ultimas linhas da grade
-masked_ur[:5,:] = np.nan
-masked_vr[:5,:] = np.nan
-masked_ur[-5:,:] = np.nan
-masked_vr[-5:,:] = np.nan
-
-# formatando os dados para um formato de visualizacao melhor e passando os vetores
-# normalizados pela velocidade
-# xplot,yplot,uplot,vplot = ocplt.formatting_vectors(ur_var,vr_var,lon,lat,FILE_DIR)
 plt.close('all')
-fig,ax = plt.subplots(ncols=2,figsize=(15./2.54,8./2.54))
-ax[0].set_title('Perpendicular',fontsize=8)
-ax[1].set_title('Paralela',fontsize=8)
-plt.suptitle(u'Variância das componentes perpendicular e paralela integradas verticalmente',fontsize=10)
+fig,ax = plt.subplots(ncols=2,nrows=2,figsize=(15./2.54,15./2.54))
+ax[0,0].set_title('Componente u',fontsize=8)
+ax[0,1].set_title('Componente v',fontsize=8)
+plt.suptitle(u'Variância das componentes u e v integradas verticalmente',fontsize=10)
 
-contours = np.arange(0,.1,.001)
+contours = np.arange(0,.05,.001)
 
-contours_u = np.arange(0,0.09,0.001)
-contours_v = np.arange(0,0.1,0.01)
-
-m1,_,_ = make_map(ax[0],ulon=-42,llon=-49,ulat=-22.3,llat=-29,resolution='i')
-cf1 = m1.contourf(lon,lat,masked_ur,contours,cmap='YlOrBr',latlon=True)
+# plotting control experiment
+m1,_,_ = make_map(ax[0,0],ulon=-42,llon=-49,ulat=-22.3,llat=-29,resolution='i')
+cf1 = m1.contourf(lon,lat,ucontrol_var,contours,cmap='YlOrBr',latlon=True)
 cs1 = m1.contour(lon,lat,depth,levels=[80.],latlon=True,colors=('black'),linewidths=(0.2))
 plt.clabel(cs1,[80],fmt='%i',inline=1,fontsize=8,manual=True)
 
-m2,_,_ = make_map(ax[1],ulon=-42,llon=-49,ulat=-22.3,llat=-29,resolution='i')
-cf2 = m2.contourf(lon,lat,masked_vr,contours,cmap='YlOrBr',latlon=True)
+m2,_,_ = make_map(ax[0,1],ulon=-42,llon=-49,ulat=-22.3,llat=-29,resolution='i')
+cf2 = m2.contourf(lon,lat,vcontrol_var,contours,cmap='YlOrBr',latlon=True)
+cs2 = m2.contour(lon,lat,depth,levels=[80.],latlon=True,colors=('black'),linewidths=(0.2))
+plt.clabel(cs2,[80],fmt='%i',inline=1,fontsize=8,manual=True)
+
+# plotting anomalous experiment
+m1,_,_ = make_map(ax[1,0],ulon=-42,llon=-49,ulat=-22.3,llat=-29,resolution='i')
+cf1 = m1.contourf(lon,lat,uanomalo_var,contours,cmap='YlOrBr',latlon=True)
+cs1 = m1.contour(lon,lat,depth,levels=[80.],latlon=True,colors=('black'),linewidths=(0.2))
+plt.clabel(cs1,[80],fmt='%i',inline=1,fontsize=8,manual=True)
+
+m2,_,_ = make_map(ax[1,1],ulon=-42,llon=-49,ulat=-22.3,llat=-29,resolution='i')
+cf2 = m2.contourf(lon,lat,vanomalo_var,contours,cmap='YlOrBr',latlon=True)
 cs2 = m2.contour(lon,lat,depth,levels=[80.],latlon=True,colors=('black'),linewidths=(0.2))
 plt.clabel(cs2,[80],fmt='%i',inline=1,fontsize=8,manual=True)
 
 plt.tight_layout()
-plt.subplots_adjust(top=0.86,bottom=0.018,left=0.021,right=0.969,hspace=0.0,wspace=0.0)
+plt.subplots_adjust(top=0.907,bottom=0.031,left=0.025,right=0.975,hspace=0.065,wspace=0.0)
 
 # inserting colorbar
 caxes1 = fig.add_axes([.12,.1,.3,.03])
