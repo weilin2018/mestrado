@@ -56,7 +56,7 @@ def create_Structure(figsize):
     axes[2,0].set_xlabel(u'Distância [km]', fontsize=8)
     axes[2,1].set_xlabel(u'Distância [km]', fontsize=8)
 
-    cax = fig.add_axes([.35,.05,.35,.02])
+    cax = fig.add_axes([.3,.05,.45,.02])
 
     return fig,axes,cax
 
@@ -107,7 +107,7 @@ sigma = ncin['sigma'].values
 h1    = ncin['h1'].values
 angle = ncin['ang'].values
 # configurações do plot
-figsize = (18.4/2.54, 15/2.54)
+figsize = (15.4/2.54, 18/2.54)
 # index para as latitudes das seções
 indexes = [99,28,19]
 # configuracoes para as secoes verticais
@@ -118,15 +118,14 @@ depRef          = 200 # profundidade de referencia para interpolacao
 limiteEixoX = 300000 # limite, em metros, do eixo X para a secao vertical
 contours = np.arange(-.4,.4,0.01)
 
-fig,axes,caxes = create_Structure(figsize)
-title = u'Seção vertical de velocidade em Ubatuba (superior), Santos (meio) e Cananéia (inferior),\n'\
+fig,axes,cax = create_Structure(figsize)
+title = u'Seção vertical de velocidade em Ubatuba (superior), Santos (meio) e \nCananéia (inferior),'\
       + u'no dia 15 de Janeiro em %s.\n'% (exp)
 plt.suptitle(title,fontsize=10)
 
 # figure adjustments
 plt.tight_layout()
-plt.subplots_adjust(top=0.892,bottom=0.158,left=0.098,right=0.964,hspace=0.075,wspace=0.06)
-cax.set_title('Velocidade',fontsize=10)
+plt.subplots_adjust(top=0.892,bottom=0.158,left=0.113,right=0.979,hspace=0.075,wspace=0.085)
 
 nstepBegin = np.arange(48,57,1)   # first day
 nstepFinal = np.arange(280,289,1) # final of anomalous period
@@ -140,8 +139,8 @@ for t in range(u.shape[0]):
     urot,vrot,spdrot = tratando_corrente(u[t,:,:],v[t,:,:],depth,(-1)*angle)
     ur[t,:,:] = urot
     vr[t,:,:] = vrot
-    # spd[t,:,:]= spdrot
-ur,vr = u,v
+
+
 for ind in indexes:
     if ind == 99:
         axesInd = 0
@@ -163,7 +162,6 @@ for ind in indexes:
     axes[axesInd,0].set_xlim([0,limiteEixoX
     ])
     axes[axesInd,0].set_ylim([-depRef,0])
-
 
 for ind in indexes:
     if ind == 99:
@@ -189,7 +187,7 @@ for ind in indexes:
 
 
 # plotting colorbar
-cbar = plt.colorbar(cf1,orientation='horizontal',cax=caxes,format='%.2f')
+cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%.2f')
 # setting colorbar tick labels
 from matplotlib import ticker
 tick_locator = ticker.MaxNLocator(nbins=6)
@@ -197,8 +195,24 @@ cbar.locator = tick_locator
 cbar.update_ticks()
 
 cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
-cbar.ax.set_title(r'Salinidade',fontsize=8)
+cbar.ax.set_title(r'Velocidade [m.s$^{-1}$]',fontsize=8)
 
 for c in cbar.ax.collections:
     c.set_edgecolor('face')
     c.set_linewidth(0.00000000001)
+
+
+# updating x tick labels
+labels = [item.get_text() for item in axes[2,0].get_xticklabels()]
+newlabels = []
+for lab in labels:
+    l = float(lab)/1000
+    newlabels.append(int(l))
+
+axes[2,0].set_xticklabels(newlabels)
+axes[2,1].set_xticklabels(newlabels)
+
+plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/evolucao_speed_%s.eps'%(exp))
+plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/evolucao_speed_%s.png'%(exp))
+plt.close()
+%reset -f

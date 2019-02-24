@@ -84,7 +84,7 @@ def calculateMeanvelocity(u,v,depth,angles):
     vmean = np.nanmean(v,axis=0)
 
     smean = np.sqrt(umean**2 + vmean**2)
-    smean = np.where(depth<200,smean,np.nan)
+    # smean = np.where(depth<300,smean,np.nan)
 
     # normalize vectors by intensity
     umean_norm = umean/smean
@@ -105,7 +105,6 @@ fname = DATA_DIR + experiment + '.cdf'
 plt.ion()
 
 # selecting the range of timesteps to calculate a daily mean and then a depth average
-nstepClim  = np.arange(0,2,1)
 nstepBegin = np.arange(48,57,1)
 nstepFinal = np.arange(280,289,1)
 
@@ -120,39 +119,17 @@ sigma = ncin.sigma.values.copy()
 lon[lon == 0.] = np.nan
 lat[lat == 0.] = np.nan
 
-fig,axes = plt.subplots(nrows=3,ncols=2,figsize=(18.4/2.54, 26/2.54))
-cax = fig.add_axes([.275,.04,.45,.02])
+fig,axes = plt.subplots(nrows=2,ncols=2,figsize=(22.4/2.54, 22/2.54))
 
-axes[0,0].set_title('%s - Climatologia'%(experiment),fontsize=8)
-axes[0,1].set_title('%s - Climatologia'%(experiment),fontsize=8)
-axes[1,0].set_title('%s - 15/Jan'%(experiment),fontsize=8)
-axes[1,1].set_title('%s - 13/Fev'%(experiment),fontsize=8)
-axes[2,0].set_title('%s - 15/Jan'%(experiment.replace('C','A')),fontsize=8)
-axes[2,1].set_title('%s - 13/Fev'%(experiment.replace('C','A')),fontsize=8)
+axes[0,0].set_title('%s - 15/Jan'%(experiment),fontsize=8)
+axes[1,0].set_title('%s - 13/Fev'%(experiment),fontsize=8)
+axes[0,1].set_title('%s - 15/Jan'%(experiment.replace('C','A')),fontsize=8)
+axes[1,1].set_title('%s - 13/Fev'%(experiment.replace('C','A')),fontsize=8)
 
-m00,_,_ = make_map(axes[0,0],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
-m01,_,_ = make_map(axes[0,1],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
-
-m1,meridians,parallels = make_map(axes[1,0],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
-m2,_,_ = make_map(axes[1,1],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
-m3,_,_ = make_map(axes[2,0],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
-m4,_,_ = make_map(axes[2,1],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
-
-# plot climatology of EC1
-u = np.nanmean(ncin.u[nstepClim,:,:,:].values,axis=0)
-v = np.nanmean(ncin.v[nstepClim,:,:,:].values,axis=0)
-umean_norm,vmean_norm,smean = calculateMeanvelocity(u,v,depth,angle)
-xplot,yplot,uplot,vplot = ocplt.formatting_vectors(umean_norm,vmean_norm,lon,lat,FILE_DIR)
-cf1 = m00.contourf(lon,lat,smean,latlon=True,cmap=cmo.cm.speed,rasterized=True)
-qv1 = m00.quiver(xplot,yplot,uplot,vplot,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
-
-# plot climatology of EA1
-u = np.nanmean(ncin2.u[nstepClim,:,:,:].values,axis=0)
-v = np.nanmean(ncin2.v[nstepClim,:,:,:].values,axis=0)
-umean_norm,vmean_norm,smean = calculateMeanvelocity(u,v,depth,angle)
-xplot,yplot,uplot,vplot = ocplt.formatting_vectors(umean_norm,vmean_norm,lon,lat,FILE_DIR)
-cf1 = m01.contourf(lon,lat,smean,latlon=True,cmap=cmo.cm.speed,rasterized=True)
-qv1 = m01.quiver(xplot,yplot,uplot,vplot,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
+m1,meridians,parallels = make_map(axes[0,0],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
+m2,_,_ = make_map(axes[1,0],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
+m3,_,_ = make_map(axes[0,1],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
+m4,_,_ = make_map(axes[1,1],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
 
 # plotting EC1 - 14/Jan
 u = np.nanmean(ncin.u[nstepBegin,:,:,:].values,axis=0)
@@ -191,19 +168,3 @@ cf4 = m4.contourf(lon,lat,smean,latlon=True,cmap=cmo.cm.speed,rasterized=True)
 qv4 = m4.quiver(xplot,yplot,uplot,vplot,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
 
 plt.tight_layout()
-plt.subplots_adjust(top=0.969,bottom=0.088,left=0.021,right=0.979,hspace=0.081,wspace=0.0)
-
-
-cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%.2f')
-# setting colorbar tick labels
-from matplotlib import ticker
-tick_locator = ticker.MaxNLocator(nbins=5)
-cbar.locator = tick_locator
-cbar.update_ticks()
-
-cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
-cbar.ax.set_title(r'Velocidade (m.s$^{-1}$)',fontsize=8)
-
-
-
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/campo_medio_Z____%s.pdf'%(experiment))
