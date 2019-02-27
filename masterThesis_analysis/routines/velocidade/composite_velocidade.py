@@ -63,11 +63,11 @@ def export_data(fname,timestep=0,convertData=False,outputFile=None):
 	os.system('converting u and v for %s in timestep %i'%(exp,np.nanmean(timestep)))
         # interpolating data from sigma to standard level
         u,v = ncin.u[timestep,:,:,:],ncin.v[timestep,:,:,:]
-        stdl,newu = sigma2stdl(u,sigma,23,depth,ncin.h1,lon,lat,'u component')
+        stdl,newu = oceano.sigma2stdl(u,sigma,23,depth,ncin.h1,lon,lat,'u component')
         umean = np.nanmean(newu,axis=0) # media no tempo
         np.save(outputFile+'%s_umean_%i.npy'%(exp,np.nanmean(timestep)),umean)
 
-        stdl,newv = sigma2stdl(v,sigma,23,depth,ncin.h1,lon,lat,'v component')
+        stdl,newv = oceano.sigma2stdl(v,sigma,23,depth,ncin.h1,lon,lat,'v component')
         vmean = np.nanmean(newv,axis=0) # media no tempo
         np.save(outputFile+'%s_vmean_%i.npy'%(exp,np.nanmean(timestep)),vmean)
 
@@ -131,7 +131,7 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FILE_DIR = BASE_DIR+'masterThesis_analysis/routines/index_list.npy'
 os.system('clear')
 
-convertData = False
+convertData = True
 
 exp = raw_input('Digite o experimento a ser plotado: ')
 fname = DATA_DIR + exp +'.cdf'
@@ -246,7 +246,7 @@ for nstep in timestep:
     cbar.ax.set_title(r'Velocidade (m s$^{-1}$)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
-    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/speed/%s/%s.eps'%(exp,output_fname))
+    # plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/speed/%s/%s.eps'%(exp,output_fname))
 
 """
 Nota:
