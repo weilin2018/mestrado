@@ -26,7 +26,6 @@ sys.path.append('masterThesisPack/')
 import masterThesisPack as oceano
 import masterThesisPack.plots as ocplt
 
-
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
@@ -131,14 +130,14 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FILE_DIR = BASE_DIR+'masterThesis_analysis/routines/index_list.npy'
 os.system('clear')
 
-convertData = True
+convertData = False
 
 exp = raw_input('Digite o experimento a ser plotado: ')
 fname = DATA_DIR + exp +'.cdf'
 
 plt.ion()
 
-timestep = [np.arange(48,57,1),np.arange(280,289,1)]
+timestep = [np.arange(65,73,1),np.arange(280,289,1)]
 
 for nstep in timestep:
     plt.close()
@@ -246,7 +245,7 @@ for nstep in timestep:
     cbar.ax.set_title(r'Velocidade (m s$^{-1}$)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
-    # plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/speed/%s/%s.eps'%(exp,output_fname))
+    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/speed/%s/%s__17Jans.eps'%(exp,output_fname))
 
 """
 Nota:

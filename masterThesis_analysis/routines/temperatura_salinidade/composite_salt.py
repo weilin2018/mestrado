@@ -107,7 +107,7 @@ fname = DATA_DIR + exp +'.cdf'
 
 plt.ion()
 
-timestep = [np.arange(48,57,1),np.arange(280,289,1)]
+timestep = [np.arange(65,73,1),np.arange(280,289,1)]
 
 for nstep in timestep:
     plt.close()
@@ -193,7 +193,7 @@ for nstep in timestep:
         cbar.ax.set_title(r'Salinidade',fontsize=8)
 
         output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
-        plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/salt/%s/%s.eps'%(exp,output_fname))
+        plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/salt/%s/%s__17Jan.eps'%(exp,output_fname))
 
 """
 Nota:
