@@ -139,7 +139,7 @@ plt.ion()
 
 timestep = [np.arange(65,73,1),np.arange(280,289,1)]
 
-nstep = timestep[1]
+nstep = timestep[0]
 nstepWind = np.arange(272,280,1)
 #
 ncin = xr.open_dataset(fname)
@@ -173,10 +173,15 @@ m0,_,_ = make_map(axes[0],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.
 m1,_,_ = make_map(axes[1],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
 
 # view current on axes[0]
-m0.contourf(lon,lat,ssurf,np.arange(0,1.5,0.1),cmap=cmo.cm.speed,latlon=True)
+m0.contourf(xplot,yplot,ssurf,np.arange(0,1.5,0.1),cmap=cmo.cm.speed,latlon=True)
 m0.quiver(xplot,yplot,uplot,vplot,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
 
 # view wind on axes[1]
-m1.contourf(lon,lat,swind,cmap=cmo.cm.speed,latlon=True)
+m1.contourf(xplot,yplot,swind,cmap=cmo.cm.speed,latlon=True)
 m1.quiver(xplot,yplot,wuplot,wvplot,scale=60,width=0.0015,headwidth=4,headlength=4,latlon=True)
 m1.ax.set_title('1 dia antes')
+
+
+
+
+m0.contour(lon,lat,depth,levels=[40,80,100,200],colors=('k'),latlon=True)
