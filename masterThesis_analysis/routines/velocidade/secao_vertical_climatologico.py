@@ -97,7 +97,7 @@ exp = raw_input('Digite o experimento para plotar secao vertical: ')
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = DATA_DIR + exp + '.cdf'
 
-ncin = xr.open_dataset(fname.replace('A','C')) # using replace to make sure we're using control experiment
+ncin = xr.open_dataset(fname) # using replace to make sure we're using control experiment
 
 lon,lat = ncin['lon'].values, ncin['lat'].values
 lon[lon == 0.] = np.nan
@@ -120,14 +120,14 @@ contours = np.arange(-.4,.4,0.01)
 
 fig,axes,cax = create_Structure(figsize,exp)
 title = u'Seção vertical da componente paralela em Ubatuba (superior), Santos (meio) e \nCananéia (inferior),'\
-      + u' no dia 17 de Janeiro em %s (esquerda) e %s (direita)'%(exp.replace('A','C'),exp.replace('C','A'))
+      # + u' no dia 17 de Janeiro em %s (esquerda) e %s (direita)'%(exp.replace('A','C'),exp.replace('C','A'))
 plt.suptitle(title,fontsize=10)
 
 # figure adjustments
 plt.tight_layout()
 plt.subplots_adjust(top=0.892,bottom=0.158,left=0.113,right=0.979,hspace=0.075,wspace=0.085)
 
-nstepBegin = np.arange(65,73,1)   # first day
+nstepBegin = np.arange(0,9,1)   # first day
 nstepFinal = np.arange(280,289,1) # final of anomalous period
 
 # rotating vectors
@@ -163,11 +163,11 @@ for ind in indexes:
     axes[axesInd,0].set_ylim([-depRef,0])
 
 # using replace to make sure we're using the anomalous experiment
-ncin = xr.open_dataset(fname.replace('C','A'))
+# ncin = xr.open_dataset(fname.replace('C','A'))
 
 # rotating vectors
-u = np.nanmean(ncin.u[nstepBegin,:,:,:],axis=0)
-v = np.nanmean(ncin.v[nstepBegin,:,:,:],axis=0)
+u = np.nanmean(ncin.u[nstepFinal,:,:,:],axis=0)
+v = np.nanmean(ncin.v[nstepFinal,:,:,:],axis=0)
 ur,vr = np.zeros(u.shape)*np.nan,np.zeros(u.shape)*np.nan
 
 for t in range(u.shape[0]):
@@ -224,8 +224,8 @@ for lab in labels:
 axes[2,0].set_xticklabels(newlabels)
 axes[2,1].set_xticklabels(newlabels)
 
-output = "%s%s"%(exp.replace('A','C'),exp.replace('C','A'))
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/evolucao_speed_%s_%s.eps'%(exp,output))
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/evolucao_speed_%s_%s.png'%(exp,output))
-plt.close()
-%reset -f
+# output = "%s%s"%(exp.replace('A','C'),exp.replace('C','A'))
+# plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/evolucao_speed_%s_%s.eps'%(exp,output))
+# plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/evolucao_speed_%s_%s.png'%(exp,output))
+# plt.close()
+# %reset -f
