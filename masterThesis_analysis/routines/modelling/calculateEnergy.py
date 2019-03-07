@@ -32,7 +32,7 @@ import seaWaterDensity as sw
 
 # selecting file
 BASE   = '/media/danilo/Danilo/mestrado/ventopcse/output/'  # data directory
-fname  = BASE + 'exp06.cdf'                                 # gcmplt name
+fname  = BASE + 'EC1.cdf'                                 # gcmplt name
 
 ncdata = xr.open_dataset(fname)                             # opening file
 
@@ -46,22 +46,23 @@ depth[depth == 0.] = np.nan
 
 # initializing variables
 n      = time.shape[0]                             # timesteps
+nSkip  = 5
 
 # defining vectors
-KIN_s  = np.zeros(len(time))                       # kinetic energy at surface
-KIN_b  = np.zeros(len(time))                       # kinetic energy at bottom
-POT_s  = np.zeros(len(time))                       # potential energy at surface
+KIN_s  = np.zeros(len(time[::nSkip]))                       # kinetic energy at surface
+KIN_b  = np.zeros(len(time[::nSkip]))                       # kinetic energy at bottom
+POT_s  = np.zeros(len(time[::nSkip]))                       # potential energy at surface
 
 # defining auxiliar variables
 kin_s = 0
+cont  = 0
 
 os.system('clear')                                 # clear screen
 print('Calculating energy ...\n')
 
-
 # running each timestep and calculating energy
 os.system('clear')
-for i in range(n):
+for i in np.arange(0,n,nSkip):
     print('Timestep: %i' % (i))
 
     # extracting data from ncdata for each timestep
@@ -88,7 +89,7 @@ for i in range(n):
         # IEND = 108
 
         for I in np.arange(ISTART,IEND):
-            print('working on J=%i,I=%i'%(J,I))
+            # print('working on J=%i,I=%i'%(J,I))
 
             if ~np.isnan(depth[J,I]):
 
@@ -120,18 +121,20 @@ for i in range(n):
 
                 kin_b += (rho/2) * Z * ( np.nanmean([np.abs(u[N,J,I]),np.abs(u[N,J,I+1])])**2 + np.nanmean([np.abs(v[N,J,I]), np.abs(v[N,J+1,I])])**2 )
 
-    KIN_s[i] = kin
-    POT_s[i] = pot
-    KIN_b[i] = kin_b
+    KIN_s[cont] = kin
+    POT_s[cont] = pot
+    KIN_b[cont] = kin_b
+
+    cont += 1
 
 
-df_kin = pd.DataFrame({'kin_s':KIN_s,'kin_b':KIN_b},index=pd.DatetimeIndex(time))
-df_pot_Z = pd.DataFrame({'pot_s':POT_s},index=pd.DatetimeIndex(time))
+df_kin = pd.DataFrame({'kin_s':KIN_s,'kin_b':KIN_b},index=pd.DatetimeIndex(time[::nSkip]))
+df_pot_Z = pd.DataFrame({'pot_s':POT_s},index=pd.DatetimeIndex(time[::nSkip]))
 
 
 # figures
 plt.subplot(121);
-plt.semilogy(df_kin.resample('12H').mean());
+plt.semilogy(df_kin);
 # plt.semilogy(time,KIN_b);
 # plt.plot(time,KIN_s);
 # plt.plot(time,KIN_b);
