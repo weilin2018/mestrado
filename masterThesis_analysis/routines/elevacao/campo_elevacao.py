@@ -58,8 +58,8 @@ def export_data(fname,timestep=0):
     depth = ncin.depth.values
 
     # extracting salinity data, in a specific timestep
-    elev = ncin.elev[timestep,:,:]
-    elev = np.where(depth < 100, elev,np.nan)
+    elev = np.nanmean(ncin.elev[timestep,:,:],axis=0)
+    elev = np.where(depth < 200, elev,np.nan)
 
     return lon,lat,elev,depth
 
@@ -82,13 +82,14 @@ plt.ion()
 
 fig,axes = plt.subplots(ncols=2,nrows=2)
 configurePlot(axes)
-timestep = [46,303]
+# timestep = [46,303]
+timestep = [np.arange(65,73,1),np.arange(280,289,1)]
 contours = np.arange(-.5,.5,0.01)
 cont = 0 # axis to plot
 
 # plot EA1
 ### begin
-lon,lat,elev,depth = export_data(fname,timestep=46)
+lon,lat,elev,depth = export_data(fname,timestep=timestep[0])
 elev[:5,:] = np.nan
 elev[-5:,:] = np.nan
 
@@ -101,7 +102,7 @@ for c in cf.collections:
     c.set_linewidth(0.00000000001)
 
 ### final
-lon,lat,elev,depth = export_data(fname,timestep=303)
+lon,lat,elev,depth = export_data(fname,timestep=timestep[1])
 elev[:5,:] = np.nan
 elev[-5:,:] = np.nan
 
@@ -115,7 +116,7 @@ for c in cf.collections:
 
 # plot EA2
 ### begin
-lon,lat,elev,depth = export_data(fname.replace('1','2'),timestep=46)
+lon,lat,elev,depth = export_data(fname.replace('1','2'),timestep=timestep[0])
 elev[:5,:] = np.nan
 elev[-5:,:] = np.nan
 
@@ -128,7 +129,7 @@ for c in cf.collections:
     c.set_linewidth(0.00000000001)
 
 ### final
-lon,lat,elev,depth = export_data(fname.replace('1','2'),timestep=303)
+lon,lat,elev,depth = export_data(fname.replace('1','2'),timestep=timestep[1])
 elev[:5,:] = np.nan
 elev[-5:,:] = np.nan
 
