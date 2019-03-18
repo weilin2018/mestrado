@@ -105,7 +105,7 @@ fname = DATA_DIR + experiment + '.cdf'
 plt.ion()
 
 # selecting the range of timesteps to calculate a daily mean and then a depth average
-nstepBegin = np.arange(48,57,1)
+nstepBegin = np.arange(65,73,1)
 nstepFinal = np.arange(280,289,1)
 
 # importing general variables to create figures
@@ -121,9 +121,9 @@ lat[lat == 0.] = np.nan
 
 fig,axes = plt.subplots(nrows=2,ncols=2,figsize=(22.4/2.54, 22/2.54))
 
-axes[0,0].set_title('%s - 15/Jan'%(experiment),fontsize=8)
+axes[0,0].set_title('%s - 17/Jan'%(experiment),fontsize=8)
 axes[1,0].set_title('%s - 13/Fev'%(experiment),fontsize=8)
-axes[0,1].set_title('%s - 15/Jan'%(experiment.replace('C','A')),fontsize=8)
+axes[0,1].set_title('%s - 17/Jan'%(experiment.replace('C','A')),fontsize=8)
 axes[1,1].set_title('%s - 13/Fev'%(experiment.replace('C','A')),fontsize=8)
 
 m1,meridians,parallels = make_map(axes[0,0],ulon=np.nanmax(lon)-.5,llon=np.nanmin(lon)-.2,ulat=np.nanmax(lat)+.2,llat=np.nanmin(lat))
