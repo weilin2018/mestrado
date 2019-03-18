@@ -15,6 +15,7 @@ from matplotlib import dates
 import datetime
 import cmocean as cmo
 import matplotlib.gridspec as gridspec
+import seawater as sw
 
 import matplotlib
 # matplotlib.style.use('ggplot')
@@ -118,7 +119,7 @@ plt.ion()
 timestep = [np.arange(65,73,1),np.arange(280,289,1)]
 
 
-for nstep in timestep[:1]:
+for nstep in timestep:
     plt.close()
     outputFile = '/media/danilo/Danilo/mestrado/ventopcse/output/dados_interpolados_stdl/dif_temp_%i_%s.npy'%(68,exp)
     lon,lat,dens,depth,stdl = export_data(fname,timestep=nstep,convertData=convertData,outputFile=outputFile)
@@ -198,3 +199,18 @@ for nstep in timestep[:1]:
 
         cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
         cbar.ax.set_title(r'Densidade (kg m$^{-3}$)',fontsize=8)
+
+    output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
+    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/dens/%s/%s__17Jans.eps'%(exp,output_fname))
+
+"""
+Nota:
+
+    Apos salvar a figura em .pdf, e' necessario ir ao inkscape,
+    realizar o ungroup dos objetos de imagem e deletar algumas coisas como:
+
+    . cor cinza
+    . elementos dentro do continente
+    . mover colorbar pro local adequado
+    . nomear cada contourf
+"""
