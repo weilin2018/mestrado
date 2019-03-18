@@ -147,7 +147,7 @@ nstepFinal = np.arange(297,303,1) # final of anomalous period
 
 fig,axes,caxes = create_Structure_3(ncin,indexes)
 
-title = u'Seção vertical de temperatura em Ubatuba (superior), Santos (meio) e Cananéia (inferior),\n'\
+title = u'Seção vertical de densidade em Ubatuba (superior), Santos (meio) e Cananéia (inferior),\n'\
       + u'com a estrutura climatológica à esquerda e a estrutura no dia 15 de Fevereiro em EA1 (meio) e EA2 (direita).\n'
 plt.suptitle(title,fontsize=10)
 
@@ -164,6 +164,8 @@ for ind in indexes:
 
     S = np.nanmean(ncin.salt[nstepBegin,:,ind,:],axis=0)
     Splot,ndist,ndepth,dist2,sig,depth = oceano.crossSection_optimized(lon,depth,sigma,h1,S,horizResolution=horizResolution,vertResolution=vertResolution,depRef=depRef,ind=ind)
+    # gridding vertical section
+    xgrid,zgrid = np.meshgrid(ndist,ndepth)
 
     # depth array
     d = np.tile(ndepth,(10000,1)).T
