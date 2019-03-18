@@ -89,7 +89,7 @@ vertResolution  = 100 # isso significa que teremos uma resolucao vertical de 1m
 depRef          = 200 # profundidade de referencia para interpolacao
 
 limiteEixoX = 300000 # limite, em metros, do eixo X para a secao vertical
-contours = np.arange(34.1,37.1,0.1)
+contours = np.arange(34.5,36.01,0.05)
 
 fig,axes,cax = create_structure_1row(indexes,exp)
 title = u'Seção vertical de salinidade em Ubatuba (esquerda), Santos (meio) e Cananéia (direita),\n'\
@@ -117,7 +117,7 @@ for ind in indexes:
     xgrid,zgrid = np.meshgrid(ndist,ndepth)
 
     # begin: 18 isotherm position
-    cf1  = axes[axesInd].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.haline,extend='max')
+    cf1  = axes[axesInd].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.haline,extend='both')
     cs   = axes[axesInd].contour(xgrid,-zgrid,Tplot,levels=[36.],colors=('k'),linestyles=('--'))
     axes[axesInd].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
     axes[axesInd].plot(dist2[-1,:],sig[-1,:],'k')
@@ -132,12 +132,12 @@ for ind in indexes:
         va='top', ha='center',bbox=props)
 
 # plotting colorbar
-cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%i')
+cbar = plt.colorbar(cf1,ticks=[34.5,34.9,35.25,35.6,36.],orientation='horizontal',cax=cax,format='%.1f')
 # setting colorbar tick labels
-from matplotlib import ticker
-tick_locator = ticker.MaxNLocator(nbins=6)
-cbar.locator = tick_locator
-cbar.update_ticks()
+# from matplotlib import ticker
+# tick_locator = ticker.MaxNLocator(nbins=4)
+# cbar.locator = tick_locator
+# cbar.update_ticks()
 
 cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
 cbar.ax.set_title('Salinidade',fontsize=8)

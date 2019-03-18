@@ -91,7 +91,7 @@ limiteEixoX = 300000 # limite, em metros, do eixo X para a secao vertical
 
 # criando contours
 contours_temp = np.arange(11,35,0.5)
-contours_salt = np.arange(34.1,37.1,0.1)
+contours_salt = np.arange(34.5,36.01,0.05)
 contours_velo = np.arange(0,1.5,0.01)
 
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
@@ -167,7 +167,7 @@ for ind in indexes:
     xgrid,zgrid = np.meshgrid(ndist,ndepth)
 
     # begin: 18 isotherm position
-    cf1  = axes[1,axesInd].contourf(xgrid,-zgrid,Dplot,contours_salt,cmap=cmo.cm.haline,extend='max')
+    cf1  = axes[1,axesInd].contourf(xgrid,-zgrid,Dplot,contours_salt,cmap=cmo.cm.haline,extend='both')
     cs   = axes[1,axesInd].contour(xgrid,-zgrid,Dplot,levels=[36.],colors=('k'),linestyles=('--'))
     axes[1,axesInd].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
     axes[1,axesInd].plot(dist2[-1,:],sig[-1,:],'k')
@@ -179,7 +179,7 @@ for ind in indexes:
         c.set_linewidth(0.00000000001)
 
 # plotting colorbar
-cbar = plt.colorbar(cf1,orientation='horizontal',cax=caxSalt,format='%.1f')
+cbar = plt.colorbar(cf1,ticks=[34.5,34.9,35.25,35.6,36.],orientation='horizontal',cax=caxSalt,format='%.1f')
 # setting colorbar tick labels
 from matplotlib import ticker
 tick_locator = ticker.MaxNLocator(nbins=6)
