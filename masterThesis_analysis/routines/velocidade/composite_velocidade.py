@@ -245,7 +245,7 @@ for nstep in timestep:
     cbar.ax.set_title(r'Velocidade (m s$^{-1}$)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
-    # plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/speed/%s/%s__17Jans.eps'%(exp,output_fname))
+    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/speed/%s/%s__17Jans.eps'%(exp,output_fname))
 
 """
 Nota:
