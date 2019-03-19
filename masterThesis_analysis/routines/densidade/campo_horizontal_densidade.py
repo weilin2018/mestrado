@@ -109,7 +109,7 @@ def export_data(fname,timestep=0,convertData=False,outputFile=None):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 
-convertData = False
+convertData = True
 
 exp = raw_input('Digite o experimento a ser plotado: ')
 fname = DATA_DIR + exp +'.cdf'
@@ -120,8 +120,8 @@ timestep = [np.arange(65,73,1),np.arange(280,289,1)]
 
 
 for nstep in timestep:
-    plt.close()
-    outputFile = '/media/danilo/Danilo/mestrado/ventopcse/output/dados_interpolados_stdl/dif_temp_%i_%s.npy'%(68,exp)
+    # plt.close()
+    outputFile = DATA_DIR+'dados_interpolados_stdl/dif_temp_%i_%s.npy'%(68,exp)
     lon,lat,dens,depth,stdl = export_data(fname,timestep=nstep,convertData=convertData,outputFile=outputFile)
 
     if convertData != True: # so realiza a plotagem se nao for necessario converter os dados. Pra facilitar
@@ -201,7 +201,7 @@ for nstep in timestep:
         cbar.ax.set_title(r'Densidade (kg m$^{-3}$)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
-    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/dens/%s/%s__17Jans.eps'%(exp,output_fname))
+    # plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/dens/%s/%s__17Jans.eps'%(exp,output_fname))
 
 """
 Nota:
