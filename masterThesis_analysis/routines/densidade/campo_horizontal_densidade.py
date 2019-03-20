@@ -109,7 +109,7 @@ def export_data(fname,timestep=0,convertData=False,outputFile=None):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 
-convertData = True
+convertData = False
 
 exp = raw_input('Digite o experimento a ser plotado: ')
 fname = DATA_DIR + exp +'.cdf'
@@ -156,13 +156,13 @@ for nstep in timestep:
         contours = np.arange(1020,1027,0.1)
 
         cf1 = m1.contourf(lon,lat,dens[0,:,:],contours,cmap=cmo.cm.dense,latlon=True,rasterized=True,extend='both')
-        # cr1 = m1.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+        cr1 = m1.contour(lon,lat,dens[0,:,:],levels=np.arange(1022,1025,0.2),linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
         # plt.clabel(cr1,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
         cf2 = m2.contourf(lon,lat,dens[3,:,:],contours,cmap=cmo.cm.dense,latlon=True,rasterized=True,extend='both')
-        # cr2 = m2.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+        # cr2 = m2.contour(lon,lat,dens[3,:,:],levels=np.arange(1022,1025,0.2),linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
         # plt.clabel(cr2,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
         cf3 = m3.contourf(lon,lat,dens[7,:,:],contours,cmap=cmo.cm.dense,latlon=True,rasterized=True,extend='both')
-        # cr3 = m3.contour(lon,lat,depth,levels=[40,80],linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+        # cr3 = m3.contour(lon,lat,dens[7,:,:],levels=np.arange(1022,1025,0.2),linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
         # plt.clabel(cr3,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
 
         # inserting some texts
