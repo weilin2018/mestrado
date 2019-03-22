@@ -116,12 +116,12 @@ fname = DATA_DIR + exp +'.cdf'
 
 plt.ion()
 
-timestep = [np.arange(65,73,1),np.arange(280,289,1)]
+timestep = [np.arange(0,4,1),np.arange(280,289,1)]
 
 
 for nstep in timestep:
-    # plt.close()
-    outputFile = DATA_DIR+'dados_interpolados_stdl/dif_temp_%i_%s.npy'%(68,exp)
+    plt.close()
+    outputFile = DATA_DIR+'dados_interpolados_stdl/dif_temp_%i_%s.npy'%(np.nanmean(nstep),exp)
     lon,lat,dens,depth,stdl = export_data(fname,timestep=nstep,convertData=convertData,outputFile=outputFile)
 
     if convertData != True: # so realiza a plotagem se nao for necessario converter os dados. Pra facilitar
@@ -156,7 +156,7 @@ for nstep in timestep:
         contours = np.arange(1020,1027,0.1)
 
         cf1 = m1.contourf(lon,lat,dens[0,:,:],contours,cmap=cmo.cm.dense,latlon=True,rasterized=True,extend='both')
-        cr1 = m1.contour(lon,lat,dens[0,:,:],levels=np.arange(1022,1025,0.2),linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+        cr1 = m1.contour(lon,lat,dens[0,:,:],levels=np.arange(1022,1023,0.2),linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
         # plt.clabel(cr1,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
         cf2 = m2.contourf(lon,lat,dens[3,:,:],contours,cmap=cmo.cm.dense,latlon=True,rasterized=True,extend='both')
         # cr2 = m2.contour(lon,lat,dens[3,:,:],levels=np.arange(1022,1025,0.2),linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
@@ -201,7 +201,7 @@ for nstep in timestep:
         cbar.ax.set_title(r'Densidade (kg m$^{-3}$)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
-    # plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/dens/%s/%s__17Jans.eps'%(exp,output_fname))
+    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/dens/%s/%s__17Jans.eps'%(exp,output_fname))
 
 """
 Nota:
