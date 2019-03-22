@@ -103,6 +103,7 @@ lat[lat == 0.] = np.nan
 depth = ncin['depth'].values
 sigma = ncin['sigma'].values
 h1    = ncin['h1'].values
+angle = ncin['ang'].values
 
 # configurações do plot
 figsize = (17.4/2.54, 10/2.54)
@@ -117,7 +118,7 @@ limiteEixoX = 300000 # limite, em metros, do eixo X para a secao vertical
 contours = np.arange(-.4,.4,0.01)
 
 fig,axes,cax = create_structure_1row(indexes,exp)
-title = u'Seção vertical da componente paralela em Ubatuba (esquerda), Santos (meio) e Cananéia (direita),\n'\
+title = u'Seção vertical da componente perpendicular em Ubatuba (esquerda), Santos (meio) e Cananéia (direita),\n'\
       + u'no dia 13 de Fevereiro em %s.\n'% (exp)
 plt.suptitle(title,fontsize=10)
 
