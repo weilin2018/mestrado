@@ -47,7 +47,7 @@ fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
 exp = 'EC1.cdf'
-savefig = True
+savefig = False
 
 for f in fname:
     if exp in f:
