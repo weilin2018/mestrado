@@ -866,7 +866,7 @@ def load_data(directory):
 
     return data
 
-def stickplot(df,ax):
+def stickplot(df,ax,scale=None):
     """Create a stickplot.
 
     With the u and v components given as argument in pd.DataFrame df,
@@ -903,8 +903,13 @@ def stickplot(df,ax):
     # plotting
     # fig, ax = plt.subplots()
 
-    qiv = ax.quiver(df.index, [[0]*len(df)], u, v, headlength=0, headwidth=0, headaxislength=0 )
-    key = ax.quiverkey(qiv, 0.25, 0.75, maxSpd, "%0.2f $m^{2}s^{-1}$"%(maxSpd), labelpos='N', coordinates='axes' )
+    if scale != None:
+        un = u/spd
+        vn = v/spd
+        qiv = ax.quiver(df.index, [[0]*len(df)], un, vn, headlength=0, headwidth=0, headaxislength=0, scale=scale)
+    else:
+        qiv = ax.quiver(df.index, [[0]*len(df)], u, v, headlength=0, headwidth=0, headaxislength=0 )
+        key = ax.quiverkey(qiv, 0.25, 0.75, maxSpd, "%0.2f $m^{2}s^{-1}$"%(maxSpd), labelpos='N', coordinates='axes' )
 
     # plot a horizontal line in y=0.0
     ax.axhline(y=0.0,xmin=df.index[0],xmax=df.index[-1],linewidth=1.,color='black')

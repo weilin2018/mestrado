@@ -103,6 +103,7 @@ lat[lat == 0.] = np.nan
 depth = ncin['depth'].values
 sigma = ncin['sigma'].values
 h1    = ncin['h1'].values
+angle = ncin['ang'].values
 
 # configurações do plot
 figsize = (17.4/2.54, 10/2.54)
@@ -187,7 +188,7 @@ axes[0].set_xticklabels(newlabels)
 axes[1].set_xticklabels(newlabels)
 axes[2].set_xticklabels(newlabels)
 
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/secao_perpendicular_%s.eps'%(exp))
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_perpendicular_%s.png'%(exp))
-plt.close()
-%reset -f
+# plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/secao_perpendicular_%s.eps'%(exp))
+# plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_perpendicular_%s.png'%(exp))
+# plt.close()
+# %reset -f

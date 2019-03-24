@@ -27,6 +27,7 @@ import datetime
 
 import matplotlib
 matplotlib.style.use('ggplot')
+matplotlib.use('PS')
 
 import sys
 sys.path.append('masterThesisPack/')
@@ -581,37 +582,44 @@ for per in periods:
         outFile = FIGU_DIR + str(per) + '.png'
         outFile = outFile.replace('[','')
         outFile = outFile.replace(']','')
-        plt.savefig(outFile)
-        plt.close("all")
+        # plt.savefig(outFile)
+        # plt.close("all")
+        plt.show()
 
 
 ################################
 #           PARTE III          #
 ################################
-
 # plotar stickplots de todos os anos (2012 a 2017) do periodo 01-01 a 02-28
 years = list(set(cfsv2.index.year))
 years.sort()
 
 i = 0               # contador de graficos
 
-fig,ax = plt.subplots(nrows=len(years)-1,ncols=1,figsize=(15,10))
+fig,axes = plt.subplots(nrows=len(years)-1,ncols=1,figsize=(15,10))
 
 for y in years[1:]:
     start = str(y)+('-01-01')
     final = str(y)+('-02-28')
     cut = filtered_cfsv2[start:final]
 
-    ax[i] = oceano.stickplot(cut,ax[i])
-    ax[i].set_ylim(-0.7,1.)
-    ax[i].set_ylabel(y)
+    axes[i] = oceano.stickplot(cut,axes[i],scale=35)
+    axes[i].set_ylim(-0.7,1.)
+    axes[i].set_ylabel(y)
 
-    if i != 5:
-        ax[i].get_xaxis().set_ticks([])
+    # if i != 5:
+    #     ax[i].get_xaxis().set_ticks([])
     # else:
     #     ax[i].get_xaxis().set_ticks(cut.index.day)
 
     i += 1
 
 
-plt.show()
+for ax in axes:
+    ax.axes.tick_params(axis='both',which='both',labelsize=8)
+    ax.margins(xmargin=0)
+
+plt.tight_layout()
+plt.savefig(FIGU_DIR + 'figura3.2_resultadoEventos.eps')
+# plt.sup_title(u'',fontsize=10)
+# plt.show()
