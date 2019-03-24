@@ -40,16 +40,16 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
 
     m.ax = ax
 
-    m.drawcoastlines(linewidth=.01,color='#c0c0c0')
+    m.drawcoastlines(linewidth=.1)
     m.drawmapboundary()
-    m.fillcontinents(color='#c0c0c0')
-    m.drawstates(linewidth=.01,color='gray')
+    # m.fillcontinents(color='#c0c0c0')
+    # m.drawstates(linewidth=.01,color='gray')
 	# definir meridianos e paralelos para plotar no mapa
     meridians=np.arange(llon,ulon,nmeridians)
     parallels=np.arange(llat,ulat,nparallels)
 	# desenhar meridianos e paralelos conforme definido acima
-    m.drawparallels(parallels,labels=labels,fontsize=8,color='gray',linewidth=.02)
-    m.drawmeridians(meridians,labels=labels,fontsize=8,color='gray',linewidth=.02)
+    m.drawparallels(parallels,labels=labels,fontsize=8,color='gray',linewidth=.0)
+    m.drawmeridians(meridians,labels=labels,fontsize=8,color='gray',linewidth=.0)
 
     return m
 
@@ -61,9 +61,9 @@ def create_Structure(fname,timestep=0,savefig=False):
 
     # dictionary containing labels for subplots
     labels_dict = {
-        '00': [True,False,False,False],
-        '01': [False,False,False,False],
-        '02': [False,False,False,False],
+        '00': [True,False,False,True],
+        '01': [False,False,False,True],
+        '02': [False,False,False,True],
         '10': [True,False,False,True],
         '11': [False,False,False,True],
         '12': [False,False,False,True],
@@ -74,7 +74,7 @@ def create_Structure(fname,timestep=0,savefig=False):
     for j in range(3):
         for i in range(2):
             key = "%s%s"%(i,j)
-            m[key] = make_map(axes[i,j],labels=labels_dict[key],ulat=-21,llat=-29,ulon=-40,resolution='f')
+            m[key] = make_map(axes[i,j],labels=labels_dict[key],ulat=-21,llat=-30,ulon=-39,resolution='l')
             axes[i,j].spines['left'].set_linewidth(0.2)
             axes[i,j].spines['right'].set_linewidth(0.2)
             axes[i,j].spines['bottom'].set_linewidth(0.2)
@@ -85,8 +85,8 @@ def create_Structure(fname,timestep=0,savefig=False):
     # fig,axes = plt.subplots(nrows=2,ncols=3,figsize=(16/2.54, 13/2.54))
     # cax = fig.add_axes([0.2,0.05,0.61,0.02])
     axes_pos = [
-        [0.18,0.05,0.30,0.02],
-        [0.57,0.05,0.28,0.02],
+        [0.35,0.50,0.30,0.02], #[0.18,0.05,0.30,0.02],
+        [0.35,0.05,0.30,0.02], #[0.57,0.05,0.28,0.02],
     ]
 
     cax_temp = fig.add_axes(axes_pos[0])
@@ -116,6 +116,10 @@ def create_Structure(fname,timestep=0,savefig=False):
     for key,k in zip(col1,sigmaLevels):
         a = m[key]
         cf_temp = a.contourf(lon,lat,temp[k,:,:],contours,latlon=True,cmap=cmo.cm.thermal)
+        for c in cf_temp.collections:
+            c.set_edgecolor('face')
+            c.set_linewidth(0.00000000001)
+
 
     # plotting anomalous experiment at the final
     salt = ncin.salt[timestep,:,:,:]
@@ -125,6 +129,9 @@ def create_Structure(fname,timestep=0,savefig=False):
     for key,k in zip(col1,sigmaLevels):
         a = m[key]
         cf_salt = a.contourf(lon,lat,salt[k,:,:],contours,latlon=True,cmap=cmo.cm.haline)
+        for c in cf_salt.collections:
+            c.set_edgecolor('face')
+            c.set_linewidth(0.00000000001)
 
     # axes[0,0].set_title('Temperatura',fontsize=8)
     # axes[0,1].set_title(u'Salinidade',fontsize=8)
@@ -136,18 +143,43 @@ def create_Structure(fname,timestep=0,savefig=False):
     cb_temp.locator = tick_locator
     cb_temp.update_ticks()
     cb_temp.ax.axes.tick_params(axis='both',which='both',labelsize=8)
-    cb_temp.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
+    # cb_temp.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
 
     cb_salt = plt.colorbar(cf_salt,orientation='horizontal',cax=cax_salt,format='%0.1f',ticks=np.arange(33,37,0.9))
-    # fig.text(0.25,0.075,r'Temperatura ($^o$C)',fontsize=8)
-    fig.text(0.65,0.075,r'Salinidade',fontsize=8)
+    cb_salt.locator = tick_locator
+    cb_salt.update_ticks()
+    cb_salt.ax.axes.tick_params(axis='both',which='both',labelsize=8)
+    # cb_salt.ax.set_title(r'Temperatura ($^o$C)',fontsize=8)
+
+    # for c in cb_temp.collections:
+    #     c.set_edgecolor('face')
+    #     c.set_linewidth(0.00000000001)
+    #
+    # for c in cb_salt.collections:
+    #     c.set_edgecolor('face')
+    #     c.set_linewidth(0.00000000001)
+
+
+    fig.text(0.43,0.525,r'Temperatura ($^o$C)',fontsize=8)
+    fig.text(0.46,0.075,r'Salinidade',fontsize=8)
+
 
     # title and some figure adjusts
     d = pd.to_datetime(ncin.time[timestep].values)
-    plt.suptitle(u'Climatologia de Temperatura (superior) e Salinidade \n(inferior), para a Superfície, Meio e Fundo',fontsize=10)
+    # plt.suptitle(u'Climatologia de Temperatura (superior) e Salinidade \n(inferior), para a Superfície, Meio e Fundo',fontsize=10)
+    plt.suptitle(u'Campos climatológicos de Temperatura (superior) e Salinidade (inferior), \n na superfície, meio e fundo', fontsize=10)
     rect = (0,0.08,1.,0.95)
     plt.tight_layout(rect=rect) # box for tight_subplot_layout
-    plt.subplots_adjust(top=0.94,bottom=0.09,left=0.06,right=0.99,hspace=0.0,wspace=0.18)
+    plt.subplots_adjust(top=0.965,bottom=0.055,left=0.06,right=0.99,hspace=0.0,wspace=0.18)
+
+    # inserting vertical location of each subplot
+    fig.text(0.12,0.40,u'Superfície',fontsize=8)
+    fig.text(0.47,0.40,u'Meio',fontsize=8)
+    fig.text(0.79,0.40,u'Fundo',fontsize=8)
+
+    fig.text(0.12,0.85,u'Superfície',fontsize=8)
+    fig.text(0.47,0.85,u'Meio',fontsize=8)
+    fig.text(0.79,0.85,u'Fundo',fontsize=8)
 
     if savefig:
         plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/climatologia_temp_salt_EDITARINKSCAPE.eps')
@@ -168,8 +200,8 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'warmup_plot.cdf'
-SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA1/'
+exp = 'warmupControle.cdf'
+# SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA1/'
 
 for f in fname:
     if exp in f:
@@ -180,4 +212,6 @@ fname = experiment
 timestep = 0#input('Type which timestep to plot: ')
 
 fig,axes = create_Structure(fname,timestep=int(timestep),savefig=False)
-plt.savefig(BASE_DIR + "/masterThesis_analysis/figures/climatologia_temp_salt_EDITARINKSCAPE.eps")
+plt.savefig(BASE_DIR + "/masterThesis_analysis/figures/climatologia_temp_salt.eps")
+plt.savefig(BASE_DIR + "/masterThesis_analysis/figures/climatologia_temp_salt.png",dpi=300)
+plt.close()
