@@ -36,7 +36,7 @@ duration = [9,10,11,12,13,14,15,16,17,19,24]
 data = pd.DataFrame({'Eventos':qtd},index=duration)
 
 fig,ax = plt.subplots()
-data.plot(ax=ax,kind='bar')
+data.plot(ax=ax,kind='bar',legend=False)
 
 props = dict(boxstyle='round', facecolor='white', alpha=0.5)
 fig.text(0.90,0.38,u'Verão de 2014',rotation=70,bbox=props)
