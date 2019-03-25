@@ -195,7 +195,7 @@ for nstep in timestep:
     ax2.set_position([.1,.28,.6,.5])
     ax3.set_position([.17,.1,.6,.5])
 
-    contours = np.arange(0,1.5,0.1)
+    contours = np.arange(0,1.1,0.1)
 
     # plotando velocidade
     cf1 = m1.contourf(lon,lat,spd_surf,contours,cmap=cmo.cm.speed,latlon=True,rasterized=True,extend='max')
