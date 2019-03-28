@@ -110,8 +110,8 @@ nstepBegin = np.arange(0,9,1) # climatolofic data
 
 # fig,axes,caxTemp,caxSalt,caxVelo = create_Structure_3(ncin,indexes)
 fig,axes,caxTemp,caxSalt = create_structure_2x3(ncin,indexes)
-title = u'Seção vertical de temperatura (superior) e salinidade (inferior) \nem Ubatuba (esquerda), Santos (meio) e Cananéia (direita)'
-plt.suptitle(title,fontsize=10)
+# title = u'Seção vertical de temperatura (superior) e salinidade (inferior) \nem Ubatuba (esquerda), Santos (meio) e Cananéia (direita)'
+# plt.suptitle(title,fontsize=10)
 
 # plotando primeiro a temperatura
 os.system('clear')
@@ -136,9 +136,9 @@ for ind in indexes:
     axes[0,axesInd].set_xlim([0,limiteEixoX])
     axes[0,axesInd].set_ylim([-depRef,0])
 
-    for c in cf1.collections:
-        c.set_edgecolor('face')
-        c.set_linewidth(0.00000000001)
+    # for c in axes[0,axesInd].collections:
+    #     c.set_edgecolor('face')
+    #     c.set_linewidth(0.00000000001)
 
 # plotting colorbar
 cbar = plt.colorbar(cf1,orientation='horizontal',cax=caxTemp,format='%i')
@@ -174,9 +174,9 @@ for ind in indexes:
     axes[1,axesInd].set_xlim([0,limiteEixoX])
     axes[1,axesInd].set_ylim([-depRef,0])
 
-    for c in cf1.collections:
-        c.set_edgecolor('face')
-        c.set_linewidth(0.00000000001)
+    # for c in axes[1,axesInd].collections:
+    #     c.set_edgecolor('face')
+    #     c.set_linewidth(0.00000000001)
 
 # plotting colorbar
 cbar = plt.colorbar(cf1,ticks=[34.5,34.9,35.25,35.6,36.],orientation='horizontal',cax=caxSalt,format='%.1f')
@@ -190,7 +190,7 @@ cbar.ax.axes.tick_params(axis='both',which='both',labelsize=8)
 cbar.ax.set_title('Salinidade',fontsize=8)
 
 plt.tight_layout()
-plt.subplots_adjust(top=0.886,bottom=0.165,left=0.085,right=0.985,hspace=0.072,wspace=0.072)
+plt.subplots_adjust(top=0.946,bottom=0.165,left=0.085,right=0.985,hspace=0.072,wspace=0.072)
 
 # updating x tick labels
 labels = [item.get_text() for item in axes[1,2].get_xticklabels()]
@@ -204,6 +204,6 @@ axes[1,1].set_xticklabels(newlabels)
 axes[1,2].set_xticklabels(newlabels)
 
 plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/secao_climatologia_TS.eps')
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_climatologia_TS.png')
+plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_climatologia_TS.png',dpi=150)
 plt.close()
 %reset -f
