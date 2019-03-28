@@ -118,9 +118,9 @@ limiteEixoX = 300000 # limite, em metros, do eixo X para a secao vertical
 contours = np.arange(-.4,.4,0.01)
 
 fig,axes,cax = create_structure_1row(indexes,exp)
-title = u'Seção vertical da componente perpendicular em Ubatuba (esquerda), Santos (meio) e Cananéia (direita),\n'\
-      + u'no dia 13 de Fevereiro em %s.\n'% (exp)
-plt.suptitle(title,fontsize=10)
+# title = u'Seção vertical da componente perpendicular em Ubatuba (esquerda), Santos (meio) e Cananéia (direita),\n'\
+#       + u'no dia 13 de Fevereiro em %s.\n'% (exp)
+# plt.suptitle(title,fontsize=10)
 
 nstepBegin = np.arange(0,9,1) # climatolofic data
 nstepFinal = np.arange(280,289,1) # final of anomalous period
@@ -156,6 +156,10 @@ for ind in indexes:
     axes[axesInd].set_xlim([0,limiteEixoX])
     axes[axesInd].set_ylim([-depRef,0])
 
+    for c in axes[axesInd].collections:
+        c.set_edgecolor('face')
+        c.set_linewidth(0.00000000001)
+
 # plotting colorbar
 cbar = plt.colorbar(cf1,orientation='horizontal',cax=cax,format='%.2f')
 # setting colorbar tick labels
@@ -176,7 +180,7 @@ for c in cbar.ax.collections:
 plt.tight_layout()
 # plt.subplots_adjust(top=0.905,bottom=0.059,left=0.073,right=0.987,hspace=0.11,wspace=0.068)
 # plt.subplots_adjust(top=0.925,bottom=0.06,left=0.115,right=0.95,hspace=0.2,wspace=0.28)
-plt.subplots_adjust(top=0.841,bottom=0.237,left=0.087,right=0.982,hspace=0.099,wspace=0.118)
+plt.subplots_adjust(top=0.946,bottom=0.237,left=0.087,right=0.982,hspace=0.099,wspace=0.118)
 
 labels = [item.get_text() for item in axes[0].get_xticklabels()]
 newlabels = []
@@ -188,7 +192,7 @@ axes[0].set_xticklabels(newlabels)
 axes[1].set_xticklabels(newlabels)
 axes[2].set_xticklabels(newlabels)
 
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/secao_perpendicular_%s.eps'%(exp))
+plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/secao_perpendicular_%s.pdf'%(exp))
 plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_perpendicular_%s.png'%(exp))
 plt.close()
 %reset -f
