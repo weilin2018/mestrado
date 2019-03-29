@@ -129,17 +129,22 @@ os.system('clear')
 
 convertData = False
 
-exp = raw_input('Digite o experimento a ser plotado: ')
+exp = raw_input('Digite o experimento a ser plotado [EC1 ou EC2]: ')
 fname = DATA_DIR + exp +'.cdf'
 
 plt.ion()
 
 # o primeiro timestep sera para o controle, o segundo para o anomalo
-timestep = [np.arange(65,289,1),np.arange(280,289,1)]
+timestep = [np.arange(65,289,1)]
 
 for nstep in timestep:
     outputFile = DATA_DIR + 'dados_interpolados_stdl/'
-    lon,lat,u,v,depth,angle,stdl = export_data(fname,timestep=nstep,convertData=convertData,outputFile=outputFile)
+
+    # condicional para extrair dado do controle (medio) ou anomalo (no final do bloqueio)
+    if int(np.nanmean(nstep) == 176):
+        lon,lat,u,v,depth,angle,stdl = export_data(fname,timestep=nstep,convertData=convertData,outputFile=outputFile)
+    else:
+        lon,lat,u,v,depth,angle,stdl = export_data(fname.replace('C','A'),timestep=nstep,convertData=convertData,outputFile=outputFile)
 
     # rotating vectors
     ur_surf,vr_surf,spd_surf = tratando_corrente(u[0,:,:],v[0,:,:],depth,angle)
@@ -241,4 +246,4 @@ for nstep in timestep:
     cbar.ax.set_title(r'Velocidade (m s$^{-1}$)',fontsize=8)
 
     output_fname = fname.split('/')[-1].replace('.cdf','_'+str(int(np.mean(nstep))))
-    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/speed/%s/%s__17Jans.eps'%(exp,output_fname))
+    plt.savefig('/home/danilo/Dropbox/mestrado/figuras/composicao/std_level/speed/%s/%s_medio.eps'%(exp,output_fname))
