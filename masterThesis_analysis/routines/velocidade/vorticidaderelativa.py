@@ -14,6 +14,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import dates
 import datetime
 import cmocean as cmo
+from scipy import interpolate
 
 import matplotlib
 matplotlib.use('PS')
@@ -36,196 +37,75 @@ def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,
     m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution='h')
     # m = pickle.load(open('pickles/basemap.p','r'))
     m.ax = ax
-    m.drawcoastlines(linewidth=.2)
-    m.fillcontinents(color='white',alpha=0)
+    # m.drawcoastlines(linewidth=.2)
+    # m.fillcontinents(color='white',alpha=0)
+    #
+    # meridians=np.arange(llon,ulon,nmeridians)
+    # parallels=np.arange(llat,ulat,nparallels)
 
-    meridians=np.arange(llon,ulon,nmeridians)
-    parallels=np.arange(llat,ulat,nparallels)
+    return m
 
-    return m,meridians,parallels
+def import_interpolated_data(fname,timestep,outputFile):
 
+    u = np.load(outputFile+'%s_umean_%i.npy'%(exp,np.nanmean(timestep)))
+    v = np.load(outputFile+'%s_vmean_%i.npy'%(exp,np.nanmean(timestep)))
 
-def gradient_sphere(f, *varargs):
-    """
-    Return the gradient of a 2-dimensional array on a sphere given a latitude
-    and longitude vector.
-    The gradient is computed using central differences in the interior
-    and first differences at the boundaries. The returned gradient hence has
-    the same shape as the input array.
-    Parameters
-    ----------
-    f : A 2-dimensional array containing samples of a scalar function.
-    latvec: latitude vector
-    lonvec: longitude vector
-    Returns
-    -------
-    g : dfdx and dfdy arrays of the same shape as `f` giving the derivative of `f` with
-        respect to each dimension.
-    Examples
-    --------
-    temperature = temperature(pressure,latitude,longitude)
-    levs = pressure vector
-    lats = latitude vector
-    lons = longitude vector
-    >>> tempin = temperature[5,:,:]
-    >>> dfdlat, dfdlon = gradient_sphere(tempin, lats, lons)
-    >>> dfdp, dfdlat, dfdlon = gradient_sphere(temperature, levs, lats, lons)
-    based on gradient function from /usr/lib64/python2.6/site-packages/numpy/lib/function_base.py
-    """
+    stdl = [0, 10, 25, 40, 50, 60, 70, 80, 100, 150, 300, 350, 400, 450, 500, 600, 700, 800, 1000, 1200, 1500, 1800, 2000]
 
-    R_earth = 6371200.
-    N = len(f.shape)  # number of dimensions
-    n = len(varargs)
-    argsin = list(varargs)
+    return u,v,stdl
 
-    if N != n:
-       raise SyntaxError("dimensions of input array must match the number of remaining arguments")
+#!-----------------------------------------------!#
+def createNewgrid(jr,ir,lon,lat):
+    plt.ioff()
+    fig,ax = plt.subplots()
+    m = make_map(ax)
+    plt.close()
+    # new grid
+    lons,lats,x,y = m.makegrid(jr,ir,returnxy=True)
 
-    df = np.gradient(f)
+    plt.ion()
 
-    if n == 1:
-        lats = argsin[0]
-        dfdy = df[0]
-    elif n == 2:
-        lats = argsin[0]
-        lons = argsin[1]
-        dfdy = df[0]
-        dfdx = df[1]
-    elif n == 3:
-        levs = argsin[0]
-        lats = argsin[1]
-        lons = argsin[2]
-        dfdz = df[0]
-        dfdy = df[1]
-        dfdx = df[2]
-    else:
-        raise SyntaxError(
-                "invalid number of arguments")
+    return lons,lats,x,y
 
-    otype = f.dtype.char
-    if otype not in ['f', 'd', 'F', 'D']:
-        otype = 'd'
+def modelgrid2regular(jr,ir,lon,lat,u,v,depth):
 
-    latarr = np.zeros_like(f).astype(otype)
-    lonarr = np.zeros_like(f).astype(otype)
-    if N == 1:
-       nlat = np.shape(f)
-       for jj in range(0,nlat):
-          latarr[jj,ii] = lats[jj]
-       lonarr = latarr
-       lons = lats
-    elif N == 2:
-       nlat, nlon = np.shape(f)
-       for jj in range(0,nlat):
-          for ii in range(0,nlon):
-             latarr[jj,ii] = lats[jj]
-             lonarr[jj,ii] = lons[ii]
-    else:
-       nz, nlat, nlon = np.shape(f)
-       for kk in range(0,nz):
-          for jj in range(0,nlat):
-             for ii in range(0,nlon):
-                latarr[kk,jj,ii] = lats[jj]
-                lonarr[kk,jj,ii] = lons[ii]
+    # creating new regular grid
+    lons,lats,x,y = createNewgrid(jr,ir,lon,lat)
 
-    latrad = latarr*(pi/180)
+    # preparing variables to interpolate
+    ut,vt = np.ravel(u),np.ravel(v)
+    X1,Y1 = np.ravel(lon),np.ravel(lat)
+    inds = np.where(~np.isnan(X1))
+    X1 = X1[inds]
+    Y1 = Y1[inds]
+    ut = ut[inds]
+    vt = vt[inds]
+    zt = depth.ravel()[inds]
 
-    # use central differences on interior and first differences on endpoints
+    # create points array
+    points = np.array([X1,Y1]).T
+    # interpolate data
+    uI = interpolate.griddata(points,ut,(lons,lats),method='linear')
+    vI = interpolate.griddata(points,vt,(lons,lats),method='linear')
+    zI = interpolate.griddata(points,zt,(lons,lats),method='linear')
 
-    outvals = []
+    return uI,vI,zI,lons,lats,x,y
 
-    dlats = np.zeros_like(lats).astype(otype)
-    dlats[1:-1] = (lats[2:] - lats[:-2])
-    dlats[0] = (lats[1] - lats[0])
-    dlats[-1] = (dlats[-2] - dlats[-1])
+def relativeVorticity(uI,vI,lons,lats):
+    # calculating size of grid cell
+    dx = np.mean(np.diff(lons,axis=1)*111000)
+    dy = np.mean(np.diff(lats,axis=0)*111000)
 
-    dlons = np.zeros_like(lons).astype(otype)
-    dlons[1:-1] = (lons[2:] - lons[:-2])
-    dlons[0] = (lons[1] - lons[0])
-    dlons[-1] = (dlons[-2] - dlons[-1])
-
-    # Since we differenced in the reverse direction, change the sign
-    #dlats = -1*dlats
-
-    dlatarr = np.tile(dlats,[nlon,1])
-    dlatarr = np.reshape(dlatarr,[nlat,nlon])
-
-    dlonarr = np.zeros_like(f).astype(otype)
-    if N==2:
-       for jj in range(0,nlat):
-          for ii in range(0,nlon):
-              dlonarr[jj,ii] = dlons[ii]
-    elif N==3:
-       for kk in range(0,nz):
-          for jj in range(0,nlat):
-             for ii in range(0,nlon):
-                 dlonarr[kk,jj,ii] = dlons[ii]
-
-    dlatsrad = dlatarr*(pi/180)
-    dlonsrad = dlonarr*(pi/180)
-    latrad = latarr*(pi/180)
-
-    if n==1:
-       dx1 = R_earth * dlatsrad
-       dfdy = dfdy/dx1
-
-       return dfdy
-    elif n==2:
-       dx1 = R_earth * dlatsrad
-       dx2 = R_earth * np.cos(latrad) * dlonsrad
-
-       dfdy = dfdy/dx1
-       dfdx = dfdx/dx2
-
-       return dfdy,dfdx
-    elif n==3:
-       dx1 = R_earth * dlatsrad
-       dx2 = R_earth * np.cos(latrad) * dlonsrad
-
-       dfdy = dfdy/dx1
-       dfdx = dfdx/dx2
-
-       nzz = np.shape(levs)
-       if not nzz:
-          nzz=0
-
-       if nzz>1:
-           zin = levs
-           dz = np.zeros_like(zin).astype(otype)
-           dz[1:-1] = (zin[2:] - zin[:-2])/2
-           dz[0] = (zin[1] - zin[0])
-           dz[-1] = (zin[-1] - zin[-2])
-           if zin[0,1,1] > zin[1,1,1]:
-               dz = dz*-1 # assume the model top is the first index and the lowest model is the last index
-
-           dx3 = np.ones_like(f).astype(otype)
-           for kk in range(0,nz):
-               dx3[kk,:,:] = dz[kk]
-       else:
-           dx3 = np.ones_like(f).astype(otype)
-           dx3[:] = dx[0]
-
-       dfdz = dfdz/dx3
-
-       return dfdz,dfdy,dfdx
-
-
-
-def relativeVorticity(ncin,nstep):
-    u = np.nanmean(ncin.u[nstep,:,:,:],axis=0)
-    v = np.nanmean(ncin.v[nstep,:,:,:],axis=0)
-    h1= ncin.h1.values.copy()
-    h2= ncin.h2.values.copy()
-    lon,lat = ncin.lon.values.copy(),ncin.lat.values.copy()
-    lon[lon == 0.] = np.nan
-    lat[lat == 0.] = np.nan
-
-    dx = np.gradient(h1)
-    dy = np.gradient(h2)
-    du = np.gradient()
+    # compute term from relative vorticity equation
+    dvdx = np.gradient(vI,dx,axis=0)
+    dudy = np.gradient(uI,dy,axis=0)
+    # relative vorticity (zeta)
+    zeta = dvdx - dudy
 
     return zeta
 
+
+#!-----------------------------------------------!#
 ##############################################################################
 #                               MAIN CODE                                    #
 ##############################################################################
@@ -249,6 +129,8 @@ def relativeVorticity(ncin,nstep):
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 FILE_DIR = BASE_DIR+'masterThesis_analysis/routines/index_list.npy'
+outputFile = DATA_DIR + 'dados_interpolados_stdl/'
+
 os.system('clear')
 
 convertData = False
@@ -258,5 +140,61 @@ fname = DATA_DIR + exp +'.cdf'
 
 plt.ion()
 
-timestep = [np.arange(65,73,1),np.arange(280,289,1)]
+timestep = [np.arange(65,289,1),np.arange(280,289,1)]
 ncin = xr.open_dataset(fname)
+# extracting grid (lon,lat)
+lon,lat = ncin.lon.values.copy(),ncin.lat.values.copy()
+# extracting depth
+depth= ncin.depth.values.copy()
+# extracting sizes of each grid cell (h1,h2)
+h1,h2 = ncin.h1.values.copy(),ncin.h2.values.copy()
+# removing zeros coordinates from grid
+lon[lon == 0.] = np.nan
+lat[lat == 0.] = np.nan
+# extracting current components already interpolated to standard levels
+u,v,stdl = import_interpolated_data(fname,timestep[1],outputFile)
+
+# # recreating grid, based on lon,lat, but remember:
+# # model runs with arakawa c-grid, so the coordinates are given in the central
+# # point of a cell and current components are given between those central points.
+# dx = 0.5 * (h1[1:,1:] + h1[:-1,:-1])
+# dy = 0.5 * (h2[1:,1:] + h2[:-1,:-1])
+#
+# dvdx = np.zeros(dx.shape)*np.nan
+# dudy = np.zeros(dy.shape)*np.nan
+
+
+######## traveling on each cell, computing dvdx
+
+# select first z level, that represent sea surface
+uplot,vplot = u[0,:,:],v[0,:,:]
+
+# interpolating data into a regular grid
+uI,vI,zI,lons,lats,x,y = modelgrid2regular(200,200,lon,lat,uplot,vplot,depth)
+
+# computing relative vorticity
+zeta = relativeVorticity(uI,vI,lons,lats)
+
+# removing values above 200 meters depth and
+# dividing by 10e-5 just to turn things easier to visualize#
+nzeta = zeta/10e-05
+zetaPlot = np.where(zI < 200, nzeta, np.nan)
+
+# visualization
+fig,ax = plt.subplots()
+m = make_map(ax)
+contours = np.arange(-0.4,0.6,0.001)
+cf = m.contourf(x,y,zetaPlot,contours,cmap=cmo.cm.curl)
+
+m.drawcoastlines(linewidth=.2)
+m.fillcontinents()
+
+cbar = plt.colorbar(cf)
+cbar.set_label(r'Vorticidade Relativa x10$^{-5}$ [$s^-1{}$]')
+#!-----------------------------------------------!#
+
+
+
+# # relative vorticity on sea surface
+# dvdx = np.gradient(v[0,:,:],dx,axis=0)
+# dudy = np.gradient(u[0,:,:],dy,axis=1)
