@@ -6,6 +6,7 @@ ipynb_checkpoints/
 # exclude extensions
 *.pkl
 *.zip
+*.pyc
 
 # exception to the rule
 
