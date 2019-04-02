@@ -48,10 +48,10 @@ DATA_DIR = BASE_DIR.replace('github','ventopcse/data/radiacao_ondacurta')
 ncin = xr.open_dataset(BASE_DIR+'masterThesis_analysis/routines/radiacao/radiacao.nc')
 df   = ncin.to_dataframe()
 
-ts=[]
-for t in df.index.values:
-    ts.append(t[0])
-df.index = ts
+# ts=[]
+# for t in df.index.values:
+#     ts.append(t[0])
+# df.index = ts
 
 # importar dados de radiacao do CFSv2
 ncin = xr.open_dataset(DATA_DIR+"ubatuba.nc")

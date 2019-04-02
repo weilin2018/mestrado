@@ -152,7 +152,11 @@ h1,h2 = ncin.h1.values.copy(),ncin.h2.values.copy()
 lon[lon == 0.] = np.nan
 lat[lat == 0.] = np.nan
 # extracting current components already interpolated to standard levels
-u,v,stdl = import_interpolated_data(fname,timestep[1],outputFile)
+umean,vmean,stdl = import_interpolated_data(fname,timestep[0],outputFile)
+u,v,stdl = import_interpolated_data(fname.replace('C','A'),timestep[1],outputFile)
+
+u = umean - u
+v = vmean - v
 
 # # recreating grid, based on lon,lat, but remember:
 # # model runs with arakawa c-grid, so the coordinates are given in the central
@@ -193,8 +197,5 @@ cbar = plt.colorbar(cf)
 cbar.set_label(r'Vorticidade Relativa x10$^{-5}$ [$s^-1{}$]')
 #!-----------------------------------------------!#
 
-
-
-# # relative vorticity on sea surface
-# dvdx = np.gradient(v[0,:,:],dx,axis=0)
-# dudy = np.gradient(u[0,:,:],dy,axis=1)
+plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/experiments_outputs/vorticity/vorticidadeRelativa_%s___novo.png'%(exp),dpi=300)
+plt.close()
