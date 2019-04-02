@@ -193,6 +193,6 @@ axes[1].set_xticklabels(newlabels)
 axes[2].set_xticklabels(newlabels)
 
 plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/secao_perpendicular_%s.pdf'%(exp))
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_perpendicular_%s.png'%(exp))
+plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_perpendicular_%s.png'%(exp),dpi=300)
 plt.close()
 %reset -f

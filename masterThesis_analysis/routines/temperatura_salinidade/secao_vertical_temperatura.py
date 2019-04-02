@@ -118,7 +118,7 @@ for ind in indexes:
 
     # begin: 18 isotherm position
     cf1  = axes[axesInd].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.thermal,extend='max')
-    cs   = axes[axesInd].contour(xgrid,-zgrid,Tplot,levels=[18.],colors=('k'),linestyles=('--'))
+    # cs   = axes[axesInd].contour(xgrid,-zgrid,Tplot,levels=[18.],colors=('k'),linestyles=('--'))
     axes[axesInd].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
     axes[axesInd].plot(dist2[-1,:],sig[-1,:],'k')
     axes[axesInd].set_xlim([0,limiteEixoX])
@@ -135,6 +135,8 @@ for ind in indexes:
     for c in axes[axesInd].collections:
         c.set_edgecolor('face')
         c.set_linewidth(0.00000000001)
+
+    cs   = axes[axesInd].contour(xgrid,-zgrid,Tplot,levels=[18.],colors=('k'),linestyles=('--'))
 
 
 # plotting colorbar
@@ -166,6 +168,6 @@ axes[1].set_xticklabels(newlabels)
 axes[2].set_xticklabels(newlabels)
 
 plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/secao_temperatura_%s.pdf'%(exp))
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_temperatura_%s.png'%(exp))
+plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_temperatura_%s.png'%(exp),dpi=300)
 plt.close()
 %reset -f

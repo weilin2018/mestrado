@@ -118,7 +118,7 @@ for ind in indexes:
 
     # begin: 18 isotherm position
     cf1  = axes[axesInd].contourf(xgrid,-zgrid,Tplot,contours,cmap=cmo.cm.haline,extend='both')
-    cs   = axes[axesInd].contour(xgrid,-zgrid,Tplot,levels=[36.],colors=('k'),linestyles=('--'))
+    # cs   = axes[axesInd].contour(xgrid,-zgrid,Tplot,levels=[36.],colors=('k'),linestyles=('--'))
     axes[axesInd].fill_between(dist2[-1,:], -depRef, sig[-1,:],color='#c0c0c0')
     axes[axesInd].plot(dist2[-1,:],sig[-1,:],'k')
     axes[axesInd].set_xlim([0,limiteEixoX
@@ -130,11 +130,12 @@ for ind in indexes:
     textstr = r'$\Delta$x = %.1f km'%(deltax)
     axes[axesInd].text(0.18, 0.22, textstr, transform=axes[axesInd].transAxes, fontsize=8,
         va='top', ha='center',bbox=props)
-
+    #
     for c in axes[axesInd].collections:
         c.set_edgecolor('face')
         c.set_linewidth(0.00000000001)
-
+    #
+    cs   = axes[axesInd].contour(xgrid,-zgrid,Tplot,levels=[36.],colors=('k'),linestyles=('--'))
 
 # plotting colorbar
 cbar = plt.colorbar(cf1,ticks=[34.5,34.9,35.25,35.6,36.],orientation='horizontal',cax=cax,format='%.1f')
@@ -165,6 +166,6 @@ axes[1].set_xticklabels(newlabels)
 axes[2].set_xticklabels(newlabels)
 
 plt.savefig('/home/danilo/Dropbox/mestrado/figuras/secoes_verticais/secao_salinidade_%s.pdf'%(exp))
-plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_salinidade_%s.png'%(exp))
+plt.savefig('/home/danilo/Dropbox/mestrado/figuras/lowResolution/secoes_verticais/secao_salinidade_%s.png'%(exp),dpi=300)
 plt.close()
 %reset -f

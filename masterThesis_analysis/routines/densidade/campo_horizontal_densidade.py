@@ -156,7 +156,7 @@ for nstep in timestep:
         contours = np.arange(1020,1027,0.1)
 
         cf1 = m1.contourf(lon,lat,dens[0,:,:],contours,cmap=cmo.cm.dense,latlon=True,rasterized=True,extend='both')
-        cr1 = m1.contour(lon,lat,dens[0,:,:],levels=np.arange(1022,1023,0.2),linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
+        # cr1 = m1.contour(lon,lat,dens[0,:,:],levels=np.arange(1022,1023,0.2),linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
         # plt.clabel(cr1,[40,80],fmt='%i',inline=1,fontsize=8,manual=True)
         cf2 = m2.contourf(lon,lat,dens[3,:,:],contours,cmap=cmo.cm.dense,latlon=True,rasterized=True,extend='both')
         # cr2 = m2.contour(lon,lat,dens[3,:,:],levels=np.arange(1022,1025,0.2),linewidths=(0.5),linestyles=('dashed'),colors=('k'),latlon=True)
