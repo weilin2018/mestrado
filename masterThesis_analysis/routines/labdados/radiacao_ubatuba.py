@@ -1,4 +1,6 @@
 # extracao de dados do ghrsst proximo ao ponto da baia do araca
+import matplotlib
+matplotlib.use("PS")
 
 import glob
 import matplotlib.pyplot as plt
@@ -16,14 +18,13 @@ import datetime
 
 from dateutil import parser
 
-import matplotlib
-matplotlib.style.use('ggplot')
-
 import sys
 sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
 
+
+matplotlib.style.use('ggplot')
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
@@ -114,30 +115,30 @@ std   = newdf.std()
 
 
 # visualizando
-fig,ax = plt.subplots(figsize=(15,5))
+fig,ax = plt.subplots(figsize=(12./2.54,5/2.54))
 
 titulo = u'Radiação Solar Registrada (' + r'$W m^{-2}$' + u'), em vermelho, e Média Semanal em azul,  entre 2013 e 2015 em Ubatuba.'
 
-df.plot(ax=ax)
+df.resample('1H').mean().plot(ax=ax,legend=False)
 
-ax.axvline('2014-01-14 00:00',color='k')
-ax.axvline('2014-02-15 00:00',color='k')
+ax.axvline('2014-01-14 00:00',color='k',linewidth=.5)
+ax.axvline('2014-02-15 00:00',color='k',linewidth=.5)
 
-ax.axvline('2014-01-01 00:00',color='k',linestyle='--')
-ax.axvline('2014-03-01 00:00',color='k',linestyle='--')
+ax.axvline('2014-01-01 00:00',color='k',linestyle='--',linewidth=.5)
+ax.axvline('2014-03-01 00:00',color='k',linestyle='--',linewidth=.5)
 
 # ax.margins(0)
 
 # configurando tamanho das fontes e eixos
 ax.set_ylabel(u'Radiação solar ' + r'[W m$^{-2}$]',fontsize=8)
-ax.set_xlabel('Tempo [dias]', fontsize=8)
+ax.set_xlabel('Tempo', fontsize=8)
 ax.axes.tick_params(axis='both',which='both',labelsize=8)
 ax.margins(xmargin=0)
 # plotando um resample a cada 15 dias
-newdf.radiacao.resample('1W').mean().plot(ax=ax)
+newdf.radiacao.resample('1M').mean().plot(ax=ax)
 
 plt.margins(0)
 plt.tight_layout()
 plt.subplots_adjust(top=0.963,bottom=0.109,left=0.055,right=0.990,hspace=0.2,wspace=0.2)
 
-plt.savefig('/media/danilo/Danilo/mestrado/github/masterThesis_analysis/figures/dados_observados/IOUSP/radiacao_ubatuba.pdf', bbox_inches='tight')
+plt.savefig('/home/danilo/Dropbox/mestrado/dissertacao_final/Figures/chapter4/radiacao_ubatuba.pdf', bbox_inches='tight')
