@@ -1,0 +1,3 @@
+download data from: 
+
+wget ftp://ftpdca.iag.usp.br/ICTP_2018_ESC_Training

@@ -1,0 +1,1818 @@
+ 
+###########################   first day  ##########################
+
+aluno@debian9:~$ ssh -Y rcm15@amazonia
+rcm15@amazonia's password: 
+Last login: Mon Nov  5 16:56:08 2018 from 10.100.1.151
+[rcm15@amazonia ~]$ history
+    1  module load gcc-4.9-dev
+    2  module list
+    3  ./configure --prefix=/usr/local/livre/netcdf
+    4  export CFLAGS="-I/usr/local/livre/netcdf/include"
+    5  ./configure --prefix=/usr/local/livre/netcdf
+    6  export CFLAGS="-I/usr/local/livre/netcdf/include -I/usr/local/livre/include"
+    7  ./configure --prefix=/usr/local/livre/netcdf
+    8  export LDFLAGS="-L/usr/local/livre/netcdf/include -L/usr/local/livre/include"
+    9  ./configure --prefix=/usr/local/livre/netcdf
+   10  export LDFLAGS="-L/usr/local/livre/netcdf/lib -L/usr/local/livre/lib -lnetcdf -lhdf5_hl -lhdf5 -lm -lz -lcurl"
+   11  ./configure --prefix=/usr/local/livre/netcdf
+   12  export LDFLAGS="-L/usr/local/livre/netcdf/lib -L/usr/local/livre/lib"
+   13  ./configure --prefix=/usr/local/livre/netcdf
+   14  make clean
+   15  make distclean
+   16  cd /usr
+   17  cd local
+   18  cd free
+   19  ls
+   20  cd bin
+   21  ls
+   22  ./nc-config --all
+   23  pwd
+   24  cd ..
+   25  cd local
+   26  cd ..
+   27  cd livre/
+   28  ls
+   29  cd netcdf/
+   30  ls
+   31  cd bin
+   32  ls
+   33  ./nc-config --all
+   34  gcc -v
+   35  ls
+   36  cd ..
+   37  cd..
+   38  ls
+   39  cd ..
+   40  cd netcdf/
+   41  ls
+   42  cd bin
+   43  ls
+   44  ./nc-config --all
+   45  cd ..
+   46  ls
+   47  cd ..
+   48  ls
+   49  cd livre/
+   50  ls
+   51  cd netcdf/
+   52  ls
+   53  cd bin
+   54  ./nc-config --all
+   55  pwd
+   56  cd ..
+   57  cd free/
+   58  ls
+   59  cd bin
+   60  ls
+   61  ./nc-config --all
+   62  module list
+   63  module avail
+   64  module unload gcc-4.9-dev
+   65  module load gcc-4.7-dev
+   66  which gcc
+   67  pwd
+   68  cd ..
+   69  ls
+   70  cd bin
+   71  ls
+   72  pwd
+   73  cd ..
+   74  cd livre/
+   75  ls
+   76  cd netcdf/
+   77  ls
+   78  cd bin
+   79  ls
+   80  ./nc-config --all
+   81  pwd
+   82  cd ..
+   83  scd ..
+   84  ls
+   85  cd ..
+   86  ls
+   87  cd lib/
+   88  ls
+   89  cd pkgconfig/
+   90  ls
+   91  vim zlib.pc 
+   92  vim libpng.pc 
+   93  ls
+   94  vim libpng12.pc 
+   95  ls
+   96  cd ..
+   97  ls
+   98  ls -la
+   99  ldd libjpeg.a
+  100  ldd libpng12.so
+  101  ldd libhdf5_fortran.a
+  102  ls -la
+  103  pwd
+  104  ldd libjasper.a
+  105  ldd libjasper.la
+  106  ldd libhdf5.la
+  107  ldd libz.a 
+  108  pwd
+  109  cd ..
+  110  ls
+  111  module list
+  112  export CPPFLAGS="-I/usr/local/livre/include"
+  113  export LDFLAGS="-L/usr/local/livre/lib"
+  114  cd
+  115  vim .bashrc 
+  116  cp .bashrc .bashrc.free
+  117  vim .bashrc
+  118  source .bashrc
+  119  which ncgen
+  120  cd
+  121  cd /usr
+  122  cd lcoal
+  123  cd local
+  124  cd livre/
+  125  cd netcdf413/
+  126  sls
+  127  ls
+  128  cd bin
+  129  ls
+  130  echo $NETCDF_LIB
+  131  echo $NETCDF_BIN
+  132  which ncgen
+  133  cd
+  134  vim .bashrc
+  135  nano .bashrc
+  136  vim .bashrc
+  137  source .bashrc
+  138  which ncgen
+  139  echo $CPPFLAGS
+  140  export CPPFLAGS="-I/usr/local/livre/include"
+  141  export LDFLAGS="-L/usr/local/livre/include"
+  142  module list
+  143  cd RegCM-4.7.0
+  144  make clean
+  145  ./configure --with-netcdf=/usr/local/livre/netcdf413
+  146  make
+  147  ./configure --with-netcdf=/usr/local/livre/netcdf413
+  148  export FCFLAGS="-fno-range-check"
+  149  make distclean
+  150  ./configure --with-netcdf=/usr/local/livre/netcdf413
+  151  make
+  152  echo $FC
+  153  echo $CC
+  154  echo $CXX
+  155  ls
+  156  tar -xvzf RegCM-4.7.0.tar.gz
+  157  cd RegCM-4.7.0
+  158  ./configure --with-netcdf=/usr/local/free/
+  159  module avail
+  160  module list
+  161  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  162  make
+  163  module list
+  164  make clean
+  165  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  166  make
+  167  echo $CPPFLAGS
+  168  echo $LDFLAGS
+  169  export CPPFLAGS="-I/usr/local/livre/include"
+  170  export LDFLAGS="-I/usr/local/livre/lib"
+  171  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  172  make
+  173  make clean
+  174  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  175  make
+  176  mod_kdinterp.F90:(.text+0x2d2a): undefined reference to `GOMP_parallel'
+  177  collect2: error: ld returned 1 exit status
+  178  export LDFLAGS="-L/usr/local/free/lib -fopenmp"
+  179  make clean
+  180  make distclean
+  181  export LDFLAGS="-L/usr/local/free/lib -fopenmp"
+  182  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  183  make
+  184  module list
+  185  module avail
+  186  module unload gcc-4.9-dev
+  187  module load gcc-4.8-dev
+  188  gcc -v
+  189  make clean
+  190  make distclean
+  191  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  192  ./configure --with-netcdf=/usr/local/livre/netcdf/
+  193  ./configure --with-netcdf=/usr/local/netcdf/
+  194  ./configure --with-netcdf=/usr/local/free/
+  195  ls
+  196  module list
+  197  cd
+  198  cd /usr
+  199  cd local
+  200  cd free/
+  201  ls
+  202  cd bin
+  203  ls
+  204  ./nc-config --all
+  205  cd
+  206  ls -la
+  207  cp .bashrc.free .bashrc
+  208  vim .bashrc
+  209  module list
+  210  module unload gcc-4.8-dev
+  211  source .bashrc
+  212  module list
+  213  which mpirun
+  214  cd RegCM-4.7.0
+  215  make clean
+  216  make distclean
+  217  which ncgen
+  218  ./configure --with-netcdf=/usr/local/free/
+  219  make
+  220  cd ..
+  221  rm -rf RegCM-4.7.0
+  222  tar -xvzf RegCM-4.7.0.V2.tar.gz
+  223  cd RegCM-4.7.0
+  224  echo $FC
+  225  echo $CC
+  226  echo $CXX
+  227  ./configure --with-netcdf=/usr/local/free/
+  228  make
+  229  module list
+  230  mddule lust
+  231  module list
+  232  cd RegCM-4.7.0
+  233  make clean
+  234  make distclean
+  235  cd /usr
+  236  cd local
+  237  cd free
+  238  ls
+  239  cd bin
+  240  ls
+  241  ./nc-config --all
+  242  pwd
+  243  cd /usr
+  244  cd local
+  245  cd netcdf/
+  246  ls
+  247  cd bin
+  248  ls
+  249  ./nc-config --all
+  250  cd
+  251  cd RegCM-4.7.0
+  252  ./configure --with-netcdf=/usr/local/netcdf
+  253  make
+  254  cd
+  255  ls -la
+  256  echo $FC
+  257  su
+  258  module list
+  259  cd
+  260  which mpirun
+  261  cd /usr
+  262  cd locla
+  263  cd local
+  264  cd mvagfortran-4.
+  265  cd mvagfortran-4.7/
+  266  cd bin
+  267  ls
+  268  ./mpichversion 
+  269  cd
+  270  module list
+  271  module avail
+  272  cd
+  273  vim .bashrc
+  274  which mpirun
+  275  gcc -v
+  276  ls
+  277  rm -rf RegCM-4.7.0
+  278  tar -xvzf RegCM-4.7.0.V2.tar.gz
+  279  cd RegCM-4.7.0
+  280  export FCFLAGS="-fno-range-check"
+  281  export FC=gfortran
+  282  export CC=gcc
+  283  export CXX=g++
+  284  ./configure --with-netcdf=/usr/local/free/
+  285  make
+  286  module list
+  287  module unload gcc-4.7-dev
+  288  module avail
+  289  module load gcc-4.9-dev
+  290  make clean
+  291  make distclean
+  292  ./configure --with-netcdf=/usr/local/free/
+  293  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  294  make
+  295  make install
+  296  module list
+  297  module avai
+  298  �ls
+  299  ls
+  300  cd bin
+  301  ls
+  302  module list
+  303  cd
+  304  vim .bashrc
+  305  cd
+  306  vim .bashrc
+  307  cd
+  308  ls
+  309  cd RegCM-4.7.0
+  310  cd bin
+  311  ls
+  312  cd ..
+  313  mv RegCM-4.7.0 RegCM-4.7.0.funcionou!
+  314  ls
+  315  module list
+  316  which ncgen
+  317  ls
+  318  cd RegCM-4.7.0
+  319  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  320  make
+  321  module list
+  322  make clean
+  323  make distclean
+  324  export CC=gcc
+  325  export CXX=g++
+  326  export FC=gfortran
+  327  export FCFLAGS="-fno-range-check"
+  328  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  329  pwd
+  330  ls -la
+  331  cd
+  332  vim .bashrc
+  333  module list
+  334  module unload gcc-4.7-dev
+  335  module load gcc-4.9-dev
+  336  module list
+  337  rm -rf RegCM-4.7.0
+  338  tar -xvzf RegCM-4.7.0.V2.tar.gz 
+  339  cd RegCM-4.7.0
+  340  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  341  make
+  342  export CC=gcc
+  343  export CXX=g++
+  344  export FC=gfortran
+  345  export FCFLAGS="-fno-range-check"
+  346  ./configure --with-netcdf=/usr/local/free/
+  347  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  348  make
+  349  module list
+  350  export CPPFLAGS="-I/usr/local/livre/include"
+  351  export LDFLAGS="-L/usr/local/livre/lib"
+  352  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  353  make
+  354  cd ..
+  355  cdx RegCM-4.7.0.V2.tar.gz 
+  356  tar -xvzf  RegCM-4.7.0.V2.tar.gz 
+  357  cd RegCM-4.7.0
+  358  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  359  make
+  360  cd
+  361  vim .bashrc
+  362  vim .bash_history 
+  363  ls
+  364  cd RegCM-4.7.0.funcionou\!/
+  365  ls
+  366  vim config.log 
+  367  ls
+  368  vim configure
+  369  ls
+  370  vim compile 
+  371  vim Makefile
+  372  cd
+  373  ls
+  374  module list
+  375  module unload gcc-4.7-dev
+  376  module avail
+  377  cd
+  378  vim .bashrc
+  379  rm -rf RegCM-4.7.0
+  380  taqr -xvzf RegCM-4.7.0.V2.tar.gz 
+  381  tar -xvzf RegCM-4.7.0.V2.tar.gz 
+  382  cd RegCM-4.7.0
+  383  ls
+  384  export CC=gcc
+  385  export CXX=g++
+  386  export FC=gfortran
+  387  export FCFLAGS="-fno-range-check"
+  388  cd RegCM-4.7.0
+  389  ls
+  390  cp ../RegCM-4.7.0.funcionou\!/Makefile .
+  391  ls -la
+  392  make
+  393  cd ..
+  394  rm -rf RegCM-4.7.0
+  395  tar -xvzf RegCM-4.7.0.V2.tar.gz 
+  396  ls
+  397  cd RegCM-4.7.0
+  398  ls
+  399  ls -la ../RegCM-4.7.0.funcionou\!/
+  400  pwd
+  401  cp ../RegCM-4.7.0.funcionou\!/Makefile .
+  402  cp ../RegCM-4.7.0.funcionou\!/compile .
+  403  make
+  404  ./configure
+  405  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  406  make
+  407  cd ..
+  408  rm -rf RegCM-4.7.0.V2.tar.gz 
+  409  tar -xvzf RegCM-4.7.0.tar.gz 
+  410  cd RegCM-4.7.0
+  411  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  412  make
+  413  export LDFLAGS="-fopenmp"
+  414  make
+  415  cd ..
+  416  cd RegCM-4.7.0
+  417  ls
+  418  cd bin
+  419  ls
+  420  cd ..
+  421  ls
+  422  su
+  423  ls
+  424  rm -rf RegCM-4.7.0
+  425  tar -xvzf RegCM-4.7.0.V2.tar.gz 
+  426  cd RegCM-4.7.0.funcionou\!/
+  427  ls
+  428  cp -a * ../RegCM-4.7.0/.
+  429  cd ..
+  430  cd RegCM-4.7.0
+  431  make
+  432  make install
+  433  ls -la
+  434  module list
+  435  make clean
+  436  make distclean
+  437  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  438  make
+  439  ./configure --with-netcdf=/usr/local/free/
+  440  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  441  make
+  442  make clean
+  443  make distclean
+  444  export CPPFLAGS="-I/usr/local/free/include"
+  445  export LDFLAGS="-L/usr/local/free/lib"
+  446  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  447  make
+  448  module list
+  449  export CPPFLAGS="-I/usr/local/livre/netcdf/include"
+  450  export LDFLAGS="-L/usr/local/livre/netcdf/lib"
+  451  make clean
+  452  make distclean
+  453  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  454  module list
+  455  which ncgen
+  456  export LDFLAGS="-L/usr/local/free/lib"
+  457  export CPPFLAGS="-I/usr/local/free/include"
+  458  rm -rf RegCM-4.7.0
+  459  tar -xvzf RegCM-4.7.0.V2.tar.gz 
+  460  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  461  cd RegCM-4.7.0
+  462  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  463  make
+  464  export CPPFLAGS="-I/usr/local/livre/netcdf/include"
+  465  export LDFLAGS="-L/usr/local/livre/netcdf/lib"
+  466  make clean
+  467  make distclean
+  468  make
+  469  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  470  ./configure --with-netcdf=/usr/local/free/
+  471  ./configure --with-netcdf=/usr/local/netcdf/
+  472  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  473  export CPPFLAGS="-I/usr/local/livre/include"
+  474  export LDFLAGS="-L/usr/local/livre/lib"
+  475  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  476  make
+  477  module list
+  478  ./configure --with-netcdf=/usr/local/livre
+  479  ./configure --with-netcdf=/usr/local/free/
+  480  echo $FCFLAGS
+  481  echo $LDFLAGS
+  482  module list
+  483  which mpirun
+  484  vim .bashrc
+  485  rm -rf RegCM-4.7.0
+  486  tar -xvzf RegCM-4.7.0.tar.gz 
+  487  cd RegCM-4.7.0
+  488  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  489  make
+  490  export LDFLAGS="-fopenmp"
+  491  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  492  make
+  493  make clean
+  494  make distclean
+  495  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  496  make
+  497  mod_kdinterp.F90:(.text+0x2d2a): undefined reference to `GOMP_parallel'
+  498  echo $LDFLAGS
+  499  mod_kdinterp.F90:(.text+0x2d2a): undefined reference to `GOMP_parallel'
+  500  cd ..
+  501  rm -rf RegCM-4.7.0
+  502  tar -xvzf RegCM-4.7.0.V2.tar.gz 
+  503  cd RegCM-4.7.0
+  504  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  505  make
+  506  cd
+  507  vim .bashrc
+  508  module list
+  509  rm -rf RegCM-4.7.0
+  510  tar -xvzf RegCM-4.7.0.V2.tar.gz 
+  511  cd RegCM-4.7.0
+  512  ls
+  513  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  514  which mpirun
+  515  which mpicc
+  516  which mpifot
+  517  which mpifort
+  518  make
+  519  echo $CC
+  520  echo $CXX
+  521  echo $FCFLAGS
+  522  export FCFLAGS="-fno-range-check"
+  523  make clean
+  524  make distclean
+  525  make
+  526  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  527  make
+  528  echo $LDFLAGS
+  529  history 
+  530  cd
+  531  vim .bash_history 
+  532  cd
+  533  cd RegCM-4.7.0
+  534  sexport CPPFLAGS="-I/usr/local/livre/include"
+  535  export LDFLAGS="-I/usr/local/livre/lib"
+  536  export CPPFLAGS="-I/usr/local/livre/include"
+  537  export LDFLAGS="-I/usr/local/livre/lib"
+  538  make clean
+  539  make distclean
+  540  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  541  make
+  542  aexport CPPFLAGS="-I/usr/local/free/include"
+  543  export CPPFLAGS="-I/usr/local/free/include"
+  544  export LDFLAGS="-L/usr/local/free/lib"
+  545  make clean
+  546  make distclean
+  547  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  548  make
+  549  cd ..
+  550  cd RegCM-4.7.0.funcionou\!/
+  551  ls
+  552  vim Makefile
+  553  which gcc
+  554  vim Makefile
+  555  cd ..
+  556  ls
+  557  cd
+  558  ls
+  559  cd RegCM-4.7.0
+  560  ls
+  561  cd ..
+  562  rm -rf RegCM-4.7.0
+  563  tar -xvzf RegCM-4.7.0.V2.tar.gz 
+  564  cd RegCM-4.7.0
+  565  module list
+  566  export CPPFLAGS ="-I/usr/local/livre/netcdf413/include"
+  567  history 
+  568  export CPPFLAGS="-I/usr/local/livre/netcdf413//include"
+  569  export s
+  570  LDFLAGS = -L/usr/local/livre/netcdf413//lib
+  571  export LDFLAGS="-L/usr/local/livre/netcdf413/lib"
+  572  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  573  make
+  574  rm -rf RegCM-4.7.0
+  575  ls
+  576  tar -xvzf RegCM-4.7.0.V2.tar.gz
+  577  cd RegCM-4.7.0
+  578  pwd
+  579  ls -la
+  580  ls
+  581  cd ..
+  582  ls
+  583  cd RegCM-4.7.0.funcionou\!/
+  584  ls
+  585  vim Makefile
+  586  cd
+  587  cd RegCM-4.7.0
+  588  export FCFLAGS="-fno-range-check"
+  589  export CPPFLAGS ="-I/usr/local/livre/netcdf413/include"
+  590  export CPPFLAGS="-I/usr/local/livre/netcdf413/include"
+  591  ./configure --prefix=/usr/local/livre/netcdf413/
+  592  ./configure --prefix=/usr/local/livre/netcdf413
+  593  export LDPFLAGS=
+  594  ./configure --prefix=/usr/local/livre/netcdf413
+  595  export LDFLAGS="-I/usr/local/livre/lib"
+  596  ./configure --prefix=/usr/local/livre/netcdf413
+  597  module list
+  598  export CC=gcc
+  599  export CXX=g++
+  600  export FC=gfortran
+  601  ./configure --prefix=/usr/local/livre/netcdf413
+  602  which ncgen
+  603  rm -rf RegCM-4.7.0
+  604  tar -xvzf RegCM-4.7.0.V2.tar.gz 
+  605  cd RegCM-4.7.0
+  606  ./configure --prefix=/usr/local/livre/netcdf413
+  607  cd
+  608  vim .bashrc
+  609  cd RegCM-4.7.0
+  610  ./configure --prefix=/usr/local/livre/netcdf413
+  611  which ncgen
+  612  ./configure --with-netcdf=/usr/local/free/
+  613  cd RegCM-4.7.0
+  614  ./configure --with-netcdf=/usr/local/free/
+  615  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  616  make clean
+  617  make distclean
+  618  export CPPFLAGS ="-I/usr/local/livre/netcdf413/include" 
+  619  export CPPFLAGS="-I/usr/local/livre/netcdf413/include" 
+  620  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  621  make
+  622  export CPPFLAGS ="-I/usr/local/livre/netcdf413/include" 
+  623  export LDFLAGS="-I/usr/local/livre/lib"
+  624  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  625  make
+  626  cd ..
+  627  rm -rf RegCM-4.7.0
+  628  tar -xvzf RegCM-4.7.0.tar.gz 
+  629  cd RegCM-4.7.0
+  630  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  631  make
+  632  cd ..
+  633  cd RegCM-4.7.0.funcionou\!/
+  634  ls
+  635  cd bin
+  636  ls
+  637  ./regrid 
+  638  cd
+  639  vim .bashrc
+  640  cd
+  641  vim .bash_history 
+  642  cd RegCM-4.7.0
+  643  make clean
+  644  make distclean
+  645  export FCFLAGS="-fno-range-check"
+  646  export CC=gcc
+  647  export CXX=g++
+  648  export FC=gfortran
+  649  export FCFLAGS="-fno-range-check"
+  650  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  651  make
+  652  export LDFLAGS="-I/usr/local/livre/lib"
+  653  export CPPFLAGS ="-I/usr/local/livre/netcdf413/include" 
+  654  export CPPFLAGS="-I/usr/local/livre/netcdf413/include" 
+  655  make c
+  656  make distclean
+  657  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  658  make
+  659  export CPPFLAGS ="-I/usr/local/livre/include" 
+  660  export CPPFLAGS="-I/usr/local/livre/include" 
+  661  export LDFLAGS="-I/usr/local/livre/lib"
+  662  make clean
+  663  make distclean
+  664  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  665  make
+  666  make clean
+  667  make distclean
+  668  export LDFLAGS="-I/usr/local/livre/netcdff413/lib"
+  669  export CPPFLAGS="-I/usr/local/livre/netcdf413/include" 
+  670  echo $LDFLAGS
+  671  export LDFLAGS="-L/usr/local/livre/netcdff413/lib"
+  672  export CPPFLAGS="-I/usr/local/livre/netcdf413/include" 
+  673  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  674  make
+  675  export LDFLAGS="-L/usr/local/livre/lib"
+  676  export CPPFLAGS="-I/usr/local/livre/include" 
+  677  make clean
+  678  make distclean
+  679  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  680  make
+  681  echo $FC
+  682  echo $CXX
+  683  echo $FCFLAGS
+  684  ls
+  685  cd ..
+  686  rm -rf RegCM-4.7.0
+  687  tar -xvzf RegCM-4.7.0.tar.gz 
+  688  cd RegCM-4.7.0
+  689  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  690  make
+  691  echo $LDFLAGS
+  692  export LDFLAGS="-L/usr/local/livre/lib -fopenmp"
+  693  make clean
+  694  make distclean
+  695  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  696  make
+  697  echo $CC
+  698  export CC="gcc -fopenmp"
+  699  make clean
+  700  make distclean
+  701  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  702  make
+  703  export LDFLAGS="-L/usr/local/livre/lib"
+  704  export CPPFLAGS="-I/usr/local/livre/include" 
+  705  make clean
+  706  make distclean
+  707  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  708  make
+  709  who
+  710  export FCFLAGS="-fno-range-check"
+  711  export FC=gfortran
+  712  export CC=gcc
+  713  export CXX=g++
+  714  rm -rf RegCM-4.7.0
+  715  tar -xvzf RegCM-4.7.0.V2.tar.gz 
+  716  module list
+  717  cd RegCM-4.7.0
+  718  ./configure --with-netcdf=/usr/local/livre/netcdf413/
+  719  make
+  720  mod_kdinterp.F90:(.text+0x2eda): undefined reference to `GOMP_parallel'
+  721  ./configure --with-netcdf=/usr/local/free
+  722  ssh n008
+  723  ls -la
+  724  mv RegCM-4.7.0 RegCM-4.7.0.falho
+  725  mv RegCM-4.7.0.funcionou\!/ RegCM-4.7.0
+  726  module list
+  727  cd dados/
+  728  ls
+  729  wc -l mpd.rcm15.hosts 
+  730  cd ..
+  731  cd RegCM-4.7.0
+  732  ls
+  733  pwd
+  734  ls /data/rosmerir
+  735  ls /data/rosmerir/RegCM-4.7.0
+  736  ls -ltr /data/rosmerir/RegCM-4.7.0
+  737  cp  /data/rosmerir/RegCM-4.7.0/xtes1/ .
+  738  su 
+  739  ls -ltr
+  740  cd xtest1
+  741  ls
+  742  cd xtes1
+  743  ls
+  744  mkdir input
+  745  ../bin/terrain test_002.in 
+  746  vi test_002.in 
+  747  ls /data1/
+  748  ls /data1/rosmerir/
+  749  ls /data1/rosmerir/RCM3DATA/
+  750  ../bin/terrain test_002.in 
+  751  cd ..
+  752  ls
+  753  more config.log 
+  754                       
+  755  cd
+  756  which ncgen
+  757  more config.log 
+  758  pwd
+  759  cd -
+  760  more config.log 
+  761  +cd
+  762  vim /home/rcm15/.bashrc
+  763  which ncgen
+  764  cd
+  765  source .bashrc
+  766  which ncgen
+  767  cd
+  768  vim .bashrc
+  769  source .bashrc
+  770  which ncgen
+  771  ls 
+  772  cd RegCM-4.7.0
+  773  ls
+  774  cd xtes1
+  775  ls
+  776  ../bin/terrain test_002.in 
+  777  exit
+  778  df
+  779  pwd
+  780  ls -la
+  781  cd /dados
+  782  cd dados/
+  783  ls
+  784  ls -la
+  785  wc -l mpd.rcm15.hosts 
+  786  ls -la
+  787  ls
+  788  ls -la
+  789  pwd
+  790  ls -la
+  791  pwd
+  792  ls
+  793  cd dados/
+  794  ls
+  795  ls output/
+  796  ls output/ -l
+  797  ls output/ -lht
+  798  ls output/
+  799  clear
+  800  ls -lht
+  801  clear; ls output/ -lht
+  802  ncview output/test_001_SRF.1990060100.nc 
+  803  clear
+  804  ls
+  805  cd RCMDATA/
+  806  ls
+  807  cd SST/
+  808  ls
+  809  cd ..
+  810  cd EIN15/
+  811  ls
+  812  cd ..
+  813  clear
+  814  ls
+  815  clear
+  816  ls -lht
+  817  clear
+  818  top
+  819  clear
+  820  module list
+  821  ls
+  822  cd RegCM-4.7.
+  823  cd RegCM-4.7.0/
+  824  ls
+  825  clear
+  826  ls
+  827  less README 
+  828  module list
+  829  less Makefile
+  830  module list
+  831  less Makefile.am
+  832  cd
+  833  clear
+  834  mkdir -p tutorial
+  835  ls
+  836  cd tutorial/
+  837  ls
+  838  cp ~/RegCM-4.7.1_smr3195.tar.gz .
+  839  ls
+  840  clear
+  841  ls
+  842  ls -lht
+  843  ls
+  844  ls ..
+  845  ls ../dados/
+  846  clear
+  847  ls ~/dados/mpd.rcm15.hosts
+  848  ls /home/rcm15/dados/mpd.rcm15.hosts
+  849  less /home/rcm15/dados/mpd.rcm15.hosts
+  850  clear
+  851  cd ..
+  852  cd RCMDATA/
+  853  ls
+  854  cd
+  855  cd tutorial/
+  856  ls
+  857  tar xf  RegCM-4.7.1_smr3195.tar.gz 
+  858  ls
+  859  cd RegCM-4.7.1_smr3195
+  860  ls
+  861  clear
+  862  ls
+  863  less Makefile.in 
+  864  ls ~
+  865  ./configure FC=gfortran
+  866  ls
+  867  less configure
+  868  less install-sh 
+  869  ls Tools/Programs/RegCM_read/
+  870  clear
+  871  make 
+  872  make install
+  873  mamke
+  874  make
+  875  clear
+  876  ls
+  877  make
+  878  ./configure FC=gfortran
+  879  make
+  880  module list
+  881  clear
+  882  ls
+  883  module list
+  884  module purge
+  885  module avail 
+  886  module load gcc-4.7-dev
+  887  module load mvagfortran-4.7
+  888  ls
+  889  ./configure FC=gfortran
+  890  module avail 
+  891  module load netcdf
+  892  ./configure FC=gfortran
+  893  make diskclean
+  894  make disclean
+  895  make disk clean
+  896  make dis clean
+  897  ./configure FC=ifortran
+  898  ls
+  899  module list
+  900  ./configure FC=gfortran
+  901  ls
+  902  env
+  903  export PATH=/usr/local/bin:$PATH
+  904  ./configure FC=gfortran
+  905  env | grep net
+  906  unset NETCDF
+  907  unset NETCDF_INC]
+  908  unset NETCDF_INC
+  909  unset NETCDFLIB
+  910  unset NETCDF_BIN
+  911  ./configure FC=gfortran
+  912  nc-config --all
+  913  which nc-config
+  914  export PATH=/usr/local/bin:$PATH
+  915  /usr/local/netcdf/bin/nc-config 
+  916  /usr/local/netcdf/bin/nc-config --all
+  917  export PATH=/usr/local/netcdf/bin/:$PATH
+  918  nc-config --all
+  919  ./configure FC=gfortran
+  920  make install
+  921  make clean
+  922  make install
+  923  clear
+  924  ls
+  925  s ~
+  926  ls ~
+  927  ls bin/
+  928  cd
+  929  clear
+  930  ./tutorial/RegCM-4.7.1_smr3195/bin/terrain 
+  931  ls
+  932  clear
+  933  ls
+  934  ls -l
+  935  modules list
+  936  module list
+  937  ls
+  938  ls tutorial/
+  939  clear
+  940  ls -l
+  941  ls /data1/rosmerir/RCM3DATA/
+  942  ls /data1/rosmerir/RCM3DATA/ -l
+  943  clear
+  944  cd dados/
+  945  ls
+  946  les mpd.rcm15.hosts 
+  947  less mpd.rcm15.hosts 
+  948  mkdir input output
+  949  ls
+  950  clear
+  951  ln -sf /home/rcm15/RCMDATA .
+  952  ls
+  953  ln -sf /home/rcm15/tutorial/RegCM-4.7.1_smr3195/bin/ .
+  954  ls
+  955  ln -sf /home/rcm15/tutorial/RegCM-4.7.1_smr3195/bin .
+  956  ls
+  957  ls bin/
+  958  ls -l
+  959  clear
+  960  ls -l
+  961  cp /home/rcm15/tutorial/RegCM-4.7.1_smr3195/Testing/test_001.in .
+  962  %history
+  963  history
+  964  clear
+  965  ls
+  966  less test_001.in 
+  967  vi test_001.in 
+  968  clear
+  969  ls
+  970  ./bin/terrain test_001.in 
+  971  ls output/
+  972  ls input/
+  973  ncview input/test_001_DOMAIN000.nc 
+  974  vi test_001.in 
+  975  ls
+  976  ls -a
+  977  rm .test_001.in.swp 
+  978  vi test_001.in 
+  979  clear
+  980  ./bin/sst test_001.in 
+  981  less test_001.in 
+  982  ls
+  983  ls input/
+  984  ./bin/icbc test_001.in 
+  985  ls input/
+  986  ncview input/test_001_ICBC.1990060100.nc 
+  987  clear
+  988  mpirun --hostfile mpd.rcm15.hosts -np 24 ./bin/regcmMPI test_001.in 
+  989  vi test_001.in 
+  990  diff test_001.in /home/rcm15/tutorial/RegCM-4.7.1_smr3195/Testing/test_001.in 
+  991  diff test_001.in /home/rcm15/tutorial/RegCM-4.7.1_smr3195/Testing/test_001.in > mudancas_em_terrain001
+  992  mpirun --hostfile mpd.rcm15.hosts -np 24 ./bin/regcmMPI test_001.in 
+  993  history
+
+
+###########################   second day ###########################
+
+[rcm15@amazonia ~]$ ls
+cpi5   dados    mvapich        mvapich2-2.3b.tar.gz  netcdf-4.1.3.tar.gz  RegCM-4.7.0        RegCM-4.7.0.tar.gz     RegCM-4.7.1_smr3195.tar.gz  tutorial
+cpi.c  Desktop  mvapich2-2.3b  netcdf-4.1.3          RCMDATA              RegCM-4.7.0.falho  RegCM-4.7.0.V2.tar.gz  rose
+[rcm15@amazonia ~]$ 
+[rcm15@amazonia ~]$ ls tutorial/
+RegCM-4.7.1_smr3195  RegCM-4.7.1_smr3195.tar.gz
+[rcm15@amazonia ~]$ ls RCMDATA/
+CHIRPS  CLM45  cpc_mon  EIN15  EraInterim2005  Espanhol    geogwrf36  gpcp_mon  msl_1.5  RCM3DATA  SST      TRMM
+CLM     CPC    CRU      ERA5   ERSST           fluxos_LBA  geogwrf38  GsMap     OBS      RCMDATA   SURFACE  x-cruv3
+[rcm15@amazonia ~]$ ls rose
+RegCM-4.7.0  RegCM-4.7.0.V2.tar.gz
+[rcm15@amazonia ~]$ ls dados
+bin  input  mpd.rcm15.hosts  mudancas_em_terrain001  output  RCMDATA  test_001.in
+[rcm15@amazonia ~]$ 
+[rcm15@amazonia ~]$ pwd
+/home/rcm15
+[rcm15@amazonia bin]$ pwd
+/home/rcm15/tutorial/RegCM-4.7.1_smr3195/bin
+
+########################  "path organization"#########################################################:
+
+rcm15@amazonia ~]$ pwd
+/home/rcm15
+
+[rcm15@amazonia ~]$ cd dados/
+[rcm15@amazonia dados]$ ls
+bin  input  mpd.rcm15.hosts  mudancas_em_terrain001  output  RCMDATA  test_001.in
+
+[rcm15@amazonia dados]$ cd output/
+[rcm15@amazonia output]$ ls -lhtr
+total 33M
+-rw-rw-r--. 1 rcm15 rcm15 354K Nov  5 17:42 test_001_STS.1990060100.nc
+-rw-rw-r--. 1 rcm15 rcm15  15M Nov  5 17:48 test_001_ATM.1990060100.nc
+-rw-rw-r--. 1 rcm15 rcm15 9.2M Nov  5 17:48 test_001_SRF.1990060100.nc
+-rw-rw-r--. 1 rcm15 rcm15 5.7M Nov  5 17:48 test_001_RAD.1990060100.nc
+-rw-rw-r--. 1 rcm15 rcm15 2.7M Nov  5 17:48 test_001_SHF.1990060100.nc
+
+
+
+[rcm15@amazonia output]$ ncview test_001_ATM.1990060100.nc
+Ncview 2.1.1 David W. Pierce  1 Aug 2011
+http://meteora.ucsd.edu:80/~pierce/ncview_home_page.html
+Copyright (C) 1993 through 2011, David W. Pierce
+Ncview comes with ABSOLUTELY NO WARRANTY; for details type `ncview -w'.
+This is free software licensed under the Gnu General Public License version 3; type `ncview -c' for redistribution details.
+
+calculating min and maxes for ta...
+calculating min and maxes for omega...
+calculating min and maxes for ua...
+calculating min and maxes for ts...
+calculating min and maxes for ps...
+
+
+################################## " Then...I was checking some features on Europe outputs - our first run, yesterday..."########################
+
+
+
+
+################################  resume is: The classroom lab was about the following archive and its parameters:########################
+[rcm15@amazonia Doc]$ pwd
+/home/rcm15/tutorial/RegCM-4.7.1_smr3195/Doc
+[rcm15@amazonia Doc]$ nedit README.namelist&
+
+
+
+!-----------------------------------------------------------------------
+!
+! This README details namelist parameters for RegCM V4.7
+!
+!-----------------------------------------------------------------------
+!
+! Choice of the dynamical core
+!
+ &coreparam
+ idynamic = 1,  ! Choice of dynamical core
+                ! 1 = MM4 hydrostatical core
+                ! 2 = MM5 NON hydrostatical core
+ /
+!
+! Domain dimension
+!
+ &dimparam 
+ iy     = 34,   ! This is number of points in the N/S direction
+ jx     = 48,   ! This is number of points in the E/W direction
+ kz     = 18,   ! Number of vertical levels
+ dsmin  = 0.01, ! Minimum sigma spacing (only used if kz is not 14, 18, 23, 41)
+ dsmax  = 0.05, ! Maximum sigma spacing (only used if kz is not 14, 18, 23, 41)
+ nsg    = 1,    ! For subgridding, number of points to decompose. If nsg=1,
+                ! no subgridding is performed. CLM does NOT work as of now with
+                ! subgridding enabled.
+ njxcpus = -1,  ! Number of CPUS to be used in the jx (lon) dimension.
+                ! If <=0 , the executable will try to figure out a suitable
+                ! decomposition.
+ niycpus = -1,  ! Number of CPUS to be used in the iy (lat) dimension.
+                ! If <=0 , the executable will try to figure out a suitable
+                ! decomposition.
+ /
+!
+! Domain geolocation
+!
+ &geoparam
+ iproj = 'LAMCON', ! Domain cartographic projection. Supported values are:
+                   ! 'LAMCON', Lambert conformal.
+                   ! 'POLSTR', Polar stereographic.
+                   ! 'NORMER', Normal  Mercator.
+                   ! 'ROTMER', Rotated Mercator.
+ ds = 60.0,        ! Grid point horizontal resolution in km
+ ptop = 5.0,       ! Pressure of model top in cbar
+ clat = 45.39,     ! Central latitude  of model domain in degrees
+                   ! North hemisphere is positive
+ clon = 13.48,     ! Central longitude of model domain in degrees
+                   ! West is negative.
+ plat = 45.39,     ! Pole latitude (only for rotated Mercator Proj)
+ plon = 13.48,     ! Pole longitude (only for rotated Mercator Proj)
+ truelatl = 30.0,  ! Lambert true latitude (low latitude side)
+ truelath = 60.0,  ! Lambert true latitude (high latitude side)
+ i_band = 0,       ! Use this to enable a tropical band. In this case the ds,
+                   ! iproj, clat, clon parameters are not considered.
+ i_crm = 0,        ! Use this to enable doubly-periodic domains for idealized
+                   ! simulations.  Forces i_band = 1.
+ /
+!
+! Domain terrain generation parameters
+!
+ &terrainparam
+ domname  = 'AQWA',           ! Name of the domain/experiment.
+                              ! Controls naming of input files
+ lresamp = .false.,           ! Do a first resampling before interpolation
+ smthbdy = .false.,           ! Perform extra smoothing in boundaries
+ ismthlev = 0,                ! Smoothing level (additional 1-2-1 smoother)
+ roidem = 1.5,                ! Interpolation radius in ds unit for topography
+ h2ohgt = .true.,             ! Allow water points to have hgt greater than 0
+ h2opct = 50.0,               ! Surface min H2O percent to be considered water
+ lakedpth    = .false.,       ! If using lakemod (see below), produce from
+                              ! terrain program the domain bathymetry
+ lsmoist     = .false.,       ! Use Satellite Soil Moisture Dataset for
+                              ! initialization of soil moisture.
+ fudge_lnd   = .false.,       ! Fudging Control flag, for landuse of grid 
+ fudge_lnd_s = .false.,       ! Fudging Control flag, for landuse of subgrid
+ fudge_tex   = .false.,       ! Fudging Control flag, for texture of grid
+ fudge_tex_s = .false.,       ! Fudging Control flag, for texture of subgrid
+ fudge_lak   = .false.,       ! Fudging Control flag, for lake of grid
+ fudge_lak_s = .false.,       ! Fudging Control flag, for lake of subgrid
+ dirter = 'input/',           ! Output directory for terrain files
+ inpter = 'globdata/',        ! Input directory for SURFACE dataset
+ tersrc = 'GMTED',            ! Select GMTED or GTOPO DEM data
+ smsrc  = 'ESACCI',           ! Select ESACCI or CPC surface soil moisture
+                              ! when lsmoist option is True
+ moist_filename = 'moist.nc', ! Read initial moisture and snow from this file
+ /
+!
+! ICBC Global data input control
+!
+!   GLOBAL DATA AVAILABLE FROM ICTP FROM:
+!            http://clima-dods.ictp.it/Data/RegCM_Data
+!
+ &globdatparam
+ ibdyfrq =     6,            ! boundary condition interval (hours)
+ ssttyp = 'EIN75',           ! Type of Sea Surface Temperature used
+                             !  One in: GISST, OISST, OI2ST, OI_WK, OI2WK,
+                             !          FV_A2, FV_B2, EH5A2, EH5B1, EHA1B,
+                             !          EIN75, EIN15, CCSST, CA_XX, HA_XX,
+                             !          EC_XX, IP_XX, GF_XX, CN_XX, MP_XX
+ dattyp = 'EIN75',           ! Type of global analysis datasets used
+                             !  One in: ECMWF, ERA40, EIN75, EIN15, EIN25,
+                             !          ERAHI, NNRP1, NNRP2, NRP2W, GFS11,
+                             !          FVGCM, FNEST, EH5A2, EH5B1, EHA1B,
+                             !          CCSMN, ECEXY, CA_XX, HA_XX, EC_XX,
+                             !          IP_XX, GF_XX, CN_XX, MP_XX
+                             ! with XX for CMIP5 datasets in 26, 45, 85
+ chemtyp = 'MZCLM',          ! Type of Global Chemistry boundary conditions
+                             ! One in : MZ6HR, 6 hours MOZART output
+                             !        : MZCLM, MOZART climatology 1999-2009
+ gdate1 = 1990060100,        ! Start date for ICBC data generation
+ gdate2 = 1990070100,        ! End data for ICBC data generation
+ calendar = 'gregorian',     ! Calendar type : gregorian, noleap, 360_day
+ dirglob = 'input',          ! Path for ICBC produced input files
+ inpglob = 'RegCM_Data',     ! Path for ICBC global input datasets.
+ ensemble_run = .false.,     ! If this is a member of a perturbed ensemble
+                             ! run. Activate random noise added to input
+                             ! ICBC controlled by the perturbparam stanza
+ /
+!
+! Nesting control
+!
+ &fnestparam
+ coarse_outdir = 'globdata/RegCM', ! Coarse domain output dir if FNEST
+ coarse_domname = 'EUROPE',        ! Coarse domain domname
+ /
+!
+! Model start/restart control
+!
+ &restartparam
+ ifrest  = .false. ,   ! If a restart
+ mdate0  = 1990060100, ! Global start (is globidate1)
+ mdate1  = 1990060100, ! Start date of this run
+ mdate2  = 1990060200, ! End date for this run
+ /
+!
+! Model timing parameters
+! All values except dt can be zero. Convenient values are chosen by the model.
+!
+ &timeparam
+ dt     =   150.,   ! time step in seconds
+ dtrad  =     0.,   ! time interval solar radiation calculated (minutes)
+ dtabem =     0.,   ! time interval absorption-emission calculated (hours)
+ dtsrf  =     0.,   ! time interval at which land model is called (seconds)
+ dtcum  =     0.,   ! time interval at which cumuls is called (seconds)
+ dtche  =     0.,   ! time interval at which chem model is called (seconds)
+ /
+!
+! Model Output control
+!
+ &outparam
+ ifsave  = .true. ,  ! Create SAV files for restart
+ savfrq  =     0.,   ! Frequency in days to create them (0 = monthly)
+ ifatm   = .true. ,  ! Output ATM ?
+ atmfrq  =     6.,   ! Frequency in hours to write to ATM
+ ifrad   = .true. ,  ! Output RAD ?
+ radfrq  =     6.,   ! Frequency in hours to write to RAD
+ ifsrf   = .true. ,  ! Output SRF ?
+ srffrq  =     3.,   ! Frequency in hours to write to SRF
+ ifsts   = .true. ,  ! Output STS (frequence is daily) ?
+ ifshf   = .true. ,  ! Output SHF (frequence is hourly) ?
+ ifsub   = .true. ,  ! Output SUB ?
+ subfrq  =     6.,   ! Frequency in hours to write to SUB
+ iflak   = .true.,   ! Output LAK ?
+ lakfrq  =     6.,   ! Frequency in hours to write to LAK
+ ifchem  = .true.,   ! Output CHE ?
+ ifopt   = .false.,  ! Output OPT ?
+ chemfrq =     6.,   ! Frequency in hours to write to CHE
+ enable_atm_vars = 73*.true., ! Mask to eventually disable variables ATM
+ enable_srf_vars = 44*.true., ! Mask to eventually disable variables SRF
+ enable_rad_vars = 28*.true., ! Mask to eventually disable variables RAD
+ enable_sub_vars = 18*.true., ! Mask to eventually disable variables SUB
+ enable_sts_vars = 18*.true., ! Mask to eventually disable variables STS
+ enable_shf_vars = 8*.true.,  ! Mask to eventually disable variables SHF
+ enable_lak_vars = 18*.true., ! Mask to eventually disable variables LAK
+ enable_opt_vars = 20*.true., ! Mask to eventually disable variables OPT
+ enable_che_vars = 26*.true., ! Mask to eventually disable variables CHE
+ dirout  = './output',        ! Path where all output will be placed
+ lsync   = .false.,           ! If sync of output files at every timestep is
+                              ! requested. Note, it has a performance impact.
+                              ! Enabled by default if debug_level > 2
+ icosp = 0,                   ! Enable COSP needed fields in output in the ATM
+ idiag = 0,                   ! Enable tendency diagnostic output in the ATM
+                              ! file. NOTE: output file gets HUGE.
+ do_parallel_netcdf_in  = .false., ! This enables paralell input
+                                   ! Each processors reads its slice in the
+                                   ! input file. Enable ONLY in case of
+                                   ! HUGE input bandwidth,
+ do_parallel_netcdf_out = .false., ! This enables paralell output if the 
+                                   ! hdf5/netcdf libraries support it and
+                                   ! the model is compiled with :
+                                   !    --enable-nc4-parallel
+ /
+!
+! Model Physics
+!
+ &physicsparam
+ iboudy  =          5,  ! Lateral Boundary conditions scheme
+                        !   0 => Fixed
+                        !   1 => Relaxation, linear technique.
+                        !   2 => Time-dependent
+                        !   3 => Time and inflow/outflow dependent.
+                        !   4 => Sponge (Perkey & Kreitzberg, MWR 1976)
+                        !   5 => Relaxation, exponential technique.
+ isladvec =         0,  ! Semilagrangian advection scheme for tracers and
+                        ! humidity
+                        !   0 => Disabled
+                        !   1 => Enable Semi Lagrangian Scheme
+   iqmsl =          1,  ! Quasi-monotonic Semi Lagrangian
+                        !   0 => Standard Semi-Lagrangian
+                        !   1 => Bermejo and Staniforth 1992 QMSL scheme
+ ibltyp  =          1,  ! Boundary layer scheme
+                        !   0 => Frictionless
+                        !   1 => Holtslag PBL (Holtslag, 1990)
+                        !   2 => UW PBL (Bretherton and McCaa, 2004)
+ icup_lnd =          4, ! Cumulus convection scheme Over Land
+ icup_ocn =          4, ! Cumulus convection scheme Over Icean
+                        !   1 => Kuo
+                        !   2 => Grell
+                        !   3 => Betts-Miller (1986) DOES NOT WORK !!!
+                        !   4 => Emanuel (1991)
+                        !   5 => Tiedtke (1996)
+                        !   6 => Kain-Fritsch (1990), Kain (2004)
+                        !  -1 => MM5 Shallow cumulus scheme:
+                        !           No precipitation but only mixing.
+ ipptls  =          1,  ! Moisture scheme
+                        !   1 => Explicit moisture (SUBEX; Pal et al 2000)
+                        !   2 => Explicit moisture Nogherotto/Tompkins
+                        !   3 => Explicit moisture WSM5
+ iocncpl =          0,  ! Ocean SST from coupled Ocean Model through RegESM
+                        !   1 => Coupling activated
+ iwavcpl =          0,  ! Ocean roughness from coupled Wave Model through RegESM
+                        !   1 => Coupling activated
+ iocnflx =          2,  ! Ocean Flux scheme
+                        !   1 => Use BATS1e Monin-Obukhov
+                        !   2 => Zeng et al (1998)
+                        !   3 => Coare bulk flux algorithm
+   iocnrough =      1,  ! Zeng Ocean model roughness formula to use.
+                        !   1 => (0.0065*ustar*ustar)/egrav
+                        !   2 => (0.013*ustar*ustar)/egrav + 0.11*visa/ustar
+                        !   3 => (0.017*ustar*ustar)/egrav
+                        !   4 => Huang 2012 free convection and swell effects
+                        !   5 => four regime formulation
+   iocnzoq =        1,  ! Zeng Ocean model factors for t,q roughness
+                        !   1 => 2.67*(re**d_rfour) - 2.57
+                        !   2 => min(4.0e-4, 2.0e-4*re**(-3.3))
+                        !   3 => COARE formulation as in bulk flux above
+ ipgf    =          0,  ! Pressure gradient force scheme
+                        !   0 => Use full fields
+                        !   1 => Hydrostatic deduction with pert. temperature
+ iemiss  =          0,  ! Use computed long wave emissivity
+ lakemod =          0,  ! Use lake model
+ ichem   =          0,  ! Use active aerosol chemical model
+ scenario =   'RCP4.5', ! AR5 RCP scenario in RPC2.6, RCP4.5, RCP6.0, RCP8.5
+                        ! AR4 old CMIP3 scenario to use in A1B, A2, B1, B2
+                        ! CONST scenario at year ghg_year_const
+ ghg_year_const = 1950, ! Year to use for a constant GHG concentration values
+ idcsst   =          0, ! Use diurnal cycle sst scheme
+ ipcpcool =          0, ! Precipitation cooling effect over ocean surface
+ iwhitecap =         0, ! Wind whitecapping effect on ocean albedo
+ iseaice  =          0, ! Model seaice effects
+ idesseas =          0, ! Model desert seasonal albedo variability
+ iconvlwp =          1, ! Use convective algo for lwp in the large-scale
+                        ! This is reset to zero if using ipptls = 2
+ icldfrac =          0, ! Cloud fraction algorithm
+                        !   0 : Original SUBEX
+                        !   1 : Xu-Randall empirical
+                        !   2 : Thompson scheme
+                        !   3 : Gultepe-Isaac scheme
+ icldmstrat =        1, ! Simulate stratocumulus clouds
+ icumcloud =         1, ! Kuo and Betts Miller formula to use for cumulus
+                        ! clouds (cf and lwc) cloud fractions
+                        ! It is only used only if mass fluxes are not
+                        ! available (Kuo and BM).
+                        !   0,1 => cf = 1-(1-clfrcv)**(1/kdepth)
+                        !   2   => cf = cloud profile
+                        ! Liquid water content:
+                        !   0   => constant in cloud
+                        !   1,2 => function of temperature
+ irrtm    =          0, ! Use RRTM radiation scheme instead of CCSM
+ iclimao3 =          0, ! Use O3 climatic dataset from SPARC CMIP5
+ iclimaaer =         0, ! Use AEROSOL climatic dataset from AERGLOB for non
+                        ! interactive aerosol load affecting radiative scheme.
+                        ! Requires running chem_icbc
+ isolconst =         0, ! Use a constant 1367 W/m^2 instead of the prescribed
+                        ! TSI recommended CMIP5 solar forcing data.
+ islab_ocean =       0, ! Activate the SLAB ocean model
+ itweak =            0, ! Enable tweak scenario
+ ifixsolar =         0, ! Fix the solar constant to fixedsolarval
+                        ! (no diurnal or seasonal cycle)
+ fixedsolarval =  343., ! The constant solar value for ifixsolar = 1
+ /
+!
+! Dynamical core parameters : Use defaults, be on your own otherwise!
+!
+ &dynparam
+ gnu1 = 0.0625,  ! nu factor for Asselin filter in leapfrog step.
+ gnu2 = 0.0625,  ! nu factor for Asselin filter in leapfrog step (tracers).
+                 ! MM5 manual , equation 2.4.6
+                 ! Default 0.0625 for hydro, 0.1 for nonhydro
+ ckh = 1.0,      ! Background diffusion multiplication factor
+ adyndif = 1.0,  ! Dynamical diffusion multiplication factor
+ diffu_hgtf = 1, ! Add topographic effect to diffusion
+                 ! It is set to zero default in the non-hydrostatic
+ upstream_mode = .true.,  ! Add off centering to advection
+ uoffc = 0.250,           ! Maximum off-centering factor to use
+ stability_enhance = .true., ! Do not allow horizontal advection to increase
+                             ! tendencies if strong gradients are present
+ vert_stability_enhance = .true., ! Same for vertical advection
+ t_extrema = 5.0, ! Maximum gradient of T in K for advection to stop
+ q_rel_extrema = 0.2, ! Maximum gradient fraction for QV for advection to stop
+ c_rel_extrema = 0.5, ! Maximum gradient fraction for QX for advection to stop
+ t_rel_extrema = 0.5, ! Maximum gradient fraction for tracer advection to stop
+ /
+!
+! Non-hydrostatic core option
+!
+ &referenceatm
+ base_state_pressure = 101325.0, ! Base state reference pressure
+ logp_lrate = 47.70,             ! Logp lapse rate d(T)/d(ln P) [K/ln(Pa)]
+ /
+ &nonhydroparam
+ ifupr = 1,         ! Upper radiative boundary condition (Klemp and Durran,
+                    ! Bougeault, 1983)
+ nhbet = 0.4,       ! Ikawa beta parameter (0.=centered, 1.=backward)
+                    ! determines the time-weighting, where zero gives a
+                    ! time-centered average and positive values give a bias
+                    ! towards the future time step that can be used for
+                    ! acoustic damping. In practice, values of
+                    ! nhbet = 0.2 - 0.4 are used (MM5 manual, Sec. 2.5.1)
+ nhxkd = 0.1,       ! Time weighting for weighting old/new pp
+ ifrayd = 1,        ! Upper levels Rayleigh damper to BCs
+ rayndamp = 5,      ! Number of top levels to apply
+ rayalpha0 = 0.001, ! Rate alpha0
+ rayhd = 10000.0,   ! Damping scale depth
+ /
+!
+! Hydrostatic core option
+!
+ &hydroparam
+ nsplit = 2,      ! Number of split explicit timesteps
+ lstand = .true., ! Use standard atmosphere for vertical modes linearization
+ /
+!
+! Buffer Zone Control relaxation + diffusion term
+!
+ &boundaryparam
+ nspgx  = 12, ! nspgx-1 represent the number of cross point slices on
+              ! the boundary sponge or relaxation boundary conditions.
+ nspgd  = 12, ! nspgd-1 represent the number of dot point slices on 
+              ! the boundary sponge or relaxation boundary conditions.
+ high_nudge =    3.0, ! Nudge value high range
+ medium_nudge =  2.0, ! Nudge value medium range
+ low_nudge =     1.0  ! Nudge value low range
+ bdy_nm = -1.0, ! Newtonian term, Eq. 7 Giorgi et al, 1993
+                ! Default is to use the formulation 1/dt
+ bdy_dm = -1.0, ! Reverse of diffusion term, Eq. 8 Giorgi et al, 1993 
+                ! Default is to use the formulation 1/(50*dt)
+ /
+!
+! Cloud fraction algorithms control
+!
+ &cldparam
+ ncld      = 1,       ! # of bottom model levels with no clouds (rad only)
+ rhmax     = 1.01,    ! RH at whicn FCC = 1.0
+ rhmin     = 0.01,    ! RH min value
+ rh0land   = 0.80,    ! Relative humidity threshold for land (subex)
+ rh0oce    = 0.90,    ! Relative humidity threshold for ocean (subex)
+ tc0       = 238.0,   ! Below this temp, rh0 begins to approach unity (subex)
+ cllwcv    = 0.3e-3,  ! Cloud liquid water content for convective precip.
+ clfrcvmax = 0.75,    ! Max cloud fractional cover for convective precip.
+ cftotmax  = 0.75,    ! Max total cover cloud fraction for radiation
+ kfac_shal = 0.07,    ! Factor cumulus mass flux - cloud fraction - shallow
+ kfac_deep = 0.14,    ! Factor cumulus mass flux - cloud fraction - deep
+ k2_const  = 500.0,   ! Factor cumulus mass flux - cloud fraction - K2
+ lsrfhack  = .false.  ! Surface radiation hack
+ larcticcorr = .true. ! Vavrus and Waliser Arctic cloud correction
+ rcrit     = 13.5,    ! Mean critical radius ! 
+ coef_ccn  = 2.5e+20, ! Coefficient determined by assuming a lognormal PMD
+ abulk     = 0.9,     ! Bulk activation ratio
+ /
+!
+! Moisture scheme comtrol (ipptls = 1)
+!
+ &subexparam
+ qck1land  = 0.0005,  ! Autoconversion Rate for Land
+ qck1oce   = 0.0005,  ! Autoconversion Rate for Ocean
+ gulland   = 0.65,    ! Fract of Gultepe eqn (qcth) when prcp occurs (land)
+ guloce    = 0.30,    ! Fract of Gultepe eqn (qcth) for ocean
+ cevaplnd  = 1.0e-5,  ! Raindrop evap rate coef land [[(kg m-2 s-1)-1/2]/s]
+ cevapoce  = 1.0e-5,  ! Raindrop evap rate coef ocean [[(kg m-2 s-1)-1/2]/s]
+ caccrlnd  = 6.0,     ! Raindrop accretion rate land  [m3/kg/s]
+ caccroce  = 4.0,     ! Raindrop accretion rate ocean [m3/kg/s]
+ conf      = 1.00,    ! Condensation efficiency
+ /
+!
+! New Microphysics Option (ipptls = 2)
+!
+ &microparam
+ stats = .false.,           ! Produce debug variables in output files
+ budget_compute = .false.,  ! Verify enthalpy and moisture conservation
+ nssopt = 1,                ! Supersaturation Computation
+                            ! 0 => No scheme
+                            ! 1 => Tompkins
+                            ! 2 => Lohmann and Karcher
+                            ! 3 => Gierens
+ iautoconv = 4,             !  Choose the autoconversion paramaterization
+                            ! => 1 Klein & Pincus (2000)
+                            ! => 2 Khairoutdinov and Kogan (2000)
+                            ! => 3 Kessler (1969)
+                            ! => 4 Sundqvist
+ vfqr = 4.0,                ! Rain fall speed (default is 4 m/s)
+ vfqi = 0.15,               ! Ice fall speed (default is 0.15 m/s)
+ vfqs = 1.0,                ! Snow fall speed (default is 1 m/s)
+ auto_rate_khair = 0.355,   ! Autoconversion coefficient for kautoconv=2
+ auto_rate_kessl = 1.e-3,   ! Autoconversion coefficient for kautoconv=3
+ auto_rate_klepi = 0.5e-3,  ! Autoconversion coefficient for kautoconv=1
+ rkconv = 1.666e-4,         ! Autoconversion coefficient for kautoconv=4
+ skconv = 1.0-3,            ! Autoconversion coefficient for snow
+ rcovpmin = 0.1,            ! Minimum precipitation coverage
+ rpecons = 5.547e-5,        ! Evaporation constant Kessler
+ /
+!
+! Grell Cumulus scheme control
+!
+ &grellparam
+ igcc  = 2,          ! Cumulus closure scheme
+                     !   1 => Arakawa & Schubert (1974)
+                     !   2 => Fritsch & Chappell (1980)
+ gcr0 = 0.0020,      ! Conversion rate from cloud to rain
+ edtmin      = 0.20, ! Minimum Precipitation Efficiency land
+ edtmin_ocn  = 0.20, ! Minimum Precipitation Efficiency ocean
+ edtmax      = 0.80, ! Maximum Precipitation Efficiency land
+ edtmax_ocn  = 0.80, ! Maximum Precipitation Efficiency ocean
+ edtmino     = 0.20, ! Minimum Tendency Efficiency (o var) land
+ edtmino_ocn = 0.20, ! Minimum Tendency Efficiency (o var) ocean
+ edtmaxo     = 0.80, ! Maximum Tendency Efficiency (o var) land
+ edtmaxo_ocn = 0.80, ! Maximum Tendency Efficiency (o var) ocean
+ edtminx     = 0.20, ! Minimum Tendency Efficiency (x var) land
+ edtminx_ocn = 0.20, ! Minimum Tendency Efficiency (x var) ocean
+ edtmaxx     = 0.80, ! Maximum Tendency Efficiency (x var) land
+ edtmaxx_ocn = 0.80, ! Maximum Tendency Efficiency (x var) ocean
+ shrmin      = 0.30, ! Minimum Shear effect on precip eff. land
+ shrmin_ocn  = 0.30, ! Minimum Shear effect on precip eff. ocean
+ shrmax      = 0.90, ! Maximum Shear effect on precip eff. land
+ shrmax_ocn  = 0.90, ! Maximum Shear effect on precip eff. ocean
+ pbcmax = 50.0,      ! Max depth (mb) of stable layer b/twn LCL & LFC
+ mincld = 150.0,     ! Min cloud depth (mb).
+ htmin = -250.0,     ! Min convective heating
+ htmax = 500.0,      ! Max convective heating
+ skbmax = 0.4,       ! Max cloud base height in sigma
+ dtauc = 30.0        ! Fritsch & Chappell (1980) ABE Removal Timescale (min)
+ /
+!
+! Emanuel Cumuls scheme control
+!
+ &emanparam
+ minsig = 0.95,       ! Lowest sigma level from which convection can originate
+ elcrit_ocn = 0.0011, ! Autoconversion threshold water content (g/g) (ocean)
+ elcrit_lnd = 0.0011, ! Autoconversion threshold water content (g/g) (land)
+ tlcrit = -55.0,      ! Below tlcrit auto-conversion threshold is zero
+ entp = 1.5,          ! Coefficient of mixing in the entrainment formulation
+ sigd = 0.05,         ! Fractional area covered by unsaturated dndraft
+ sigs = 0.12,         ! Fraction of precipitation falling outside of cloud
+ omtrain = 50.0,      ! Fall speed of rain (Pa/s)
+ omtsnow = 5.5,       ! Fall speed of snow (Pa/s)
+ coeffr = 1.0,        ! Coefficient governing the rate of rain evaporation
+ coeffs = 0.8,        ! Coefficient governing the rate of snow evaporation
+ cu = 0.7,            ! Coefficient governing convective momentum transport
+ betae = 10.0,        ! Controls downdraft velocity scale
+ dtmax = 0.9,         ! Max negative parcel temperature perturbation below LFC
+ alphae = 0.2,        ! Controls the approach rate to quasi-equilibrium
+ damp = 0.1,          ! Controls the approach rate to quasi-equilibrium
+ epmax_ocn = 0.999,   ! Maximum precipitation efficiency (ocean)
+ epmax_lnd = 0.999,   ! Maximum precipitation efficiency (land)
+ /
+!
+! Tiedtke Cumulus scheme control
+!
+ &tiedtkeparam
+ iconv = 4,             ! Actual used scheme.
+ entrmax = 1.75e-3,     ! Max entrainment iconv=[1,2,3]
+ entrdd  = 3.0e-4,      ! Entrainment rate for cumulus downdrafts
+ entrpen_lnd = 1.75e-3, ! Entrainment rate for penetrative convection
+ entrpen_ocn = 1.75e-3, ! Entrainment rate for penetrative convection
+ entrscv = 3.0e-4,      ! Entrainment rate for shallow convection iconv=[1,2,3]
+ entrmid = 1.0e-4,      ! Entrainment rate for midlevel convection iconv=[1,2,3]
+ cprcon = 1.0e-4,       ! Coefficient for determining conversion iconv=[1,2,3]
+ detrpen_lnd = 0.75e-4, ! Detrainment rate for penetrative convection iconv=4
+ detrpen_ocn = 0.75e-4, ! Detrainment rate for penetrative convection iconv=4
+ rcuc_lnd = 0.05,       ! Convective cloud cover for rain evporation iconv=4
+ rcuc_ocn = 0.05,       ! Convective cloud cover for rain evporation iconv=4
+ rcpec_lnd = 5.55e-5,   ! Coefficient for rain evaporation below cloud iconv=4
+ rcpec_ocn = 5.55e-5,   ! Coefficient for rain evaporation below cloud iconv=4
+ rhebc_lnd = 0.8,       ! Critical rh below cloud for evaporation iconv=4
+ rhebc_ocn = 0.8,       ! Critical rh below cloud for evaporation iconv=4
+ rprc_lnd = 1.4e-3,     ! conversion coefficient from cloud water iconv=4
+ rprc_ocn = 1.4e-3,     ! conversion coefficient from cloud water iconv=4
+ entshalp = 2.0,        ! shallow entrainment factor for entrorg iconv=4
+ cmtcape = 3600.0,      ! CAPE adjustment timescale iconv=[1,2,3]
+ lmfpen    = .true.,    ! penetrative conv is switched on
+ lmfmid    = .true.,    ! midlevel conv is switched on
+ lmfdd     = .true.,    ! cumulus downdraft is switched on
+ lepcld    = .true.,    ! prognostic cloud scheme is on
+ lmfdudv   = .true.,    ! cumulus friction is switched on
+ lmfscv    = .true.,    ! shallow convection is switched on
+ lmfuvdis  = .true.,    ! use kinetic energy dissipation
+ lmftrac   = .true.,    ! chemical tracer transport is on
+ lmfsmooth = .false.,   ! smoot of mass fluxes for tracers
+ lmfwstar  = .false.,   ! Grant w* closure for shallow conv
+ /
+!
+! Kain Fritsch cumulus parameters
+! From WRF KFeta module
+!
+ &kfparam
+ kf_entrate = 0.03,      ! Entrainment rate
+ kf_convrate = 0.03,     ! Condensate to rain conversion rate
+ kf_min_pef = 0.2,       ! Minimum precipitation efficiency
+ kf_max_pef = 0.9,       ! Maximum precipitation efficiency
+ kf_dpp     = 150.0,     ! Start elevation for downdraft above cloud base (mb)
+ kf_tkemax = 5.0,        ! Maximum turbolent kinetic energy in sub cloud layer
+ kf_min_dtcape = 1800.0, ! Consumption time of CAPE low limit
+ kf_max_dtcape = 3600.0, ! Consumption time of CAPE high limit
+ /
+!
+! Holtslag PBL scheme control
+!
+ &holtslagparam
+ ricr_ocn = 0.25,  ! Critical Richardson Number over Ocean
+ ricr_lnd = 0.25,  ! Critical Richardson Number over Land
+ zhnew_fac = 0.25, ! Multiplicative factor for zzhnew in holtpbl
+ ifaholtth10 = 1,  ! First approximation for obhukov length, th10 formula:
+                   !      0 => 0.5 * (t+tg) * (1+0.61*q)
+                   !      1 => (0.25*t + 0.75*tg) * (1+0.61*q)
+                   !      2 => theta + hf/(k*us)*log(z/10)
+                   ! t = air temp., tg = ground temp., q = wv mix. ratio
+                   ! hf = total heat flux, z = elevation
+                   ! theta = virt. pot. t
+ ifaholt = 1,      ! th10 final adjustment:
+                   !      0 => no adjustment
+                   !      1 => max(th10,tg)
+                   !      2 => min(th10,tg)
+ holtth10iter = 1, ! Iterations in th10 computation
+ /
+!
+! UW PBL scheme control
+!
+ &uwparam
+ iuwvadv = 0,   ! 0=standard T/QV/QC advection, 1=GB01-style advection
+                ! 1 is ideal for MSc simulation, but may have stability issues
+ atwo = 15.0,   ! Efficiency of enhancement of entrainment by cloud evap.
+                ! see Grenier and Bretherton (2001) Mon. Wea. Rev.
+                ! and Bretherton and Park (2009) J. Clim.
+ rstbl = 1.5,   ! Scaling parameter for stable boundary layer eddy length
+                ! scale. Higher values mean stronger mixing in stable
+                ! conditions
+ czero = 5.869, ! Czero constant in UW PBL (eqn 44a and pgs 856-857)
+ nuk = 5.0,     ! Multiplication factor for diffusion coefficients
+ /
+!
+! SLAB Ocean model, or q-flux adjusted mixed layer model
+!
+ &slabocparam
+ do_qflux_adj  = .false.,  ! Activate SLAB Ocean model surface fluxes adjust
+                           ! from an already created climatology
+ do_restore_sst = .true.,  ! Create during the run the SLAB Ocean model surface
+                           ! fluxes climatology to be used in a subsequent run
+ sst_restore_timescale = 5.0,  ! Time interval in days in building the
+                               ! q-flux adjustment
+ mixed_layer_depth     = 50.0, ! Depth in meters of the Ocean mixed layer.
+ /
+!
+! RRTM Radiation scheme parameters
+!
+ &rrtmparam
+ inflgsw  = 2, ! 0 = use the optical properties calculated in prep_dat_rrtm
+               !     (same as standard radiation)
+               ! 2 = use RRTM option to calculate cloud optical properties
+               !     from water path and cloud drop radius
+ iceflgsw = 3, ! Flag for ice particle specification
+               !   0 => ice effective radius, r_ec, (Ebert and Curry, 1992),
+               !        r_ec must be >= 10.0 microns
+               !   1 => ice effective radius, r_ec, (Ebert and Curry, 1992),
+               !        r_ec range is limited to 13.0 to 130.0 microns
+               !   2 => ice effective radius, r_k, (Key, Streamer Ref. Manual,
+               !        1996), r_k range is limited to 5.0 to 131.0 microns
+               !   3 => generalized effective size, dge, (Fu, 1996),
+               !        dge range is limited to 5.0 to 140.0 microns
+               !        [dge = 1.0315 * r_ec]
+ liqflgsw = 1, ! Flag for liquid droplet specification
+               !   0 => Compute the optical depths due to water clouds in ATM
+               !        (currently not supported)
+               !   1 => The water droplet effective radius (microns) is input
+               !        and the optical depths due to water clouds are computed
+               !        as in Hu and Stamnes, J., Clim., 6, 728-742, (1993).
+ inflglw  = 2, ! Flag for cloud optical properties as above but for LW
+ iceflglw = 3, ! Flag for ice particle specification as above but for LW
+ liqflglw = 1, ! Flag for liquid droplet specification as above but for LW
+ icld  = 1,    ! Cloud Overlap hypothesis
+ irng = 1,     ! mersenne twister random generator for McICA COH
+ imcica = 1,   ! Cloud optical depth (extinction) is in cloud quantity
+ nradfo = 4,   !
+ /
+!
+! Chemical control parameter
+!
+ &chemparam
+ chemsimtype = 'CBMZ    ', ! Which chemical tracers to be activated.
+                           ! One in :
+                           !   DUST   : Activate 4 dust bins scheme
+                           !   SSLT   : Activate 2 bins Sea salt scheme
+                           !   DUSS   : Activate DUST + SSLT
+                           !   DU12   : Activate 12 dust bins scheme
+                           !   CARB   : Activate 4 species black/anthropic
+                           !            carbon simulations
+                           !   SULF   : Activate SO2 and SO4 tracers
+                           !   SUCA   : Activate both SUKF and CARB
+                           !   AERO   : Activate all DUST, SSLT, CARB and SULF
+                           !   CBMZ   : Activate gas phase and sulfate
+                           !   DCCB   : Activate CBMZ +DUST +CARB
+                           !   POLLEN : Activate POLLEN transport scheme
+ ichsolver = 1,  ! Activate the chemical solver
+ ichsursrc = 1,  ! Enable the emissions
+ ichdrdepo = 1,  ! 1 = enable tracer surface dry deposition. For dust,
+                 !     it is calculated by a size settling and dry
+                 !     deposition scheme. For other aerosol,a dry
+                 !     deposition velocity is simply prescribed further.
+ ichebdy = 1,    ! Enable boundary conditions read
+ ichcumtra = 1,  ! 1 = enable tracer convective transport and mixing.
+ ichremlsc = 1,  ! 1 = wet removal of chemical species (washout and rainout
+                 !     by total rain) is enabled
+ ichremcvc = 1,  ! 1 = wet removal of chemical species (washout and rainout
+                 !     by convective rain) is enabled
+ ichdustemd = 1, ! Choice for parametrisation of dust emission size distribution
+                 ! 1 = use the standard scheme (Alfaro et al., Zakey et al.)
+                 ! 2 = use the the revised soil granulometry + Kok et al., 2011
+                 ! 3 = use the the CLM4.5 dust emission module.
+ ichdiag = 0,    ! 1 = enable writing of additional diagnostics in the output
+ ismoke = 0,     ! Consider emissions from fires (smoke tracer)
+ idirect   = 0,  ! Choice to enable or not aerosol feedbacks on radiation and
+                 ! dynamics (aerosol direct and semi direct effcts):
+                 ! 0 = no coupling to dynamic and thermodynamic.
+                 ! 1 = no coupling to dynamic and thermodynamic. However
+                 !     the clear sky surface and top of atmosphere 
+                 !     aerosol radiative forcings are diagnosed.
+                 ! 2 = allows aerosol feedbacks on radiative,
+                 !     thermodynamic and dynamic fields.
+ iindirect = 0,  ! Enable sulfate indirect effect in radiation scheme
+ ichjphcld = 1,  ! Impact of cloud aod on photolysis coef
+ ichlinox = 1,   ! LINOX emission considered
+ ichbion = 0,    ! NOx and NH3 emissions from soil manure (Potter et. al 2010)
+ rdstemfac = 1.0,! Aerosol correction factor (Laurent et al, 2008)
+ rocemfac = 1.33,! OC correction factor to increase emissions for SOA
+ /
+!
+! CLM parameters
+!
+ &clmparam
+ dirclm = 'input/', ! CLM path to Input data produced by clm2rcm. If 
+                    ! relative, It should be how to reach the Input dir
+                    ! from the Run dir.
+ clmfrq =  12.,     ! Frequency for CLM own output write
+ imask  =   1,      ! For CLM, Type of land surface parameterization
+                    !   1 => using DOMAIN.INFO for landmask (same as BATS)
+                    !   2 => using mksrf_navyoro file landfraction for
+                    !        landmask and perform a weighted average over
+                    !        ocean/land gridcells; for example:
+                    ! tgb = tgb_ocean*(1-landfraction)+tgb_land*landfraction
+ /
+!
+! Coupled model parameters
+!
+ &cplparam
+ cpldt        = 10800., ! Coupling time step in sec. 
+ zomax        = 0.005,  ! Maximum surface roughness from wave model coupling
+ ustarmax     = 2.0,    ! Maximum friction velocity from wave model coupling
+ cpldbglevel  = 1,      ! Debug level
+                        ! 1 => basic output
+                        ! 2 => grid information of each component is written
+                        !      to VTK file
+                        ! 3 => exchange fields are written to netcdf file at
+                        !      each coupling time step 
+                        ! 4 => exchange fields are written to a ASCII file at
+                        !      each coupling time step
+ /
+!
+! Perturbation control for ensembles
+!
+ &perturbparam
+ lperturb_topo = .false.,   ! Add perturbation to surface elevation
+ perturb_frac_topo = 0.001, ! Fractional value of the perturbation on topo
+ lperturb_ts = .false.,     ! Add perturbation to surface temeprature
+ perturb_frac_ts = 0.001,   ! Fractional value of the perturbation on ts
+ lperturb_ps = .false.,     ! Add perturbation to surface pressure
+ perturb_frac_ps = 0.001,   ! Fractional value of the perturbation on ps
+ lperturb_t  = .false.,     ! Add perturbation to temperature
+ perturb_frac_t  = 0.001,   ! Fractional value of the perturbation on t
+ lperturb_q  = .false.,     ! Add perturbation to humidity mixing ratio
+ perturb_frac_q  = 0.001,   ! Fractional value of the perturbation on q
+ lperturb_u  = .false.,     ! Add perturbation to zonal velocity
+ perturb_frac_u  = 0.001,   ! Fractional value of the perturbation on u
+ lperturb_v  = .false.,     ! Add perturbation to meridional velocity
+ perturb_frac_v  = 0.001,   ! Fractional value of the perturbation on v
+ /
+!
+! Tweaking parameters
+!
+ &tweakparam
+ itweak_sst = 0,              ! Enable adding sst_tweak to input TS
+ itweak_temperature = 0,      ! Enable adding temperature_tweak to input T
+ itweak_solar_irradiance = 0, ! Add solar_tweak to solar constant
+ itweak_greenhouse_gases = 0, ! Multiply gas_tweak_factors to GG concentrations
+ sst_tweak = 0.0,             ! In K
+ temperature_tweak = 0.0,     ! In K
+ solar_tweak = 0.0,           ! In W m-2 (1367.0 is default solar)
+ gas_tweak_factors = 1.0, 1.0 , 1.0 , 1.0 , 1.0,
+ !                   CO2  CH4   N2O   CFC11 CFC12
+ /
+!
+! CLM 4.5 parameters
+!
+ &clm_inparm
+ fpftcon = 'pft-physiology.c130503.nc',
+ fsnowoptics = 'snicar_optics_5bnd_c090915.nc',
+ fsnowaging = 'snicar_drdt_bst_fit_60_c070416.nc',
+ /
+ &clm_soilhydrology_inparm
+ h2osfcflag = 1,
+ origflag = 0,
+ /
+ &clm_hydrology1_inparm
+ oldfflag = 0,
+ /
+ &clm_regcm
+ enable_megan_emission = .false.,
+ enable_urban_landunit = .true.,
+ enable_more_crop_pft = .false.,
+ /
+!
+! Debug I/O printout level.
+!
+ &debugparam
+ debug_level = 0, ! Currently value of 2 and 3 control previous DIAG flag
+ dbgfrq = 24,     ! Interval (hours) for printout if debug_level >= 3
+ /
+! ####################################################################
+
+
+
+
