@@ -8,8 +8,13 @@ import xarray as xr
 import pandas as pd
 import os
 import pickle
-import scipy.io as sio
+from scipy.interpolate import griddata
+from mpl_toolkits.basemap import Basemap
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from matplotlib import dates
 import datetime
+import cmocean as cmo
+import scipy.io as sio
 
 import matplotlib
 matplotlib.style.use('ggplot')
@@ -39,7 +44,7 @@ def filtering_data(data):
 # beginnig of the main code
 BASE_DIR = oceano.make_dir()
 DATA_DIR = BASE_DIR.replace('github','ventopcse/data/IOUSP')
-SAVE_DIR = BASE_DIR.replace('github','ventopcse')
+SAVE_DIR = BASE_DIR + 'dissertacao/presentation/figures/'
 
 # importing file .mat and desired variables
 fname = DATA_DIR + 'CSS_DJF2014.mat'
@@ -76,3 +81,10 @@ dct = {
 }
 
 dfFilt = pd.DataFrame(dct,index=pd.DatetimeIndex(dt))
+
+fig,ax = plt.subplots()
+
+df['2014-01':'2014-02'].v5m.plot(ax=ax,label='Quase Paralela')
+dfFilt['2014-01':'2014-02'].v5m.plot(ax=ax)
+
+plt.savefig(SAVE_DIR.replace('github','gitlab') + 'filtering.png',dpi=250)

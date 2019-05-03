@@ -124,9 +124,10 @@ skill_along,corr_along = oceano.getStatisticalAnalysis(lajeobs.wind_along,lajemo
 skill_cross,corr_cross = oceano.getStatisticalAnalysis(lajeobs.wind_cross,lajemod.wur)
 
 os.system('clear')
-print('# ------ ALONG SHORE ------ #')
+print('#------- LAJE -------#')
+print('# ------ PARALELA ------ #')
 print('Skill: %0.2f     Corr %0.2f' % (skill_along,corr_along))
-print('# ------ CROSS SHORE ------ #')
+print('# ------ PERPENDICULAR ------ #')
 print('Skill: %0.2f     Corr %0.2f' % (skill_cross,corr_cross))
 
 
@@ -143,9 +144,10 @@ boiamod.wur.plot(ax=ax[1],label='CFSv2/cross')
 # calculando parametros estatistico
 skill_along,corr_along = oceano.getStatisticalAnalysis(boiaobs.wind_along,boiamod.wvr)
 skill_cross,corr_cross = oceano.getStatisticalAnalysis(boiaobs.wind_cross,boiamod.wur)
-
+print('')
 # os.system('clear')
-print('# ------ ALONG SHORE ------ #')
+print('#------- PNBOIA -------#')
+print('# ------ PARALELA ------ #')
 print('Skill: %0.2f     Corr %0.2f' % (skill_along,corr_along))
-print('# ------ CROSS SHORE ------ #')
+print('# ------ PERPENDICULAR ------ #')
 print('Skill: %0.2f     Corr %0.2f' % (skill_cross,corr_cross))

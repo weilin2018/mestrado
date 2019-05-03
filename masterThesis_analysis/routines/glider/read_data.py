@@ -13,7 +13,7 @@ from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import dates
 import datetime
-
+import gsw
 import matplotlib
 matplotlib.style.use('ggplot')
 
@@ -41,7 +41,7 @@ nfile = DATA_DIR + 'merge_all_ascii_lvl1.nc'
 # nfiles.sort() # and sorting them by name
 
 # load merged file
-ncin = xr.open_dataset(nfiles[0])
+ncin = xr.open_dataset(nfile)
 # extract time axis, converting into string readable
 time = np.asarray([datetime.datetime.fromtimestamp(t) for t in ncin.m_present_time.values])
 depth= gsw.z_from_p(ncin.sci_water_pressure.values,lat=-24.2)
