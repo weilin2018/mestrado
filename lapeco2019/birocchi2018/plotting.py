@@ -29,3 +29,82 @@ import sys
 sys.path.append('/home/danilo/mestrado/github/masterThesis_analysis/routines/masterThesisPack/')
 
 import masterThesisPack as oceano
+
+# functions
+def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,nparallels=2):
+
+    m = Basemap(projection='merc', llcrnrlat=llat, urcrnrlat=ulat, llcrnrlon=llon, urcrnrlon=ulon, resolution=resolution)
+
+    m.ax = ax
+
+    m.drawcoastlines(linewidth=0.1)
+    m.drawmapboundary()
+    m.fillcontinents(color='#c0c0c0')
+
+    m.drawcoastlines(linewidth=.1)
+    m.drawmapboundary()
+
+	# definir meridianos e paralelos para plotar no mapa
+    meridians=np.arange(llon,ulon,nmeridians)
+    parallels=np.arange(llat,ulat,nparallels)
+	# desenhar meridianos e paralelos conforme definido acima
+    m.drawparallels(parallels,labels=[True,False,False,True],fontsize=13,fontweight='bold',color='gray')
+    m.drawmeridians(meridians,labels=[True,False,False,True],fontsize=13,fontweight='bold',color='gray')
+
+    return m
+
+def plotSBB():
+    fig,ax = plt.subplot()
+    m = make_map(ax,ulat=-23.67,llat=-23.87,ulon=-45.31,llon=-45.50,resolution='f',nmeridians=1,nparallels=1)
+
+    pickle.dump(m,open('/home/danilo/mestrado/github/lapeco2019/birocchi2018/ssbmap.pkl','w'))
+
+    plt.close()
+
+def create_subplots():
+
+    fig,ax = plt.subplots(ncols=2,figsize=(24/2.54,15/2.54))
+
+    # importing already created basemap instace
+    mcrude = make_map(ax[0],ulat=-23.67,llat=-23.87,ulon=-45.31,llon=-45.50,resolution='f',nmeridians=1,nparallels=1)#pickle.load(open('/home/danilo/mestrado/github/lapeco2019/birocchi2018/ssbmap.pkl','r'))
+    # mcrude.ax = ax[0]
+    mrefin = make_map(ax[1],ulat=-23.67,llat=-23.87,ulon=-45.31,llon=-45.50,resolution='f',nmeridians=1,nparallels=1)#pickle.load(open('/home/danilo/mestrado/github/lapeco2019/birocchi2018/ssbmap.pkl','r'))
+    # mcrude.ax = ax[1]
+
+    ax[0].set_title('Crude Grid')
+    ax[1].set_title('Refined Grid')
+
+    return mcrude,mrefin
+
+def extract_coordinates(ncin):
+    lon = ncin.lon.values
+    lat = ncin.lat.values
+    lon[lon==0.] = np.nan
+    lat[lat==0.] = np.nan
+
+    return lon,lat
+
+def estimate_total_concentration(conc,axis=0):
+    return np.nansum(conc,axis=axis)
+
+# main program
+
+# import netcdf files
+crude = xr.open_dataset('crude.cdf')
+refin = xr.open_dataset('refined.cdf')
+
+lon_crude,lat_crude = extract_coordinates(crude)
+lon_refin,lat_refin = extract_coordinates(refin)
+
+for t in np.arange(0,crude.time.shape[0],4): # total of 52 figures
+
+    t = 40
+    # extract concentration, calculating the total amount on water column
+    conc_crude = estimate_total_concentration(crude.conc[t],axis=0)
+    conc_refin = estimate_total_concentration(refin.conc[t],axis=0)
+
+    # plotting
+    mcrude,mrefin = create_subplots()
+    mcrude.contourf(lon_crude,lat_crude,conc_crude,latlon=True)
+
+    mrefin.contourf(lon_refin,lat_refin,conc_refin,latlon=True)
