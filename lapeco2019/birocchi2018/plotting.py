@@ -25,10 +25,10 @@ from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import matplotlib
 matplotlib.style.use('ggplot')
 
-import sys
-sys.path.append('/home/danilo/mestrado/github/masterThesis_analysis/routines/masterThesisPack/')
-
-import masterThesisPack as oceano
+# import sys
+# sys.path.append('/home/danilo/mestrado/github/masterThesis_analysis/routines/masterThesisPack/')
+#
+# import masterThesisPack as oceano
 
 # functions
 def make_map(ax,llat=-30,ulat=-20,llon=-50,ulon=-39,resolution='l',nmeridians=3,nparallels=2):
@@ -88,23 +88,37 @@ def estimate_total_concentration(conc,axis=0):
     return np.nansum(conc,axis=axis)
 
 # main program
+BASE_DIR = os.getcwd()
+SAVE_DIR = BASE_DIR + 'figures/'
 
 # import netcdf files
-crude = xr.open_dataset('crude.cdf')
-refin = xr.open_dataset('refined.cdf')
+crude = xr.open_dataset(BASE_DIR + 'crude.cdf')
+refin = xr.open_dataset(BASE_DIR + 'refined.cdf')
 
 lon_crude,lat_crude = extract_coordinates(crude)
 lon_refin,lat_refin = extract_coordinates(refin)
 
 for t in np.arange(0,crude.time.shape[0],4): # total of 52 figures
-
-    t = 40
+    print('Plotting timestep: %i'%t)
+    # t = 40
     # extract concentration, calculating the total amount on water column
     conc_crude = estimate_total_concentration(crude.conc[t],axis=0)
     conc_refin = estimate_total_concentration(refin.conc[t],axis=0)
 
+    # auxiliar variables
+    dif = np.nanmax(conc_refin) - np.nanmin(conc_refin)
+    contours = np.arange(np.nanmin(conc_refin), np.nanmax(conc_refin), dif/100)
+
     # plotting
     mcrude,mrefin = create_subplots()
-    mcrude.contourf(lon_crude,lat_crude,conc_crude,latlon=True)
 
-    mrefin.contourf(lon_refin,lat_refin,conc_refin,latlon=True)
+    mcrude.contourf(lon_crude,lat_crude,conc_crude,contours,cmap=cmo.cm.matter,latlon=True)
+    mrefin.contourf(lon_refin,lat_refin,conc_refin,contours,cmap=cmo.cm.matter,latlon=True)
+
+    # saving
+    output = SAVE_DIR + str(t).zfill(5) + '.png'
+    plt.savefig(output,dpi=150)
+
+    # cleaning env
+    plt.close()
+    del conc_crude,conc_refin,mcrude,mrefin
