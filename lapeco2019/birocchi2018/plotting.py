@@ -89,15 +89,16 @@ def estimate_total_concentration(conc,axis=0):
 
 # main program
 BASE_DIR = os.getcwd()
-SAVE_DIR = BASE_DIR + 'figures/'
+SAVE_DIR = BASE_DIR + '/figures/'
 
 # import netcdf files
-crude = xr.open_dataset(BASE_DIR + 'crude.cdf')
-refin = xr.open_dataset(BASE_DIR + 'refined.cdf')
+crude = xr.open_dataset(BASE_DIR + '/crude.cdf')
+refin = xr.open_dataset(BASE_DIR + '/refined.cdf')
 
 lon_crude,lat_crude = extract_coordinates(crude)
 lon_refin,lat_refin = extract_coordinates(refin)
 
+os.system('clear')
 for t in np.arange(0,crude.time.shape[0],4): # total of 52 figures
     print('Plotting timestep: %i'%t)
     # t = 40
@@ -111,6 +112,8 @@ for t in np.arange(0,crude.time.shape[0],4): # total of 52 figures
 
     # plotting
     mcrude,mrefin = create_subplots()
+
+    # mcrude.ax.set_title('Crude Grid')
 
     mcrude.contourf(lon_crude,lat_crude,conc_crude,contours,cmap=cmo.cm.matter,latlon=True)
     mrefin.contourf(lon_refin,lat_refin,conc_refin,contours,cmap=cmo.cm.matter,latlon=True)
