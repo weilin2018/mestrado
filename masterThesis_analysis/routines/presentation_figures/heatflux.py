@@ -87,12 +87,16 @@ hflx= calcQnet(ncin)
 hflx = hflx[0,:,:]
 
 fig,ax = plt.subplots(figsize=(10,10))
-mhflx = make_map(ax,resolution='f')
+cax = fig.add_axes([0.2,0.1,0.61,0.02])
 
-mhflx.contourf(lon,lat,hflx,cmap=cmo.cm.thermal,latlon=True)
+mhflx = make_map(ax,resolution='l')
+
+cf = mhflx.contourf(lon,lat,hflx,cmap=cmo.cm.thermal,latlon=True)
 mhflx.drawcoastlines(linewidth=.8)
 mhflx.drawmapboundary()
 
+cbar = plt.colorbar(cf,cax=cax,orientation='horizontal')
+cbar.set_label(r'Fluxo de Calor [W.m$^{-2}$]')
 
 ncin = xr.open_dataset('/home/danilo/Dropbox/mestrado/data/data2model/2014/run/wind/arquivos_semuso/cdas1.20140210.sfluxgrbf.grb2.nc')
 lon = ncin.lon.values - 360
@@ -102,6 +106,10 @@ wu  = ncin.U_GRD_L103[0,:,:].values
 wv  = ncin.V_GRD_L103[0,:,:].values
 
 mhflx.quiver(lon,lat,wu,wv,latlon=True)
+plt.tight_layout()
+plt.subplots_adjust(top=0.981,bottom=0.174,left=0.015,right=0.985,hspace=0.2,wspace=0.2)
 
-plt.savefig('/media/danilo/Danilo/mestrado/gitlab/mestrado/dissertacao/presentation/figures/heatflux.png',dpi=300)
+fname_output = '/media/danilo/Danilo/mestrado/gitlab/mestrado/dissertacao/presentation/figures/heatflux.png'
+plt.savefig(fname_output,dpi=300)
+os.system('convert -trim %s %s'%(fname_output,fname_output))
 plt.close()
