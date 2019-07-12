@@ -25,6 +25,8 @@ sys.path.append('masterThesisPack/')
 
 import masterThesisPack as oceano
 
+
+plt.close()
 ##############################################################################
 #                          [GEN] FUNCTIONS                                   #
 ##############################################################################
@@ -82,6 +84,19 @@ def create_Structure(fname,timestep=0,savefig=False):
 
     sigmaLevels = [0,10,20] # which sigma levels to plot
 
+    # isotherm dictionary
+    levels_for_isotherm = {
+        sigmaLevels[0]: [24,26],#np.arange(20,33,2),
+        sigmaLevels[1]: [10,18,22],#np.arange(10,26,2),
+        sigmaLevels[2]: [10,15,18]#np.arange(5,20,4)
+    }
+
+    levels_for_isohaline= {
+        sigmaLevels[0]: [34.5,35.5,36.,36.5],
+        sigmaLevels[1]: [34.5,35.,36.],
+        sigmaLevels[2]: [34.5,35.2,36.]
+    }
+
     # fig,axes = plt.subplots(nrows=2,ncols=3,figsize=(16/2.54, 13/2.54))
     # cax = fig.add_axes([0.2,0.05,0.61,0.02])
     axes_pos = [
@@ -116,6 +131,9 @@ def create_Structure(fname,timestep=0,savefig=False):
     for key,k in zip(col1,sigmaLevels):
         a = m[key]
         cf_temp = a.contourf(lon,lat,temp[k,:,:],contours,latlon=True,cmap=cmo.cm.thermal)
+        isoterma= a.contour(lon,lat,temp[k,:,:],levels=levels_for_isotherm[k],latlon=True,colors=('k'),linewidths=(.5),linestyles=('dashed'))
+        plt.clabel(isoterma,levels_for_isotherm[k],fmt='%i',inline=1,fontsize=6,manual=True)
+
         for c in cf_temp.collections:
             c.set_edgecolor('face')
             c.set_linewidth(0.00000000001)
@@ -128,7 +146,10 @@ def create_Structure(fname,timestep=0,savefig=False):
     col1 = ['10','11','12']
     for key,k in zip(col1,sigmaLevels):
         a = m[key]
-        cf_salt = a.contourf(lon,lat,salt[k,:,:],contours,latlon=True,cmap=cmo.cm.haline)
+        cf_salt  = a.contourf(lon,lat,salt[k,:,:],contours,latlon=True,cmap=cmo.cm.haline)
+        isohaline= a.contour(lon,lat,salt[k,:,:],levels=levels_for_isohaline[k],latlon=True,colors=('k'),linewidths=(.5),linestyles=('dashed'))
+        plt.clabel(isohaline,levels_for_isohaline[k],fmt='%.1f',inline=1,fontsize=6,manual=True)
+
         for c in cf_salt.collections:
             c.set_edgecolor('face')
             c.set_linewidth(0.00000000001)
@@ -167,7 +188,7 @@ def create_Structure(fname,timestep=0,savefig=False):
     # title and some figure adjusts
     d = pd.to_datetime(ncin.time[timestep].values)
     # plt.suptitle(u'Climatologia de Temperatura (superior) e Salinidade \n(inferior), para a Superfície, Meio e Fundo',fontsize=10)
-    plt.suptitle(u'Campos climatológicos de Temperatura (superior) e Salinidade (inferior), \n na superfície, meio e fundo', fontsize=10)
+    # plt.suptitle(u'Campos climatológicos de Temperatura (superior) e Salinidade (inferior), \n na superfície, meio e fundo', fontsize=10)
     rect = (0,0.08,1.,0.95)
     plt.tight_layout(rect=rect) # box for tight_subplot_layout
     plt.subplots_adjust(top=0.965,bottom=0.055,left=0.06,right=0.99,hspace=0.0,wspace=0.18)
@@ -200,7 +221,7 @@ DATA_DIR = BASE_DIR.replace('github/', 'ventopcse/output/')
 fname = glob.glob(DATA_DIR+"*.cdf")
 
 # select which experiment you want to plot:
-exp = 'warmupControle.cdf'
+exp = 'warmup_plot.cdf'
 # SAVE_FIG = BASE_DIR + 'masterThesis_analysis/figures/experiments_outputs/temperature/crossSection_EA1/'
 
 for f in fname:
